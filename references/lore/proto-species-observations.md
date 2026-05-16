@@ -23,6 +23,36 @@ This is a *new* scene type, lighter than the FSM-dialog encounters. Lifecycle:
 
 There is no FSM. There are no choices. The variation principle still applies (each observation generates slightly different text; the archive flag is deterministic).
 
+### Sample Observation Logs (LLM target examples)
+
+These are *target outputs* — examples of what the LLM should produce for an observation encounter. Use them as reference when authoring the LLM prompt. Each sample is one of several valid renderings; on a re-visit, the LLM would produce a different log with the same essential content.
+
+**Proto-Spathi observation log (sample):**
+
+> *Bio-Archive Entry 14,308. Steward [name] reports landfall on the second planet of [system]. Subject species: the* burrowing-slugs-of-coordinated-evasion *(no self-designation; vocal communication has not been observed).*
+>
+> *They are practicing the art of cowering in fear. There is a colony of perhaps four thousand individuals occupying a network of vertical burrows in the silt of a freshwater shoreline. When a passing predator-bird crossed the colony's airspace this morning, the entire population vanished into the burrows within 1.4 seconds — a coordinated wave the Steward's instruments registered as a single behavior, not four thousand separate ones.*
+>
+> *They are deemed below intelligent sentience. Their fear-art, however, is sophisticated beyond expectations: synchronized keening-songs structure the evasion response, and terror-postures (a particular folded curl, observable from orbit) are passed between generations. The trajectory is uncertain. Whatever they become, it is unlikely to be brave. Council recommendation: leave undisturbed.*
+
+**Proto-VUX observation log (sample):**
+
+> *Bio-Archive Entry 14,309. Subject species: the* tide-pool molluscs-of-the-thirty-color-disciminations *(no self-designation).*
+>
+> *They are sorting themselves by color. The colony in this tide-pool — perhaps two hundred individuals — has organized into bands of identical hue along the rock-shelf, the most discriminating Steward observations confirming that mating selection is governed by precise pattern-matching of body coloration. Individuals whose patterns deviate from their band's consensus are not killed, but they are not bred. Over generations, the bands have become more uniform within themselves and more distant from each other.*
+>
+> *Their visual cognition is extraordinary; their tolerance for visual difference is nearly zero. The Furling biologists watching this species find it disquieting. Council recommendation: leave undisturbed, monitor the trajectory.*
+
+**Proto-Humans (Sol III) observation log (sample):**
+
+> *Bio-Archive Entry 14,310. Subject species: the* tool-using bipedal mammals of the third planet *(self-designation unobserved; their vocalizations have not yet stabilized into language).*
+>
+> *They have buried a body. A small group of perhaps eleven individuals carried one of their dead — an elderly female by the Steward's biological inference — to a slow hillside above their cave, and placed her in a shallow scrape with several stones that had been carefully selected for shape. They sat with the scrape for nearly an hour. Then they returned to their cave.*
+>
+> *They use fire. They use stone tools. They bury their dead. They are deemed below intelligent sentience by the Council, but the buried-grandmother is the kind of observation that makes the Council's classification feel provisional. Trajectory: very promising. The Steward who logs this entry is reminded to walk back to the lander quietly.*
+
+These three samples establish the tone: **warm, scholarly, fondly amused, occasionally moved.** The Furling Archivist voice is *Attenborough narrating an early-hominid documentary* — never condescending, never sentimental, but specifically attentive to the small moments that prefigure what each species will become.
+
 ## Per-Species Briefs (Slice + Full Game)
 
 Each entry is the species' SC2 identity → what they look like in our era. Slice-scope candidates marked with ✱.
@@ -33,7 +63,7 @@ Each entry is the species' SC2 identity → what they look like in our era. Slic
 
 ### ✱ Proto-Spathi (in the slice's cluster, location TBD)
 *SC2 race*: Cowardly molluscoids of Spathiwa.
-*In our era*: burrow-dwelling sluglike creatures whose social organization is built around *evasion*. They have evolved an extraordinarily good early-warning sense for predators. They flee in coordinated waves. **The cowardice is already here, 250,000 years early.** The Furling archive notes "social fear-response sophisticated beyond expectations; what they will become is unclear but is unlikely to be brave."
+*In our era*: burrow-dwelling sluglike creatures **practicing the art of cowering in fear** to survive the local predators. No ships, no tools, no language. They have evolved an extraordinarily good early-warning sense; their coordinated flee-responses ripple across an entire colony in seconds. They are deemed **below intelligent sentience** in the formal Council classification, but their *fear-art* is already startlingly sophisticated — they have terror-rituals, terror-postures, terror-songs (high keening that synchronizes the colony's escape vector). **The cowardice is already here, 250,000 years early.** Council note: *social fear-response sophisticated beyond expectations; trajectory uncertain but unlikely to be brave.*
 
 ### Proto-Yehat (Serpentis cluster, somewhere)
 *SC2 race*: Warrior bird-saurians; clan-bonded; honor-codes.
