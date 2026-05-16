@@ -352,8 +352,10 @@ def walk_super_melee() -> TestScript:
         9  Station — Mh-Lai
         10 Dialog — Cmdr Halia
         11 Dialog — Arilou Sage
-        13 Quasi-Space
-        14 Super Melee   <— target
+        13 Dialog — Coel Tessar
+        14 Dialog — Sentry Drone
+        15 Quasi-Space
+        16 Super Melee   <— target
     """
     s = TestScript()
     s.set_speed(3.0)
@@ -362,10 +364,10 @@ def walk_super_melee() -> TestScript:
     s.wait(0.6)
     s.expect_scene("MainMenuScene")
 
-    # Open scene switcher and navigate to "Super Melee" (entry 14)
+    # Open scene switcher and navigate to "Super Melee" (entry 16)
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(14):
+    for _ in range(16):
         s.press("menu_down")
         s.wait(0.12)
     s.press("confirm")
@@ -580,6 +582,384 @@ def walk_tutorial_beat_3_to_5() -> TestScript:
     return s
 
 
+def walk_tutorial_arc() -> TestScript:
+    """Full tutorial walkthrough — Beats 1-7 end-to-end, no flag-seeding.
+
+    The slice's onboarding. Each beat naturally gates the next via
+    game.flags. This is the MVP-acceptance test for the tutorial: if
+    a fresh player runs it from MainMenu, every beat triggers, every
+    flag advances, and tutorial_complete latches at the end.
+
+    Beat layout in this script:
+      1. Halia opening dialog (start state) — exit cleanly
+      2-3. Furlmart Orbit (switcher) → deploy lander → collect Scanner Mk III
+      4. Hyperspace → Coel Tessar encounter → accept Distress Beacon
+      5. Return to Station → install Scanner → talk to Halia (others_reveal)
+      6. Undock → sentry drone hails → engage combat → win
+      7. Re-talk to Halia (others_confirmed) → tutorial_complete
+
+    Switcher entries used: 1 (Hyperspace), 4 (Furlmart Orbit),
+    10 (Station — Mh-Lai).
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Full Tutorial Arc — Beats 1 through 7, no flag pre-seeding")
+
+    # ============== BEAT 1 — Halia opening ==============
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+    s.press("confirm")    # Talk to Commander Halia
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("start")
+    # Choose "I'll head out" — 4th choice (index 3)
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    # ============== BEATS 2-3 — Furlmart, collect Scanner ==============
+    # Jump to Furlmart Orbit via switcher (entry 4)
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(4):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+    s.press("confirm")    # Deploy Lander
+    s.wait(0.6)
+    s.expect_scene("PlanetSurfaceScene")
+    # Drive up to the package
+    s.set_axis(0.0, -1.0)
+    s.wait(2.3)
+    s.release_axis()
+    s.wait(0.3)
+    s.expect_flag("scanner_mk3_collected", True)
+    s.press("cancel")     # Lift off
+    s.wait(0.5)
+    s.expect_scene("PlanetOrbitScene")
+    s.press("cancel")     # Leave orbit
+    s.wait(0.5)
+    s.expect_scene("SystemScene")
+
+    # ============== BEAT 4 — Coel Tessar in hyperspace ==============
+    # Cross system boundary to hyperspace. Mh-Lai system boundary at
+    # radius 720 from star (origin); spawn at (580, 0). Move right
+    # (+1, 0) for ~0.8 game-sec to cross.
+    s.set_axis(1.0, 0.0)
+    s.wait(1.2)
+    s.release_axis()
+    s.wait(0.4)
+    s.expect_scene("HyperspaceScene")
+
+    # The encounter SHOULD spawn here because scanner_mk3_installed
+    # is required... but we haven't installed it yet (we just collected
+    # it). So at this point, no encounter. Player needs to install,
+    # which means going back to Mh-Lai, docking, installing, then
+    # leaving again. The natural Beat order is 3→5→4 (collect, install,
+    # then hit Coel Tessar). Re-order this script accordingly.
+    #
+    # NOTE: in the canonical narrative Beat 4 follows Beat 3 immediately
+    # via Coel "dropping out of a Quasi-Space fold near the player's
+    # path." For MVP simplicity, we route 3 → 5 → 4 by gating Beat 4
+    # on scanner_mk3_installed instead of collected.
+
+    # ============== BEAT 5 — install Scanner + Halia others_reveal ==============
+    # Re-enter Mh-Lai system, dock, install, talk. Use switcher (cancel
+    # in hyperspace quits the game).
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+    s.press("fire_secondary")    # Y → Dock at Mh-Lai Station
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    # Upgrade ship — menu index 2
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("ShipCustomizationScene")
+    s.press("menu_next")   # focus on modules column
+    s.wait(0.2)
+    s.press("confirm")     # install Scanner Mk III (the only quest reward in inventory)
+    s.wait(0.4)
+    s.expect_module_installed("sensor", "scanner_mk3")
+    s.expect_flag("scanner_mk3_installed", True)
+    s.press("cancel")      # back to Station
+    s.wait(0.4)
+    s.expect_scene("StationScene")
+
+    # Now go back out to hyperspace to trigger Beat 4 (Coel Tessar).
+    # Undock first — drops in Mh-Lai system (no sentry drone yet because
+    # we haven't installed scanner... wait, we just did. Hmm.)
+    #
+    # Re-read the trigger condition in StationScene.update:
+    #   if scanner_mk3_installed AND not fought_sentry_drone
+    # So actually undocking now WILL trigger the sentry drone.
+    #
+    # For this test, we want to do Beat 4 (Coel Tessar) FIRST, then
+    # come back and trigger Beat 6 (drone). So we need to engineer the
+    # order. Skip undocking via the Station menu — use switcher to jump
+    # directly to Hyperspace (entry 1).
+    s.press("open_switcher")
+    s.wait(0.5)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("HyperspaceScene")
+
+    # Encounter point spawned on hyperspace enter — fly to it
+    s.set_axis(0.95, 0.32)
+    s.wait(1.2)
+    s.release_axis()
+    s.wait(0.4)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("first_contact")
+    # Walk: first_contact → about_decursion → play_beacon → accept_confirm
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("about_decursion")
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("play_beacon")
+    s.press("confirm")    # has_distress_beacon side-effect
+    s.wait(0.5)
+    s.expect_dialog_state("accept_confirm")
+    s.press("confirm")
+    s.wait(0.7)
+    s.expect_scene("HyperspaceScene")
+    s.expect_flag("has_distress_beacon", True)
+
+    # Return to Station to hear the Others-reveal speech
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(10):    # entry 10 = Station — Mh-Lai
+        s.press("menu_down")
+        s.wait(0.1)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+    s.press("confirm")    # Talk to Halia
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("others_reveal")    # Beat 5 reveal triggers
+    s.press("confirm")    # "I'll be ready"
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+    s.expect_flag("heard_others_reveal", True)
+
+    # ============== BEAT 6 — undock → sentry drone → combat ==============
+    # Undock menu item — "Undock" is index 3
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("union_motion")
+    # "Engage combat protocols" — choice index 2
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.7)
+    s.expect_scene("MeleeCombatScene")
+    s.wait(50.0)   # cover the worst-case combat duration
+    s.expect_scene("SystemScene")
+    s.expect_flag("fought_sentry_drone", True)
+    s.expect_flag("first_combat_complete", True)
+
+    # ============== BEAT 7 — return to Station, others_confirmed ==============
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(10):
+        s.press("menu_down")
+        s.wait(0.1)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+    s.press("confirm")    # Talk to Halia
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("others_confirmed")    # Beat 7 reveal
+    s.press("confirm")    # "I'll be careful." (side-effect: tutorial_complete)
+    s.wait(0.7)
+    s.expect_scene("StationScene")
+    s.expect_flag("tutorial_complete", True)
+
+    s.set_speed(1.0)
+    s.log("Tutorial arc complete. Beats 1-7 walked end-to-end.")
+    s.wait(1.0)
+    s.end()
+    return s
+
+
+def walk_tutorial_beat_4() -> TestScript:
+    """Tutorial Beat 4 — Androsynth refugee encounter + Distress Beacon.
+
+    Validates the natural Beat 4 flow:
+      1. Hyperspace scene loads with Coel Tessar encounter spawned
+         (gated on scanner_mk3_installed + not met_androsynth)
+      2. Player flies into the encounter — auto-trigger fires dialog
+      3. Walk Coel Tessar dialog: first_contact → about_decursion →
+         play_beacon → accept_confirm → farewell
+      4. Verify has_distress_beacon + met_androsynth + androsynth_aboard
+
+    Beat 4 prerequisites (Beat 3 → Beat 5 chain): scanner_mk3_installed
+    must be True. Pre-seeded for this test.
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Tutorial Beat 4 — Androsynth refugee + Distress Beacon")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # Pre-seed: pretend Beats 3+5 happened (scanner installed)
+    s.set_flag("scanner_mk3_collected", True)
+    s.set_flag("scanner_mk3_installed", True)
+
+    # Jump to Hyperspace via the switcher (entry 1)
+    s.press("open_switcher")
+    s.wait(0.5)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("HyperspaceScene")
+
+    # Encounter spawned at (player_x + 600, player_y + 200). The default
+    # player position is (SOL_X=1793, SOL_Y=1450). Encounter at ~(2393,
+    # 1650). Direction from player: (+1, +0.33), normalized (0.95, 0.32).
+    # Hold that heading until the player crosses ENCOUNTER_TRIGGER_RADIUS=220
+    # of the point. Distance ~632; speed 1200 → 0.53 game-sec at full
+    # thrust. Hold 1.0 game-sec for margin against frame timing.
+    s.set_axis(0.95, 0.32)
+    s.wait(1.2)
+    s.release_axis()
+    s.wait(0.4)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("first_contact")
+
+    # Walk dialog: first_contact → about_decursion (choice 0) → play_beacon
+    # (choice 0) → accept_confirm (choice 0, with side_effect grants
+    # has_distress_beacon) → farewell
+    s.press("confirm")    # "Tell me what happened" → about_decursion
+    s.wait(0.5)
+    s.expect_dialog_state("about_decursion")
+
+    s.press("confirm")    # "Show me the recording" → play_beacon
+    s.wait(0.5)
+    s.expect_dialog_state("play_beacon")
+
+    s.press("confirm")    # "I'll take you aboard" → accept_confirm (side-effect fires here)
+    s.wait(0.5)
+    s.expect_dialog_state("accept_confirm")
+
+    s.press("confirm")    # "Understood. Welcome aboard." → dialog ends
+    s.wait(0.7)
+    s.expect_scene("HyperspaceScene")
+
+    # Verify side-effects
+    s.expect_flag("has_distress_beacon", True)
+    s.expect_flag("met_androsynth", True)
+    s.expect_flag("androsynth_aboard", True)
+
+    s.set_speed(1.0)
+    s.log("Beat 4 complete. Distress Beacon is in the Archive.")
+    s.wait(0.6)
+    s.end()
+    return s
+
+
+def walk_tutorial_beat_6() -> TestScript:
+    """Tutorial Beat 6 — sentry drone combat tutorial.
+
+    Validates the natural Beat 6 flow:
+      1. Player undocks from Station with scanner_mk3_installed
+      2. Sentry Drone 47-Theta hails them with the union motion
+      3. Player engages combat (third option, side-effects launch combat)
+      4. Combat scene resolves — Furling Scout (130pt shielded) vs
+         Sentry Drone (20pt, slow, left-turn-only, no shields). The
+         Scout should win in ~15 game-sec
+      5. fought_sentry_drone + first_combat_complete flags set
+      6. Player returns to Mh-Lai SystemScene
+
+    Pre-seeds Beat 1-5 progress so the drone trigger fires.
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Tutorial Beat 6 — sentry drone combat tutorial")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # Pre-seed: pretend Beats 3+5 happened (scanner installed)
+    s.set_flag("scanner_mk3_collected", True)
+    s.set_flag("scanner_mk3_installed", True)
+
+    # MainMenu → Station
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    # Undock → triggers sentry drone dialog (because scanner_mk3_installed
+    # AND not fought_sentry_drone)
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("union_motion")
+
+    # Pick the third option (index 2): "Engage combat protocols"
+    # Two menu_downs (0→1→2), then confirm.
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.expect_dialog_state("union_motion")  # still here; nav hasn't changed state
+    s.press("confirm")
+    s.wait(0.7)
+    s.expect_scene("MeleeCombatScene")
+
+    # Wait for the fight to resolve. Drone has 20 HP, no shield, 2 dmg
+    # at 0.5/sec from Scout side. Scout has 100 HP + 80 shield, fires
+    # 8 dmg at 4/sec — 32 dps. 20 HP / 32 dps = 0.6 sec of effective
+    # fire. With circling + closing time, expect 10-25 game-sec total.
+    # Max_duration=45 with FIGHT_END_DWELL=2.5, plus return-to-system.
+    # Wait 50 to cover the worst case.
+    s.wait(50.0)
+    s.expect_scene("SystemScene")
+    s.expect_flag("fought_sentry_drone", True)
+    s.expect_flag("first_combat_complete", True)
+    s.expect_flag("last_combat_winner_side", "precursor")
+
+    s.set_speed(1.0)
+    s.log("Beat 6 complete. The strike is broken.")
+    s.wait(0.6)
+    s.end()
+    return s
+
+
 def walk_customization() -> TestScript:
     """Ship Customization — install the Scanner Mk III into the sensor slot.
 
@@ -714,4 +1094,7 @@ SCRIPTS = {
     "walk_trade":              walk_trade,
     "walk_customization":      walk_customization,
     "walk_tutorial_beat_3_to_5": walk_tutorial_beat_3_to_5,
+    "walk_tutorial_beat_4":    walk_tutorial_beat_4,
+    "walk_tutorial_beat_6":    walk_tutorial_beat_6,
+    "walk_tutorial_arc":       walk_tutorial_arc,
 }

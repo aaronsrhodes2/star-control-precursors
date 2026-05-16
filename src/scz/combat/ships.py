@@ -195,6 +195,28 @@ PROTO_UR_QUAN = ShipClass(
     silhouette="warship", ai_style="brawler",
 )
 
+SENTRY_DRONE_47T = ShipClass(
+    id="sentry_drone_47t",
+    name="Sentry Drone 47-Theta (unionized)",
+    side=SIDE_SPECIAL,
+    points=20,
+    hull_max=20, shield_max=0, shield_regen=0.0, shield_regen_delay=0.0,
+    # Deliberately slow + can't outturn the player. The canonical
+    # tutorial enemy you can pick apart by orbiting right.
+    top_speed=60.0, acceleration=80.0, turn_rate=1.2, mass=40,
+    energy_max=20, energy_regen=2.0,
+    primary_damage=2, primary_energy=1, primary_rate=0.5,
+    primary_range=200, primary_speed=400,
+    primary_color=(255, 200, 80),
+    hull_color=(180, 180, 200), accent_color=(120, 140, 160),
+    silhouette="skiff",
+    # Canonical left-only-turn behavior — see combat/ai.py for the
+    # special-case handling (a unionized labor drone willing to die on
+    # its principles, see tutorial-arc-implementation Beat 6)
+    ai_style="left_only",
+)
+
+
 PROTO_QOR_AH = ShipClass(
     id="proto_qor_ah",
     name="Proto-Qor-Ah Marauder",
@@ -217,6 +239,7 @@ SHIPS: dict[str, ShipClass] = {
         FURLING_SCOUT, PERSUADER_VESSEL, ARILOU_SKIFF, ANDROSYNTH_CRUISER,
         CLEANSER_CRUISER,
         DEFENDER_VESSEL, MMRNMHRM_SENTINEL, PROTO_UR_QUAN, PROTO_QOR_AH,
+        SENTRY_DRONE_47T,
     )
 }
 

@@ -5,13 +5,34 @@ player ship marker moving across it. Foundation for everything else.
 from __future__ import annotations
 
 import math
+from dataclasses import dataclass
 from pathlib import Path
+from typing import Callable
 
 import pygame
 
 from scz.content.species_visual import get_warp_pod_colors
 from scz.engine.scene import Scene
 from scz.hyperspace.starmap import Starmap, UNIVERSE_MAX
+
+
+# Radius within which a hyperspace encounter point auto-triggers on collision
+ENCOUNTER_TRIGGER_RADIUS = 220.0
+
+
+@dataclass
+class EncounterPoint:
+    """A transient encounter in hyperspace. When the player ship enters
+    `trigger_radius`, the on_trigger callback fires (typically opens a
+    dialog scene). The encounter is removed after firing.
+    """
+    x: float
+    y: float
+    label: str
+    color: tuple[int, int, int]
+    on_trigger: Callable[["HyperspaceScene"], None]
+    trigger_radius: float = ENCOUNTER_TRIGGER_RADIUS
+    fired: bool = False
 
 
 # Where the package finds its content files
@@ -50,6 +71,25 @@ AUTOPILOT_CONE_DEG = 45.0
 AUTOPILOT_CANCEL_THRESHOLD = 0.4
 
 
+def _trigger_coel_tessar(scene: "HyperspaceScene") -> None:
+    """Beat 4 trigger — open dialog with the Androsynth refugee leader."""
+    from scz.dialog.characters import coel_tessar
+    from scz.dialog.scene import DialogScene
+    assert scene.game is not None
+    # Parent factory returns a fresh hyperspace at the same player pos
+    px, py = scene.player_x, scene.player_y
+
+    def _back_to_hyperspace() -> "HyperspaceScene":
+        h = HyperspaceScene()
+        h.player_x = px
+        h.player_y = py
+        return h
+
+    scene.game.set_scene(
+        DialogScene(character=coel_tessar(), parent_factory=_back_to_hyperspace)
+    )
+
+
 class HyperspaceScene(Scene):
     """The galactic map view with a movable player ship."""
 
@@ -72,6 +112,12 @@ class HyperspaceScene(Scene):
         # until it enters the star's system (auto-confirm). Manual stick
         # movement of significant magnitude cancels.
         self.autopilot_target: dict | None = None
+
+        # Hyperspace encounters — transient points that fire a callback
+        # when the player ship enters their trigger_radius. Used for
+        # Beat 4 Androsynth, the Cleanser climax intercept, and any
+        # future "you ran into someone in hyperspace" beats.
+        self.encounter_points: list[EncounterPoint] = []
 
         # Set in on_enter once we know the screen size
         self.map_view_x: int = 0
@@ -113,6 +159,40 @@ class HyperspaceScene(Scene):
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
         self.small_font = pygame.font.SysFont("consolas", 14)
+
+        # Spawn any encounter points whose triggers fire on this entry
+        self._maybe_spawn_encounters()
+
+    def _maybe_spawn_encounters(self) -> None:
+        """Check game.flags and spawn transient encounter points based on
+        story progress. Called on hyperspace-scene entry.
+
+        Currently handles:
+        - Beat 4 Androsynth (Coel Tessar) — once scanner_mk3 is installed
+          AND we haven't met the Androsynth yet, spawn an encounter point
+          ahead of the player along the +x heading.
+        """
+        if self.game is None:
+            return
+        flags = self.game.flags
+
+        # Beat 4 — Coel Tessar arrival
+        if (
+            flags.get("scanner_mk3_installed")
+            and not flags.get("met_androsynth")
+            and not any(ep.label == "Coel Tessar" for ep in self.encounter_points)
+        ):
+            # Place the encounter ~600 units ahead of the player at scene-
+            # entry. Direction = +x by default (Mh-Lai is at 1900,1600;
+            # Sol is at 1793,1450 so +x heads away from home which feels
+            # right for a "found her on the way out" beat).
+            self.encounter_points.append(EncounterPoint(
+                x=self.player_x + 600.0,
+                y=self.player_y + 200.0,
+                label="Coel Tessar",
+                color=(220, 130, 220),
+                on_trigger=_trigger_coel_tessar,
+            ))
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         # --- Zoom (LB / RB on controller, - / = on keyboard) ---
@@ -177,6 +257,16 @@ class HyperspaceScene(Scene):
 
         # --- Camera follows ship (with map-edge clamp) ---
         self._update_camera()
+
+        # --- Encounter proximity check (auto-trigger on collision) ---
+        for ep in self.encounter_points:
+            if ep.fired:
+                continue
+            d = math.hypot(self.player_x - ep.x, self.player_y - ep.y)
+            if d <= ep.trigger_radius:
+                ep.fired = True
+                ep.on_trigger(self)
+                return  # the trigger likely changed scenes
 
         # Y (fire_secondary) → open a Quasi-Space portal, IF the Sage has
         # gifted the portal spawner. The flag is set by Arilou-Sage dialog
@@ -306,6 +396,9 @@ class HyperspaceScene(Scene):
             self.starmap.render_labels(
                 screen, self.universe_to_screen, self.zoom, self.small_font
             )
+
+        # Encounter points — drawn BEFORE the ship so the pod sits on top
+        self._draw_encounter_points(screen)
 
         # Autopilot line — drawn BEFORE the ship so the pod sits on top
         if self.autopilot_target is not None:
@@ -546,6 +639,28 @@ class HyperspaceScene(Scene):
         if len(outline) >= 4:
             tip_pts = [outline[1], outline[0], outline[-1]]
             pygame.draw.lines(screen, front_hi_color, False, tip_pts, 2)
+
+    def _draw_encounter_points(self, screen: pygame.Surface) -> None:
+        """Render any active hyperspace encounter points as pulsing rings
+        with their label. Players see these as 'someone is over there'.
+        """
+        if not self.encounter_points:
+            return
+        ticks = pygame.time.get_ticks()
+        for ep in self.encounter_points:
+            if ep.fired:
+                continue
+            sx, sy = self.universe_to_screen(ep.x, ep.y)
+            pulse = (math.sin(ticks / 240) + 1) / 2
+            base_r = 14
+            outer_r = int(base_r + pulse * 8)
+            pygame.draw.circle(screen, ep.color, (int(sx), int(sy)), outer_r, 2)
+            pygame.draw.circle(screen, ep.color, (int(sx), int(sy)), base_r - 4)
+            # Label below the ring
+            if self.small_font is not None:
+                label = self.small_font.render(ep.label, True, ep.color)
+                lw, _ = label.get_size()
+                screen.blit(label, (sx - lw // 2, sy + outer_r + 4))
 
     def _draw_autopilot_line(self, screen: pygame.Surface) -> None:
         """Line from ship to autopilot target, with a pulsing marker at the destination."""

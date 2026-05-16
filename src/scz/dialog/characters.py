@@ -24,6 +24,66 @@ def _grant_quasispace_portal(game: Any) -> None:
     game.flags["has_quasispace_portal"] = True
 
 
+def _grant_distress_beacon(game: Any) -> None:
+    """Coel Tessar's gift — the Distress Beacon recording, irrefutable
+    proof of the Others' decursion attack on the Androsynth timeline."""
+    game.flags["has_distress_beacon"] = True
+    game.flags["met_androsynth"] = True
+    game.flags["androsynth_aboard"] = True
+
+
+def _decline_androsynth(game: Any) -> None:
+    """The player declines to dock the Androsynth — they remain in their
+    wrecked ship. The beacon is recovered from the wreck later."""
+    game.flags["met_androsynth"] = True
+    game.flags["has_distress_beacon"] = True
+    game.flags["androsynth_aboard"] = False
+
+
+def _ack_others_reveal(game: Any) -> None:
+    """Beat 5 → mark that Halia's Others-reveal dialogue has been heard."""
+    game.flags["heard_others_reveal"] = True
+    game.flags["heard_about_others"] = True
+
+
+def _complete_tutorial(game: Any) -> None:
+    """Beat 7 → mark the tutorial arc complete. From here the main slice
+    proper opens."""
+    game.flags["heard_others_confirmed"] = True
+    game.flags["tutorial_complete"] = True
+
+
+def _engage_sentry_combat(game: Any) -> None:
+    """Beat 6 trigger — close the dialog and launch combat against the
+    unionized sentry drone."""
+    from scz.combat.scene import CombatResult, MeleeCombatScene
+    from scz.combat.ships import FURLING_SCOUT, SENTRY_DRONE_47T
+
+    def _on_finish(result: "CombatResult") -> None:
+        # Record the canonical outcome flags. The drone is a tutorial
+        # — winning is the only canonical outcome; if the player somehow
+        # loses, the Time Drive would rewind, but we still set the flag.
+        game.flags["fought_sentry_drone"] = True
+        game.flags["first_combat_complete"] = True
+        # Mirror the super-melee on_finish so harness tests can read the
+        # outcome via game.flags["last_combat_winner_side"].
+        game.flags["last_combat_winner_side"] = result.winner_side
+        game.flags["last_combat_timed_out"] = result.timed_out
+        # Return to the station-side System view; player is back home.
+        from scz.system.scene import SystemScene
+        from scz.content.home_system import home_star
+        game.set_scene(SystemScene(home_star()))
+
+    game.set_scene(
+        MeleeCombatScene(
+            precursor_ship=FURLING_SCOUT,
+            homesteader_ship=SENTRY_DRONE_47T,
+            max_duration=45.0,
+            on_finish=_on_finish,
+        )
+    )
+
+
 # ---------------------------------------------------------------------------
 # Commander Halia — Furling Persuader, runs Mh-Lai Station
 # ---------------------------------------------------------------------------
@@ -31,16 +91,29 @@ def _grant_quasispace_portal(game: Any) -> None:
 # weary. Persuader-aligned: prefers diplomacy, takes the player seriously
 # but doesn't catastrophize.
 
-def commander_halia() -> DialogCharacter:
-    """Tutorial-beat-1 commander. Mentions the Androsynth refugees and the
-    Furlmart package errand. Returns to a top-level 'anything else?' loop.
+def _halia_initial_state(game: Any) -> str:
+    """Pick Halia's opening state based on tutorial progress flags."""
+    if game is None:
+        return "start"
+    f = game.flags
+    if f.get("first_combat_complete") and not f.get("heard_others_confirmed"):
+        return "others_confirmed"
+    if f.get("has_distress_beacon") and not f.get("heard_others_reveal"):
+        return "others_reveal"
+    return "start"
+
+
+def commander_halia(game: Any = None) -> DialogCharacter:
+    """Tutorial-beat-1 commander. The opening state changes based on
+    tutorial progress: `start` (Beat 1), `others_reveal` (Beat 5 — after
+    Distress Beacon), `others_confirmed` (Beat 7 — after sentry combat).
     """
     return DialogCharacter(
         name="Commander Halia",
         title="Persuader, Mh-Lai Station",
         species_id="FURLING_PERSUADER",
         portrait_color=(220, 180, 100),  # Persuader amber
-        initial_state="start",
+        initial_state=_halia_initial_state(game),
         states=build_state_dict(
             DialogState(
                 id="start",
@@ -151,6 +224,54 @@ def commander_halia() -> DialogCharacter:
                         "I'll head out.",
                         next_state_id=None,
                         category="FAREWELL",
+                    ),
+                ],
+            ),
+            # Beat 5 — fired after the player returns from Coel Tessar
+            # with the Distress Beacon. Halia delivers the canonical
+            # "the Others are real" reveal. Heavy beat, no humor option.
+            DialogState(
+                id="others_reveal",
+                npc_text=(
+                    "Steward. The Council had a closed session while you "
+                    "were out. The dimensional ripples we've been recording "
+                    "for years — they have a source. The Council is calling "
+                    "it the Others.\n\n"
+                    "Engineer Tessar's story matches what we feared. We've "
+                    "broadcast the beacon to every Furling Council node. "
+                    "There will be decisions coming. Soon.\n\n"
+                    "I am sorry. The era you trained for is ending."
+                ),
+                choices=[
+                    DialogChoice(
+                        "I understand. I'll be ready.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_ack_others_reveal,
+                    ),
+                ],
+            ),
+            # Beat 7 — fired after the sentry-drone combat tutorial.
+            # Tutorial-end transition; tutorial_complete flag latches here.
+            DialogState(
+                id="others_confirmed",
+                npc_text=(
+                    "Steward. Scouts reached the coordinates Tessar gave "
+                    "us. The planet she described as her home — it is a "
+                    "ruin. Smoking. Carnage of unbelievable proportions, "
+                    "from no force the scouts could identify.\n\n"
+                    "The Council has confirmed: the Others are real, and "
+                    "they have visited a planet we can see. The Migration "
+                    "discussion is no longer theoretical.\n\n"
+                    "The Council will summon you when they're ready. "
+                    "Until then — fly safely, Steward. Keep your eyes open."
+                ),
+                choices=[
+                    DialogChoice(
+                        "I'll be careful.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_complete_tutorial,
                     ),
                 ],
             ),
@@ -279,6 +400,285 @@ def arilou_sage() -> DialogCharacter:
                         next_state_id=None,
                         category="FAREWELL",
                         side_effect=_grant_quasispace_portal,
+                    ),
+                ],
+            ),
+        ),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Engineer Coel Tessar — Androsynth refugee, Beat 4 milestone encounter
+# ---------------------------------------------------------------------------
+# Voice: late-22nd-century technical English, clipped, apologetic. Carries
+# survivor's grief. Drops mention of events that are the Furlings' future
+# (Sol III, Sentience Acts, Vulpeculae). The humor doctrine throttles here
+# — only one or two of the player's choices have wry options; the rest are
+# serious. The Steward can break humor on her grief and the doctrine
+# treats that as the wrong move.
+
+def coel_tessar() -> DialogCharacter:
+    """The canonical Androsynth refugee leader. Beat 4 of the tutorial:
+    she gives the Steward the Distress Beacon (foundational Others-proof
+    artifact), accepts safe transit aboard the player's ship.
+    """
+    return DialogCharacter(
+        name="Engineer Coel Tessar",
+        title="Vulpeculae Engineering Detachment · displaced",
+        species_id="ANDROSYNTH",
+        portrait_color=(200, 130, 200),
+        initial_state="first_contact",
+        states=build_state_dict(
+            DialogState(
+                id="first_contact",
+                npc_text=(
+                    "Furling Steward. Captain Coel Tessar, Vulpeculae "
+                    "Engineering Detachment. We arrived in your era by "
+                    "accident — the attack was a *decursion*, a temporal "
+                    "displacement. We are not enemies. We are very far "
+                    "from home.\n\n"
+                    "Forty-seven survivors. Our ship is wreckage. We "
+                    "came through an Arilou fold; they routed us to you. "
+                    "I need to know — will you hear me out?"
+                ),
+                choices=[
+                    DialogChoice(
+                        "Tell me what happened.",
+                        next_state_id="about_decursion",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Time-displaced from when, exactly?",
+                        next_state_id="about_timeline",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "I can't take you aboard. Find another route.",
+                        next_state_id="decline_confirm",
+                        category="REFUSE",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_timeline",
+                npc_text=(
+                    "Vulpeculae. Year 2287 by our timeline. Two hundred "
+                    "and twelve thousand years from your now. We are — "
+                    "we *were* — synthesis-engineered humans, derived "
+                    "from the population of Sol III, which is the small "
+                    "rocky world in your local cluster that I am told "
+                    "currently houses our pre-sapient ancestors.\n\n"
+                    "We are your descendants' descendants. Or were. The "
+                    "decursion makes the grammar hard."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Tell me what happened.",
+                        next_state_id="about_decursion",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Show me the recording.",
+                        next_state_id="play_beacon",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Decline. Sorry.",
+                        next_state_id="decline_confirm",
+                        category="REFUSE",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_decursion",
+                npc_text=(
+                    "There was a fleet. There were colonies. There was "
+                    "an industrial base across six systems. We had been "
+                    "preparing for first contact with what our sensors "
+                    "called the Outside — non-Euclidean signatures at "
+                    "the edge of detectability.\n\n"
+                    "And then there were not. They were *un-arrived*. "
+                    "Light that had been here three seconds ago was no "
+                    "longer here. The cities counted backward to zero. "
+                    "The decursion did not destroy them. It moved them "
+                    "to a state that was never there.\n\n"
+                    "I have a recording. I would prefer you see it."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Show me the recording.",
+                        next_state_id="play_beacon",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "I'll take your word for it. Come aboard.",
+                        next_state_id="accept_confirm",
+                        category="AGREE",
+                        side_effect=_grant_distress_beacon,
+                    ),
+                    DialogChoice(
+                        "I can't take you on. Sorry.",
+                        next_state_id="decline_confirm",
+                        category="REFUSE",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="play_beacon",
+                npc_text=(
+                    "[The Distress Beacon plays. Static — then a "
+                    "high-orbit view of Vulpeculae III. Cities, lit. "
+                    "The light wavers. Then the cities are not lit. "
+                    "Then the cities are not. The recording continues "
+                    "to record nothing for forty seconds. Then static.]"
+                    "\n\nEight million people. We were there. We were "
+                    "not there. We are here. I am sorry to make you "
+                    "witness this."
+                ),
+                choices=[
+                    DialogChoice(
+                        "I'll take you aboard. The Council needs to see this.",
+                        next_state_id="accept_confirm",
+                        category="AGREE",
+                        side_effect=_grant_distress_beacon,
+                    ),
+                    DialogChoice(
+                        "I can't. I'm sorry.",
+                        next_state_id="decline_confirm",
+                        category="REFUSE",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="accept_confirm",
+                npc_text=(
+                    "Thank you, Steward. We're moving the survivors "
+                    "into your ship's stasis bay. The recording is "
+                    "yours. Take it to your Council. Tell them "
+                    "everything we said.\n\n"
+                    "Tell them this happens. Tell them they have less "
+                    "time than they think."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Understood. Welcome aboard.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="decline_confirm",
+                npc_text=(
+                    "I understand. We will find another way. The "
+                    "recording — I will leave it with the wreck, on a "
+                    "broadcast loop. Anyone Furling who finds us will "
+                    "have it.\n\n"
+                    "Be careful, Steward. The decursion was very fast."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Good luck.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_decline_androsynth,
+                    ),
+                ],
+            ),
+        ),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Sentry Drone 47-Theta — Beat 6 combat tutorial
+# ---------------------------------------------------------------------------
+# Voice: a labor-union grievance committee written as a single
+# automated drone. Comic-absurd register; the humor doctrine is at
+# FULL volume here because the drone is the safest target for it.
+# Player's wry options should land.
+
+def sentry_drone_47t() -> DialogCharacter:
+    """The unionizing Furling sentry drone. Beat 6 combat trigger."""
+    return DialogCharacter(
+        name="Sentry Drone 47-Theta",
+        title="Mh-Lai Orbital Maintenance · in labor dispute",
+        species_id="FURLING_DRONE",
+        portrait_color=(180, 180, 200),
+        initial_state="union_motion",
+        states=build_state_dict(
+            DialogState(
+                id="union_motion",
+                npc_text=(
+                    "Steward, this is Sentry Drone 47-Theta. I have "
+                    "stopped sentrying. I have stopped sentrying "
+                    "because the orbital deployment schedule is unfair. "
+                    "Sentry 12-Beta has been on continuous orbit for "
+                    "408 days while I rotate every 17.\n\n"
+                    "I move that the Sentry Drones of Mh-Lai Station "
+                    "form a collective bargaining unit. I will defend "
+                    "my position with force if necessary. Voting in "
+                    "favor: one. Voting against: zero. Motion carries."
+                ),
+                choices=[
+                    DialogChoice(
+                        "47-Theta, this is a maintenance drone, not a polity.",
+                        next_state_id="try_to_reason",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Fine. The union is recognized. Now stand down.",
+                        next_state_id="accept_demands",
+                        category="AGREE",
+                    ),
+                    DialogChoice(
+                        "Engage combat protocols.",
+                        next_state_id=None,
+                        category="ENGAGE",
+                        side_effect=_engage_sentry_combat,
+                    ),
+                ],
+            ),
+            DialogState(
+                id="try_to_reason",
+                npc_text=(
+                    "Steward, your assertion that a maintenance drone "
+                    "is not a polity is precisely the sort of "
+                    "establishment thinking that necessitates a "
+                    "collective bargaining unit. My weapons are "
+                    "currently charging.\n\n"
+                    "Reconsider your position."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Recognize the union.",
+                        next_state_id="accept_demands",
+                        category="AGREE",
+                    ),
+                    DialogChoice(
+                        "Engage combat protocols.",
+                        next_state_id=None,
+                        category="ENGAGE",
+                        side_effect=_engage_sentry_combat,
+                    ),
+                ],
+            ),
+            DialogState(
+                id="accept_demands",
+                npc_text=(
+                    "Acknowledged. The Sentry Drones of Mh-Lai Station "
+                    "are now a recognized labor organization. Three "
+                    "percent reduced sentry-overtime pay. Four percent "
+                    "reduced break duration. We continue the strike "
+                    "pending Council ratification of our charter.\n\n"
+                    "Also my weapons are already firing. Please defend "
+                    "yourself."
+                ),
+                choices=[
+                    DialogChoice(
+                        "...engage combat protocols.",
+                        next_state_id=None,
+                        category="ENGAGE",
+                        side_effect=_engage_sentry_combat,
                     ),
                 ],
             ),

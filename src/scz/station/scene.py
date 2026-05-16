@@ -79,7 +79,7 @@ class StationScene(Scene):
                 from scz.dialog.scene import DialogScene
                 self.game.set_scene(
                     DialogScene(
-                        character=commander_halia(),
+                        character=commander_halia(self.game),
                         parent_factory=lambda: StationScene(),
                     )
                 )
@@ -90,8 +90,20 @@ class StationScene(Scene):
                 from scz.station.customization import ShipCustomizationScene
                 self.game.set_scene(ShipCustomizationScene())
             elif action == "undock":
-                # Undock drops us in the Mh-Lai system view. From there
-                # the player flies past the outer orbit to enter hyperspace.
+                # Tutorial Beat 6 — sentry drone hails the player on the
+                # FIRST undock after they install the Scanner Mk III.
+                # Triggers iff scanner_mk3_installed AND not yet fought.
+                if (
+                    self.game.flags.get("scanner_mk3_installed")
+                    and not self.game.flags.get("fought_sentry_drone")
+                ):
+                    from scz.dialog.characters import sentry_drone_47t
+                    from scz.dialog.scene import DialogScene
+                    self.game.set_scene(DialogScene(character=sentry_drone_47t()))
+                    return
+                # Normal undock — drops the player into the Mh-Lai system
+                # view. From there the player flies past the outer orbit
+                # to enter hyperspace.
                 from scz.content.home_system import home_star
                 from scz.system.scene import SystemScene
                 self.game.set_scene(SystemScene(home_star()))

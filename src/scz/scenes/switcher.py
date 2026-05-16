@@ -31,7 +31,7 @@ def _entries():
         ArchiveScene,
     )
     # Real implementations (replacing stubs)
-    from scz.dialog.characters import arilou_sage, commander_halia
+    from scz.dialog.characters import arilou_sage, coel_tessar, commander_halia, sentry_drone_47t
     from scz.dialog.scene import DialogScene
     from scz.station.scene import StationScene
     from scz.content.home_system import home_star
@@ -110,6 +110,8 @@ def _entries():
         ("Station — Mh-Lai",         lambda: StationScene(),                 None),
         ("Dialog — Cmdr Halia",      lambda: DialogScene(commander_halia()), None),
         ("Dialog — Arilou Sage",     lambda: DialogScene(arilou_sage()),     None),
+        ("Dialog — Coel Tessar",     lambda: DialogScene(coel_tessar()),     None),
+        ("Dialog — Sentry Drone",    lambda: DialogScene(sentry_drone_47t()), None),
         ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
         ("Super Melee",              lambda: SuperMeleeScene(),              None),
         ("Trade",                    lambda: TradeScene(),                   None),

@@ -98,6 +98,10 @@ class DialogScene(Scene):
             choice = state.choices[self.selected_choice]
             if choice.side_effect is not None and self.game is not None:
                 choice.side_effect(self.game)
+                # If the side-effect changed scenes (e.g. launched combat),
+                # don't run _exit_dialog — it would overwrite the new scene.
+                if self.game.current_scene is not self:
+                    return
             if choice.next_state_id is None:
                 # Farewell / close
                 self._exit_dialog()

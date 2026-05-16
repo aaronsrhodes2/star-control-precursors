@@ -80,7 +80,16 @@ def decide(my: "ShipState", enemy: "ShipState") -> AIAction:
             ideal_dist = max(60.0, base_range * 0.4)
 
     # --- Decide turn ---
-    if abs(delta) > 0.05:
+    if cls.ai_style == "left_only":
+        # The Sentry Drone 47-Theta exploit — labor-action AI that has
+        # broken right-thruster solidarity and now only turns left. A
+        # smart player can sit in its rear-right blind spot to win the
+        # combat tutorial.
+        if abs(delta) > 0.05:
+            turn_dir = -1   # ALWAYS LEFT
+        else:
+            turn_dir = 0
+    elif abs(delta) > 0.05:
         turn_dir = 1 if delta > 0 else -1
     else:
         turn_dir = 0
