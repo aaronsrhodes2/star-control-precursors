@@ -235,6 +235,36 @@ In the slice, the Arilou are the source of the Quasi-Space science underlying th
 
 ---
 
+## 5 (Milestone Encounter). Androsynth Refugees — *The Time-Displaced Witnesses*
+
+> Full canon: [the-androsynth-refugees.md](the-androsynth-refugees.md). The Androsynth are NOT a full recurring species; they are a **milestone encounter** — a one-shot scripted appearance that fundamentally shifts the slice's stakes.
+
+**Who they are:** time-displaced survivors of a clone-human civilization 250,000 years in the *future*, thrown into the deep past by an Other attack (a "decursion" — a temporal displacement-attack distinct from a Culling). They are the player's *only first-hand witnesses* to what the Others actually do. They are unimpeachable proof.
+
+**Their experiment**: a gravitational-centrifuge dimensional viewer summoned the Others. The Furlings recognize this immediately — they did the same kind of thing themselves and got the same kind of result. **The canon takeaway: dimensional probing is what flags a civilization for Other attention.**
+
+**Encounter mechanics:**
+- **Single Act-2 milestone**: an Androsynth ship enters the cluster via a Quasi-Space-adjacent fold; the Arilou cousins flag it for the player.
+- **Coel Tessar** (one-shot named NPC, leader of the survivors) tells their story.
+- They give the player the **Androsynth Distress Beacon** — a recording of their last day, the moment of swap, irrefutable visual proof. **Showing this to Deniers in any species dramatically accelerates a Convince attempt.**
+- Optional Act-3 quest: divert resources to treat their dimensional shear injuries / repair their ship → faster evacuation, gratitude epilogue.
+- They are Precursor-aligned by default; they want to migrate to the nearest neighboring galaxy. They have no other option (their home is gone in their own timeline).
+
+**Voice:**
+- Late-22nd-century technical English. Clipped sentences. Frequent apologies. Survivor's-guilt affect.
+- They reference *Earth, Sol III, in the 21st century* and *the Vulpeculae founding* — their past, the Furlings' deep future. To the Furlings it sounds like prophecy.
+- They sometimes mention specific lost people ("My son was on the surface…") — devastating, used sparingly.
+- Sample prompt at the bottom of [the-androsynth-refugees.md](the-androsynth-refugees.md).
+
+**Their unique narrative weight:**
+- Make the Others *real* (not theoretical) for the player. Once you've seen the Beacon, the Migration's urgency is no longer abstract.
+- Canonize that **the Others sometimes displace sentience rather than annihilate it.** This is unsettling — implies even the neighboring galaxy might not be safe.
+- Provide the slice's *SC2 secret rosetta stone* — these are canonically the SC2 Androsynth, the ones SC2 lore says "disappeared." SC2 fans will recognize. Star-Control-Zero-only players will simply see a powerful refugee subplot.
+
+**Authoring note:** Coel Tessar's biography and the Beacon footage are hand-authored, not LLM-generated. The variation layer plays *around* them; the core scene is fixed.
+
+---
+
 ## Background — Not Deeply Interactive in the Slice
 
 ### Orz Rifts — *Are These the Others, or Something Else?*

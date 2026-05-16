@@ -30,6 +30,8 @@ The Furlings do not know exactly how soon the Others will arrive in our galaxy. 
 
 **Gameplay consequence**: any in-game system that increases or decreases a species' thought-pattern signature is gameplay-relevant. The Mycon biots' awakening into Deep Child sentience is *literally an emission spike* that could pull the Others a year early. This is why the Cleansers want it suppressed. (See [the-precursors-and-homesteaders.md §"The Others' Detection Mechanism"](the-precursors-and-homesteaders.md).)
 
+**External corroboration in the slice**: the player will meet the [**Androsynth Refugees**](the-androsynth-refugees.md) — time-displaced survivors of a civilization 250,000 years in the *future* whose dimensional-viewing experiment summoned the Others and caused their planet to be "swapped" with a corpse-version (a temporal decursion). Their Distress Beacon is the slice's *unimpeachable visual proof* that the Others are real and do what the Furlings think they do. Critically, the Androsynth's experiment was a parallel-invented variant of the *same* dimensional-probing the Furlings themselves did — **canonizing the rule: civilizations that probe adjacent dimensions become flagged targets**.
+
 ## 3. The Strategy — the Furling Migration Plan
 
 The Furlings cannot fight the Others. *"We could not fight them here; our physics were too brittle."* The Others' substrate is not subject to 3D weapons. The Sa-Matra (a Furling super-weapon under construction) might *hurt* them, but cannot win against a tide.
