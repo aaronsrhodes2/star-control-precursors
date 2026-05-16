@@ -235,6 +235,30 @@ In the slice, the Arilou are the source of the Quasi-Space science underlying th
 
 ---
 
+## 6, 7 (Optional Exploration Encounters). Mmrnmhrm and Chenjesu — *The Survivors From a Prior Cycle*
+
+> Full canon: [the-mmrnmhrm-and-chenjesu.md](the-mmrnmhrm-and-chenjesu.md). Both are **optional but recommended** slice visits. Together they canonize that the Others have culled this galaxy before — the most cosmological reveal in the slice.
+
+**Mmrnmhrm**: self-modifying robotic species, surviving for millions of years on a planet whose organic creators (the *First-Makers*) were killed by the Others. The Mmrnmhrm's primitive expert-system cognition was below the Others' detection threshold; they were *ignored* while their creators died. Their directive — *defend the homeworld* — runs to this day. They formally support the Migration and tell the player: defense did not work for our makers; it will not work for you. Key item: **Mmrnmhrm Archive Excerpt** (the data logs of the failed defense engagement; persuades Defender-faction Furlings).
+
+**Chenjesu**: crystalline sentient collective on Procyon. **No ships in our era.** Entirely rooted to their growing stone. Their cognition is so unlike organic neural patterns that the Others' detector reads them as a geological process — they are effectively immune. They REMEMBER a prior Culling, witnessed from their rooted position long before the current Furling era. Their testimony is the Furlings' first hard evidence that **the Others come in cycles**. Key item: **Resonance Record** (compressed lattice-memory of the prior Culling).
+
+**Visit mechanics**:
+- Both are off the critical path. The player who skips them still completes the slice; their epilogue is *informed by* whether the player visited.
+- Chenjesu: land on Procyon, communicate via resonance translation (10-20s per Chenjesu sentence; the LLM writes the content normally, the renderer adds pauses)
+- Mmrnmhrm: visit their assigned cluster star, received courteously, given full archive access
+
+**Shared narrative weight**: together they prove the Furlings' three biggest theses from independent witnesses:
+1. The Others are real (Androsynth + both)
+2. Defense doesn't work (Mmrnmhrm)
+3. Hiding works — and the Others have been here before (Chenjesu)
+
+**Voice notes** in [the-mmrnmhrm-and-chenjesu.md](the-mmrnmhrm-and-chenjesu.md):
+- Mmrnmhrm: formal archaic English, long precise sentences, never contractions, archive-index references, *processed grief*
+- Chenjesu: slow present-tense speech with pauses; plural-as-singular ("we" not "I"); patient, not bitter
+
+---
+
 ## 5 (Milestone Encounter). Androsynth Refugees — *The Time-Displaced Witnesses*
 
 > Full canon: [the-androsynth-refugees.md](the-androsynth-refugees.md). The Androsynth are NOT a full recurring species; they are a **milestone encounter** — a one-shot scripted appearance that fundamentally shifts the slice's stakes.

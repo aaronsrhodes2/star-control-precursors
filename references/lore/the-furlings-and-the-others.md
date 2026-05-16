@@ -32,6 +32,13 @@ The Furlings do not know exactly how soon the Others will arrive in our galaxy. 
 
 **External corroboration in the slice**: the player will meet the [**Androsynth Refugees**](the-androsynth-refugees.md) — time-displaced survivors of a civilization 250,000 years in the *future* whose dimensional-viewing experiment summoned the Others and caused their planet to be "swapped" with a corpse-version (a temporal decursion). Their Distress Beacon is the slice's *unimpeachable visual proof* that the Others are real and do what the Furlings think they do. Critically, the Androsynth's experiment was a parallel-invented variant of the *same* dimensional-probing the Furlings themselves did — **canonizing the rule: civilizations that probe adjacent dimensions become flagged targets**.
 
+**Two more witness species** ([the-mmrnmhrm-and-chenjesu.md](the-mmrnmhrm-and-chenjesu.md)) further corroborate and *expand* what the Furlings know:
+
+- The **Mmrnmhrm** are a robotic species whose organic creators (the *First-Makers*) built them as defenders. The Others killed the creators and *ignored* the Mmrnmhrm — their cognition was below threshold. The Mmrnmhrm have been operating, defending, and slowly improving on their dead world for millions of years. Their testimony: defense doesn't work. Their key data: the Others did not even register robotic minds as targets.
+- The **Chenjesu** are a still-rooted crystalline sentient collective on Procyon. Their lattice-resonance cognition is unlike organic neural patterns and falls below the Others' detection logic — they are *effectively immune*. **They remember a prior Culling**, witnessed millions of years ago from their rooted position. They are the Furlings' first hard evidence that **the Others have come before — that the Culling is part of a cycle this galaxy has experienced multiple times**.
+
+The Chenjesu testimony is a profound update to the Furling thesis: the Migration is not unprecedented, it is the first attempted *prevention* of a recurring cosmic event. The cycle's full period is unknown. The Furling Council, upon receiving the Resonance Record, spends a generation in shock and proceeds anyway — the only thing harder than migrating is failing to migrate.
+
 ## 3. The Strategy — the Furling Migration Plan
 
 The Furlings cannot fight the Others. *"We could not fight them here; our physics were too brittle."* The Others' substrate is not subject to 3D weapons. The Sa-Matra (a Furling super-weapon under construction) might *hurt* them, but cannot win against a tide.
