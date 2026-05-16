@@ -8,7 +8,7 @@ The runtime YAML profiles live in `src/scz/content/species/<id>/profile.yaml`. T
 
 ## The Universal Tension
 
-Under the new narrative, **every conversation happens against the ticking clock of the Migration.** Slylandro contemplate evacuation. Mycon biots may or may not be becoming the kind of mind the Others will sense. Proto-Ur-Quan are the *blessed* species: they're non-sentient, so they'll be safe through the Culling — but the Furlings ache at leaving them as animals. Arilou drift in from Quasi-Space with reports of the neighboring universe. The player's choices for each species feed back into the Furling Council's [faction-balance state](factions-and-war.md).
+Under the new narrative, **every conversation happens against the ticking clock of the Migration.** Slylandro contemplate evacuation. Mycon biots may or may not be becoming the kind of mind the Others will sense. Proto-Ur-Quan are the *blessed* species: they're non-sentient, so they'll be safe through the Culling — but the Furlings ache at leaving them as animals. Arilou drift in from Quasi-Space with reports of the nearest neighboring galaxy. The player's choices for each species feed back into the Furling Council's [faction-balance state](factions-and-war.md).
 
 ## Diversity Charter
 
@@ -210,11 +210,11 @@ The combat climax of the slice is no longer simply a "corrupted biot" — it's a
 - `OFFER_PORTAL_KEY` — they hint they can extract the player to Quasi-Space at the climax
 - `FAREWELL_FOREVER` — if `patience` hits 0, they leave the cluster
 
-**Critical narrative outcome:** the Arilou are NOT migrating to the neighboring universe with the rest of the Precursors. They have invented and chosen **a third path: voluntary exile in Quasi-Space, to watch the regrowing galaxy through the Culling and for tens of thousands of years afterward.** See [the-precursors-and-homesteaders.md §"The Third Path"](the-precursors-and-homesteaders.md). They are philosophically Precursor-aligned (they support the Migration, they help the Furlings build cloaks), but they are *staying adjacent* in Quasi-Space rather than crossing the threshold to the neighboring universe.
+**Critical narrative outcome:** the Arilou are NOT migrating to the nearest neighboring galaxy with the rest of the Precursors. They have invented and chosen **a third path: voluntary exile in Quasi-Space, to watch the regrowing galaxy through the Culling and for tens of thousands of years afterward.** See [the-precursors-and-homesteaders.md §"The Third Path"](the-precursors-and-homesteaders.md). They are philosophically Precursor-aligned (they support the Migration, they help the Furlings build cloaks), but they are *staying adjacent* in Quasi-Space rather than crossing the threshold to the nearest neighboring galaxy.
 
 In the slice, the Arilou are the source of the Quasi-Space science underlying the Slylandro Cloaking Satellite. They will help build it. If the player has high `trust`, the Arilou offer the player a personal extraction *to join their exile* — a rare, sacrificial ending choice. They **refuse to take sides** between Furling Precursor-method-factions (Persuaders vs. Compellers vs. Cleansers); they are too busy preparing for their long silence-watching to argue over methods.
 
-**Faction alignment**: *Precursor-aligned philosophically; Voluntary-Exile in practice.* They are neither Homesteader (they're not staying as themselves; they're hiding) nor strictly Precursor (they're not crossing to the neighboring universe). Third category.
+**Faction alignment**: *Precursor-aligned philosophically; Voluntary-Exile in practice.* They are neither Homesteader (they're not staying as themselves; they're hiding) nor strictly Precursor (they're not crossing to the nearest neighboring galaxy). Third category.
 
 ### Depth & Diversity
 

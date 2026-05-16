@@ -36,12 +36,12 @@ The Furlings cannot fight the Others. *"We could not fight them here; our physic
 
 But the Furlings can do something nearly as good: **leave**.
 
-The Furlings discovered that a **nearby universe** — adjacent to ours through a specific dimensional crossing — is empty of the Others. A new galaxy, fresh substrate, untouched by their metabolism. If the Furlings, and everyone else with a mind, evacuate this galaxy to that nearby universe, then **the galaxy will go quiet**. With no concentrations of intelligence to sense, the Others will sweep through, find nothing, and **move on to wherever they go next**. After they pass, the migrated civilizations can return. The galaxy will still be here. The bacteria will still be in the seas. The Mycon biots will still be terraforming. The pre-sentient species will still be on their slow climb. Civilization can resume.
+The Furlings discovered that the **nearest neighboring galaxy** — reachable through a specific dimensional crossing inside our own galaxy — is still empty of the Others. A new galaxy, fresh substrate, untouched by their metabolism. If the Furlings, and everyone else with a mind, evacuate this galaxy to that nearby one, then **our galaxy will go quiet**. With no concentrations of intelligence to sense, the Others will sweep through, find nothing, and **move on to wherever they go next**. After they pass, the migrated civilizations can return. The galaxy will still be here. The bacteria will still be in the seas. The Mycon biots will still be terraforming. The pre-sentient species will still be on their slow climb. Civilization can resume.
 
 The plan has three pillars:
 
 1. **The Rainbow Worlds** — the dimensional crossing must be marked. The ten Rainbow Worlds form a directional arrow pointing toward the crossing. They are both an exit-sign (for the evacuating Precursor faction) and a return-map (for after the Others pass).
-2. **The Migration** — every sentient civilization in the galaxy must either evacuate to the neighboring universe (joining the **Precursors** faction) or be cloaked sufficiently to fall below the Others' detection threshold (the **Slylandro Cloaking Satellite** is the canonical example — a high-end Furling engineering achievement that protects the Slylandro through the Culling because they biologically cannot leave their gas giant).
+2. **The Migration** — every sentient civilization in the galaxy must either evacuate to the nearest neighboring galaxy (joining the **Precursors** faction) or be cloaked sufficiently to fall below the Others' detection threshold (the **Slylandro Cloaking Satellite** is the canonical example — a high-end Furling engineering achievement that protects the Slylandro through the Culling because they biologically cannot leave their gas giant).
 3. **The Quiet** — for the duration of the Culling, no sentience may *emit detectable thought patterns* in the galaxy. Cloaks count as silence. Migration counts as silence. But an uncloaked, awake, sentient species is a flare that brings the Others closer. **The Quiet must be sufficient.**
 
 Three pillars give three viable strategies for any given species: **Go** (join the Precursor faction, migrate), **Cloak** (stay home but get below the threshold, *Homesteader-with-cloak* path), or **Hide** (the Arilou's voluntary exile in Quasi-Space — see [the-precursors-and-homesteaders.md §"The Third Path"](the-precursors-and-homesteaders.md)).
@@ -54,7 +54,7 @@ This is the moral abyss the entire game lives inside: any uncloaked Homesteader 
 
 The galaxy's sentient civilizations split into two named factions over the Migration. The terminology is canonized in [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md):
 
-- **The Precursors** — *those who go before*. Lead by the Furlings; includes species that believe the warning, can biologically migrate, and choose to evacuate to the neighboring universe.
+- **The Precursors** — *those who go before*. Lead by the Furlings; includes species that believe the warning, can biologically migrate, and choose to evacuate to the nearest neighboring galaxy.
 - **The Homesteaders** — *those who stay*. Heterogeneous: deniers, defenders, the biologically rooted (Mycon, Slylandro), the honor-bound, the cynics who distrust the Furlings.
 - **The Arilou's Third Path** — voluntary exile to Quasi-Space to *watch* the regrowing galaxy through the Culling. Precursor-aligned philosophically; physically remain adjacent. Sacrificial.
 
@@ -100,7 +100,7 @@ The endings reflect the path the player walked:
 
 ## 7. Constraints This Places on the Other Design Docs
 
-- **Rainbow Worlds arc**: the arrow now points to a *neighboring universe*, not the Galactic Core. The Rainbow Worlds are the **exit-and-return map**. The seeding is more urgent — the migration window is closing.
+- **Rainbow Worlds arc**: the arrow points to the dimensional crossing — a portal that exits in the **nearest neighboring galaxy** (the closest galaxy still untouched by the Others). SC2-era archaeologists assume the arrow points to the Galactic Core; they're misreading. The Rainbow Worlds are the **exit-and-return map**. The seeding is urgent — the migration window is closing.
 - **Species roster**: every species's encounter set must include "the evacuation question." Even species who are clearly safe (the proto-Ur-Quan are non-sentient and don't attract Others) raise it: *do we uplift them anyway? Doom them by giving them minds in time for the Others?*
 - **Combat**: the antagonist for most fights is not a "monster" but **another Furling who disagrees with you**, or a Mycon biot whose Deep Child commands them to refuse evacuation, or a species' military defending its homeworld from "forced evacuation."
 - **Dialog tone**: this is not a comedy. Slylandro warmth and Arilou condescension and Mycon ritual are all written under a sky that is *about to fall*. The humor is gallows-humor.
@@ -110,7 +110,7 @@ The endings reflect the path the player walked:
 The game leaves several things genuinely uncertain, never resolved on screen:
 
 - **Will the Others actually pass?** The Furlings believe the Quiet plan will work. They don't *know*. The whole strategy is informed gamble.
-- **Will the nearby universe still be safe?** What if the Others find that one too?
+- **Will the nearest neighboring galaxy still be safe?** What if the Others find that one too?
 - **Are the Arilou completely on our side?** They left first. They claim it's safe. We trust them. We have no way to verify.
 - **Is the Deep Child the Others, or is it independent?** The Mycon awakening might be sentience the Furlings created, or it might be the Others *reaching in* through a substrate the Mycon's spore-physics happens to touch.
 

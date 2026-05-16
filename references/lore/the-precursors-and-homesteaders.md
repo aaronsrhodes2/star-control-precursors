@@ -15,13 +15,13 @@ The species and Furling sub-cultures who refuse to leave the galaxy. They call t
 - **Skeptics** — believe in the Others but distrust the Furling-led plan
 - **The Rooted** — *cannot* leave biologically. The Mycon biots' mycelial spore-networks tie them to specific planetary mantles; uprooting kills them. (The proto-Mycon are *the* exemplar Homesteaders by necessity, not choice — they have no other option.)
 - **The Honorable** — believe life away from home is a fate worse than death; would rather die in their home than live elsewhere
-- **The Cynics** — believe the Furlings are using the Migration to consolidate power in the new universe at the expense of those who stay
+- **The Cynics** — believe the Furlings are using the Migration to consolidate power in the new galaxy at the expense of those who stay
 
 The Homesteaders are NOT a monolith. Some will fight Furlings who try to extract them; some will simply refuse and pray. Some will join the Defender military; some will quietly build deep-rock shelters. The unifying thread is *not leaving*.
 
 ### The Precursors — *The Goes*
 
-The species and Furling sub-cultures who agree to the Migration and travel through the Rainbow Worlds' dimensional crossing to the neighboring universe. They call themselves **the Precursors** — *those who go before*. In their own usage, the name means: *we go ahead of the regrowing galaxy, we precede whatever new sentience will arise after the Culling, we are the keepers of the seed-civilization in the new universe until it is safe to return*.
+The species and Furling sub-cultures who agree to the Migration and travel through the Rainbow Worlds' dimensional crossing to the nearest neighboring galaxy. They call themselves **the Precursors** — *those who go before*. In their own usage, the name means: *we go ahead of the regrowing galaxy, we precede whatever new sentience will arise after the Culling, we are the keepers of the seed-civilization in the new galaxy until it is safe to return*.
 
 The Precursors include:
 
@@ -44,7 +44,7 @@ The Arilou Lalee'lay are neither Homesteaders nor (quite) Precursors. They inven
 
 **The Arilou are staying in Quasi-Space to watch over the regrowing galaxy as the Others pass through.**
 
-They are *aligned* with the Precursor faction — they believe in the Migration, they support the evacuation, they help the Furlings — but they are not going to the neighboring universe. They are hiding in the folded layers of Quasi-Space adjacent to our 3D galaxy, where the Others' detection apparatus cannot easily reach. From there, for tens of thousands of years, they will watch what happens after the Furlings leave: which Homesteaders survived, which awoke, which were culled. They will witness the long slow regrowth of life. They will be there to greet the Newcomers when they arise.
+They are *aligned* with the Precursor faction — they believe in the Migration, they support the evacuation, they help the Furlings — but they are not going to the nearest neighboring galaxy. They are hiding in the folded layers of Quasi-Space adjacent to our 3D galaxy, where the Others' detection apparatus cannot easily reach. From there, for tens of thousands of years, they will watch what happens after the Furlings leave: which Homesteaders survived, which awoke, which were culled. They will witness the long slow regrowth of life. They will be there to greet the Newcomers when they arise.
 
 The Arilou call this strategy *the long silence-watching*. It is voluntary, it is sacrificial — they will be alone in a Quasi-Space pocket for geological time — and it is informed by their unique trans-temporal cognition (they can perceive the bleed of moments adjacent to the present, so the loneliness is differently shaped than it would be for a Furling).
 
@@ -110,7 +110,7 @@ The slice's late acts now have a more nuanced task tree, reflecting the player's
   - **If Slylandro will stay** (Hider/Defender paths): install the **Slylandro Cloaking Satellite**; seed the cluster's Rainbow World *anyway* (the Migration needs all 10 worlds regardless of any single cluster's species choices).
   - **If Slylandro are euthanized** (Cleanser path): seed the cluster's Rainbow World; the cluster's task tree is shorter; the slice ends in the Quiet Ledger.
 - **Act 4 ending — The Door.** Player chooses whether to:
-  - Cross with the Migration (join the Precursors in the neighboring universe)
+  - Cross with the Migration (join the Precursors in the nearest neighboring galaxy)
   - Stay as a Watcher in the bereft galaxy (a small number of Furlings did this — they become legend)
   - Join the Arilou in Quasi-Space (rare, requires high Arilou trust)
   - Stand with the Homesteaders (Defender path; the closest path to SC2 canon's surviving species)
