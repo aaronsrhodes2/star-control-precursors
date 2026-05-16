@@ -22,6 +22,8 @@ XBOX_LB = 4
 XBOX_RB = 5
 XBOX_BACK = 6
 XBOX_START = 7
+XBOX_LSTICK = 8   # press the left stick (L3)
+XBOX_RSTICK = 9   # press the right stick (R3) — bound to scene switcher
 
 # Analog stick deadzone (sticks at rest report small non-zero values)
 STICK_DEADZONE = 0.18
@@ -162,6 +164,9 @@ class InputManager:
                 elif ev.button == XBOX_BACK:
                     # Back button = "go back in time" — engage Time Drive
                     self.rewind = True
+                elif ev.button == XBOX_RSTICK:
+                    # Right-stick click = open scene switcher (controller F1)
+                    self.open_switcher = True
 
             elif ev.type == pygame.JOYDEVICEADDED:
                 self._refresh_joysticks()
