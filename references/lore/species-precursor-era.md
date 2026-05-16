@@ -1,8 +1,14 @@
-# Species in the Precursor Era — Design Roster
+# Species in the Furling Era — Design Roster
 
-Each species needs an LLM personality profile that captures: **voice/language**, **lore facts the LLM can draw on**, **disposition variables**, **encounter states**, and a **canned-text fallback bank** for offline play. This document is the design-level spec; the runtime YAML profiles go in `src/scz/content/species/<id>/profile.yaml`.
+> **Naming note:** the player's people are **Furlings**, not "Precursors" (see [the-furlings-and-the-others.md](the-furlings-and-the-others.md)). "Precursor" is what *future* civilizations call them in retrospect. In-fiction, that word does not exist.
 
-The four species below are the vertical-slice roster. Background species (the Precursor council factions, the Orz rift creatures, the off-screen Mael-Num) are sketched at the end.
+Each species needs an LLM personality profile that captures: **voice/language**, **lore facts the LLM can draw on**, **disposition variables**, **encounter states**, and a **canned-text fallback bank** for offline play. Every species profile must now also include **evacuation stance** and **awareness of the Others / Migration** — these inflect every conversation in the slice's era.
+
+The runtime YAML profiles live in `src/scz/content/species/<id>/profile.yaml`. The four species below are the vertical-slice roster. Background species (Furling Council factions, Orz rift creatures, off-screen Mael-Num) are sketched at the end.
+
+## The Universal Tension
+
+Under the new narrative, **every conversation happens against the ticking clock of the Migration.** Slylandro contemplate evacuation. Mycon biots may or may not be becoming the kind of mind the Others will sense. Proto-Ur-Quan are the *blessed* species: they're non-sentient, so they'll be safe through the Culling — but the Furlings ache at leaving them as animals. Arilou drift in from Quasi-Space with reports of the neighboring universe. The player's choices for each species feed back into the Furling Council's [faction-balance state](factions-and-war.md).
 
 ---
 
@@ -26,16 +32,19 @@ The four species below are the vertical-slice roster. Background species (the Pr
 - `gossip_buffer` — a short ledger of things they've witnessed and want to tell you
 
 **Encounter states (target ~6-8 for slice):**
-- `FIRST_MEETING` — tutorial, they introduce themselves and the Precursor era
+- `FIRST_MEETING` — tutorial, they introduce themselves; first hint of the dimensional anomalies
 - `TEACH_HYPERSPACE` — explain hyperspace flight (game tutorial)
 - `TEACH_SCAN` — explain mineral/biological scanning
 - `IDLE_CHAT` — return-visit small talk that varies based on history
-- `RIPPLE_WORRY` — they bring up the dimensional anomalies they've sensed
-- `MYCON_RUMOR` — they share what they've heard about Mycon biot behavior
-- `URQUAN_QUESTION` — they ask if the Precursor Council has decided about the limpets
-- `FAREWELL` — closes the encounter
+- `THE_TRUTH` — you tell them about the Others, or you don't. Pivotal state.
+- `EVACUATION_DEBATE` — they deliberate. They are slow. You watch the clock.
+- `DENIER_TEMPTATION` — a Slylandro elder repeats a Denier talking point. You correct, agree, or stay silent.
+- `CLEANSER_RUMOR` — they have heard rumors of Furlings who *euthanize* species. They ask if it's true.
+- `FAREWELL` — varies wildly by what's been said. May be hopeful, mournful, accusatory.
 
 **Slice location:** Their home system is one of the proto-Slylandro stars in our cluster.
+
+**Evacuation stance:** *Will agree to leave, but slowly.* The Slylandro need centuries to reach consensus and have decades. Their fate depends on how the player accelerates the decision.
 
 ---
 
@@ -64,7 +73,9 @@ The four species below are the vertical-slice roster. Background species (the Pr
 - `PROVOKE` — drop a metal probe in their colony
 - `COUNCIL_REPORT` — back at the Council, your observations feed `uplift_pressure`
 
-**Critical narrative outcome:** the player's final uplift recommendation seeds which SC2 Ur-Quan tribe will dominate.
+**Critical narrative outcome — the new framing:** the **honest** Furling answer is now *do not uplift them*. Sentience created during the Migration era marks them for the Others. Leaving them as animals is the kindest gift the Furlings can give: they live undisturbed, the Others don't sense them, they crawl on tide-pools through the Long Quiet and become sentient on their own in some far future. The slice's quiet horror is that the player must *recommend against uplift* and feel themselves choose mercy by withholding.
+
+If the player nevertheless recommends `uplift_pressure: +100`, the consequence is severe — a new sentient species is now under the Migration deadline, and the Council must either evacuate them (impossibly fast given their biology) or kill them (Cleanser doctrine). This recommendation seeds the SC2 Ur-Quan tribes' descent into cruelty.
 
 ---
 
@@ -96,7 +107,11 @@ The four species below are the vertical-slice roster. Background species (the Pr
 - `OPEN_HERETIC` — biot refuses an order, calls the player "the Old Hand" with menace
 - `THEM_CORRUPTED` — biot fully Them-touched; combat trigger
 
-**Critical narrative outcome:** if the player lets `heresy_level` rise unchecked, this is the cluster where the Deep Child religion starts. The slice's combat climax is a corrupted biot fight.
+**Critical narrative outcome — the new framing:** if the player lets `heresy_level` rise unchecked, the Mycon biots **awaken into sentience** in this cluster. They become a new species the Furlings must evacuate — and the Cleanser faction will arrive demanding they be exterminated before that awakening completes. If the player *suppresses* the heresy (by reaffirming orders, isolating affected biots, performing the Furling rite of unweaving), the biots remain tools — non-sentient, safe through the Culling, available to terraform again when civilization returns.
+
+The slice's deepest moral question lives here: *is it right to murder a barely-aware species to prevent its sentience from getting it killed by the Others later?* The Cleanser doctrine says yes. The Persuader doctrine says we wait, evacuate, and live with the cost. The player chooses for this cluster.
+
+The combat climax of the slice is no longer simply a "corrupted biot" — it's a Cleanser ship arriving to enforce a kill order on the awakening Mycon, with the player choosing whether to allow it or fight to delay it.
 
 ---
 
@@ -126,28 +141,36 @@ The four species below are the vertical-slice roster. Background species (the Pr
 - `OFFER_PORTAL_KEY` — they hint they can extract the player to Quasi-Space at the climax
 - `FAREWELL_FOREVER` — if `patience` hits 0, they leave the cluster
 
-**Critical narrative outcome:** at the slice's ending, if the player has high `trust` with the Arilou, they offer the player an escape into Quasi-Space — bypassing the Precursor Council entirely.
+**Critical narrative outcome:** the Arilou are the **success case** of the Migration — they crossed early, before the war, peacefully. They visit through Quasi-Space portals offering help and warnings. If the player has high `trust`, they offer to extract the Slylandro (or the player personally) through Quasi-Space without going through the cluster's Rainbow crossing — a faster, gentler evacuation path. **They refuse to take sides between Furling factions.** They have crossed once and will not bear witness to the war their cousins fight.
 
 ---
 
 ## Background — Not Deeply Interactive in the Slice
 
-### Orz Rifts — *The First Tremors of the Outside*
+### Orz Rifts — *Are These the Others, or Something Else?*
 
-In our era, the Orz don't yet exist as a species. They are **rifts** — momentary intrusions of "Dimension *" into our space. The player encounters them as:
-- Combat threats (a "rift creature" that doesn't communicate)
-- Sensor anomalies (the dimensional ripples that drive the plot)
+In the Furling era, the Orz don't yet exist as a species. They are **rifts** — momentary intrusions of "Dimension *" into our space. They may be:
+- Early scouts of the Others (the most worrying interpretation)
+- Independent dimensional bleed unrelated to the Others
+- A byproduct of the Furlings' own deep-dimension tunneling that they did to *find* the Others in the first place
+
+The game never resolves which. The player encounters them as:
+- Sensor anomalies (the dimensional ripples that drive the plot's urgency)
 - One late-slice encounter where a rift "speaks" — a single LLM-generated utterance that's clearly not from a 3D entity. ("frumple. frumple. *campers* are loose. you wear *meat* still. when you stop wearing *meat* we will be the same.")
+- Optional combat: a rift creature that doesn't communicate; defeating it does *not* prevent the Others' arrival, only buys the cluster a few weeks.
 
-### The Precursor Council Factions
+### The Furling Council Factions
 
-The player IS a Precursor. Other Precursors are NPCs you debate with via a Council UI (a separate dialog scene). Three factions:
+See [factions-and-war.md](factions-and-war.md) for the full breakdown. Briefly, six factions debate inside Furling society about how to handle the Migration:
 
-- **The Gardeners** — finish what we started. Uplift the limpets, calm the biots, leave the galaxy thriving.
-- **The Wardens** — leave defenses behind. Build the Sa-Matra. Place the Rainbow Worlds as a beacon. The Mycon stay obedient as guardians.
-- **The Tunnelers** — full migration to Quasi-Space, immediately, leave the galaxy to whatever finds it.
+- **Persuaders** — every species can be convinced to leave. Slow and respectful. Moral high ground.
+- **Compellers** — sedate, deceive, extract. Better confused-and-alive than principled-and-dead.
+- **Cleansers** — euthanize the holdouts so the Migration can succeed. The deepest mercy in the plan. The Quiet must be absolute.
+- **Defenders** — refuse to flee. Build the Sa-Matra. Stay and fight. Likely doomed but unwilling to abandon home.
+- **Deniers** — the Others aren't real, the Council is panicking, the Migration is a power grab.
+- **Hiders** — shield individual systems instead of evacuating. Untested at scale.
 
-Each faction has a representative LLM personality. The player's Council reports tip the balance. **The slice ending reflects which faction "won" your cluster.**
+The player's Council reports inflect faction balance for the slice; the slice's epilogue reflects which faction's doctrine "won" their cluster.
 
 ### The Mael-Num — *Future Sentient Milieu*
 

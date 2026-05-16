@@ -1,15 +1,17 @@
 # Rainbow Worlds — The Central Plot Arc
 
-In *Star Control 2*, the Rainbow Worlds are an unresolved mystery: ten unique planets that emit a "rainbow" signal, each in a different SC2 cluster, which together trace a **spatial arrow pointing toward the Galactic Core**. The game never explains *why* the Precursors placed them.
+In *Star Control 2*, the Rainbow Worlds are an unresolved mystery: ten unique planets that emit a "rainbow" signal, each in a different SC2 cluster, which together trace a **spatial arrow**. The game never explains why the Precursors placed them, and SC2-era observers assume the arrow points toward the Galactic Core.
 
-**In our game, the player places them.** This is our central plot arc and the reason the game exists. The Rainbow Worlds aren't just lore — they're the **mechanical and narrative spine** of the slice and the larger game.
+**In our game, the player places them — and the arrow points somewhere else.** See [the-furlings-and-the-others.md](the-furlings-and-the-others.md) for the canonical narrative. The arrow points to a **dimensional crossing to a neighboring universe** — the Furlings' migration destination. It is *both* an exit-sign (for the evacuating species, *now*) and a **return-map** (for after the Others pass, decades or centuries from now).
+
+The Rainbow Worlds aren't just lore — they're the **mechanical and narrative spine** of the slice and the larger game.
 
 ## The Canon Mystery (SC2)
 
-From Aaron's worldbuilding doc:
+From Aaron's original worldbuilding doc:
 > "We seeded the Rainbow Worlds, a trail of breadcrumbs for those who would one day be strong enough to find us at the Core."
 
-The arrow points "home" — to where the Precursors migrated. It's a love note left for whoever inherits the galaxy.
+The 250,000-year-old assumption that the arrow points to the *Core* is exactly what we'd expect SC2-era archaeologists to conclude — they don't know about the dimensional crossing. The Furlings did not go to the Galactic Core. They went *through* it (the crossing's manifold projects through the galaxy's center as seen from our coordinate plane) to a universe adjacent to ours. The arrow is a love note, yes — but also a survival document.
 
 ## The 10 Rainbow Worlds (Extracted Data)
 
@@ -59,14 +61,16 @@ To seed a Rainbow World, the player must:
 
 The slice's Act 4 decision (the canonical climax of the vertical slice) is:
 
-> *"The Resonator is placed. The signal is live. Two questions remain. First: do you tell the proto-species what this world is for? They are intelligent enough to ask. Second: do you tell the Council what really happened with the Them-rift? Or do you omit it, so they don't accelerate the migration?"*
+> *"The Resonator is placed. The crossing is live and your cluster's exit point will hold for the Migration window. You face two final choices. First: how have you handled the sentient species in your cluster — the Slylandro especially? Did you persuade them out, compel them out, let the Cleansers eliminate them, or stand with them as Defenders? Second: do you cross with the Migration now, stay as a Watcher to monitor the Culling, or remain as a Defender beside whatever holdouts you've protected?"*
 
-The four story permutations (tell/tell, tell/hide, hide/tell, hide/hide) lead to four short slice-ending epilogues that hint at the SC2 canon branching:
+The slice's epilogue reflects which of the four faction paths (see [factions-and-war.md](factions-and-war.md)) the player walked:
 
-- **Tell / Tell**: the canon SC2 path. The Slylandro will testify accurately to "Newcomers" for the next 250,000 years. The Council moves quickly.
-- **Tell / Hide**: the proto-species develop reverence-religions around the Rainbow World; the Council remains in this cluster longer than canon, and a few Precursors remain after the Migration.
-- **Hide / Tell**: the proto-species never know; the Council leaves on schedule; the Rainbow World becomes a complete mystery to whoever finds it (closer to SC2 canon than expected).
-- **Hide / Hide**: the player has gone rogue. The slice ends with the player being recalled to Council for explanation. The next chapter would explore the consequences.
+- **Persuader Path** — Slylandro evacuated peacefully, Mycon kept non-sentient or evacuated, you defied the Cleansers and crossed with the Migration. The Council preserves your name in honor. This is the canonical "good" ending.
+- **Compeller Path** — Slylandro evacuated by force or deception, no one died, you bent your principles to make the timeline. The Council looks the other way. The Slylandro who survive in the new universe never quite trust you again.
+- **Cleanser Path** — you sided with the Cleansers because the math said you had to. The Slylandro died for the Quiet. Your name enters the Quiet Ledger. You cross with the Migration but carry the weight forever.
+- **Defender Path** — you refused the Migration. The Slylandro stayed with you. The Sa-Matra is forming. The slice ends with you watching the dimensional crossing close. **This is the closest path to SC2 canon.** Most of the species that exist in SC2 are descendants of the Defender path's choices in clusters like yours.
+
+The Rainbow World you seeded in Act 3 remains visible from the cluster's hyperspace view permanently — a glittering ringed star, signal active, regardless of which path you took. Whoever inherits this galaxy, 250,000 years from now, will see it.
 
 ## Why This Works as the Game's Spine
 
