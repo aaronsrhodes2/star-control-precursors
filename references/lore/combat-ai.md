@@ -242,6 +242,55 @@ Combat exposes an **AUTO-FIGHT** toggle (default off) — when on, the engine AI
 
 Mechanically simple — same `<ship>_intelligence` function the opponent uses, with the player's ship state and the opponent as `enemy_of_concern`. Player can toggle mid-fight (X button or similar) to take over.
 
+## Strategy Archetypes (Layer 2.5 — between personality and banter)
+
+The personality vector axes (Layer 2) bias *thresholds*. The next layer up names *composite playstyles* a player can read in the first few seconds of combat. Aaron's canonical list:
+
+| Archetype | Behavior summary |
+|---|---|
+| **Defensive** | Maximize shield uptime, retreat at higher HP, avoid close engagement, bait the enemy into cooldowns |
+| **Offensive** | Ignore HP costs, prioritize pressure, close range, fire through misses |
+| **Clever flier** | Use momentum + Newtonian drift to set up shots, lead targets, avoid predictable paths — the "skilled pilot" archetype |
+| **Planet gravity user** | Use arena gravity wells (when they exist — see arena-features note) for slingshot, ambush, suicide-orbit |
+| **Sharpshooter** | Long-range precision, conserves energy, waits for clean shots, never fires speculatively |
+| **Special-ability user** | Leans on the ship's special weapon as the primary tool; primary fire is energy filler |
+
+Each archetype maps onto the personality-vector axes:
+- Defensive ≈ high caution + high patience + low aggression
+- Offensive ≈ inverse — high aggression + low caution
+- Clever flier ≈ high opportunism + medium patience + high persistence
+- Sharpshooter ≈ high patience + low aggression + high opportunism
+- Special-ability user ≈ high opportunism (waits for special-window, then commits)
+- Planet gravity user ≈ a movement-driven variant of any of the above plus an "uses arena features" flag
+
+The archetype is the *named composite* the (later) LLM combat banter can refer to — "a defensive Cleanser" reads differently from "a sharpshooter Cleanser" even with identical raw stats. The visual tell is what makes the asymmetric ship matchup actually feel different per encounter without changing balance.
+
+**Per-species archetype distribution**: each species ships its captains with a *weighted distribution* of archetypes. Furling Persuader → defensive 50%, sharpshooter 30%, special-user 20%. Proto-Qor-Ah → offensive 80%, clever flier 15%, special-user 5%. Per-encounter the actual archetype is sampled deterministically by encounter seed (so reload-the-fight = same archetype).
+
+Authoring deferred until the static slice is fully traversable AND every matchup has been validated (see below).
+
+## Arena Features (not yet authored)
+
+The slice combat arena is currently empty wraparound space — adequate for validating the loop but not the final scope. Future content:
+
+- **Gravity wells** — a central body (planet or singularity) that pulls ships. Required for the "planet gravity user" archetype. SC2 had this and it was crucial for tactical depth (slingshot, suicide-orbit, denial of territory)
+- **Asteroid debris** — physical obstacles. Block projectiles, damage on collision, force navigation around them
+- **Arena variants** — different visuals/physics per match: open void, dense field, gravity-pit, dual-star binary
+
+These are content additions on top of the existing combat scene — physics-affecting object sets, not engine rewrites.
+
+## Matchup Validation Sweep (testing imperative)
+
+When the combat module is fleshed out — special weapons in, all 9 ship classes complete — every ship pair in the roster (including **same-side** matchups: Homesteader vs Homesteader, Precursor vs Precursor, and even same-ship-vs-same-ship) must be validated by an exhaustive test sweep:
+
+- **Not impossible**: every matchup must be winnable for *some* side under *some* AI play. No stalemate-forever fights. No "this AI can't possibly land a hit on that AI" matchups
+- **No crash bugs**: every matchup must complete the combat loop cleanly — projectiles spawn, damage applies, win triggers, scene exits. Special-weapon interactions are the obvious crash surface (e.g. dimensional-shear cannon vs a ship currently using a Time Drive pulse — undefined behavior territory)
+- **Reasonable duration**: fights resolve under the timeout cap. Anything that hits the timeout is suspicious — either the matchup is degenerate or the AI is failing to commit
+
+Implementation idea: a `walk_matchup_sweep` harness script that iterates the cartesian product of `(precursor + homesteader, precursor + homesteader)` — i.e. all 81 combinations for the slice's 9-ship roster — and runs each fight at 5-10× speed. Pass = clean exit with declared winner. Fail = crash, timeout, or no-winner outcome.
+
+This is a *later* test — not slice-critical for the engine MVP, but mandatory before content authoring (the slice-climax Cleanser fight specifically depends on knowing the Cleanser vs Furling Scout matchup is fair and finishable).
+
 ## Slice Scope
 
 Phase 2 ships static AI — pure UQM-style decision functions per ship class. **No personality vector, no LLM banter — both are deferred to a later phase**. The Cleanser cruiser fight is winnable, balanced, predictable. The auto-fight toggle ships with Phase 2 from day one.
