@@ -42,6 +42,12 @@ MAX_ZOOM = 25.0
 ZOOM_STEP = 1.4        # button-press multiplier
 ZOOM_LERP = 8.0        # smoothing per second (higher = snappier)
 
+# Autopilot: aiming cone (half-angle) for star target acquisition. A wider
+# cone makes "press Y to autopilot toward whatever's ahead of me" forgiving.
+AUTOPILOT_CONE_DEG = 45.0
+# Manual stick deflection magnitude that cancels autopilot
+AUTOPILOT_CANCEL_THRESHOLD = 0.4
+
 
 class HyperspaceScene(Scene):
     """The galactic map view with a movable player ship."""
@@ -60,6 +66,11 @@ class HyperspaceScene(Scene):
         self.target_zoom: float = DEFAULT_ZOOM
         self.camera_x: float = SOL_X
         self.camera_y: float = SOL_Y
+
+        # Autopilot — when set, the ship auto-thrusts toward target_star
+        # until it enters the star's system (auto-confirm). Manual stick
+        # movement of significant magnitude cancels.
+        self.autopilot_target: dict | None = None
 
         # Set in on_enter once we know the screen size
         self.map_view_x: int = 0
@@ -113,8 +124,44 @@ class HyperspaceScene(Scene):
             t = min(1.0, dt * ZOOM_LERP)
             self.zoom += (self.target_zoom - self.zoom) * t
 
+        # --- Autopilot engage / disengage ---
+        # Y / open_map toggles autopilot: if off, snap to nearest star in
+        # heading cone; if on, manual stick deflection (or another press)
+        # disengages.
+        if inp.open_map:
+            if self.autopilot_target is None:
+                self.autopilot_target = self._find_autopilot_target()
+            else:
+                self.autopilot_target = None
+
         # --- Movement ---
         mx, my = inp.move_x, inp.move_y
+        manual = math.hypot(mx, my)
+
+        if self.autopilot_target is not None:
+            # Manual stick deflection cancels autopilot
+            if manual > AUTOPILOT_CANCEL_THRESHOLD:
+                self.autopilot_target = None
+            else:
+                # Auto-steer toward target
+                t = self.autopilot_target
+                dx = t["x"] - self.player_x
+                dy = t["y"] - self.player_y
+                dist = math.hypot(dx, dy) or 1.0
+                ax, ay = dx / dist, dy / dist
+                # Forward-thrust along bearing
+                mx = ax
+                my = ay
+                self.player_heading = math.atan2(mx, -my)
+
+                # Auto-enter when within the system's "entry" radius
+                if dist <= STAR_ENTER_RADIUS and self.game is not None:
+                    target = self.autopilot_target
+                    self.autopilot_target = None
+                    from scz.system.scene import SystemScene
+                    self.game.set_scene(SystemScene(target))
+                    return
+
         if mx != 0.0 or my != 0.0:
             mag = math.hypot(mx, my)
             if mag > 1.0:
@@ -135,7 +182,7 @@ class HyperspaceScene(Scene):
             self.game.quit()
             return
 
-        # Confirm near a star → enter that system
+        # Confirm near a star → enter that system (manual override of autopilot)
         if inp.confirm and self.game is not None:
             nearby = self.starmap.find_nearest_star(
                 self.player_x, self.player_y, max_distance=STAR_ENTER_RADIUS
@@ -146,6 +193,34 @@ class HyperspaceScene(Scene):
                 if math.hypot(dx, dy) <= STAR_ENTER_RADIUS:
                     from scz.system.scene import SystemScene
                     self.game.set_scene(SystemScene(nearby))
+
+    def _find_autopilot_target(self) -> dict | None:
+        """Find the nearest star ahead of the ship within AUTOPILOT_CONE_DEG.
+
+        Returns the star dict, or None if nothing is in the cone (autopilot
+        won't engage if you're not pointing at anything).
+        """
+        # Heading direction unit vector (heading 0 = up, +y is down)
+        fx = math.sin(self.player_heading)
+        fy = -math.cos(self.player_heading)
+        cone_dot = math.cos(math.radians(AUTOPILOT_CONE_DEG))
+
+        best = None
+        best_dist = float("inf")
+        for star in self.starmap.stars:
+            dx = star["x"] - self.player_x
+            dy = star["y"] - self.player_y
+            dist = math.hypot(dx, dy)
+            if dist < 1.0:
+                continue   # we're already on top of it
+            # Normalize and dot with forward
+            d = (dx * fx + dy * fy) / dist
+            if d < cone_dot:
+                continue   # not in our forward cone
+            if dist < best_dist:
+                best_dist = dist
+                best = star
+        return best
 
     def _update_camera(self) -> None:
         """Center camera on the ship, clamping to keep view inside the map."""
@@ -210,6 +285,10 @@ class HyperspaceScene(Scene):
                 screen, self.universe_to_screen, self.zoom, self.small_font
             )
 
+        # Autopilot line — drawn BEFORE the ship so the pod sits on top
+        if self.autopilot_target is not None:
+            self._draw_autopilot_line(screen)
+
         # Player ship + always-visible "FURLING SCOUT" label
         px, py = self.universe_to_screen(self.player_x, self.player_y)
         self._draw_player_ship(screen, px, py, self.player_heading)
@@ -246,8 +325,14 @@ class HyperspaceScene(Scene):
     def _draw_player_ship(
         self, screen: pygame.Surface, x: float, y: float, heading: float
     ) -> None:
-        # Triangle with tip in heading direction
-        size = 11
+        # Draw the warp pod (red teardrop wrapping the ship). The pod
+        # represents what every SC2 player saw as the red "hyperspace field"
+        # — except they were *inside* it; we're outside looking in.
+        self._draw_warp_pod(screen, x, y, heading)
+
+        # Triangle with tip in heading direction — the ship itself, inside
+        # the pod
+        size = 8
         local = [(0, -size), (-size * 0.6, size * 0.5), (size * 0.6, size * 0.5)]
         cos_h = math.cos(heading)
         sin_h = math.sin(heading)
@@ -262,12 +347,12 @@ class HyperspaceScene(Scene):
         # Always-visible locator ring + pulsing outer ring so the ship is
         # findable even when zoomed all the way out.
         pulse = (math.sin(pygame.time.get_ticks() / 400) + 1) / 2  # 0..1
-        pygame.draw.circle(screen, (90, 180, 255), (int(x), int(y)), 20, 1)
+        pygame.draw.circle(screen, (90, 180, 255), (int(x), int(y)), 32, 1)
         pygame.draw.circle(
             screen,
             (60 + int(pulse * 70), 130 + int(pulse * 60), 200),
             (int(x), int(y)),
-            int(28 + pulse * 6),
+            int(42 + pulse * 6),
             1,
         )
 
@@ -276,7 +361,117 @@ class HyperspaceScene(Scene):
         if self.small_font is not None:
             label = self.small_font.render("FURLING SCOUT", True, (180, 220, 255))
             lw, _ = label.get_size()
-            screen.blit(label, (x - lw / 2, y + 28))
+            screen.blit(label, (x - lw / 2, y + 42))
+
+    def _draw_warp_pod(
+        self, screen: pygame.Surface, x: float, y: float, heading: float
+    ) -> None:
+        """Draw the ship's red warp-drive pod — an asymmetric teardrop
+        oriented along the heading. Forward end is elongated and slightly
+        pointier; back end is rounded.
+        """
+        # Forward unit vector (heading 0 = up, +y down in screen)
+        fx = math.sin(heading)
+        fy = -math.cos(heading)
+        # Sideways unit vector (perpendicular, right of forward)
+        sx = math.cos(heading)
+        sy = math.sin(heading)
+
+        # Pod dimensions in pixels
+        pod_forward = 22.0   # length from center toward heading
+        pod_back = 14.0      # length from center away from heading
+        pod_side = 14.0      # half-width
+
+        # Build the pod outline as a polygon
+        n_points = 28
+        outer = []
+        for i in range(n_points):
+            t = i / n_points * 2.0 * math.pi
+            cos_t = math.cos(t)
+            sin_t = math.sin(t)
+            forward_amount = (pod_forward if cos_t > 0 else pod_back) * cos_t
+            side_amount = pod_side * sin_t
+            outer.append(
+                (
+                    x + forward_amount * fx + side_amount * sx,
+                    y + forward_amount * fy + side_amount * sy,
+                )
+            )
+
+        # Outer red glow (translucent, rendered on alpha surface)
+        glow_pad = 18
+        glow_w = int(max(pod_forward, pod_back) * 2 + glow_pad * 2)
+        glow_h = int(pod_side * 2 + glow_pad * 2)
+        glow_surf = pygame.Surface((glow_w, glow_h), pygame.SRCALPHA)
+        # We're drawing the glow as a series of concentric translucent
+        # ellipses centered on the surface. The pod's heading is encoded
+        # in the polygon shape we drew above, but for the glow we use a
+        # simple radial halo (cheaper, looks like a heat-bloom).
+        cx, cy = glow_w // 2, glow_h // 2
+        for r, alpha in ((glow_w // 2, 14), (glow_w // 2 - 6, 28), (glow_w // 2 - 14, 44)):
+            if r > 0:
+                pygame.draw.circle(glow_surf, (220, 80, 80, alpha), (cx, cy), r)
+        screen.blit(
+            glow_surf, (int(x - cx), int(y - cy)), special_flags=pygame.BLEND_PREMULTIPLIED
+        )
+
+        # Pod fill (dark red interior)
+        pygame.draw.polygon(screen, (50, 14, 16), outer)
+        # Pod outline (brighter red rim)
+        pygame.draw.polygon(screen, (200, 80, 80), outer, 2)
+        # Tiny brighter front "arc" for direction sense
+        front_hi_color = (255, 140, 140)
+        front_pts = [outer[0]]
+        for i in (1, n_points - 1):
+            front_pts.append(outer[i])
+        # outer[0] is the very front of the pod by construction (t=0 → cos_t=1)
+        pygame.draw.lines(screen, front_hi_color, False, front_pts[:3], 2)
+
+    def _draw_autopilot_line(self, screen: pygame.Surface) -> None:
+        """Line from ship to autopilot target, with a pulsing marker at the destination."""
+        assert self.autopilot_target is not None
+        sx, sy = self.universe_to_screen(self.player_x, self.player_y)
+        tx, ty = self.universe_to_screen(
+            self.autopilot_target["x"], self.autopilot_target["y"]
+        )
+        # Animated dashed line
+        ticks = pygame.time.get_ticks()
+        pulse = (math.sin(ticks / 300) + 1) / 2
+        col_a = (200 + int(pulse * 55), 180, 100)
+        col_b = (140, 100, 60)
+        # Simple dashed effect: draw alternating segments
+        dx = tx - sx
+        dy = ty - sy
+        length = math.hypot(dx, dy) or 1.0
+        ux, uy = dx / length, dy / length
+        segment = 14.0
+        gap = 8.0
+        step = segment + gap
+        offset = (ticks / 30) % step
+        d = -offset
+        while d < length:
+            s0 = max(0.0, d)
+            s1 = min(length, d + segment)
+            if s1 > s0:
+                pygame.draw.line(
+                    screen,
+                    col_a,
+                    (sx + ux * s0, sy + uy * s0),
+                    (sx + ux * s1, sy + uy * s1),
+                    2,
+                )
+            d += step
+
+        # Pulsing target reticle
+        r = int(18 + pulse * 8)
+        pygame.draw.circle(screen, col_a, (int(tx), int(ty)), r, 2)
+        pygame.draw.circle(screen, col_b, (int(tx), int(ty)), r + 6, 1)
+        # Target name label
+        if self.font is not None:
+            name = self.autopilot_target.get("cluster_name", "")
+            if name:
+                txt = self.font.render(f"→ {name}", True, (240, 200, 120))
+                screen.blit(txt, (int(tx) + r + 8, int(ty) - 10))
 
     def _draw_hud(
         self,
@@ -387,32 +582,50 @@ class HyperspaceScene(Scene):
             (200, 180, 120),
         )
 
+        # Autopilot status (prominent if active)
+        if self.autopilot_target is not None:
+            y += 12
+            target_name = self.autopilot_target.get("cluster_name", "?")
+            self._hud_line(
+                screen, x, y, f"AUTOPILOT  →  {target_name}", (240, 200, 120)
+            )
+            y += 22
+            dx = self.autopilot_target["x"] - self.player_x
+            dy = self.autopilot_target["y"] - self.player_y
+            self._hud_line(
+                screen, x, y, f"  distance: {math.hypot(dx, dy):.0f}", (180, 160, 120)
+            )
+
         # Controls hint pinned to bottom
-        controls_y = screen.get_height() - 230
+        controls_y = screen.get_height() - 254
         self._hud_line(screen, x, controls_y, "CONTROLS", (200, 210, 230))
         controls_y += 28
         self._hud_line(
-            screen, x, controls_y, "Move:    WASD / L-stick", (130, 150, 180)
+            screen, x, controls_y, "Move:      WASD / L-stick", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Zoom:    - / =  /  LB / RB", (130, 150, 180)
+            screen, x, controls_y, "Zoom:      - / =  /  LB / RB", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Enter:   Space / A", (130, 150, 180)
+            screen, x, controls_y, "Enter:     Space / A", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Rewind:  R / Back", (130, 150, 180)
+            screen, x, controls_y, "Autopilot: M / Y", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Switch:  F1 / R3", (130, 150, 180)
+            screen, x, controls_y, "Rewind:    R / Back", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Quit:    Esc / Start", (130, 150, 180)
+            screen, x, controls_y, "Switch:    F1 / R3", (130, 150, 180)
+        )
+        controls_y += 22
+        self._hud_line(
+            screen, x, controls_y, "Quit:      Esc / Start", (130, 150, 180)
         )
 
     def _hud_line(
