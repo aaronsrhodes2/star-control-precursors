@@ -208,38 +208,8 @@ class ObservationScene(StubScene):
     ]
 
 
-class MeleeCombatScene(StubScene):
-    TITLE = "Melee Combat"
-    SUBTITLE = "1v1 ship battle — solo Steward, shields + hull, AI captains"
-    ACCENT = (255, 140, 140)
-    DETAILS = [
-        "Top-down 2D space combat with Newtonian momentum, SC2 lineage.",
-        "",
-        "Ship doctrine (per furling-tech-mechanics §5):",
-        "   • Solo-captained ship — crew never die. The Steward IS the player.",
-        "   • Two-layer defense: regenerating shields, non-regenerating hull.",
-        "   • Furling shields are RARE — most non-Furling ships have hull only.",
-        "     Bide-and-strike (let shields regen, attack again) is the player's",
-        "     edge over heavier enemies they can't outgun.",
-        "   • Out-of-combat hull repair uses minerals at any safe-zone via the",
-        "     lander fabricator. No 'auto-heal in hyperspace'.",
-        "",
-        "Slice scope (Phase 2):",
-        "   • Engine AI — deterministic threshold decisions (UQM model)",
-        "   • AI knows whether it has shields and bleeds accordingly — non-",
-        "     shielded ships shouldn't camp at range against a regenerating",
-        "     enemy.",
-        "   • [X] AUTO-FIGHT toggle — the same AI flies the player's ship",
-        "         too. Test harness can drive fights without scripted stick",
-        "         deflections; player can offload routine combat.",
-        "",
-        "Deferred to Phase 4+ (after the static engine works end-to-end):",
-        "   • Per-captain personality axes (aggression / caution / hesitation)",
-        "   • LLM banter at trigger moments (COMBAT_START, HALF_HEALTH, ...)",
-        "",
-        "Slice combat climax: a Cleanser Furling cruiser — also Furling, also",
-        "shielded. The 'fair' fight where the player's defensive edge evaporates.",
-    ]
+# MeleeCombatScene is now a real scene — see scz/combat/scene.py.
+# SuperMeleeScene picks ships and launches it; both sides are AI-driven.
 
 
 class CouncilScene(StubScene):

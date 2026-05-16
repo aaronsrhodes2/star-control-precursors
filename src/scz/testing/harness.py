@@ -115,6 +115,22 @@ class TestScript:
         )
         return self
 
+    def expect_flag(
+        self,
+        key: str,
+        expected: Any = "ANY_NON_NONE",
+    ) -> "TestScript":
+        """Assert that game.flags[key] is set.
+
+        With no `expected` argument, just verifies the flag exists and is
+        not None (use for "did this side-effect fire?" checks). Pass an
+        explicit value to assert equality.
+        """
+        self.actions.append(
+            TestAction(self.cursor, "expect_flag", {"key": key, "expected": expected})
+        )
+        return self
+
     def log(self, message: str) -> "TestScript":
         self.actions.append(TestAction(self.cursor, "log", {"msg": message}))
         return self
@@ -238,6 +254,31 @@ class TestHarness:
                 self.failures.append(msg)
                 print(msg)
             self.last_action_label = f"expect_dialog_state {expected}"
+        elif kind == "expect_flag":
+            key = p["key"]
+            expected = p["expected"]
+            actual = self.game.flags.get(key)
+            if expected == "ANY_NON_NONE":
+                ok = actual is not None
+                expected_str = "not None"
+            else:
+                ok = actual == expected
+                expected_str = repr(expected)
+            if ok:
+                msg = (
+                    f"[t={self.game_time:5.2f}] OK   flag {key} = "
+                    f"{actual!r}  (expected {expected_str})"
+                )
+                self.successes.append(msg)
+                print(msg)
+            else:
+                msg = (
+                    f"[t={self.game_time:5.2f}] FAIL flag {key} expected "
+                    f"{expected_str}, got {actual!r}"
+                )
+                self.failures.append(msg)
+                print(msg)
+            self.last_action_label = f"expect_flag {key}"
         elif kind == "log":
             print(f"[t={self.game_time:5.2f}] LOG  {p['msg']}")
             self.last_action_label = p["msg"]

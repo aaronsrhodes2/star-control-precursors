@@ -324,9 +324,99 @@ def walk_arilou_sage() -> TestScript:
     return s
 
 
+def walk_super_melee() -> TestScript:
+    """Story script 3 — run a Super Melee with both sides AI-controlled.
+
+    Per Aaron's spec, the pass-state is:
+      1. Melee finishes
+      2. One side wins
+      3. Super-melee exits
+
+    We pick Furling Scout (shielded, ROF-favored, mid-range) vs Proto-
+    Qor-Ah Marauder (glass-cannon, suicidal-brawler, close-range AOE).
+    Asymmetric matchup with no clear deterministic winner — Aaron wants
+    "somewhat but not perfectly predictable" outcomes.
+
+    Switcher entry order (must match scenes/switcher.py):
+        0  Main Menu
+        1  Hyperspace
+        2  Mh-Lai System
+        3  Mh-Lai Orbit
+        4  Arilou Outpost System
+        5  Arilou Sanctuary Orbit
+        6  Star System (Sol)
+        7  Planet Orbit (Sol I)
+        8  Planet Surface (Sol I)
+        9  Station — Mh-Lai
+        10 Dialog — Cmdr Halia
+        11 Dialog — Arilou Sage
+        12 Quasi-Space
+        13 Super Melee   <— target
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Super Melee — Furling Scout vs Proto-Qor-Ah Marauder")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # Open scene switcher and navigate to "Super Melee" (entry 13)
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(13):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("SuperMeleeScene")
+
+    # Switch focus to the homesteader column so we can navigate to
+    # START FIGHT without disturbing the precursor selection (default
+    # p_idx = 0 = Furling Scout).
+    s.press("menu_next")
+    s.wait(0.2)
+
+    # Navigate down the homesteader column: 4 ships, then onto "start".
+    # h_idx walks 0→1→2→3 then the next menu_down switches focus to
+    # "start" (per the picker logic in super_melee.py).
+    for _ in range(4):
+        s.press("menu_down")
+        s.wait(0.15)
+
+    # Launch the fight
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("MeleeCombatScene")
+
+    # Let the fight resolve. Max combat duration is 60 game-seconds with
+    # a 2.5 game-sec dwell on the result screen before auto-exit. We
+    # wait 65 to cover the worst-case timeout path. Typical fights end
+    # in 10-30 game-seconds + dwell, so usually we'll just sit on the
+    # SuperMeleeScene for the remainder.
+    s.wait(65.0)
+    s.expect_scene("SuperMeleeScene")
+
+    # The combat scene's on_finish() callback wrote the winner side into
+    # game.flags. A non-None value proves the engine declared a winner
+    # (timeout still records a winner — only a double-KO leaves it None).
+    s.expect_flag("last_combat_winner_side")
+
+    # Super-melee exits — B from the picker returns to MainMenu.
+    s.press("cancel")
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    s.set_speed(1.0)
+    s.log("Super Melee complete. Winner declared and super-melee exited.")
+    s.wait(1.0)
+    s.end()
+    return s
+
+
 # Registry — main.py uses this to look up scripts by name.
 SCRIPTS = {
     "walk_tutorial_path":      walk_tutorial_path,
     "walk_orbit_and_surface":  walk_orbit_and_surface,
     "walk_arilou_sage":        walk_arilou_sage,
+    "walk_super_melee":        walk_super_melee,
 }

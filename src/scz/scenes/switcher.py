@@ -26,7 +26,6 @@ def _entries():
     from scz.scenes.stubs import (
         MainMenuScene,
         ObservationScene,
-        MeleeCombatScene,
         CouncilScene,
         ShipCustomizationScene,
         ClusterStatusBoardScene,
@@ -39,6 +38,7 @@ def _entries():
     from scz.content.home_system import home_star
     from scz.content.arilou_outpost import arilou_outpost_star
     from scz.quasispace.scene import QuasiSpaceScene
+    from scz.combat.super_melee import SuperMeleeScene
 
     # Returning Hyperspace/System/Planet to fresh instances loses state,
     # which is expected for the debug switcher — we're jumping for testing.
@@ -103,9 +103,9 @@ def _entries():
         ("Dialog — Cmdr Halia",      lambda: DialogScene(commander_halia()), None),
         ("Dialog — Arilou Sage",     lambda: DialogScene(arilou_sage()),     None),
         ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
+        ("Super Melee",              lambda: SuperMeleeScene(),              None),
         # Stubs
         ("Observation Encounter",    lambda: ObservationScene(),             None),
-        ("Melee Combat",             lambda: MeleeCombatScene(),             None),
         ("Furling Council",          lambda: CouncilScene(),                 None),
         ("Ship Customization",       lambda: ShipCustomizationScene(),       None),
         ("Cluster Status Board",     lambda: ClusterStatusBoardScene(),      None),
