@@ -93,8 +93,12 @@ class SceneSwitcher(Scene):
         self.title_font = pygame.font.SysFont("consolas", 36, bold=True)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
-        # Esc / B / F1 → dismiss (overlay closes, underlying scene resumes)
-        if inp.cancel or inp.open_switcher:
+        # Esc / B → dismiss (overlay closes, underlying scene resumes).
+        # NOTE: F1 (open_switcher) is NOT a dismiss trigger — the game loop
+        # only opens the switcher when no overlay exists, but the same frame
+        # that opens us still has open_switcher=True. Listening for it here
+        # would dismiss us in the same frame we opened.
+        if inp.cancel:
             if self.game is not None:
                 self.game.close_overlay()
             return
