@@ -236,6 +236,7 @@ class UqmPlanetDesc:
             orbit_speed=0.10 / max(1.0, self.orbit_radius_systemunits / 100.0),
             size=size,
             color=vis["color"],
+            uqm_type=self.type_name,
         )
 
 

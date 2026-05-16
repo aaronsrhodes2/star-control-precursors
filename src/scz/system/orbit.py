@@ -192,15 +192,18 @@ class PlanetOrbitScene(Scene):
         w, h = screen.get_size()
 
         # --- Planet (right half) ---
-        # Big rotating sphere with a couple of light/shadow passes to suggest
-        # 3D. The "rotation" is faked with a slowly drifting highlight.
+        # Render the canonical UQM planet sprite (75x67 base, upscaled).
+        # Pixel-art era preserved on purpose — matches the SC2 aesthetic
+        # Aaron grew up with. Fallback to the procedural circle if the
+        # asset is missing (defensive; shouldn't happen for slice planets).
         p_center_x = w - w // 4
         p_center_y = h // 2
         p_radius = min(h, w // 2) // 3
         base_color = self.planet.color
 
-        # Atmosphere / cloak halo — Furling cloak field shimmer
         cloak_pulse = (math.sin(self.time_in_scene * 1.3) + 1) / 2
+
+        # Atmosphere / cloak halo — Furling cloak field shimmer (behind planet)
         for i in range(8, 0, -1):
             halo_r = p_radius + i * 6
             tint = (
@@ -210,58 +213,51 @@ class PlanetOrbitScene(Scene):
             )
             pygame.draw.circle(screen, tint, (p_center_x, p_center_y), halo_r, 1)
 
-        # Body
-        pygame.draw.circle(screen, base_color, (p_center_x, p_center_y), p_radius)
+        sprite = self._planet_sprite(p_radius * 2)
+        if sprite is not None:
+            sw, sh = sprite.get_size()
+            screen.blit(sprite, (p_center_x - sw // 2, p_center_y - sh // 2))
+        else:
+            # Procedural fallback — base body + shading + flecks
+            pygame.draw.circle(screen, base_color, (p_center_x, p_center_y), p_radius)
+            sweep = self.time_in_scene * PLANET_ROT_SPEED
+            shadow_dx = math.cos(sweep) * p_radius * 0.55
+            shadow_dy = math.sin(sweep * 0.3) * p_radius * 0.15
+            shadow = (
+                base_color[0] // 4,
+                base_color[1] // 4,
+                base_color[2] // 4,
+            )
+            pygame.draw.circle(
+                screen, shadow,
+                (int(p_center_x + shadow_dx), int(p_center_y + shadow_dy)),
+                int(p_radius * 0.92),
+            )
+            pygame.draw.circle(
+                screen, base_color,
+                (int(p_center_x - shadow_dx * 0.4), int(p_center_y - shadow_dy * 0.4)),
+                int(p_radius * 0.78),
+            )
 
-        # Day/night terminator — moving with rotation
-        sweep = self.time_in_scene * PLANET_ROT_SPEED
-        shadow_dx = math.cos(sweep) * p_radius * 0.55
-        shadow_dy = math.sin(sweep * 0.3) * p_radius * 0.15
-        shadow = (
-            base_color[0] // 4,
-            base_color[1] // 4,
-            base_color[2] // 4,
-        )
-        pygame.draw.circle(
-            screen, shadow,
-            (int(p_center_x + shadow_dx), int(p_center_y + shadow_dy)),
-            int(p_radius * 0.92),
-        )
-        # Lit side — repaint a bit smaller offset opposite
-        pygame.draw.circle(
-            screen, base_color,
-            (int(p_center_x - shadow_dx * 0.4), int(p_center_y - shadow_dy * 0.4)),
-            int(p_radius * 0.78),
-        )
-
-        # Surface flecks — fake continents/clouds based on a stable hash of
-        # planet index + star coords; rotate with sweep so it looks alive
-        rng_seed = self.star["x"] * 10001 + self.star["y"] * 17 + self.planet.index
-        for i in range(7):
-            theta = ((rng_seed >> (i * 3)) & 0xFF) / 255.0 * math.tau + sweep
-            r_frac = 0.3 + ((rng_seed >> (i * 4 + 4)) & 0x7F) / 127.0 * 0.55
-            patch_r = p_radius * 0.18 - i * 2
-            ox = math.cos(theta) * p_radius * r_frac
-            oy = math.sin(theta) * p_radius * r_frac * 0.6
-            if patch_r > 2:
-                fleck_color = (
-                    max(0, base_color[0] - 30),
-                    max(0, base_color[1] - 15),
-                    max(0, base_color[2] - 40),
-                )
-                pygame.draw.circle(
-                    screen, fleck_color,
-                    (int(p_center_x + ox), int(p_center_y + oy)),
-                    int(patch_r),
-                )
-
-        # Cloak shimmer overlay — concentric thin rings, pulsing
+        # Cloak shimmer overlay — concentric thin rings, pulsing (over planet)
         for i in range(3):
             r = p_radius + 14 + i * 9
             alpha = int(60 * (1 - i / 3) * (0.5 + 0.5 * cloak_pulse))
             ring = pygame.Surface((r * 2 + 4, r * 2 + 4), pygame.SRCALPHA)
             pygame.draw.circle(ring, (140, 200, 255, alpha), (r + 2, r + 2), r, 1)
             screen.blit(ring, (p_center_x - r - 2, p_center_y - r - 2))
+
+    def _planet_sprite(self, target_diameter: int) -> "pygame.Surface | None":
+        """Resolve the planet's UQM sprite. UQM-procgen planets carry
+        their `uqm_type`; hand-built systems fall back to mapping our
+        8-bucket type to a representative UQM type."""
+        from scz.content.planet_sprites import (
+            scaled_sprite, scaled_sprite_for_legacy,
+        )
+        uqm_type = getattr(self.planet, "uqm_type", None)
+        if uqm_type:
+            return scaled_sprite(uqm_type, target_diameter)
+        return scaled_sprite_for_legacy(self.planet.type, target_diameter)
 
         # --- HUD (left) ---
         self._draw_hud(screen)

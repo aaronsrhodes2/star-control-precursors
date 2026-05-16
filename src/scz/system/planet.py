@@ -60,12 +60,16 @@ class Planet:
 
     index: int                  # 0 = innermost
     name: str                   # e.g. "Sol III"
-    type: str                   # PLANET_TYPES entry
+    type: str                   # PLANET_TYPES entry (our 8-bucket palette)
     orbit_radius: float         # system-local units
     orbit_angle: float          # radians at t=0
     orbit_speed: float          # radians per second (slow)
     size: int                   # render radius in pixels
     color: tuple[int, int, int]
+    # Optional UQM-canonical planet type (e.g. "WATER_WORLD"). Set by
+    # the UQM procgen for unnamed stars; hand-built systems leave it
+    # None and the sprite layer falls back to LEGACY_TO_UQM mapping.
+    uqm_type: str | None = None
 
     def position_at(self, t: float) -> tuple[float, float]:
         """Return (x, y) in system-local coords at time t (seconds)."""

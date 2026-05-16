@@ -372,9 +372,29 @@ class SystemScene(Scene):
         x, y = self._system_to_screen(sx, sy)
         # Planet sprite size scales with zoom so it grows as we close in.
         size = max(3, int(planet.size * max(0.6, self.zoom * 0.55)))
-        # Body
+
+        # Try the canonical UQM sprite. Use "med" at moderate zoom, "big"
+        # when zoomed in (size * 2 is the rendered diameter; the sprite
+        # gets nearest-neighbor scaled to that).
+        from scz.content.planet_sprites import (
+            scaled_sprite, scaled_sprite_for_legacy,
+        )
+        diam = size * 2
+        which_size = "sml" if diam <= 24 else ("med" if diam <= 48 else "big")
+        uqm_type = getattr(planet, "uqm_type", None)
+        sprite = None
+        if uqm_type:
+            sprite = scaled_sprite(uqm_type, diam, size=which_size)
+        if sprite is None:
+            sprite = scaled_sprite_for_legacy(planet.type, diam, size=which_size)
+
+        if sprite is not None:
+            ssw, ssh = sprite.get_size()
+            screen.blit(sprite, (int(x) - ssw // 2, int(y) - ssh // 2))
+            return
+
+        # Procedural fallback (shouldn't fire for slice planets)
         pygame.draw.circle(screen, planet.color, (int(x), int(y)), size)
-        # Light/shadow hint (a faint darker arc opposite the star)
         dx, dy = sx, sy
         d = math.hypot(dx, dy) or 1.0
         ox = -dx / d * size * 0.3
@@ -383,7 +403,6 @@ class SystemScene(Scene):
         pygame.draw.circle(
             screen, shadow, (int(x + ox), int(y + oy)), int(size * 0.85)
         )
-        # Repaint the lit side
         ox2 = dx / d * size * 0.2
         oy2 = dy / d * size * 0.2
         pygame.draw.circle(

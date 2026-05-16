@@ -1,0 +1,297 @@
+{
+  "OOLITE_WORLD": {
+    "big": "oolite-big-000.png",
+    "med": "oolite-med-000.png",
+    "sml": "oolite-sml-000.png"
+  },
+  "YTTRIC_WORLD": {
+    "big": "yttric-big-000.png",
+    "med": "yttric-med-000.png",
+    "sml": "yttric-sml-000.png"
+  },
+  "QUASI_DEGENERATE_WORLD": {
+    "big": "quasidegenerate-big-000.png",
+    "med": "quasidegenerate-med-000.png",
+    "sml": "quasidegenerate-sml-000.png"
+  },
+  "LANTHANIDE_WORLD": {
+    "big": "lanthanide-big-000.png",
+    "med": "lanthanide-med-000.png",
+    "sml": "lanthanide-sml-000.png"
+  },
+  "TREASURE_WORLD": {
+    "big": "treasure-big-000.png",
+    "med": "treasure-med-000.png",
+    "sml": "treasure-sml-000.png"
+  },
+  "UREA_WORLD": {
+    "big": "urea-big-000.png",
+    "med": "urea-med-000.png",
+    "sml": "urea-sml-000.png"
+  },
+  "METAL_WORLD": {
+    "big": "metal-big-000.png",
+    "med": "metal-med-000.png",
+    "sml": "metal-sml-000.png"
+  },
+  "RADIOACTIVE_WORLD": {
+    "big": "radioactive-big-000.png",
+    "med": "radioactive-med-000.png",
+    "sml": "radioactive-sml-000.png"
+  },
+  "OPALESCENT_WORLD": {
+    "big": "opalescent-big-000.png",
+    "med": "opalescent-med-000.png",
+    "sml": "opalescent-sml-000.png"
+  },
+  "CYANIC_WORLD": {
+    "big": "cyanic-big-000.png",
+    "med": "cyanic-med-000.png",
+    "sml": "cyanic-sml-000.png"
+  },
+  "ACID_WORLD": {
+    "big": "acid-big-000.png",
+    "med": "acid-med-000.png",
+    "sml": "acid-sml-000.png"
+  },
+  "ALKALI_WORLD": {
+    "big": "alkali-big-000.png",
+    "med": "alkali-med-000.png",
+    "sml": "alkali-sml-000.png"
+  },
+  "HALIDE_WORLD": {
+    "big": "halide-big-000.png",
+    "med": "halide-med-000.png",
+    "sml": "halide-sml-000.png"
+  },
+  "GREEN_WORLD": {
+    "big": "green-big-000.png",
+    "med": "green-med-000.png",
+    "sml": "green-sml-000.png"
+  },
+  "COPPER_WORLD": {
+    "big": "copper-big-000.png",
+    "med": "copper-med-000.png",
+    "sml": "copper-sml-000.png"
+  },
+  "CARBIDE_WORLD": {
+    "big": "carbide-big-000.png",
+    "med": "carbide-med-000.png",
+    "sml": "carbide-sml-000.png"
+  },
+  "ULTRAMARINE_WORLD": {
+    "big": "ultramarine-big-000.png",
+    "med": "ultramarine-med-000.png",
+    "sml": "ultramarine-sml-000.png"
+  },
+  "NOBLE_WORLD": {
+    "big": "noble-big-000.png",
+    "med": "noble-med-000.png",
+    "sml": "noble-sml-000.png"
+  },
+  "AZURE_WORLD": {
+    "big": "azure-big-000.png",
+    "med": "azure-med-000.png",
+    "sml": "azure-sml-000.png"
+  },
+  "CHONDRITE_WORLD": {
+    "big": "chondrite-big-000.png",
+    "med": "chondrite-med-000.png",
+    "sml": "chondrite-sml-000.png"
+  },
+  "PURPLE_WORLD": {
+    "big": "purple-big-000.png",
+    "med": "purple-med-000.png",
+    "sml": "purple-sml-000.png"
+  },
+  "SUPER_DENSE_WORLD": {
+    "big": "superdense-big-000.png",
+    "med": "superdense-med-000.png",
+    "sml": "superdense-sml-000.png"
+  },
+  "PELLUCID_WORLD": {
+    "big": "pellucid-big-000.png",
+    "med": "pellucid-med-000.png",
+    "sml": "pellucid-sml-000.png"
+  },
+  "DUST_WORLD": {
+    "big": "dust-big-000.png",
+    "med": "dust-med-000.png",
+    "sml": "dust-sml-000.png"
+  },
+  "CRIMSON_WORLD": {
+    "big": "crimson-big-000.png",
+    "med": "crimson-med-000.png",
+    "sml": "crimson-sml-000.png"
+  },
+  "CIMMERIAN_WORLD": {
+    "big": "cimmerian-big-000.png",
+    "med": "cimmerian-med-000.png",
+    "sml": "cimmerian-sml-000.png"
+  },
+  "INFRARED_WORLD": {
+    "big": "infrared-big-000.png",
+    "med": "infrared-med-000.png",
+    "sml": "infrared-sml-000.png"
+  },
+  "SELENIC_WORLD": {
+    "big": "selenic-big-000.png",
+    "med": "selenic-med-000.png",
+    "sml": "selenic-sml-000.png"
+  },
+  "AURIC_WORLD": {
+    "big": "auric-big-000.png",
+    "med": "auric-med-000.png",
+    "sml": "auric-sml-000.png"
+  },
+  "FLUORESCENT_WORLD": {
+    "big": "fluorescent-big-000.png",
+    "med": "fluorescent-med-000.png",
+    "sml": "fluorescent-sml-000.png"
+  },
+  "ULTRAVIOLET_WORLD": {
+    "big": "ultramarine-big-000.png",
+    "med": "ultramarine-med-000.png",
+    "sml": "ultramarine-sml-000.png"
+  },
+  "PLUTONIC_WORLD": {
+    "big": "plutonic-big-000.png",
+    "med": "plutonic-med-000.png",
+    "sml": "plutonic-sml-000.png"
+  },
+  "RAINBOW_WORLD": {
+    "big": "rainbow-big-000.png",
+    "med": "rainbow-med-000.png",
+    "sml": "rainbow-sml-000.png"
+  },
+  "SHATTERED_WORLD": {
+    "big": "shattered-big-000.png",
+    "med": "shattered-med-000.png",
+    "sml": "shattered-sml-000.png"
+  },
+  "SAPPHIRE_WORLD": {
+    "big": "sapphire-big-000.png",
+    "med": "sapphire-med-000.png",
+    "sml": "sapphire-sml-000.png"
+  },
+  "ORGANIC_WORLD": {
+    "big": "organic-big-000.png",
+    "med": "organic-med-000.png",
+    "sml": "organic-sml-000.png"
+  },
+  "XENOLITHIC_WORLD": {
+    "big": "xenolithic-big-000.png",
+    "med": "xenolithic-med-000.png",
+    "sml": "xenolithic-sml-000.png"
+  },
+  "REDUX_WORLD": {
+    "big": "redux-big-000.png",
+    "med": "redux-med-000.png",
+    "sml": "redux-sml-000.png"
+  },
+  "PRIMORDIAL_WORLD": {
+    "big": "primordial-big-000.png",
+    "med": "primordial-med-000.png",
+    "sml": "primordial-sml-000.png"
+  },
+  "EMERALD_WORLD": {
+    "big": "emerald-big-000.png",
+    "med": "emerald-med-000.png",
+    "sml": "emerald-sml-000.png"
+  },
+  "CHLORINE_WORLD": {
+    "big": "chlorine-big-000.png",
+    "med": "chlorine-med-000.png",
+    "sml": "chlorine-sml-000.png"
+  },
+  "MAGNETIC_WORLD": {
+    "big": "magnetic-big-000.png",
+    "med": "magnetic-med-000.png",
+    "sml": "magnetic-sml-000.png"
+  },
+  "WATER_WORLD": {
+    "big": "water-big-000.png",
+    "med": "water-med-000.png",
+    "sml": "water-sml-000.png"
+  },
+  "TELLURIC_WORLD": {
+    "big": "telluric-big-000.png",
+    "med": "telluric-med-000.png",
+    "sml": "telluric-sml-000.png"
+  },
+  "HYDROCARBON_WORLD": {
+    "big": "hydrocarbon-big-000.png",
+    "med": "hydrocarbon-med-000.png",
+    "sml": "hydrocarbon-sml-000.png"
+  },
+  "IODINE_WORLD": {
+    "big": "iodine-big-000.png",
+    "med": "iodine-med-000.png",
+    "sml": "iodine-sml-000.png"
+  },
+  "VINYLOGOUS_WORLD": {
+    "big": "vinylogous-big-000.png",
+    "med": "vinylogous-med-000.png",
+    "sml": "vinylogous-sml-000.png"
+  },
+  "RUBY_WORLD": {
+    "big": "ruby-big-000.png",
+    "med": "ruby-med-000.png",
+    "sml": "ruby-sml-000.png"
+  },
+  "MAGMA_WORLD": {
+    "big": "magma-big-000.png",
+    "med": "magma-med-000.png",
+    "sml": "magma-sml-000.png"
+  },
+  "MAROON_WORLD": {
+    "big": "maroon-big-000.png",
+    "med": "maroon-med-000.png",
+    "sml": "maroon-sml-000.png"
+  },
+  "BLU_GAS_GIANT": {
+    "big": "bluegas-big-000.png",
+    "med": "bluegas-med-000.png",
+    "sml": "bluegas-sml-000.png"
+  },
+  "CYA_GAS_GIANT": {
+    "big": "cyangas-big-000.png",
+    "med": "cyangas-med-000.png",
+    "sml": "cyangas-sml-000.png"
+  },
+  "GRN_GAS_GIANT": {
+    "big": "greengas-big-000.png",
+    "med": "greengas-med-000.png",
+    "sml": "greengas-sml-000.png"
+  },
+  "GRY_GAS_GIANT": {
+    "big": "greygas-big-000.png",
+    "med": "greygas-med-000.png",
+    "sml": "greygas-sml-000.png"
+  },
+  "ORA_GAS_GIANT": {
+    "big": "organic-big-000.png",
+    "med": "organic-med-000.png",
+    "sml": "organic-sml-000.png"
+  },
+  "PUR_GAS_GIANT": {
+    "big": "purplegas-big-000.png",
+    "med": "purplegas-med-000.png",
+    "sml": "purplegas-sml-000.png"
+  },
+  "RED_GAS_GIANT": {
+    "big": "redgas-big-000.png",
+    "med": "redgas-med-000.png",
+    "sml": "redgas-sml-000.png"
+  },
+  "VIO_GAS_GIANT": {
+    "big": "violetgas-big-000.png",
+    "med": "violetgas-med-000.png",
+    "sml": "violetgas-sml-000.png"
+  },
+  "YEL_GAS_GIANT": {
+    "big": "yellowgas-big-000.png",
+    "med": "yellowgas-med-000.png",
+    "sml": "yellowgas-sml-000.png"
+  }
+}
