@@ -116,9 +116,16 @@ class Game:
                     self.current_scene.render(self.screen)
 
                     # Update the active scene. Overlay intercepts input if up.
-                    if self.overlay_scene is not None:
-                        self.overlay_scene.update(dt, self.input)
-                        self.overlay_scene.render(self.screen)
+                    # Cache the overlay reference before calling update — the
+                    # update may close the overlay (e.g. SceneSwitcher picking
+                    # a target calls set_scene, which closes the overlay). If
+                    # that happens we skip the post-update render of the now-
+                    # dismissed overlay.
+                    overlay_at_update = self.overlay_scene
+                    if overlay_at_update is not None:
+                        overlay_at_update.update(dt, self.input)
+                        if self.overlay_scene is overlay_at_update:
+                            overlay_at_update.render(self.screen)
                     else:
                         self.current_scene.update(dt, self.input)
 
