@@ -131,7 +131,7 @@ class MainMenuScene(StubScene):
         "",
         "Press F1 to open the scene switcher and jump straight into any view.",
         "",
-        "Press A/Space to launch the game (Hyperspace scene).",
+        "Press A / Space to begin (you'll start at Mh-Lai Station).",
     ]
 
     def __init__(self) -> None:
@@ -142,10 +142,10 @@ class MainMenuScene(StubScene):
         if inp.cancel and self.game is not None:
             self.game.quit()
             return
-        # Confirm → launch the real game (Hyperspace)
+        # Confirm → launch the real game (Station: home base)
         if inp.confirm and self.game is not None:
-            from scz.hyperspace.scene import HyperspaceScene
-            self.game.set_scene(HyperspaceScene())
+            from scz.station.scene import StationScene
+            self.game.set_scene(StationScene())
             return
 
 

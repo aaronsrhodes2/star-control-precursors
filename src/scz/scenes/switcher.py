@@ -25,16 +25,18 @@ def _entries():
     from scz.scenes.stubs import (
         MainMenuScene,
         PlanetScanScene,
-        DialogScene,
         ObservationScene,
         MeleeCombatScene,
         CouncilScene,
-        StationScene,
         ShipCustomizationScene,
         ClusterStatusBoardScene,
         ArchiveScene,
         QuasiSpaceScene,
     )
+    # Real implementations (replacing stubs)
+    from scz.dialog.characters import commander_halia
+    from scz.dialog.scene import DialogScene
+    from scz.station.scene import StationScene
 
     # Returning Hyperspace/System/Planet to fresh instances loses state,
     # which is expected for the debug switcher — we're jumping for testing.
@@ -62,13 +64,13 @@ def _entries():
         ("Hyperspace (galaxy)",    lambda: HyperspaceScene(),       pygame.K_1),
         ("Star System (Sol)",      _fresh_system,                   pygame.K_2),
         ("Planet Surface (Sol I)", _fresh_planet,                   pygame.K_3),
+        ("Station — Mh-Lai",       lambda: StationScene(),          pygame.K_4),
+        ("Dialog — Cmdr Halia",    lambda: DialogScene(commander_halia()), pygame.K_5),
         # Stubs
-        ("Planet Scan",            lambda: PlanetScanScene(),       pygame.K_4),
-        ("Dialog",                 lambda: DialogScene(),           pygame.K_5),
-        ("Observation Encounter",  lambda: ObservationScene(),      pygame.K_6),
-        ("Melee Combat",           lambda: MeleeCombatScene(),      pygame.K_7),
-        ("Furling Council",        lambda: CouncilScene(),          pygame.K_8),
-        ("Station / Home Port",    lambda: StationScene(),          pygame.K_9),
+        ("Planet Scan",            lambda: PlanetScanScene(),       pygame.K_6),
+        ("Observation Encounter",  lambda: ObservationScene(),      pygame.K_7),
+        ("Melee Combat",           lambda: MeleeCombatScene(),      pygame.K_8),
+        ("Furling Council",        lambda: CouncilScene(),          pygame.K_9),
         ("Ship Customization",     lambda: ShipCustomizationScene(), None),
         ("Cluster Status Board",   lambda: ClusterStatusBoardScene(), None),
         ("Bio-Archive",            lambda: ArchiveScene(),          None),
