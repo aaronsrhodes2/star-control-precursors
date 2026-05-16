@@ -49,6 +49,14 @@ class Game:
         self.frame_count = 0
         self.time_drive = TimeDrive()
 
+        # Test mode — when running under a script, the harness overlays
+        # scripted input each frame and the speed multiplier lets the
+        # whole game run faster while still rendering at the normal
+        # framerate so Aaron can watch the playback in real time.
+        from scz.testing.harness import TestHarness   # local to avoid cycles
+        self.test_harness: TestHarness | None = None
+        self.test_speed: float = 1.0
+
     def set_scene(self, scene: Scene) -> None:
         """Replace the current scene with a new one."""
         # Setting a new main scene closes any active overlay.
@@ -78,6 +86,40 @@ class Game:
             self.overlay_scene.on_exit()
             self.overlay_scene = None
 
+    def _render_test_hud(self) -> None:
+        """Render a 'TEST MODE' badge + current scripted action + pass/fail
+        counts in the top-right corner. Only called when a TestHarness is
+        attached."""
+        if self.test_harness is None:
+            return
+        font = pygame.font.SysFont("consolas", 16, bold=True)
+        body_font = pygame.font.SysFont("consolas", 14)
+        w = self.screen.get_size()[0]
+        x = w - 360
+        y = 10
+        # Badge
+        badge_color = (220, 80, 80) if self.test_harness.failures else (130, 220, 160)
+        pygame.draw.rect(self.screen, (10, 10, 20), (x - 8, y - 4, 350, 80))
+        pygame.draw.rect(self.screen, badge_color, (x - 8, y - 4, 350, 80), 1)
+        label = font.render(
+            f"TEST MODE  ·  speed {self.test_speed:g}x", True, badge_color
+        )
+        self.screen.blit(label, (x, y))
+        action_label = body_font.render(
+            f"→ {self.test_harness.last_action_label}", True, (220, 220, 240)
+        )
+        self.screen.blit(action_label, (x, y + 22))
+        counts = body_font.render(
+            f"pass {len(self.test_harness.successes)}  ·  fail {len(self.test_harness.failures)}",
+            True,
+            (180, 200, 220),
+        )
+        self.screen.blit(counts, (x, y + 44))
+        t_label = body_font.render(
+            f"t = {self.test_harness.game_time:6.2f} game-s", True, (140, 160, 200)
+        )
+        self.screen.blit(t_label, (x, y + 60))
+
     def quit(self) -> None:
         """Request the loop to exit at end of current frame."""
         self.running = False
@@ -86,13 +128,26 @@ class Game:
         """Main loop. Returns when the loop exits."""
         try:
             while self.running:
-                dt = self.clock.tick(self.target_fps) / 1000.0
+                real_dt = self.clock.tick(self.target_fps) / 1000.0
+                # Apply the test-mode speed multiplier. real_dt is wall time;
+                # dt is game time. The harness uses dt for its scheduling so
+                # scripts are speed-independent.
+                dt = real_dt * self.test_speed
                 events = pygame.event.get()
                 for ev in events:
                     if ev.type == pygame.QUIT:
                         self.running = False
 
                 self.input.update(events)
+
+                # Apply any scripted input from the test harness — overlay
+                # on top of real input so a human can still take over.
+                if self.test_harness is not None:
+                    self.test_harness.step(dt)
+                    self.test_harness.apply_to_input(self.input)
+                    if self.test_harness.done:
+                        self.running = False
+
                 if self.input.quit:
                     self.running = False
 
@@ -130,6 +185,10 @@ class Game:
                         self.current_scene.update(dt, self.input)
 
                     self.time_drive.render_overlay(self.screen)
+
+                # Test-mode HUD overlay on top of everything
+                if self.test_harness is not None:
+                    self._render_test_hud()
 
                 pygame.display.flip()
                 self.frame_count += 1

@@ -63,6 +63,7 @@ This is a player-decision tool, not just an undo button. Knowing the rewind cost
 - **Fuel regenerates passively.** The ship's antimatter capacitors refill from cosmic flux at a rate that's small but always positive. You will never run out of fuel mid-cluster. You may have to *wait* a few seconds at the edge of a long hop, but you will never strand.
 - **Landers are remote-piloted drones, manufactured on the spot.** No crew aboard. If a lander is destroyed by a hostile planet (lightning, lava, hostile life), the ship's onboard fabricator prints a replacement in a few seconds. *Loss* costs you a small mineral fraction and a few seconds; it never grounds you.
 - **No "supplies" stat.** The ship's recyclers handle crew biomass needs indefinitely. There is no "you must return home to restock" loop.
+- **Tractor-beam collection (per Aaron's design): never shoot living things.** SC2's "shoot the life-form for bio-data" mechanic is *not* in this game. Furling landers carry tractor beams with a visible collection radius — anything inside, mineral or biological, is gently pulled in. Better lander modules (a future module slot) grow the beam radius, so progression makes you a more capable but also *gentler* collector. The lore frame: Furlings tend the galaxy; they don't harvest it.
 
 This eliminates ~half of SC2's busywork without removing the *interesting* resource decision — which is "what do you spend your minerals on?" (modules, ship upgrades, alliance gifts), not "do I have enough fuel to get there?"
 

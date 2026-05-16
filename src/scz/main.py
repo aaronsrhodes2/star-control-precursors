@@ -34,6 +34,13 @@ def main() -> int:
         help="Which scene to launch into (default: menu). "
              "Use 'hyperspace' to skip the title screen.",
     )
+    parser.add_argument(
+        "--test",
+        default=None,
+        help="Run a built-in test script (e.g. walk_tutorial_path). "
+             "The script drives input + speed; window stays interactive so "
+             "you can take over by pressing buttons yourself.",
+    )
     args = parser.parse_args()
 
     if args.windowed:
@@ -60,7 +67,22 @@ def main() -> int:
         from scz.scenes.stubs import MainMenuScene
         game.set_scene(MainMenuScene())
 
+    # Optionally attach a test script
+    if args.test is not None:
+        from scz.testing.harness import TestHarness
+        from scz.testing.scripts import SCRIPTS
+        if args.test not in SCRIPTS:
+            print(f"Unknown test script: {args.test!r}")
+            print(f"Available: {sorted(SCRIPTS)}")
+            return 1
+        script = SCRIPTS[args.test]()
+        game.test_harness = TestHarness(game, script)
+        print(f"[test] running {args.test} ({len(script.actions)} actions)")
+
     game.run()
+
+    if game.test_harness is not None:
+        return 0 if not game.test_harness.failures else 2
     return 0
 
 

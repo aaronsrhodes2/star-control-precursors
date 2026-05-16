@@ -44,8 +44,12 @@ LANDER_SPEED = 0.20
 # Lander cargo capacity (MVP: generous)
 LANDER_CARGO_MAX = 200
 
-# Contact radius for collection (surface-local units)
-COLLECT_RADIUS = 0.018
+# Tractor beam radius (surface-local units). The lander doesn't have to
+# *touch* a deposit — anything inside this radius is pulled in. Future
+# lander upgrades grow this radius. Per Aaron's design: life and minerals
+# are both tractored, never shot. No "kill the creature for bio-data"
+# mechanic exists in this game.
+TRACTOR_BEAM_RADIUS = 0.030
 
 # Per-planet-type surface palette: (background, terrain_overlay)
 # Background is the "sky" color; terrain is the surface tint.
@@ -150,13 +154,14 @@ class PlanetSurfaceScene(Scene):
         self.lander_x = max(0.0, min(1.0, self.lander_x))
         self.lander_y = max(0.0, min(1.0, self.lander_y))
 
-        # Check for deposit pickup
+        # Tractor-beam pull: anything inside TRACTOR_BEAM_RADIUS is collected
+        # (no shooting, no killing — life and minerals are both pulled).
         for d in self.deposits:
             if d.collected:
                 continue
             dx = d.x - self.lander_x
             dy = d.y - self.lander_y
-            if math.hypot(dx, dy) <= COLLECT_RADIUS:
+            if math.hypot(dx, dy) <= TRACTOR_BEAM_RADIUS:
                 d.collected = True
                 self.cargo[d.type] = self.cargo.get(d.type, 0) + d.value
                 self.cargo_total += d.value
@@ -229,7 +234,7 @@ class PlanetSurfaceScene(Scene):
             rtype, rvalue = self.recent_pickup
             color = RESOURCE_VISUAL[rtype]["color"]
             alpha = max(0, 255 - int(self.recent_pickup_age / 2.5 * 255))
-            text = self.font.render(f"+{rvalue} {rtype.lower()}", True, color)
+            text = self.font.render(f"tractored  +{rvalue} {rtype.lower()}", True, color)
             text.set_alpha(alpha)
             tw, _ = text.get_size()
             # Float above the lander
@@ -276,6 +281,18 @@ class PlanetSurfaceScene(Scene):
     def _draw_lander(self, screen: pygame.Surface, ground_rect: pygame.Rect) -> None:
         x = ground_rect.x + self.lander_x * ground_rect.width
         y = ground_rect.y + self.lander_y * ground_rect.height
+        # Tractor-beam radius — faint pulsing circle that visualizes the
+        # collection range. Anything inside this ring gets tractored in.
+        tractor_pixel_radius = TRACTOR_BEAM_RADIUS * ground_rect.width
+        pulse = (math.sin(pygame.time.get_ticks() / 280) + 1) / 2
+        beam_color = (
+            int(180 + pulse * 60),
+            int(200 + pulse * 40),
+            int(140 + pulse * 30),
+        )
+        pygame.draw.circle(
+            screen, beam_color, (int(x), int(y)), int(tractor_pixel_radius), 1
+        )
         # Distinct lander shape — diamond outline, yellow-white (distinct from ship's triangle/cyan)
         size = 9
         cos_h = math.cos(self.lander_heading)
