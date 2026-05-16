@@ -111,9 +111,10 @@ def walk_orbit_and_surface() -> TestScript:
         4  Furlmart Orbit
         5  Arilou Outpost System
         6  Arilou Sanctuary Orbit
-        7  Star System (Sol)
-        8  Planet Orbit (Sol I)
-        9  Planet Surface (Sol I)
+        7  Beta Corvi (Slylandro)
+        8  Slylandro Sky-Vault Orbit
+        9  Star System (Sol)
+        10 Planet Orbit (Sol I)
         ...
     """
     s = TestScript()
@@ -127,8 +128,8 @@ def walk_orbit_and_surface() -> TestScript:
     s.press("open_switcher")
     s.wait(0.5)
 
-    # Navigate 8 entries down to "Planet Orbit (Sol I)"
-    for _ in range(8):
+    # Navigate 10 entries down to "Planet Orbit (Sol I)"
+    for _ in range(10):
         s.press("menu_down")
         s.wait(0.12)
     s.press("confirm")
@@ -352,10 +353,8 @@ def walk_super_melee() -> TestScript:
         9  Station — Mh-Lai
         10 Dialog — Cmdr Halia
         11 Dialog — Arilou Sage
-        13 Dialog — Coel Tessar
-        14 Dialog — Sentry Drone
-        15 Quasi-Space
-        16 Super Melee   <— target
+        ...
+        19 Super Melee   <— target
     """
     s = TestScript()
     s.set_speed(3.0)
@@ -364,10 +363,10 @@ def walk_super_melee() -> TestScript:
     s.wait(0.6)
     s.expect_scene("MainMenuScene")
 
-    # Open scene switcher and navigate to "Super Melee" (entry 16)
+    # Open scene switcher and navigate to "Super Melee" (entry 19)
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(16):
+    for _ in range(19):
         s.press("menu_down")
         s.wait(0.12)
     s.press("confirm")
@@ -530,10 +529,10 @@ def walk_tutorial_beat_3_to_5() -> TestScript:
     # Seed minerals representing what the player might have gathered en route
     s.set_cargo({"COMMON": 80, "USEFUL": 10})
 
-    # Jump to Station via switcher (entry 10 — "Station — Mh-Lai")
+    # Jump to Station via switcher (entry 12 — "Station — Mh-Lai")
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(10):
+    for _ in range(12):
         s.press("menu_down")
         s.wait(0.1)
     s.press("confirm")
@@ -578,6 +577,77 @@ def walk_tutorial_beat_3_to_5() -> TestScript:
     s.set_speed(1.0)
     s.log("Beats 3 -> 5 walked. Scanner installed, minerals converted to credits.")
     s.wait(0.8)
+    s.end()
+    return s
+
+
+def walk_slylandro_cloak() -> TestScript:
+    """Slylandro Cloak quest — first non-Arilou non-tutorial species.
+
+    Pass state:
+      1. Hail the Slylandro Witness from orbit over Beta Corvi's
+         Slylandro Sky-Vault
+      2. Walk dialog: first_meeting → tell_about_others → grasping_horror
+         → cloak_offer → accept (cloak deal sealed)
+      3. game.flags["met_slylandro"], ["slylandro_cloaked"], ["has_echo_sensor"]
+         all set True. Hyperspace-Echo Sensor module in inventory.
+
+    Uses switcher to jump to Slylandro Sky-Vault Orbit (entry 8) since
+    Beta Corvi is at (276, 9810) — across the galaxy from Mh-Lai —
+    and the slice can reach it naturally via Quasi-Space "distant fold"
+    portal + autopilot, but for the focused species test we jump there
+    directly.
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Slylandro Cloak — hail the Slylandro and accept the cloak deal")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # Jump to Slylandro Sky-Vault Orbit (entry 8)
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(8):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # Y → Hail the Slylandro
+    s.press("fire_secondary")
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("first_meeting")
+
+    # Walk: first_meeting → tell_about_others (choice 0)
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("tell_about_others")
+
+    # tell_about_others has one choice → grasping_horror
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("grasping_horror")
+
+    # grasping_horror → cloak_offer (choice 0)
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("cloak_offer")
+
+    # cloak_offer → accept (choice 0, side_effect grants cloak + sensor)
+    s.press("confirm")
+    s.wait(0.7)
+    s.expect_scene("PlanetOrbitScene")
+
+    s.expect_flag("met_slylandro", True)
+    s.expect_flag("slylandro_cloaked", True)
+    s.expect_flag("has_echo_sensor", True)
+
+    s.set_speed(1.0)
+    s.log("Slylandro Cloak quest complete. Hyperspace-Echo Sensor in cargo.")
+    s.wait(0.7)
     s.end()
     return s
 
@@ -749,7 +819,7 @@ def walk_tutorial_arc() -> TestScript:
     # Return to Station to hear the Others-reveal speech
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(10):    # entry 10 = Station — Mh-Lai
+    for _ in range(12):    # entry 12 = Station — Mh-Lai
         s.press("menu_down")
         s.wait(0.1)
     s.press("confirm")
@@ -789,7 +859,7 @@ def walk_tutorial_arc() -> TestScript:
     # ============== BEAT 7 — return to Station, others_confirmed ==============
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(10):
+    for _ in range(12):
         s.press("menu_down")
         s.wait(0.1)
     s.press("confirm")
@@ -1097,4 +1167,5 @@ SCRIPTS = {
     "walk_tutorial_beat_4":    walk_tutorial_beat_4,
     "walk_tutorial_beat_6":    walk_tutorial_beat_6,
     "walk_tutorial_arc":       walk_tutorial_arc,
+    "walk_slylandro_cloak":    walk_slylandro_cloak,
 }

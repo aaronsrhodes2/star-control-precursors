@@ -71,6 +71,9 @@ class SystemScene(Scene):
         elif star.get("arilou_outpost"):
             from scz.content.arilou_outpost import arilou_outpost_planets
             self.planets = arilou_outpost_planets()
+        elif star.get("defined_name") == "SLYLANDRO":
+            from scz.content.beta_corvi import beta_corvi_planets
+            self.planets = beta_corvi_planets()
         else:
             self.planets = generate_system(
                 star_x=star["x"],

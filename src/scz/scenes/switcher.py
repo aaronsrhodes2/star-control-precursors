@@ -31,7 +31,7 @@ def _entries():
         ArchiveScene,
     )
     # Real implementations (replacing stubs)
-    from scz.dialog.characters import arilou_sage, coel_tessar, commander_halia, sentry_drone_47t
+    from scz.dialog.characters import arilou_sage, coel_tessar, commander_halia, sentry_drone_47t, slylandro_witness
     from scz.dialog.scene import DialogScene
     from scz.station.scene import StationScene
     from scz.content.home_system import home_star
@@ -77,6 +77,23 @@ def _entries():
     def _arilou_system():
         return SystemScene(arilou_outpost_star())
 
+    def _beta_corvi_system():
+        from scz.hyperspace.scene import STARMAP_JSON
+        from scz.hyperspace.starmap import Starmap
+        sm = Starmap(STARMAP_JSON)
+        star = next(s for s in sm.stars if s.get("defined_name") == "SLYLANDRO")
+        return SystemScene(star)
+
+    def _slylandro_orbit():
+        from scz.hyperspace.scene import STARMAP_JSON
+        from scz.hyperspace.starmap import Starmap
+        from scz.system.scene import SystemScene as _Sys
+        sm = Starmap(STARMAP_JSON)
+        star = next(s for s in sm.stars if s.get("defined_name") == "SLYLANDRO")
+        sys = _Sys(star)
+        planet = next(p for p in sys.planets if p.name == "Slylandro Sky-Vault")
+        return PlanetOrbitScene(planet=planet, star=star, parent_scene_cls=_Sys)
+
     def _arilou_sanctuary_orbit():
         from scz.system.scene import SystemScene as _Sys
         sys = _Sys(arilou_outpost_star())
@@ -104,14 +121,17 @@ def _entries():
         ("Furlmart Orbit",           _furlmart_orbit,                        pygame.K_4),
         ("Arilou Outpost System",    _arilou_system,                         pygame.K_5),
         ("Arilou Sanctuary Orbit",   _arilou_sanctuary_orbit,                pygame.K_6),
-        ("Star System (Sol)",        _fresh_system,                          pygame.K_7),
-        ("Planet Orbit (Sol I)",     _fresh_orbit,                           pygame.K_8),
-        ("Planet Surface (Sol I)",   _fresh_planet,                          pygame.K_9),
+        ("Beta Corvi (Slylandro)",   _beta_corvi_system,                     None),
+        ("Slylandro Sky-Vault Orbit", _slylandro_orbit,                      pygame.K_7),
+        ("Star System (Sol)",        _fresh_system,                          pygame.K_8),
+        ("Planet Orbit (Sol I)",     _fresh_orbit,                           pygame.K_9),
+        ("Planet Surface (Sol I)",   _fresh_planet,                          None),
         ("Station — Mh-Lai",         lambda: StationScene(),                 None),
         ("Dialog — Cmdr Halia",      lambda: DialogScene(commander_halia()), None),
         ("Dialog — Arilou Sage",     lambda: DialogScene(arilou_sage()),     None),
         ("Dialog — Coel Tessar",     lambda: DialogScene(coel_tessar()),     None),
         ("Dialog — Sentry Drone",    lambda: DialogScene(sentry_drone_47t()), None),
+        ("Dialog — Slylandro",       lambda: DialogScene(slylandro_witness()), None),
         ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
         ("Super Melee",              lambda: SuperMeleeScene(),              None),
         ("Trade",                    lambda: TradeScene(),                   None),

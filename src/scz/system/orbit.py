@@ -133,6 +133,8 @@ class PlanetOrbitScene(Scene):
             return self._dock_at_station
         if name == "Arilou Sanctuary":
             return self._hail_arilou_sage
+        if name == "Slylandro Sky-Vault":
+            return self._hail_slylandro
         return None
 
     def _context_action_label(self) -> str | None:
@@ -141,6 +143,8 @@ class PlanetOrbitScene(Scene):
             return "Dock at Mh-Lai Station"
         if name == "Arilou Sanctuary":
             return "Hail the Sage"
+        if name == "Slylandro Sky-Vault":
+            return "Hail the Slylandro"
         return None
 
     def _dock_at_station(self) -> None:
@@ -163,6 +167,22 @@ class PlanetOrbitScene(Scene):
 
         self.game.set_scene(
             DialogScene(character=arilou_sage(), parent_factory=_back_to_orbit)
+        )
+
+    def _hail_slylandro(self) -> None:
+        from scz.dialog.characters import slylandro_witness
+        from scz.dialog.scene import DialogScene
+        from scz.system.orbit import PlanetOrbitScene as _Orbit
+        assert self.game is not None
+        planet = self.planet
+        star = self.star
+        parent_cls = self.parent_scene_cls
+
+        def _back_to_orbit() -> "_Orbit":
+            return _Orbit(planet=planet, star=star, parent_scene_cls=parent_cls)
+
+        self.game.set_scene(
+            DialogScene(character=slylandro_witness(), parent_factory=_back_to_orbit)
         )
 
     def render(self, screen: pygame.Surface) -> None:

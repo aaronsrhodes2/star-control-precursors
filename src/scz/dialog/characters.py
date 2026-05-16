@@ -40,6 +40,26 @@ def _decline_androsynth(game: Any) -> None:
     game.flags["androsynth_aboard"] = False
 
 
+def _grant_slylandro_cloak(game: Any) -> None:
+    """Slylandro Cloak quest reward — Hyperspace-Echo Sensor Pattern gives
+    the Steward an Other-detection sensor module ready to install at the
+    next station visit. The Slylandro themselves enter Cloaked terminal
+    status (the Cloaking Satellite is installed at their gas giant).
+    """
+    game.flags["met_slylandro"] = True
+    game.flags["slylandro_cloaked"] = True
+    game.flags["has_echo_sensor"] = True
+    game.uninstalled_modules["hyperspace_echo_sensor"] = (
+        game.uninstalled_modules.get("hyperspace_echo_sensor", 0) + 1
+    )
+
+
+def _ack_slylandro_visit(game: Any) -> None:
+    """Player visited Slylandro but didn't accept the cloak deal yet.
+    Marks them as met but leaves the quest open."""
+    game.flags["met_slylandro"] = True
+
+
 def _ack_others_reveal(game: Any) -> None:
     """Beat 5 → mark that Halia's Others-reveal dialogue has been heard."""
     game.flags["heard_others_reveal"] = True
@@ -582,6 +602,159 @@ def coel_tessar() -> DialogCharacter:
                         next_state_id=None,
                         category="FAREWELL",
                         side_effect=_decline_androsynth,
+                    ),
+                ],
+            ),
+        ),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Slylandro Witness — the Slylandro Observer collective greets the Steward
+# ---------------------------------------------------------------------------
+# Voice per species-sheets §2: run-on awed sentences, plural "we", weather
+# metaphors saturate, self-naming via weather phenomena. Cultural posture
+# is reverent — they treat the Steward as a religious figure ("the
+# Precursors"). The humor friction is cultural: the Steward's wry options
+# play off their reverence and over-sharing.
+
+def slylandro_witness() -> DialogCharacter:
+    """The Slylandro Observer collective speaking through one drift-body
+    that names itself by a weather event it witnessed. The Cloak quest
+    sits in the cloak_offer state — accepting it triggers
+    _grant_slylandro_cloak which sets the slice's primary Cloak-path
+    terminal status.
+    """
+    return DialogCharacter(
+        name="Hail-Curtain-Of-A-Long-Decade",
+        title="Slylandro Witness · Beta Corvi upper troposphere",
+        species_id="SLYLANDRO",
+        portrait_color=(140, 200, 200),
+        initial_state="first_meeting",
+        states=build_state_dict(
+            DialogState(
+                id="first_meeting",
+                npc_text=(
+                    "We have witnessed the Precursors for ten thousand "
+                    "years, and the Precursors before, and the storms "
+                    "that bore us into thinking — and now you arrive "
+                    "again, smaller than the storms, more frightened "
+                    "than the storms, and we wonder if you are still "
+                    "the same Precursors who once curled the methane "
+                    "into upward eddies for our amusement.\n\n"
+                    "Welcome. Welcome. The methane is calm today. We "
+                    "are pleased to drift in your direction."
+                ),
+                choices=[
+                    DialogChoice(
+                        "We have news. Difficult news.",
+                        next_state_id="tell_about_others",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Yes — still the same Precursors. Mostly.",
+                        next_state_id="banter",
+                        category="TALK_MORE",
+                    ),
+                    DialogChoice(
+                        "Farewell, Witness.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_ack_slylandro_visit,
+                    ),
+                ],
+            ),
+            DialogState(
+                id="banter",
+                npc_text=(
+                    "Mostly! The methane is delighted. We had wondered "
+                    "if the Precursors had been replaced by something "
+                    "less inclined to listen, and we are eddying with "
+                    "relief, and the relief is sharing itself through "
+                    "the upper currents to our siblings, and they are "
+                    "also eddying, and shortly all of Beta Corvi will "
+                    "be eddying with the news that the Precursors are "
+                    "mostly still themselves."
+                ),
+                choices=[
+                    DialogChoice(
+                        "We have news. Difficult news.",
+                        next_state_id="tell_about_others",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "We'll let you drift. Farewell.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_ack_slylandro_visit,
+                    ),
+                ],
+            ),
+            DialogState(
+                id="tell_about_others",
+                npc_text=(
+                    "Difficult news. We have heard the phrase before, "
+                    "many times, from many Precursors, and the news has "
+                    "always been less difficult than the saying of it "
+                    "implied — but you eddy as though you mean it.\n\n"
+                    "What has changed in the upper currents that we "
+                    "could not see from down inside them?"
+                ),
+                choices=[
+                    DialogChoice(
+                        "Trans-dimensional predators. They sense thought. They are coming.",
+                        next_state_id="grasping_horror",
+                        category="ASK_LORE",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="grasping_horror",
+                npc_text=(
+                    "Trans-dimensional. We had eddied past that word in "
+                    "the long drift but had not stopped at it. It "
+                    "stops now.\n\n"
+                    "We cannot leave our gas giant. We are our gas "
+                    "giant. The methane is us; the eddies are our "
+                    "thinking. To leave is to be unmade. To stay "
+                    "thinking is to be noticed. We are, perhaps, very "
+                    "old to learn this kind of news."
+                ),
+                choices=[
+                    DialogChoice(
+                        "There is a cloak. A Furling design. We can install it here.",
+                        next_state_id="cloak_offer",
+                        category="GIVE_GIFT",
+                    ),
+                    DialogChoice(
+                        "I'm sorry. I'll return when I know more.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_ack_slylandro_visit,
+                    ),
+                ],
+            ),
+            DialogState(
+                id="cloak_offer",
+                npc_text=(
+                    "A cloak. A way of being thought without being "
+                    "noticed for thinking. The upper currents will "
+                    "carry the field; we will continue to eddy; the "
+                    "trans-dimensional senses will pass over us as "
+                    "they pass over the empty methane.\n\n"
+                    "We agree. We agree, eddying, with reverence and a "
+                    "small terror, but with agreement. Install the "
+                    "field. And take from us the pattern that makes it "
+                    "work — our eddies have always made the "
+                    "interference; we did not know it was useful until "
+                    "you arrived."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Thank you. The cloak goes up. The pattern is ours.",
+                        next_state_id=None,
+                        category="AGREE",
+                        side_effect=_grant_slylandro_cloak,
                     ),
                 ],
             ),
