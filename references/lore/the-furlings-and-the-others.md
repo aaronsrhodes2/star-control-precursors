@@ -108,11 +108,24 @@ The game leaves several things genuinely uncertain, never resolved on screen:
 
 These should never be explained in dialog. They live in player speculation, like the Rainbow Worlds did in SC2.
 
-## 9. Art Direction Note (per Aaron's direction)
+## 9. The Three-Pillar Variation Principle (the game's core design philosophy)
 
-Visual fidelity for alien characters works in two layers:
+**Static assets become wallpaper.** This is the truth that defines Star Control Zero's design. SC2 had great art, great music, great dialog — and players muted the music, skipped the dialog, and stopped noticing the art, because every encounter was visually, sonically, and verbally identical to the last one. The work was wasted.
 
-- **Per-species base**: a single high-quality static portrait generated up-front via Stable Diffusion (using the local `flask-sd` service on `localhost:5000`). This is the "species archetype" — the look of a typical Slylandro, or a typical Mycon biot.
-- **Per-individual variation**: each *individual* alien encounter applies subtle variation (color palette shifts, feature offsets, accessory variation, fur-pattern noise) so the third Slylandro you meet doesn't look identical to the first. Variation is driven either by SD img2img with prompt jitter, or by shader-based post-processing on the base, seeded by the encounter's identity.
-- The variation is *subtle*. A Slylandro always reads as a Slylandro. The point is to suggest individuals, not to make every encounter visually unique.
-- Static during conversation: portraits don't animate. Aliens are visually still. The motion is in the words.
+Star Control Zero rejects identity-by-repetition. Three pillars of the game produce *varied output around a fixed identity*:
+
+1. **Dialog** — the LLM renders surface text over a deterministic FSM. Same gameplay outcome, different words. A Slylandro Recorder you meet in Act 1 doesn't say the same things as another Slylandro Recorder you meet in Act 3. (See `notes.md`, the dialog architecture section.)
+2. **Visual** — AI-generated per-species base portraits with subtle per-individual variation. **No two Slylandro look identical.** A young Slylandro Recorder has a different hue and outline density from an ancient Slylandro Drifter — but both are unmistakably Slylandro. (See `species-precursor-era.md`, the Diversity Charter section.)
+3. **Music** — per-context music varies on every playback (tempo, stem mute/unmute, key, lead instrument, section order) so the Slylandro theme you hear on the third encounter is recognizably the Slylandro theme but a different arrangement than the first. State-driven music stems also reflect your relationship with the species — their theme literally changes as your `awe` drops or `worry` rises. (See `music-system.md`.)
+
+The shared philosophy: **identity comes from the center, variation comes from the rim.** Each species, each music context, each NPC has a defined *core* (the things that make it *that thing*) and a defined *vector of variation* (the things that make this individual instance distinct from other instances). The game's runtime navigates that variation deliberately.
+
+The cost of this approach is more authoring work per asset (stems instead of stereo mixes, archetype + variation parameters instead of fixed portraits, prompts and FSMs instead of canned text). The win is that players keep the music on, look at every alien, and read every line — for hours. That is what the principle buys.
+
+### Art direction details
+
+- **Per-species base portrait**: a single high-quality static portrait per species, generated via the local `flask-sd` service. This is the species archetype.
+- **Per-individual variation**: each individual encounter applies a subtle delta — color palette shifts, feature offsets, accessory variation, fur-pattern noise — driven by the species' Individual Diversity Vectors (see `species-precursor-era.md`). Variation is seeded deterministically by encounter ID; same NPC encountered twice looks the same.
+- **No two individuals identical**, ever. The diversity must be visible at a glance even if subtle.
+- **Static during conversation**: portraits don't animate. The motion is in the words.
+- **Ships too**: each enemy ship in melee gets a tiny visual delta from the canonical art — a slightly different paint scheme on a Cleanser cruiser, a different spore pattern on a rogue biot. The principle applies to every visible entity in the game.

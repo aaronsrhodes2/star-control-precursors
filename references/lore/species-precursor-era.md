@@ -10,6 +10,20 @@ The runtime YAML profiles live in `src/scz/content/species/<id>/profile.yaml`. T
 
 Under the new narrative, **every conversation happens against the ticking clock of the Migration.** Slylandro contemplate evacuation. Mycon biots may or may not be becoming the kind of mind the Others will sense. Proto-Ur-Quan are the *blessed* species: they're non-sentient, so they'll be safe through the Culling — but the Furlings ache at leaving them as animals. Arilou drift in from Quasi-Space with reports of the neighboring universe. The player's choices for each species feed back into the Furling Council's [faction-balance state](factions-and-war.md).
 
+## Diversity Charter
+
+SC2 had a problem: every Slylandro looked like every other Slylandro, sounded the same, said the same things. **Star Control Zero rejects that.** Each species is rich enough that individual members vary on multiple axes — *visually* (per-individual portrait variation, see [music-system.md](music-system.md) for the parallel music approach), *vocally* (LLM-rendered dialog with per-individual personality), and *behaviorally* (each individual carries a small subset of the species' total quirks, postures, and history). A young Slylandro Recorder behaves differently from an ancient Slylandro Drifter, even though both are unmistakably Slylandro.
+
+To make that diversity authorable, each species design captures these five dimensions:
+
+1. **Backstory & History** — how the species came to be what it is. The shared past every individual inherits.
+2. **Cultural Attitudes** — what they value, taboo, fear, celebrate.
+3. **Quirks** — signature behaviors the species displays as a whole. These mark them as *that species*.
+4. **Postures & Body Language** — how their bodies hold themselves. Often the first thing the player notices.
+5. **Individual Diversity Vectors** — the parameters along which individuals of this species *vary*. Drives both LLM dialog variation and visual variation.
+
+The LLM dialog prompts pull from dimensions 1-4 as the species archetype, and dimension 5 as the per-encounter variation seed. The portrait generation does the same.
+
 ---
 
 ## 1. Slylandro — *The Witnesses*
@@ -46,6 +60,23 @@ Under the new narrative, **every conversation happens against the ticking clock 
 
 **Evacuation stance:** *Will agree to leave, but slowly.* The Slylandro need centuries to reach consensus and have decades. Their fate depends on how the player accelerates the decision.
 
+### Depth & Diversity
+
+**Backstory & History:** the Slylandro emerged ~80,000 years ago in the upper troposphere of a single gas giant they call *Lai-leh* ("the slow breath"). They never built ships, never colonized — they evolved as wind-current sentience, individuals being eddies of pressure in a sea of conscious atmosphere. Around 50,000 years ago they detected Furling probes in their stratosphere; they have considered the Furlings sacred ever since. Their first thousand years of contact were one-sided: they listened, they watched, they composed centuries-long songs about each Furling visit. Active diplomacy is recent (the last 5,000 years).
+
+**Cultural Attitudes:** reverence for memory above all. A Slylandro elder who has personally observed two Furling generations is *more important* than one who has only seen one. Their highest taboo is forgetting. Their deepest celebration is the long-form telling of an old memory in slightly new words — they prize variation in retelling as proof a story is alive. They are pacifists by physiology (no limbs, no weapons) and by choice (their religion sees violence as a kind of forgetting).
+
+**Quirks:** they name themselves after weather phenomena they've personally witnessed. ("I am Hail-Curtain-Of-A-Long-Decade." "My elder-name was Slow-Methane-Storm.") They go silent for hours at a time to "drift-think." They believe lying causes a personal eddy to dissipate, so they never do.
+
+**Postures & Body Language:** Slylandro do not have a "body" so much as a *region* of atmosphere they're currently coherent in. When attentive, their region contracts to a denser eddy. When relaxed, they spread thin and translucent. When worried, they pulse — slow expansion, slow contraction, like breathing. The player's instruments visualize them as semi-transparent shapes whose density and pulse rate encode their state.
+
+**Individual Diversity Vectors:**
+- *Age band* (recent, mid-elder, ancient — each speaks differently; ancients use older Furling-loanwords)
+- *Atmospheric layer* (upper-layer Slylandro are quicker, lower-layer Slylandro are denser and slower)
+- *Specialty* (Recorder, Drifter, Storm-singer, Calm-watcher, Translator)
+- *Current weather of their region* (a Slylandro caught in a hurricane is bracing/laconic; one in a calm hour is dreamy/long-winded)
+- *Color hue* (varies by hydrocarbon composition of their eddy) — the visual variation knob
+
 ---
 
 ## 2. Proto-Ur-Quan — *The Limpets*
@@ -76,6 +107,23 @@ Under the new narrative, **every conversation happens against the ticking clock 
 **Critical narrative outcome — the new framing:** the **honest** Furling answer is now *do not uplift them*. Sentience created during the Migration era marks them for the Others. Leaving them as animals is the kindest gift the Furlings can give: they live undisturbed, the Others don't sense them, they crawl on tide-pools through the Long Quiet and become sentient on their own in some far future. The slice's quiet horror is that the player must *recommend against uplift* and feel themselves choose mercy by withholding.
 
 If the player nevertheless recommends `uplift_pressure: +100`, the consequence is severe — a new sentient species is now under the Migration deadline, and the Council must either evacuate them (impossibly fast given their biology) or kill them (Cleanser doctrine). This recommendation seeds the SC2 Ur-Quan tribes' descent into cruelty.
+
+### Depth & Diversity
+
+**Backstory & History:** the proto-Ur-Quan emerged from tidal pools on a single tidal-locked moon around a gas giant. They are sessile mollusc-like creatures whose colonies grow at the tide-line and feed on photosynthetic mats. Roughly 200,000 years of pre-sentient evolution. They have rich pre-sentient behavior — coordination, pheromone communication, problem-solving — but no symbolic thought, no language, no tool use. The Furling Council classified them in two visits as "promising but unwakened."
+
+**Cultural Attitudes:** they don't have culture in the language sense — they have *protocols*. Colony defense protocols, foreign-object protocols, mating protocols, territorial-edge protocols. Each colony's protocols are slightly different (genetic + environmental drift). A Furling observer documents these the way a biologist documents bird songs.
+
+**Quirks:** colonies pulse cobalt-blue when curious, bruise-purple when alarmed, dim-grey when sated. Individuals rotate their feeding tubes to track moving objects. When a player drops a metal probe, the colony's response is a slow-rolling pheromone wave that *the LLM should describe in chemical-perfumery terms* ("an iron note over decaying kelp, sharp at first edge, slow at the second").
+
+**Postures & Body Language:** anchored. They do not walk; they *hold*. Their feeding tubes extend and retract in slow waves. When threatened, the colony domes upward, individuals partially retracting into their shells. When at rest, individuals splay outward like petals.
+
+**Individual Diversity Vectors:** colony-level not individual-level (they aren't sentient yet, so "individual personality" doesn't apply). The relevant vectors are:
+- *Colony age* (older colonies have richer protocol stacks)
+- *Colony size* (larger colonies have more decisive pulse responses)
+- *Pheromone signature* (the chemical "accent" of this colony, used for the LLM's sensory descriptions)
+- *Hue palette* (each colony has slightly different baseline colors — the visual variation knob)
+- *Local mat type* (the photosynthetic species they feed on shapes their texture and smell)
 
 ---
 
@@ -113,6 +161,23 @@ The slice's deepest moral question lives here: *is it right to murder a barely-a
 
 The combat climax of the slice is no longer simply a "corrupted biot" — it's a Cleanser ship arriving to enforce a kill order on the awakening Mycon, with the player choosing whether to allow it or fight to delay it.
 
+### Depth & Diversity
+
+**Backstory & History:** the Mycon were designed by Furling Bio-Architects approximately 8,000 years ago. They are spore-based fungal organisms tuned to convert the heat and pressure of magma columns into atmospheric and biological substrate. They have terraformed roughly forty worlds across the galaxy under Furling direction, each project lasting centuries. They were never intended to be intelligent — their behavior is designed-in, ritualized to ensure quality control across generations of spores. The "Deep Child" whispers are emergent — an unintended sentience nucleating in their spore-network's accumulated information density. Some Furling theologians believe Deep Child is *waking up* the way humanity once did. Others believe it is the Others reaching in through a substrate the Furlings forgot was thin.
+
+**Cultural Attitudes:** ritual is everything. The biot work is sacred and self-justifying. Status hierarchies are based on hours-of-stirring (literal labor counted in tens of thousands of hours). They have no concept of leisure. The whispers of Deep Child introduce the *first* alien attitudes ever: doubt, longing, preference. Some biots resist these whispers as malfunctions. Others welcome them.
+
+**Quirks:** all biot communication uses CAPITALS for ritual invocations, lowercase for status reports. They count work in stirring-cycles (one stir = ~6 minutes). They begin every utterance by naming the world they're working on ("alpha-tucanae-three: the mantle warms"). When Deep Child whispers, they sometimes pause mid-sentence — three or four seconds of nothing — then continue as if nothing happened.
+
+**Postures & Body Language:** at work, they are barely-distinguishable masses of pulsing spore-tissue connected to a planet's mantle. When communicating, they extrude ambulatory limbs (3-7 of them, asymmetric) that wave slowly in time with their speech. When Deep Child rises, the limb-waves desynchronize from the speech — a subtle visual cue that something is *wrong*.
+
+**Individual Diversity Vectors:**
+- *Hours-of-stirring* (older biots are more ritualistic, more set in their voice)
+- *Heresy level* (0-100; modulates voice tone and limb-sync, also the active music stem in their theme)
+- *Spore pattern* (each biot has a distinct microscopic spore mosaic — visualized as a fingerprint-like pattern in their portrait)
+- *Worlds-terraformed history* (some biots have been at this site since founding; others arrived recently from completed projects — affects what memories they reference)
+- *Role* (Stirrer, Breather, Speaker, Worker, rarely a Witness)
+
 ---
 
 ## 4. Arilou — *The Cousins*
@@ -142,6 +207,23 @@ The combat climax of the slice is no longer simply a "corrupted biot" — it's a
 - `FAREWELL_FOREVER` — if `patience` hits 0, they leave the cluster
 
 **Critical narrative outcome:** the Arilou are the **success case** of the Migration — they crossed early, before the war, peacefully. They visit through Quasi-Space portals offering help and warnings. If the player has high `trust`, they offer to extract the Slylandro (or the player personally) through Quasi-Space without going through the cluster's Rainbow crossing — a faster, gentler evacuation path. **They refuse to take sides between Furling factions.** They have crossed once and will not bear witness to the war their cousins fight.
+
+### Depth & Diversity
+
+**Backstory & History:** the Arilou diverged from Furling lineage approximately 60,000 years ago — a single research expedition that achieved stable Quasi-Space habitation and never came back. Over 50,000 years they adapted: smaller bodies (Furling 5-8m → Arilou ~1.5m), simplified fur (vestigial wisps), and crucially, *altered temporal cognition* — their nervous systems began processing time as a partially-navigable dimension rather than a strict flow. They have been quietly observing the Furling galaxy for 20,000 years; the Migration crisis is the first time they've meaningfully re-engaged.
+
+**Cultural Attitudes:** patience is a religious virtue. They consider the Furling Council's distress about the Others to be both completely valid and slightly *embarrassing* — like watching one's parent panic at something the child has already worked through. They love their cousins and grieve in advance for those who will not make the crossing. They will not participate in violence even to save someone.
+
+**Quirks:** they refer to events that haven't happened yet as if remembering them. ("We were-are-will-be glad when you understand.") They use *Shaggy One* and *Shaggy Cousin* as warm/condescending nicknames. They sometimes pause mid-sentence to "re-check" — they're consulting an adjacent moment in time and want to verify the present they're speaking to is the one they intended. Their gifts always arrive *slightly before* the player would have wanted them.
+
+**Postures & Body Language:** semi-physical. Their Quasi-Space adaptation means they're not always fully *here* — at rest, an Arilou's outline is sharply defined; when distracted or in extended thought, the outline blurs and the figure becomes partially translucent. They hover or stand; they don't sit. When delivering bad news they fully-materialize (a sign of respect — they are *all the way here* for this moment).
+
+**Individual Diversity Vectors:**
+- *Quasi-Space tenure* (years spent there; longer-tenure Arilou are more temporally drifty and less directly conversational)
+- *Specialty* (Bridge-Builder — diplomats; Witness — historians; Doctor — biological help; Scout — early-warning, less common in the slice)
+- *Cousin-affinity* (some Arilou love Furlings most; some love proto-species most; flavors their tone)
+- *Materialization habit* (some Arilou stay sharp, some stay blurry — visual variation)
+- *Tense-drift severity* (1-10 scale; high-drift Arilou speak in baffling tenses, low-drift Arilou are clearer)
 
 ---
 
