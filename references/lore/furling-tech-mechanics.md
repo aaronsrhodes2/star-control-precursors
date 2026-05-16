@@ -92,6 +92,29 @@ This eliminates ~half of SC2's busywork without removing the *interesting* resou
 
 The ship's silhouette in combat / star-system view **changes based on installed modules.** A heavily-shielded ship looks different from a fast scout, even if they're the same base hull. The variation layer applies on top of *that* — every Cleanser cruiser is one base + module config + per-instance variation, so they all look related but distinct.
 
+## Orbit-Cloak and Hyperspace Pursuit (gameplay flow canon)
+
+Two related player-experience commitments captured from Aaron's design notes:
+
+### Orbital capture is forgiving + cinematic
+
+- Approaching a planet in System view smoothly transitions to the Scanning view; the planet's gravity *grabs* the ship and the camera zooms in.
+- **The capture radius is generous.** SC2's biggest anti-pattern here — "missing the orbit because you didn't align precisely" — does not exist in our game. If the player is close enough, they're captured.
+- The Scanning view shows the planet as a **gorgeous spinning 3D body**, AI-generated per (star_x, star_y, planet_index) seed via the variation principle. Visual wow-moment of the slice.
+
+### In-orbit cloak (combat-safe zone)
+
+- The moment the ship is in orbit (Planet Scan or Planet Surface scenes), it is **cloaked**. No hyperspace encounter can touch you while you scan, gather, or talk to a planet-bound species.
+- Lore frame: the warp pod's emission is masked by the planet's mass/gravity well.
+- The cloak makes Planet Scan and Planet Surface safe-zones for thinking, dialog, and decision-making — the SC2 equivalent of being inside a star system.
+
+### Uncloak on leaving orbit + Hyperspace pursuit
+
+- Leaving orbit (returning to System view) drops the cloak.
+- The player must fly back out of the system; enemy ships may be **actively pursuing** them in hyperspace once exposed.
+- Per-species warp-pod colors (see `src/scz/content/species_visual.py`) make pursuers identifiable on sight — a magenta pod on your tail is an Androsynth, a green-black one is a Proto-Qor-Ah, etc.
+- Time Drive is the player's escape hatch if pursuit becomes unwinnable (5-minute rewind, per Time Drive canon).
+
 ## Anti-Annoyances to Watch For (don't recreate SC2's mistakes)
 
 - **No "you must visit this NPC every game-week" mechanic.** SC2's Melnorme was great but felt artificial. Our NPCs come to you, or are at fixed locations the player visits when they want to.
