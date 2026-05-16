@@ -16,7 +16,7 @@ import pygame
 
 from scz.engine.scene import Scene
 from scz.hyperspace.starmap import STAR_COLOR_RGB, STAR_TYPE_RADIUS
-from scz.system.planet import Planet, generate_system
+from scz.system.planet import Planet  # generate_system kept for legacy/test paths
 
 
 # How big the system is in system-local coords; the scene auto-fits to window
@@ -75,13 +75,19 @@ class SystemScene(Scene):
             from scz.content.beta_corvi import beta_corvi_planets
             self.planets = beta_corvi_planets()
         else:
-            self.planets = generate_system(
-                star_x=star["x"],
-                star_y=star["y"],
-                star_type=star["type"],
-                star_color=star["color"],
-                cluster_name=star.get("cluster_name", "unknown"),
-            )
+            # UQM-faithful procgen — mirrors SC2's planet placement for
+            # every unnamed star. Uses the ORIGINAL SC2-era star coords
+            # as the RNG seed so the resulting maps match canonical SC2,
+            # then applies small Furling-era tweaks per system on top.
+            from scz.system.uqm_procgen import generate_uqm_system
+            # The star dict may have been time-shifted by the precursor-
+            # era derivation. If it carries an "original_x/y" pair, use
+            # that for the seed; otherwise use the current x/y.
+            seed_star = dict(star)
+            if "original_x" in star and "original_y" in star:
+                seed_star["x"] = star["original_x"]
+                seed_star["y"] = star["original_y"]
+            self.planets = generate_uqm_system(seed_star)
         # Player position in system-local coords (origin = the star).
         # Spawn just inside the boundary on the +x axis facing inward.
         max_orbit = max((p.orbit_radius for p in self.planets), default=200.0)
