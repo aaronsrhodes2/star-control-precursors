@@ -35,6 +35,11 @@ RESOURCE_VISUAL: dict[str, dict] = {
     "USEFUL":  {"color": (180, 130, 220), "size": 6},   # violet
     "BIO":     {"color": (120, 230, 130), "size": 6},   # green
     "ENERGY":  {"color": (255, 220, 100), "size": 7},   # gold
+    # Quest-item "deposits" — special pickups that aren't real resources.
+    # They sit on the surface visually like a deposit and the tractor
+    # beam collects them, but PlanetSurfaceScene routes them to game
+    # flags / uninstalled_modules instead of game.cargo.
+    "PACKAGE_SCANNER_MK3": {"color": (255, 230, 140), "size": 10},  # bright gold
 }
 
 

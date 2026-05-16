@@ -108,11 +108,12 @@ def walk_orbit_and_surface() -> TestScript:
         1  Hyperspace
         2  Mh-Lai System (home)
         3  Mh-Lai Orbit
-        4  Arilou Outpost System
-        5  Arilou Sanctuary Orbit
-        6  Star System (Sol)
-        7  Planet Orbit (Sol I)
-        8  Planet Surface (Sol I)
+        4  Furlmart Orbit
+        5  Arilou Outpost System
+        6  Arilou Sanctuary Orbit
+        7  Star System (Sol)
+        8  Planet Orbit (Sol I)
+        9  Planet Surface (Sol I)
         ...
     """
     s = TestScript()
@@ -126,8 +127,8 @@ def walk_orbit_and_surface() -> TestScript:
     s.press("open_switcher")
     s.wait(0.5)
 
-    # Navigate 7 entries down to "Planet Orbit (Sol I)"
-    for _ in range(7):
+    # Navigate 8 entries down to "Planet Orbit (Sol I)"
+    for _ in range(8):
         s.press("menu_down")
         s.wait(0.12)
     s.press("confirm")
@@ -236,7 +237,7 @@ def walk_arilou_sage() -> TestScript:
     # ----- Step 4: Jump to Arilou Sanctuary Orbit via switcher -----
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(5):    # entry index 5 = "Arilou Sanctuary Orbit"
+    for _ in range(6):    # entry index 6 = "Arilou Sanctuary Orbit"
         s.press("menu_down")
         s.wait(0.15)
     s.press("confirm")
@@ -282,15 +283,16 @@ def walk_arilou_sage() -> TestScript:
     s.wait(0.6)
     s.expect_scene("QuasiSpaceScene")
 
-    # ----- Step 10: Fly to "near the Hearth" portal -----
-    # We spawn at the Arilou portal (qs=(1600, 1000)). The Hearth portal is
-    # at qs=(400, 1000). Direction: (-1, 0). At QS_PLAYER_SPEED=900,
-    # 1200 units takes 1.33 wall-sec = ~4.0 game-sec at 3x speed. Then
-    # PORTAL_USE_RADIUS = 80; we want to stop just at the portal.
-    s.move(-1.0, 0.0, 1.4)    # ~3.78 wall-sec of motion, covers 1190 of 1200
-    s.wait(0.1)
-    s.press("confirm")
-    s.wait(0.6)
+    # ----- Step 10: Fly into "near the Hearth" portal -----
+    # Portals auto-capture on collision (gravitational suck-in, no button
+    # press required — per Aaron's design). Spawn at Arilou portal
+    # (qs=(1600, 1000)); Hearth portal at (400, 1000). Hold full-left
+    # for long enough to reach it; auto-capture fires the moment the
+    # ship crosses inside PORTAL_USE_RADIUS=80.
+    s.set_axis(-1.0, 0.0)
+    s.wait(2.0)             # generous — capture will fire mid-hold
+    s.release_axis()
+    s.wait(0.4)
     s.expect_scene("HyperspaceScene")
 
     # ----- Step 11: Autopilot toward Mh-Lai -----
@@ -350,8 +352,8 @@ def walk_super_melee() -> TestScript:
         9  Station — Mh-Lai
         10 Dialog — Cmdr Halia
         11 Dialog — Arilou Sage
-        12 Quasi-Space
-        13 Super Melee   <— target
+        13 Quasi-Space
+        14 Super Melee   <— target
     """
     s = TestScript()
     s.set_speed(3.0)
@@ -360,10 +362,10 @@ def walk_super_melee() -> TestScript:
     s.wait(0.6)
     s.expect_scene("MainMenuScene")
 
-    # Open scene switcher and navigate to "Super Melee" (entry 13)
+    # Open scene switcher and navigate to "Super Melee" (entry 14)
     s.press("open_switcher")
     s.wait(0.5)
-    for _ in range(13):
+    for _ in range(14):
         s.press("menu_down")
         s.wait(0.12)
     s.press("confirm")
@@ -413,10 +415,77 @@ def walk_super_melee() -> TestScript:
     return s
 
 
+def walk_tutorial_beat_3() -> TestScript:
+    """Tutorial Beat 3 — collect the Scanner Mk III package from Furlmart.
+
+    Pass state:
+      - PlanetSurfaceScene on Furlmart entered
+      - Package deposit (PACKAGE_SCANNER_MK3) tractored
+      - game.flags["scanner_mk3_collected"] set True
+      - game.flags["scanner_mk3_in_cargo"] set True
+      - game.uninstalled_modules["scanner_mk3"] >= 1
+      - Lander lifts off back to PlanetOrbitScene cleanly
+
+    Uses the scene switcher to jump straight to Furlmart Orbit instead
+    of walking the player to it from Mh-Lai. In-system planet intercept
+    is fiddly to script and the test isn't validating that path; it's
+    validating the package pickup loop.
+
+    Switcher entry 4 = "Furlmart Orbit" — see scenes/switcher.py.
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Tutorial Beat 3 — collect Scanner Mk III from Furlmart")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # Open scene switcher → Furlmart Orbit (entry 4)
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(4):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # A → Deploy Lander → PlanetSurfaceScene
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetSurfaceScene")
+
+    # Lander spawns at (0.5, 0.95). Package injected at (0.5, 0.5).
+    # LANDER_SPEED = 0.20 surface-units/sec; tractor radius = 0.030.
+    # Hold "up" (move_y = -1) for 2.3 game-sec → lander travels 0.46
+    # units → y ≈ 0.49 → distance to package at (0.5, 0.5) ≈ 0.014
+    # → well within tractor range. Auto-collected, scanner_mk3_collected
+    # flag set by PlanetSurfaceScene._on_pickup.
+    s.set_axis(0.0, -1.0)
+    s.wait(2.3)
+    s.release_axis()
+    s.wait(0.3)
+
+    s.expect_flag("scanner_mk3_collected", True)
+    s.expect_flag("scanner_mk3_in_cargo", True)
+
+    # B → lift off → back to PlanetOrbitScene
+    s.press("cancel")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    s.set_speed(1.0)
+    s.log("Beat 3 complete. Scanner Mk III is in the cargo hold.")
+    s.wait(0.8)
+    s.end()
+    return s
+
+
 # Registry — main.py uses this to look up scripts by name.
 SCRIPTS = {
     "walk_tutorial_path":      walk_tutorial_path,
     "walk_orbit_and_surface":  walk_orbit_and_surface,
     "walk_arilou_sage":        walk_arilou_sage,
     "walk_super_melee":        walk_super_melee,
+    "walk_tutorial_beat_3":    walk_tutorial_beat_3,
 }

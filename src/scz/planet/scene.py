@@ -89,7 +89,6 @@ class PlanetSurfaceScene(Scene):
         planet,            # planet dict OR Planet dataclass with .name, .type, .index
         star: dict,        # parent star dict
         parent_scene_cls=None,  # the scene class to return to (SystemScene)
-        ship_cargo: dict | None = None,  # cumulative cargo across visits (TBD persistence)
     ) -> None:
         super().__init__()
         # Accept either a Planet dataclass or a dict
@@ -113,11 +112,9 @@ class PlanetSurfaceScene(Scene):
         self.lander_heading: float = math.pi  # facing down/inward
         self.lander_returning: bool = False    # set True briefly on exit
 
-        # Cumulative cargo (per resource type)
-        self.cargo: dict[str, int] = ship_cargo if ship_cargo is not None else {
-            "COMMON": 0, "USEFUL": 0, "BIO": 0, "ENERGY": 0,
-        }
-        self.cargo_total: int = sum(self.cargo.values())
+        # Cargo lives on Game (game.cargo) so it persists across planet
+        # visits, dialog scenes, station screens, etc. The reference is
+        # resolved in on_enter so we can access self.game.
 
         # Procedurally place deposits (deterministic per planet)
         self.deposits: list[Deposit] = generate_deposits(
@@ -128,6 +125,7 @@ class PlanetSurfaceScene(Scene):
         # Track collection events for the HUD (recent pickups)
         self.recent_pickup: tuple[str, int] | None = None  # (type, value)
         self.recent_pickup_age: float = 0.0
+        self.recent_pickup_label: str = ""    # custom label (e.g. for the package)
 
         # Set in on_enter
         self.surface_rect: pygame.Rect | None = None
@@ -154,6 +152,17 @@ class PlanetSurfaceScene(Scene):
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
 
+        # Quest-item injection — Tutorial Beat 3. On Furlmart, if the
+        # Scanner Mk III hasn't been collected yet, place the package
+        # at the center of the surface so the player can't miss it.
+        if (
+            self.planet_name == "Furlmart"
+            and not self.game.flags.get("scanner_mk3_collected", False)
+        ):
+            self.deposits.append(
+                Deposit(type="PACKAGE_SCANNER_MK3", x=0.5, y=0.5, value=1)
+            )
+
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         # Movement
         mx, my = inp.move_x, inp.move_y
@@ -172,6 +181,7 @@ class PlanetSurfaceScene(Scene):
 
         # Tractor-beam pull: anything inside TRACTOR_BEAM_RADIUS is collected
         # (no shooting, no killing — life and minerals are both pulled).
+        assert self.game is not None
         for d in self.deposits:
             if d.collected:
                 continue
@@ -179,10 +189,7 @@ class PlanetSurfaceScene(Scene):
             dy = d.y - self.lander_y
             if math.hypot(dx, dy) <= TRACTOR_BEAM_RADIUS:
                 d.collected = True
-                self.cargo[d.type] = self.cargo.get(d.type, 0) + d.value
-                self.cargo_total += d.value
-                self.recent_pickup = (d.type, d.value)
-                self.recent_pickup_age = 0.0
+                self._on_pickup(d)
 
         if self.recent_pickup is not None:
             self.recent_pickup_age += dt
@@ -264,9 +271,10 @@ class PlanetSurfaceScene(Scene):
         # Recent pickup floater
         if self.recent_pickup is not None and self.font is not None:
             rtype, rvalue = self.recent_pickup
-            color = RESOURCE_VISUAL[rtype]["color"]
+            color = RESOURCE_VISUAL.get(rtype, {"color": (255, 240, 160)})["color"]
             alpha = max(0, 255 - int(self.recent_pickup_age / 2.5 * 255))
-            text = self.font.render(f"tractored  +{rvalue} {rtype.lower()}", True, color)
+            label = self.recent_pickup_label or f"tractored  +{rvalue} {rtype.lower()}"
+            text = self.font.render(label, True, color)
             text.set_alpha(alpha)
             tw, _ = text.get_size()
             # Float above the lander
@@ -282,14 +290,20 @@ class PlanetSurfaceScene(Scene):
     # ------------------------------------------------------------------
 
     def snapshot(self) -> dict | None:
-        """Surface visits ARE rewindable — restore position + collected state."""
+        """Surface visits ARE rewindable — restore position + collected state.
+
+        Game.cargo + game.flags survive rewinds independently (Time Drive
+        treats them as the player's accumulated state — collected loot
+        stays collected, mineral counts are not rewound). Only the
+        scene-local geometry (lander pos, which deposits THIS visit
+        cleared) is captured here.
+        """
         return {
             "scene": "PlanetSurfaceScene",
             "planet_name": self.planet_name,
             "lander_x": self.lander_x,
             "lander_y": self.lander_y,
             "lander_heading": self.lander_heading,
-            "cargo": dict(self.cargo),
             "collected_indices": [i for i, d in enumerate(self.deposits) if d.collected],
         }
 
@@ -300,11 +314,35 @@ class PlanetSurfaceScene(Scene):
         self.lander_x = float(state["lander_x"])
         self.lander_y = float(state["lander_y"])
         self.lander_heading = float(state["lander_heading"])
-        self.cargo = dict(state["cargo"])
-        self.cargo_total = sum(self.cargo.values())
         collected = set(state.get("collected_indices", []))
         for i, d in enumerate(self.deposits):
             d.collected = i in collected
+
+    def _on_pickup(self, d: Deposit) -> None:
+        """Apply the side-effects of a tractor collection.
+
+        Default behavior: add to game.cargo by type + value, set the
+        floater. Subclasses or special deposit types can override the
+        label / set additional game.flags (e.g. for the Scanner Mk III
+        package — see deposits.py).
+        """
+        assert self.game is not None
+        if d.type == "PACKAGE_SCANNER_MK3":
+            # Quest item — sets the cargo flag for the upgrade pickup
+            self.game.flags["scanner_mk3_in_cargo"] = True
+            self.game.flags["scanner_mk3_collected"] = True
+            self.game.uninstalled_modules["scanner_mk3"] = (
+                self.game.uninstalled_modules.get("scanner_mk3", 0) + 1
+            )
+            self.recent_pickup = ("PACKAGE_SCANNER_MK3", 1)
+            self.recent_pickup_label = "Scanner Mk III  ·  install at station"
+            self.recent_pickup_age = 0.0
+        else:
+            # Ordinary mineral / bio / energy resource
+            self.game.cargo[d.type] = self.game.cargo.get(d.type, 0) + d.value
+            self.recent_pickup = (d.type, d.value)
+            self.recent_pickup_label = ""
+            self.recent_pickup_age = 0.0
 
     # ------------------------------------------------------------------
     # Helpers
@@ -365,8 +403,11 @@ class PlanetSurfaceScene(Scene):
         # Lander status
         screen.blit(self.font.render("LANDER DEPLOYED", True, (200, 200, 220)), (x, y))
         y += 24
+        assert self.game is not None
+        cargo = self.game.cargo
+        cargo_total = sum(cargo.values())
         screen.blit(
-            self.font.render(f"Cargo: {self.cargo_total} / {LANDER_CARGO_MAX}", True, (160, 180, 200)),
+            self.font.render(f"Cargo: {cargo_total} / {LANDER_CARGO_MAX}", True, (160, 180, 200)),
             (x, y),
         )
         y += 32
@@ -376,7 +417,7 @@ class PlanetSurfaceScene(Scene):
         y += 24
         for rtype in ("COMMON", "USEFUL", "BIO", "ENERGY"):
             color = RESOURCE_VISUAL[rtype]["color"]
-            label = f"  {rtype.lower():8s}  {self.cargo.get(rtype, 0):4d}"
+            label = f"  {rtype.lower():8s}  {cargo.get(rtype, 0):4d}"
             screen.blit(self.font.render(label, True, color), (x, y))
             y += 22
 

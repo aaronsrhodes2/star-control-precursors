@@ -63,6 +63,28 @@ class Game:
         # Examples: has_quasispace_portal, talked_to_arilou_sage.
         self.flags: dict[str, object] = {}
 
+        # Persistent cargo hold — minerals collected by the lander across
+        # all planet visits accumulate here. Scenes that show or mutate
+        # cargo (PlanetSurfaceScene, TradeScene, ShipCustomizationScene)
+        # read/write this dict. Keys: COMMON / USEFUL / BIO / ENERGY.
+        self.cargo: dict[str, int] = {
+            "COMMON": 0, "USEFUL": 0, "BIO": 0, "ENERGY": 0,
+        }
+        # Council credits — earned by selling minerals at Trade, spent
+        # on ship modules at Customization.
+        self.credits: int = 0
+        # Ship modules — slot → module_id (or None). Effective stats
+        # are computed by summing the base ship + each installed module's
+        # deltas. Updated by ShipCustomizationScene; read by anywhere
+        # that needs the player's combat-effective stats.
+        self.ship_modules: dict[str, str | None] = {
+            "hull": None, "drive": None, "weapon": None,
+            "sensor": None, "field": None, "crew_1": None, "crew_2": None,
+        }
+        # Uninstalled modules sitting in inventory waiting to be slotted.
+        # Key: module_id, value: count (most modules are unique so usually 1)
+        self.uninstalled_modules: dict[str, int] = {}
+
     def set_scene(self, scene: Scene) -> None:
         """Replace the current scene with a new one."""
         # Setting a new main scene closes any active overlay.

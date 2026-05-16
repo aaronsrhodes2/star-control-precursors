@@ -94,6 +94,13 @@ class QuasiSpaceScene(Scene):
         self.player_heading: float = math.pi
         self.time_in_scene: float = 0.0
 
+        # The entry portal is "muted" for auto-capture until the player
+        # leaves its radius — otherwise spawning on a portal would
+        # immediately re-eject through it. Set to None for the debug/
+        # switcher entry (no spawn portal, no mute).
+        self.entry_portal_index: int | None = entry_portal_index
+        self.entry_portal_muted: bool = entry_portal_index is not None
+
         # Set in on_enter
         self.screen_w: int = 0
         self.screen_h: int = 0
@@ -131,10 +138,24 @@ class QuasiSpaceScene(Scene):
         self.player_x = max(0.0, min(QS_MAX, self.player_x))
         self.player_y = max(0.0, min(QS_MAX, self.player_y))
 
-        # A → use the nearest portal in range
-        if inp.confirm and self.game is not None:
+        # Auto-suck — when the ship enters a portal's radius, it's pulled
+        # through automatically (gravitational capture, no button press).
+        # The entry portal is muted until the player leaves its radius
+        # (so spawning on it doesn't immediately re-eject).
+        if self.game is not None:
+            if self.entry_portal_muted and self.entry_portal_index is not None:
+                ep = self.portals[self.entry_portal_index]
+                d_entry = math.hypot(
+                    self.player_x - ep.qs_x, self.player_y - ep.qs_y
+                )
+                if d_entry > PORTAL_USE_RADIUS:
+                    self.entry_portal_muted = False
             portal = self._portal_in_range()
-            if portal is not None:
+            if portal is not None and not (
+                self.entry_portal_muted
+                and self.entry_portal_index is not None
+                and portal is self.portals[self.entry_portal_index]
+            ):
                 from scz.hyperspace.scene import HyperspaceScene
                 hyper = HyperspaceScene()
                 hyper.player_x = float(portal.exit_x)
@@ -142,14 +163,12 @@ class QuasiSpaceScene(Scene):
                 self.game.set_scene(hyper)
                 return
 
-        # B → exit Quasi-Space without using a portal. We snap back to
-        # hyperspace at "wherever we came in" — for the slice this is the
-        # entry portal's exit_x/y. If no entry was provided, drop near
-        # Mh-Lai.
+        # B → bail out of Quasi-Space without a portal transition. We snap
+        # back to hyperspace at "wherever we came in" — for the slice this
+        # is the entry portal's exit_x/y.
         if inp.cancel and self.game is not None:
             from scz.hyperspace.scene import HyperspaceScene
             hyper = HyperspaceScene()
-            # Use the first portal's exit as a sane fallback
             ep = self.portals[0]
             hyper.player_x = float(ep.exit_x)
             hyper.player_y = float(ep.exit_y)
@@ -291,7 +310,7 @@ class QuasiSpaceScene(Scene):
             )
             y += 22
 
-        # Use prompt
+        # Capture prompt
         if in_range is not None:
             y += 8
             pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2
@@ -302,7 +321,7 @@ class QuasiSpaceScene(Scene):
             )
             screen.blit(
                 self.font.render(
-                    f"[A]  USE  ·  exit at {in_range.label}", True, c
+                    f"CAPTURING  ·  exit at {in_range.label}", True, c
                 ),
                 (x, y),
             )
@@ -311,7 +330,9 @@ class QuasiSpaceScene(Scene):
             y += 8
             screen.blit(
                 self.font.render(
-                    "Fly to a portal (within 80) to use it", True, (150, 160, 180)
+                    "Fly into a portal — capture is automatic",
+                    True,
+                    (150, 160, 180),
                 ),
                 (x, y),
             )
@@ -323,8 +344,8 @@ class QuasiSpaceScene(Scene):
         controls_y += 28
         for line in (
             "Move:    WASD / L-stick",
-            "Use:     A / Space",
-            "Exit:    Backspace / B",
+            "Portal:  fly into it (automatic capture)",
+            "Bail:    Backspace / B",
             "Quit:    Esc / Start",
         ):
             screen.blit(self.font.render(line, True, (130, 150, 180)), (x, controls_y))

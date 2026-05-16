@@ -88,18 +88,25 @@ def _entries():
         planet = next(p for p in sys.planets if p.name == "Mh-Lai")
         return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
 
+    def _furlmart_orbit():
+        from scz.system.scene import SystemScene as _Sys
+        sys = _Sys(home_star())
+        planet = next(p for p in sys.planets if p.name == "Furlmart")
+        return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
+
     return [
         # Live scenes
         ("Main Menu",                lambda: MainMenuScene(),                pygame.K_0),
         ("Hyperspace (galaxy)",      lambda: HyperspaceScene(),              pygame.K_1),
         ("Mh-Lai System (home)",     _home_system,                           pygame.K_2),
         ("Mh-Lai Orbit",             _mh_lai_orbit,                          pygame.K_3),
-        ("Arilou Outpost System",    _arilou_system,                         pygame.K_4),
-        ("Arilou Sanctuary Orbit",   _arilou_sanctuary_orbit,                pygame.K_5),
-        ("Star System (Sol)",        _fresh_system,                          pygame.K_6),
-        ("Planet Orbit (Sol I)",     _fresh_orbit,                           pygame.K_7),
-        ("Planet Surface (Sol I)",   _fresh_planet,                          pygame.K_8),
-        ("Station — Mh-Lai",         lambda: StationScene(),                 pygame.K_9),
+        ("Furlmart Orbit",           _furlmart_orbit,                        pygame.K_4),
+        ("Arilou Outpost System",    _arilou_system,                         pygame.K_5),
+        ("Arilou Sanctuary Orbit",   _arilou_sanctuary_orbit,                pygame.K_6),
+        ("Star System (Sol)",        _fresh_system,                          pygame.K_7),
+        ("Planet Orbit (Sol I)",     _fresh_orbit,                           pygame.K_8),
+        ("Planet Surface (Sol I)",   _fresh_planet,                          pygame.K_9),
+        ("Station — Mh-Lai",         lambda: StationScene(),                 None),
         ("Dialog — Cmdr Halia",      lambda: DialogScene(commander_halia()), None),
         ("Dialog — Arilou Sage",     lambda: DialogScene(arilou_sage()),     None),
         ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
