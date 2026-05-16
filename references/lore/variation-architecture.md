@@ -95,15 +95,17 @@ That separation is what makes the per-asset authoring cost worth it. The archite
 
 This sits cleanly on top of the existing Phase plan:
 
-- **Phase 2 (Engine MVP)** — build the static engine. Fixed portraits, fixed dialog text, fixed music tracks (mono mix), fixed ships. No variation yet. Game is playable but samey. **Ship this first.**
-- **Phase 3.5 (Variation Layer)** — after engine works, add the variation layer. Start with the highest-ROI variation:
+- **Phase 2 (Engine MVP)** — build the static engine. Fixed portraits, fixed dialog text (per-state canned lines, no LLM), fixed music tracks (mono mix), fixed ships, deterministic combat AI without personality variation. No variation layer yet. Game is playable but samey. **Ship this first — full slice end-to-end before any variation work begins.**
+- **Phase 3.5 (Variation Layer)** — ONLY after the slice is playable end-to-end. The variation layer is a deliberate later phase, not concurrent work. Add in ROI order:
   1. LLM dialog rendering (the most repetitive thing in SC2 was the same words; biggest win to vary)
   2. Per-individual portraits (visible at every encounter; large impact per unit of work)
   3. Music stem mixing (player keeps the music on; huge for retention)
 - **Phase 4 (Content)** — author the variation parameters per species, per track, per ship as we author the slice content.
 - **Phase 5 (Polish)** — add the small-touches variation: UI clicks, explosion timing, name generators.
 
-The slice can be playable at the end of Phase 2 with the engine alone. The variation layer turns it from playable to *atmospheric*. The progression is incremental and de-risked.
+The slice MUST be playable at the end of Phase 2 with the engine alone — no LLM, no variation, just deterministic FSM dialog and static everything. The variation layer turns it from playable to *atmospheric* in a later pass. The progression is incremental and de-risked: every LLM/variation feature has a working static fallback we can ship without.
+
+> **Deferral discipline (per Aaron, 2026-05)**: do not add LLM hooks, prompt scaffolding, or variation knobs to engine code until the full static slice is traversable end-to-end. Code added "in anticipation" of LLM integration tends to get the design wrong and the constraints wrong. We'll know the right shape only after the static engine forces us to confront which decisions need variation.
 
 ## What This Catalog Costs
 

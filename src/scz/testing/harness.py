@@ -155,6 +155,10 @@ class TestHarness:
         self.successes: list[str] = []
         self.last_action_label: str = "(starting)"
         self.done: bool = False
+        # Diagnostics: presses that arrived in a frame where another press
+        # of the same button was already pending (and would coalesce in
+        # pulse[button] = True). Printed in the test summary.
+        self._coalesce_warnings: list[str] = []
 
     def step(self, dt: float) -> None:
         """Called each frame by Game.run after input.update(). Advances
@@ -172,6 +176,14 @@ class TestHarness:
         kind = action.kind
         p = action.params
         if kind == "press":
+            # If a press is being queued the same frame as a previous press
+            # for the same button, the second one would coalesce and be lost
+            # (inp.menu_down is a single bool). Track this so we can stretch
+            # the pulse across frames.
+            if self.pulse.get(p["button"]):
+                self._coalesce_warnings.append(
+                    f"[t={self.game_time:5.2f}] coalesced press {p['button']}"
+                )
             self.pulse[p["button"]] = True
             self.last_action_label = f"press {p['button']}"
         elif kind == "set_axis":
@@ -256,4 +268,11 @@ class TestHarness:
             print("\nFailures:")
             for f in self.failures:
                 print("  " + f)
+        if self._coalesce_warnings:
+            print(
+                f"\n{len(self._coalesce_warnings)} press(es) coalesced "
+                "into the same frame (lost):"
+            )
+            for w in self._coalesce_warnings:
+                print("  " + w)
         print("=" * 60)

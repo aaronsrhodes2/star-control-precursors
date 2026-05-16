@@ -21,10 +21,10 @@ def _entries():
     """Build the list at import time. Each factory returns a fresh scene."""
     from scz.hyperspace.scene import HyperspaceScene
     from scz.system.scene import SystemScene
+    from scz.system.orbit import PlanetOrbitScene
     from scz.planet.scene import PlanetSurfaceScene
     from scz.scenes.stubs import (
         MainMenuScene,
-        PlanetScanScene,
         ObservationScene,
         MeleeCombatScene,
         CouncilScene,
@@ -37,6 +37,7 @@ def _entries():
     from scz.dialog.characters import commander_halia
     from scz.dialog.scene import DialogScene
     from scz.station.scene import StationScene
+    from scz.content.home_system import home_star
 
     # Returning Hyperspace/System/Planet to fresh instances loses state,
     # which is expected for the debug switcher — we're jumping for testing.
@@ -51,6 +52,16 @@ def _entries():
         planet = next(p for p in sys.planets if p.type != "GAS_GIANT")
         return PlanetSurfaceScene(planet=planet, star=star, parent_scene_cls=_Sys)
 
+    def _fresh_orbit():
+        from scz.hyperspace.scene import STARMAP_JSON
+        from scz.hyperspace.starmap import Starmap
+        from scz.system.scene import SystemScene as _Sys
+        sm = Starmap(STARMAP_JSON)
+        star = next(s for s in sm.stars if s.get("defined_name") == "SOL_PROTO")
+        sys = _Sys(star)
+        planet = next(p for p in sys.planets if p.type != "GAS_GIANT")
+        return PlanetOrbitScene(planet=planet, star=star, parent_scene_cls=_Sys)
+
     def _fresh_system():
         from scz.hyperspace.scene import STARMAP_JSON
         from scz.hyperspace.starmap import Starmap
@@ -58,19 +69,23 @@ def _entries():
         star = next(s for s in sm.stars if s.get("defined_name") == "SOL_PROTO")
         return SystemScene(star)
 
+    def _home_system():
+        return SystemScene(home_star())
+
     return [
         # Live scenes
         ("Main Menu",              lambda: MainMenuScene(),         pygame.K_0),
         ("Hyperspace (galaxy)",    lambda: HyperspaceScene(),       pygame.K_1),
-        ("Star System (Sol)",      _fresh_system,                   pygame.K_2),
-        ("Planet Surface (Sol I)", _fresh_planet,                   pygame.K_3),
-        ("Station — Mh-Lai",       lambda: StationScene(),          pygame.K_4),
-        ("Dialog — Cmdr Halia",    lambda: DialogScene(commander_halia()), pygame.K_5),
+        ("Mh-Lai System (home)",   _home_system,                    pygame.K_2),
+        ("Star System (Sol)",      _fresh_system,                   pygame.K_3),
+        ("Planet Orbit (Sol I)",   _fresh_orbit,                    pygame.K_4),
+        ("Planet Surface (Sol I)", _fresh_planet,                   pygame.K_5),
+        ("Station — Mh-Lai",       lambda: StationScene(),          pygame.K_6),
+        ("Dialog — Cmdr Halia",    lambda: DialogScene(commander_halia()), pygame.K_7),
         # Stubs
-        ("Planet Scan",            lambda: PlanetScanScene(),       pygame.K_6),
-        ("Observation Encounter",  lambda: ObservationScene(),      pygame.K_7),
-        ("Melee Combat",           lambda: MeleeCombatScene(),      pygame.K_8),
-        ("Furling Council",        lambda: CouncilScene(),          pygame.K_9),
+        ("Observation Encounter",  lambda: ObservationScene(),      pygame.K_8),
+        ("Melee Combat",           lambda: MeleeCombatScene(),      pygame.K_9),
+        ("Furling Council",        lambda: CouncilScene(),          None),
         ("Ship Customization",     lambda: ShipCustomizationScene(), None),
         ("Cluster Status Board",   lambda: ClusterStatusBoardScene(), None),
         ("Bio-Archive",            lambda: ArchiveScene(),          None),

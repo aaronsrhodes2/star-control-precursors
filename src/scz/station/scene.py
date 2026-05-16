@@ -24,7 +24,7 @@ ACTIONS: list[tuple[str, str]] = [
     ("Talk to Commander Halia", "talk"),
     ("Trade resources           (stub)", "trade"),
     ("Upgrade ship              (stub)", "upgrade"),
-    ("Undock — fly to hyperspace", "undock"),
+    ("Undock — Mh-Lai system view", "undock"),
 ]
 
 
@@ -89,8 +89,11 @@ class StationScene(Scene):
             elif action == "upgrade":
                 pass
             elif action == "undock":
-                from scz.hyperspace.scene import HyperspaceScene
-                self.game.set_scene(HyperspaceScene())
+                # Undock drops us in the Mh-Lai system view. From there
+                # the player flies past the outer orbit to enter hyperspace.
+                from scz.content.home_system import home_star
+                from scz.system.scene import SystemScene
+                self.game.set_scene(SystemScene(home_star()))
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((6, 8, 20))

@@ -37,6 +37,22 @@ if TYPE_CHECKING:
     from scz.system.scene import SystemScene
 
 
+class _ReconstitutedPlanet:
+    """Minimal Planet stand-in for handing back to PlanetOrbitScene on lift-off.
+
+    We've forgotten the original orbit geometry by the time we leave the
+    surface, but PlanetOrbitScene only needs name/type/index/color. This
+    avoids carrying the full Planet dataclass through PlanetSurfaceScene.
+    """
+    __slots__ = ("index", "name", "type", "color")
+
+    def __init__(self, index: int, name: str, type: str, color):
+        self.index = index
+        self.name = name
+        self.type = type
+        self.color = color
+
+
 # Lander movement speed in surface-local units per second.
 # Surface coords are 0..1; this is "screen-fractions per second."
 LANDER_SPEED = 0.20
@@ -173,11 +189,27 @@ class PlanetSurfaceScene(Scene):
             if self.recent_pickup_age > 2.5:
                 self.recent_pickup = None
 
-        # Exit to system scene on CANCEL
-        if inp.cancel and self.game is not None and self.parent_scene_cls is not None:
-            # Build a system scene at the same star
-            sys_scene = self.parent_scene_cls(self.star)
-            self.game.set_scene(sys_scene)
+        # Exit on CANCEL — lift off back to orbit (the safe-zone).
+        # The orbit scene's "Leave Orbit" then drops back to the system view.
+        if inp.cancel and self.game is not None:
+            from scz.system.orbit import PlanetOrbitScene
+            from scz.system.scene import SystemScene as _Sys
+            # Reconstitute the orbit context. We need a Planet object;
+            # PlanetSurfaceScene normalizes its inputs, so re-build a
+            # Planet-shaped object from what we kept.
+            planet = _ReconstitutedPlanet(
+                index=self.planet_index,
+                name=self.planet_name,
+                type=self.planet_type,
+                color=self.planet_color,
+            )
+            self.game.set_scene(
+                PlanetOrbitScene(
+                    planet=planet,
+                    star=self.star,
+                    parent_scene_cls=_Sys,
+                )
+            )
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((6, 6, 18))

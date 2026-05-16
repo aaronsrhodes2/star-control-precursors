@@ -210,17 +210,22 @@ class ObservationScene(StubScene):
 
 class MeleeCombatScene(StubScene):
     TITLE = "Melee Combat"
-    SUBTITLE = "1v1 ship battle — three-layer AI (engine + personality + banter)"
+    SUBTITLE = "1v1 ship battle — Newtonian momentum, asteroids, AI captains"
     ACCENT = (255, 140, 140)
     DETAILS = [
         "Top-down 2D space combat with Newtonian momentum, mirroring SC2.",
         "",
-        "Three-layer AI:",
-        "   1. Engine    — deterministic threshold-based decisions (UQM model)",
-        "   2. Personality — per-encounter axes (aggression, caution, hesitation, ...)",
-        "                    same ship class, different captain feel",
-        "   3. Banter    — LLM-rendered taunts/pleas at trigger moments",
-        "                  (COMBAT_START, HALF_HEALTH, NEAR_MISS, BLED_OUT, ...)",
+        "Slice scope (Phase 2):",
+        "   • Engine AI — deterministic threshold-based decisions (UQM model)",
+        "   • [X] AUTO-FIGHT toggle — the same AI flies the player's ship",
+        "         too. Lets the test harness drive combat encounters without",
+        "         scripting stick deflections, and lets the player offload",
+        "         fights they don't feel like flying. Identical AI both sides",
+        "         is a fair fight on raw ship balance.",
+        "",
+        "Deferred to Phase 4+ (after the static engine works end-to-end):",
+        "   • Per-captain personality axes (aggression / caution / hesitation)",
+        "   • LLM banter at trigger moments (COMBAT_START, HALF_HEALTH, ...)",
         "",
         "Slice combat climax: a Cleanser Furling cruiser arriving to enforce a",
         "kill order. Super Melee mode (super-melee sandbox) reuses this scene.",

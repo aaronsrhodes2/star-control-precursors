@@ -32,20 +32,31 @@ PLANET_INTERACT_RADIUS = 40.0
 class SystemScene(Scene):
     """View of a single star system with orbiting planets."""
 
-    def __init__(self, star: dict) -> None:
+    def __init__(self, star: dict, planets: list[Planet] | None = None) -> None:
         """
         star: the star dict from the starmap (must include x, y, type, color,
               and cluster_name fields).
+        planets: optional override. If None, planets are procedurally
+                 generated from the star's coordinates (UQM convention).
+                 The home system and other lore-significant systems pass a
+                 hand-built list.
         """
         super().__init__()
         self.star = star
-        self.planets: list[Planet] = generate_system(
-            star_x=star["x"],
-            star_y=star["y"],
-            star_type=star["type"],
-            star_color=star["color"],
-            cluster_name=star.get("cluster_name", "unknown"),
-        )
+        if planets is not None:
+            self.planets = planets
+        elif star.get("home_system"):
+            # Mh-Lai / home star — hand-built planet layout
+            from scz.content.home_system import home_planets
+            self.planets = home_planets()
+        else:
+            self.planets = generate_system(
+                star_x=star["x"],
+                star_y=star["y"],
+                star_type=star["type"],
+                star_color=star["color"],
+                cluster_name=star.get("cluster_name", "unknown"),
+            )
         # Player position in system-local coords, starts at the "edge"
         max_orbit = max((p.orbit_radius for p in self.planets), default=200.0)
         self.player_x: float = max_orbit + 80.0
@@ -101,13 +112,15 @@ class SystemScene(Scene):
             self.player_x = self.player_x * (max_dist / dist)
             self.player_y = self.player_y * (max_dist / dist)
 
-        # Confirm near a planet → land on it (unless gas giant)
+        # Confirm near a planet → enter orbit (unless gas giant).
+        # The orbit scene is the canonical safe-zone where Furling cloak
+        # engages and Time Drive snapshots; from there A deploys lander.
         if inp.confirm and self.game is not None:
             target = self._planet_in_landing_range()
             if target is not None and target.type != "GAS_GIANT":
-                from scz.planet.scene import PlanetSurfaceScene
+                from scz.system.orbit import PlanetOrbitScene
                 self.game.set_scene(
-                    PlanetSurfaceScene(
+                    PlanetOrbitScene(
                         planet=target,
                         star=self.star,
                         parent_scene_cls=SystemScene,
@@ -352,7 +365,7 @@ class SystemScene(Scene):
                 )
                 screen.blit(
                     self.font.render(
-                        f"[LAND on {landing_target.name}:  A / Space]", True, c
+                        f"[ENTER ORBIT of {landing_target.name}:  A / Space]", True, c
                     ),
                     (x, y),
                 )

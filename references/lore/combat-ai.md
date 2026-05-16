@@ -220,12 +220,23 @@ Banter calls are async (LLM has latency). Implementation:
 
 Personality vectors are deterministic, so a save-and-reload reproduces the same fight. Banter text is *not* deterministic by default (LLMs are sampled), but we can seed the LLM call for reproducibility if that matters.
 
+## Auto-Fight Toggle (in every combat scene)
+
+Combat exposes an **AUTO-FIGHT** toggle (default off) — when on, the engine AI flies the *player's* ship using the same decision function as the opponent. This is a first-class feature, not a debug switch:
+
+- **Testability**: the test harness can launch combat encounters and watch them resolve without scripting stick deflections or weapon timing. The harness can validate "this fight is winnable" with a single binary outcome.
+- **Player offload**: occasionally the player just wants to see a fight resolve — handing the wheel to the AI for a routine encounter is a fine option. We're not building a twitch game.
+- **Fairness check**: identical AI on both sides is a clean test of raw ship balance. If a fight is unwinnable on auto-fight against a fair opponent, the ship balance is wrong.
+
+Mechanically simple — same `<ship>_intelligence` function the opponent uses, with the player's ship state and the opponent as `enemy_of_concern`. Player can toggle mid-fight (X button or similar) to take over.
+
 ## Slice Scope
 
-Phase 2 ships static AI — pure UQM-style decision functions per ship class. No personality, no banter. The Cleanser cruiser fight is winnable, balanced, predictable.
+Phase 2 ships static AI — pure UQM-style decision functions per ship class. **No personality vector, no LLM banter — both are deferred to a later phase**. The Cleanser cruiser fight is winnable, balanced, predictable. The auto-fight toggle ships with Phase 2 from day one.
 
-Phase 3.5 adds:
-1. **Personality vector** — easy win, ~1 week of work to add the threshold modulation to the 2-3 ship classes the slice has
+After the full static game works end-to-end (every scene playable, every species in slice has a real encounter, the slice can be completed without LLM):
+
+1. **Personality vector** — ~1 week of work to add the threshold modulation to the 2-3 ship classes the slice has
 2. **Banter layer** — reuses the dialog renderer infrastructure; another ~1 week
 
 Phase 6 (post-slice):
