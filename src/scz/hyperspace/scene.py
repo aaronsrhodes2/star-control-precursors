@@ -126,10 +126,10 @@ class HyperspaceScene(Scene):
             self.zoom += (self.target_zoom - self.zoom) * t
 
         # --- Autopilot engage / disengage ---
-        # Y / open_map toggles autopilot: if off, snap to nearest star in
-        # heading cone; if on, manual stick deflection (or another press)
-        # disengages.
-        if inp.open_map:
+        # A / Space (confirm) toggles autopilot: if off, snap to nearest star
+        # in heading cone; if on, another press (or manual stick deflection)
+        # disengages. Y / M (open_map) also works as a secondary binding.
+        if inp.confirm or inp.open_map:
             if self.autopilot_target is None:
                 self.autopilot_target = self._find_autopilot_target()
             else:
@@ -183,17 +183,12 @@ class HyperspaceScene(Scene):
             self.game.quit()
             return
 
-        # Confirm near a star → enter that system (manual override of autopilot)
-        if inp.confirm and self.game is not None:
-            nearby = self.starmap.find_nearest_star(
-                self.player_x, self.player_y, max_distance=STAR_ENTER_RADIUS
-            )
-            if nearby is not None:
-                dx = nearby["x"] - self.player_x
-                dy = nearby["y"] - self.player_y
-                if math.hypot(dx, dy) <= STAR_ENTER_RADIUS:
-                    from scz.system.scene import SystemScene
-                    self.game.set_scene(SystemScene(nearby))
+        # Note: pressing A near a star engages autopilot (handled above);
+        # autopilot then auto-enters the system as soon as the ship is
+        # within STAR_ENTER_RADIUS. So there's no separate "press A to
+        # enter system" branch — A always means "engage autopilot." If
+        # you're already adjacent to a star, the engage-and-auto-enter
+        # happens in the same frame and feels like a direct enter.
 
     def _find_autopilot_target(self) -> dict | None:
         """Find the nearest star ahead of the ship within AUTOPILOT_CONE_DEG.
@@ -326,34 +321,26 @@ class HyperspaceScene(Scene):
     def _draw_player_ship(
         self, screen: pygame.Surface, x: float, y: float, heading: float
     ) -> None:
-        # Draw the Furling warp pod (red teardrop wrapping the ship).
+        # Draw the Furling warp pod (red field wrapping the ship).
         # Player is always FURLING_SCOUT for now; other species' ships will
         # get their own colors when encounter rendering lands.
         self._draw_warp_pod(screen, x, y, heading, "FURLING_SCOUT")
 
-        # Triangle with tip in heading direction — the ship itself, inside
-        # the pod
-        size = 8
-        local = [(0, -size), (-size * 0.6, size * 0.5), (size * 0.6, size * 0.5)]
-        cos_h = math.cos(heading)
-        sin_h = math.sin(heading)
-        pts = []
-        for lx, ly in local:
-            rx = lx * cos_h - ly * sin_h
-            ry = lx * sin_h + ly * cos_h
-            pts.append((x + rx, y + ry))
-        pygame.draw.polygon(screen, (255, 255, 255), pts)
-        pygame.draw.polygon(screen, (90, 180, 255), pts, 1)
+        # The ship itself — a structural ring (carries modular upgrades)
+        # with a central oriented "football" hull (crew, engineering,
+        # propulsion, command). Heading communicated by the football's
+        # orientation, not a separate triangle.
+        self._draw_furling_scout(screen, x, y, heading)
 
         # Always-visible locator ring + pulsing outer ring so the ship is
         # findable even when zoomed all the way out.
         pulse = (math.sin(pygame.time.get_ticks() / 400) + 1) / 2  # 0..1
-        pygame.draw.circle(screen, (90, 180, 255), (int(x), int(y)), 32, 1)
+        pygame.draw.circle(screen, (90, 180, 255), (int(x), int(y)), 38, 1)
         pygame.draw.circle(
             screen,
             (60 + int(pulse * 70), 130 + int(pulse * 60), 200),
             (int(x), int(y)),
-            int(42 + pulse * 6),
+            int(48 + pulse * 6),
             1,
         )
 
@@ -362,7 +349,58 @@ class HyperspaceScene(Scene):
         if self.small_font is not None:
             label = self.small_font.render("FURLING SCOUT", True, (180, 220, 255))
             lw, _ = label.get_size()
-            screen.blit(label, (x - lw / 2, y + 42))
+            screen.blit(label, (x - lw / 2, y + 50))
+
+    def _draw_furling_scout(
+        self, screen: pygame.Surface, x: float, y: float, heading: float
+    ) -> None:
+        """Draw the ship inside its warp pod: a structural ring (modular
+        upgrade slots) with a central oriented football (crew + engineering
+        + propulsion + command). See species_visual.py for color palette
+        when we extend to other ships.
+        """
+        # Forward unit vector (heading 0 = up, +y down in screen)
+        fx = math.sin(heading)
+        fy = -math.cos(heading)
+        # Sideways unit vector
+        sx = math.cos(heading)
+        sy = math.sin(heading)
+
+        # Outer hull ring — the modular upgrade carrier
+        ring_outer = 10
+        ring_inner = 7
+        pygame.draw.circle(screen, (200, 230, 255), (int(x), int(y)), ring_outer, 0)
+        pygame.draw.circle(screen, (50, 14, 20), (int(x), int(y)), ring_inner, 0)
+        pygame.draw.circle(screen, (160, 200, 240), (int(x), int(y)), ring_outer, 1)
+
+        # Central football hull — oriented oval along heading
+        football_long = 6.0  # half-length along heading
+        football_short = 3.0  # half-width perpendicular
+        n_points = 16
+        football_pts = []
+        for i in range(n_points):
+            t = i / n_points * 2.0 * math.pi
+            local_forward = football_long * math.cos(t)
+            local_side = football_short * math.sin(t)
+            football_pts.append(
+                (
+                    x + local_forward * fx + local_side * sx,
+                    y + local_forward * fy + local_side * sy,
+                )
+            )
+        pygame.draw.polygon(screen, (240, 245, 255), football_pts)
+        pygame.draw.polygon(screen, (100, 140, 200), football_pts, 1)
+
+        # Cross-hatching on the football (the "stitched" look from the
+        # warp-field reference image — suggests the hull's segmentation)
+        # Draw a forward "spine" line and 3 perpendicular ribs.
+        for rib_t in (-0.5, 0.0, 0.5):
+            rib_forward = rib_t * football_long * 0.8
+            ax = x + rib_forward * fx - football_short * 0.7 * sx
+            ay = y + rib_forward * fy - football_short * 0.7 * sy
+            bx = x + rib_forward * fx + football_short * 0.7 * sx
+            by = y + rib_forward * fy + football_short * 0.7 * sy
+            pygame.draw.line(screen, (100, 140, 200), (ax, ay), (bx, by), 1)
 
     def _draw_warp_pod(
         self,
@@ -372,74 +410,116 @@ class HyperspaceScene(Scene):
         heading: float,
         species_id: str = "FURLING_SCOUT",
     ) -> None:
-        """Draw a warp-drive pod — an asymmetric teardrop oriented along
-        heading. Color set comes from the species palette so each species
-        is identifiable on sight in hyperspace.
+        """Draw a warp-drive field — round body with a long forward needle.
+
+        Per Aaron's design (Alcubierre-style metric viewed top-down): the
+        front of the warp field points 'indefinitely out' from the ship,
+        a sharp leading-edge of compressed spacetime. The back is round,
+        where the calm 'bubble' contains the ship.
+
+        Forward is *always* extended, even when the ship isn't moving —
+        the field is a property of the pod, not a thrust effect.
         """
         colors = get_warp_pod_colors(species_id)
         interior = colors["interior"]
         rim = colors["rim"]
         glow = colors["glow"]
 
-        # Forward unit vector (heading 0 = up, +y down in screen)
+        # Forward and sideways unit vectors (heading 0 = up, +y down in screen)
         fx = math.sin(heading)
         fy = -math.cos(heading)
-        # Sideways unit vector (perpendicular, right of forward)
         sx = math.cos(heading)
         sy = math.sin(heading)
 
-        # Pod dimensions in pixels
-        pod_forward = 22.0   # length from center toward heading
-        pod_back = 14.0      # length from center away from heading
-        pod_side = 14.0      # half-width
+        # Field geometry
+        forward_tip = 56.0     # how far ahead the field's leading edge points
+        body_radius = 12.0     # round body where the ship sits
+        # Where the needle attaches to the body, measured as a half-angle
+        # from forward. Smaller = pointier needle; larger = stubbier.
+        needle_half_angle = math.radians(24)
 
-        # Build the pod outline as a polygon
-        n_points = 28
-        outer = []
-        for i in range(n_points):
-            t = i / n_points * 2.0 * math.pi
-            cos_t = math.cos(t)
-            sin_t = math.sin(t)
-            forward_amount = (pod_forward if cos_t > 0 else pod_back) * cos_t
-            side_amount = pod_side * sin_t
-            outer.append(
+        # Build the outline polygon. Start at the tip, go around the right
+        # side along the body's back-half arc, end back at the tip.
+        outline = []
+        # 1. The forward tip
+        outline.append(
+            (x + forward_tip * fx, y + forward_tip * fy)
+        )
+        # 2. Body arc — from right needle-attach all the way around the
+        # back to the left needle-attach.
+        #
+        # Right needle attach is at angle (-needle_half_angle) from forward
+        # (i.e. just to the right of straight ahead, at the body's edge).
+        # Left needle attach is at angle (+needle_half_angle).
+        #
+        # We sweep from the right side AROUND THE BACK to the left side.
+        # In our local frame: forward = +1 along the f-axis; right = +1
+        # along the s-axis. An angle of 0 is forward; positive angles rotate
+        # counterclockwise (i.e. toward +s = right).
+        # The right needle attach sits at angle = -needle_half_angle (toward right).
+        # The left needle attach sits at angle = +needle_half_angle (toward left).
+        # We go from -needle_half_angle through -π (straight back) to +needle_half_angle.
+        # That's a sweep of (2π - 2*needle_half_angle) in the counterclockwise direction.
+        arc_start = -needle_half_angle
+        arc_end = needle_half_angle - 2 * math.pi   # going counterclockwise
+        n_arc = 22
+        for i in range(n_arc + 1):
+            t = i / n_arc
+            angle = arc_start + (arc_end - arc_start) * t
+            # In local frame: forward component, side component
+            local_forward = math.cos(angle) * body_radius
+            local_side = -math.sin(angle) * body_radius
+            outline.append(
                 (
-                    x + forward_amount * fx + side_amount * sx,
-                    y + forward_amount * fy + side_amount * sy,
+                    x + local_forward * fx + local_side * sx,
+                    y + local_forward * fy + local_side * sy,
                 )
             )
 
-        # Outer glow — concentric translucent circles, species-tinted
-        glow_pad = 18
-        glow_w = int(max(pod_forward, pod_back) * 2 + glow_pad * 2)
-        glow_h = int(pod_side * 2 + glow_pad * 2)
-        glow_surf = pygame.Surface((glow_w, glow_h), pygame.SRCALPHA)
-        cx, cy = glow_w // 2, glow_h // 2
+        # Outer field glow — translucent, species-tinted halo
+        # Stretched along forward direction since the field is asymmetric
+        glow_long = int(forward_tip * 1.6)
+        glow_wide = int(body_radius * 3)
+        glow_surf = pygame.Surface((glow_long * 2, glow_wide * 2), pygame.SRCALPHA)
+        cx, cy = glow_long, glow_wide
         glow_rgb = glow[:3]
         glow_a = glow[3] if len(glow) > 3 else 60
-        for r, alpha_frac in (
-            (glow_w // 2, 0.25), (glow_w // 2 - 6, 0.5), (glow_w // 2 - 14, 0.85)
-        ):
-            if r > 0:
-                pygame.draw.circle(
-                    glow_surf,
-                    (*glow_rgb, int(glow_a * alpha_frac)),
-                    (cx, cy),
-                    r,
-                )
-        screen.blit(
-            glow_surf, (int(x - cx), int(y - cy)),
-            special_flags=pygame.BLEND_PREMULTIPLIED,
-        )
+        # Draw concentric ellipses (decreasing size, decreasing alpha)
+        for scale, alpha_frac in ((1.0, 0.18), (0.75, 0.35), (0.55, 0.6)):
+            rect = pygame.Rect(
+                int(cx - glow_long * scale),
+                int(cy - glow_wide * scale),
+                int(2 * glow_long * scale),
+                int(2 * glow_wide * scale),
+            )
+            pygame.draw.ellipse(
+                glow_surf,
+                (*glow_rgb, int(glow_a * alpha_frac)),
+                rect,
+            )
+        # The glow surface is oriented horizontally with major axis along x.
+        # Rotate to match heading. pygame.transform.rotate uses degrees and
+        # treats the surface's "right" as 0°. Our heading 0 = up, so we
+        # rotate by (90 - heading_degrees) to align the long axis forward.
+        heading_deg = math.degrees(heading)
+        rotated = pygame.transform.rotate(glow_surf, -heading_deg + 90)
+        rrect = rotated.get_rect(center=(int(x), int(y)))
+        # Shift the glow forward slightly so its center isn't at the ship
+        # but somewhere ahead — biases the bloom toward the leading edge.
+        shift = forward_tip * 0.18
+        rrect = rrect.move(int(shift * fx), int(shift * fy))
+        screen.blit(rotated, rrect, special_flags=pygame.BLEND_PREMULTIPLIED)
 
-        # Pod fill (dark interior)
-        pygame.draw.polygon(screen, interior, outer)
-        # Pod outline (brighter rim)
-        pygame.draw.polygon(screen, rim, outer, 2)
-        # Brighter front "arc" for direction sense — slightly brightened rim
-        front_hi_color = tuple(min(255, c + 50) for c in rim)
-        front_pts = [outer[0], outer[1], outer[n_points - 1]]
-        pygame.draw.lines(screen, front_hi_color, False, front_pts, 2)
+        # Field fill (dark interior — the warp bubble's calm region)
+        pygame.draw.polygon(screen, interior, outline)
+        # Field outline (brighter rim — the edge of warped spacetime)
+        pygame.draw.polygon(screen, rim, outline, 2)
+        # Brighter tip emphasis — the leading edge of the field
+        front_hi_color = tuple(min(255, c + 60) for c in rim)
+        # The first three outline points form the tip wedge
+        if len(outline) >= 4:
+            tip_pts = [outline[1], outline[0], outline[-1]]
+            pygame.draw.lines(screen, front_hi_color, False, tip_pts, 2)
 
     def _draw_autopilot_line(self, screen: pygame.Surface) -> None:
         """Line from ship to autopilot target, with a pulsing marker at the destination."""
@@ -623,11 +703,7 @@ class HyperspaceScene(Scene):
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Enter:     Space / A", (130, 150, 180)
-        )
-        controls_y += 22
-        self._hud_line(
-            screen, x, controls_y, "Autopilot: M / Y", (130, 150, 180)
+            screen, x, controls_y, "Autopilot: Space / A   (also M / Y)", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
