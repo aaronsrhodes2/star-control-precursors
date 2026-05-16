@@ -103,21 +103,22 @@ class SceneSwitcher(Scene):
                 self.game.close_overlay()
             return
 
-        # Move selection
-        # Discrete key/button events (already edge-triggered) handled below;
-        # for the analog stick, use a cooldown so holding doesn't flood.
-        moved = False
+        # Discrete D-pad / arrow keys (edge-triggered by InputManager)
+        if inp.menu_up:
+            self.selected = (self.selected - 1) % len(self.entries)
+        elif inp.menu_down:
+            self.selected = (self.selected + 1) % len(self.entries)
+
+        # Analog stick (continuous, with cooldown so holding doesn't flood)
         if self._axis_cooldown > 0:
             self._axis_cooldown -= dt
         else:
             if inp.move_y < -0.3:
                 self.selected = (self.selected - 1) % len(self.entries)
                 self._axis_cooldown = 0.18
-                moved = True
             elif inp.move_y > 0.3:
                 self.selected = (self.selected + 1) % len(self.entries)
                 self._axis_cooldown = 0.18
-                moved = True
 
         # Confirm → launch
         if inp.confirm:
@@ -153,7 +154,7 @@ class SceneSwitcher(Scene):
         screen.blit(title, ((w - tw) // 2, 80))
 
         sub = self.font.render(
-            "↑↓ / left-stick · Enter / A to launch · Esc / B to dismiss",
+            "Up/Down (D-pad, arrows, L-stick)  -  A / Space launch  -  B / Esc dismiss",
             True,
             (160, 180, 210),
         )

@@ -128,8 +128,8 @@ class HyperspaceScene(Scene):
         # --- Autopilot engage / disengage ---
         # A / Space (confirm) toggles autopilot: if off, snap to nearest star
         # in heading cone; if on, another press (or manual stick deflection)
-        # disengages. Y / M (open_map) also works as a secondary binding.
-        if inp.confirm or inp.open_map:
+        # disengages.
+        if inp.confirm:
             if self.autopilot_target is None:
                 self.autopilot_target = self._find_autopilot_target()
             else:
