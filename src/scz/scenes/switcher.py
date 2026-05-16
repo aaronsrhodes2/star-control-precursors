@@ -27,7 +27,6 @@ def _entries():
         MainMenuScene,
         ObservationScene,
         CouncilScene,
-        ShipCustomizationScene,
         ClusterStatusBoardScene,
         ArchiveScene,
     )
@@ -39,6 +38,8 @@ def _entries():
     from scz.content.arilou_outpost import arilou_outpost_star
     from scz.quasispace.scene import QuasiSpaceScene
     from scz.combat.super_melee import SuperMeleeScene
+    from scz.station.trade import TradeScene
+    from scz.station.customization import ShipCustomizationScene
 
     # Returning Hyperspace/System/Planet to fresh instances loses state,
     # which is expected for the debug switcher — we're jumping for testing.
@@ -111,10 +112,11 @@ def _entries():
         ("Dialog — Arilou Sage",     lambda: DialogScene(arilou_sage()),     None),
         ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
         ("Super Melee",              lambda: SuperMeleeScene(),              None),
+        ("Trade",                    lambda: TradeScene(),                   None),
+        ("Ship Customization",       lambda: ShipCustomizationScene(),       None),
         # Stubs
         ("Observation Encounter",    lambda: ObservationScene(),             None),
         ("Furling Council",          lambda: CouncilScene(),                 None),
-        ("Ship Customization",       lambda: ShipCustomizationScene(),       None),
         ("Cluster Status Board",     lambda: ClusterStatusBoardScene(),      None),
         ("Bio-Archive",              lambda: ArchiveScene(),                 None),
     ]

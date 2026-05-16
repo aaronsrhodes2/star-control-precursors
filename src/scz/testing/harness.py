@@ -131,6 +131,64 @@ class TestScript:
         )
         return self
 
+    def set_flag(self, key: str, value: Any) -> "TestScript":
+        """Seed a game flag from the test. Useful for testing downstream
+        scenes without walking the upstream prerequisite path."""
+        self.actions.append(
+            TestAction(self.cursor, "set_flag", {"key": key, "value": value})
+        )
+        return self
+
+    def set_cargo(self, cargo: dict[str, int]) -> "TestScript":
+        """Seed game.cargo from the test. Replaces (not adds to) existing
+        values for the specified types."""
+        self.actions.append(
+            TestAction(self.cursor, "set_cargo", {"cargo": dict(cargo)})
+        )
+        return self
+
+    def set_credits(self, value: int) -> "TestScript":
+        """Seed game.credits from the test."""
+        self.actions.append(
+            TestAction(self.cursor, "set_credits", {"value": int(value)})
+        )
+        return self
+
+    def expect_credits(self, expected: int) -> "TestScript":
+        self.actions.append(
+            TestAction(self.cursor, "expect_credits", {"expected": int(expected)})
+        )
+        return self
+
+    def expect_cargo(self, cargo_type: str, expected: int) -> "TestScript":
+        self.actions.append(
+            TestAction(
+                self.cursor, "expect_cargo",
+                {"type": cargo_type, "expected": int(expected)},
+            )
+        )
+        return self
+
+    def expect_module_installed(self, slot: str, module_id: str) -> "TestScript":
+        self.actions.append(
+            TestAction(
+                self.cursor, "expect_module_installed",
+                {"slot": slot, "module_id": module_id},
+            )
+        )
+        return self
+
+    def set_module_inventory(self, module_id: str, count: int) -> "TestScript":
+        """Seed game.uninstalled_modules[module_id] = count. Useful for
+        testing Customization without walking the upstream quest path."""
+        self.actions.append(
+            TestAction(
+                self.cursor, "set_module_inventory",
+                {"module_id": module_id, "count": int(count)},
+            )
+        )
+        return self
+
     def log(self, message: str) -> "TestScript":
         self.actions.append(TestAction(self.cursor, "log", {"msg": message}))
         return self
@@ -279,6 +337,74 @@ class TestHarness:
                 self.failures.append(msg)
                 print(msg)
             self.last_action_label = f"expect_flag {key}"
+        elif kind == "set_flag":
+            self.game.flags[p["key"]] = p["value"]
+            self.last_action_label = f"set_flag {p['key']}={p['value']!r}"
+        elif kind == "set_cargo":
+            for t, v in p["cargo"].items():
+                self.game.cargo[t] = int(v)
+            self.last_action_label = f"set_cargo {p['cargo']}"
+        elif kind == "set_credits":
+            self.game.credits = p["value"]
+            self.last_action_label = f"set_credits {p['value']}"
+        elif kind == "expect_credits":
+            expected = p["expected"]
+            actual = self.game.credits
+            if actual == expected:
+                msg = f"[t={self.game_time:5.2f}] OK   credits = {actual}"
+                self.successes.append(msg)
+                print(msg)
+            else:
+                msg = (
+                    f"[t={self.game_time:5.2f}] FAIL credits expected {expected}, "
+                    f"got {actual}"
+                )
+                self.failures.append(msg)
+                print(msg)
+            self.last_action_label = f"expect_credits {expected}"
+        elif kind == "expect_cargo":
+            t = p["type"]
+            expected = p["expected"]
+            actual = self.game.cargo.get(t, 0)
+            if actual == expected:
+                msg = f"[t={self.game_time:5.2f}] OK   cargo[{t}] = {actual}"
+                self.successes.append(msg)
+                print(msg)
+            else:
+                msg = (
+                    f"[t={self.game_time:5.2f}] FAIL cargo[{t}] expected "
+                    f"{expected}, got {actual}"
+                )
+                self.failures.append(msg)
+                print(msg)
+            self.last_action_label = f"expect_cargo {t} = {expected}"
+        elif kind == "expect_module_installed":
+            slot = p["slot"]
+            module_id = p["module_id"]
+            actual = self.game.ship_modules.get(slot)
+            if actual == module_id:
+                msg = (
+                    f"[t={self.game_time:5.2f}] OK   ship_modules[{slot}] = "
+                    f"{module_id!r}"
+                )
+                self.successes.append(msg)
+                print(msg)
+            else:
+                msg = (
+                    f"[t={self.game_time:5.2f}] FAIL ship_modules[{slot}] expected "
+                    f"{module_id!r}, got {actual!r}"
+                )
+                self.failures.append(msg)
+                print(msg)
+            self.last_action_label = f"expect_module {slot}={module_id}"
+        elif kind == "set_module_inventory":
+            mod_id = p["module_id"]
+            count = p["count"]
+            if count > 0:
+                self.game.uninstalled_modules[mod_id] = count
+            else:
+                self.game.uninstalled_modules.pop(mod_id, None)
+            self.last_action_label = f"set_module_inv {mod_id}={count}"
         elif kind == "log":
             print(f"[t={self.game_time:5.2f}] LOG  {p['msg']}")
             self.last_action_label = p["msg"]

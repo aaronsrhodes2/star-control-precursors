@@ -22,8 +22,8 @@ from scz.engine.scene import Scene
 # Menu actions — label and action key.
 ACTIONS: list[tuple[str, str]] = [
     ("Talk to Commander Halia", "talk"),
-    ("Trade resources           (stub)", "trade"),
-    ("Upgrade ship              (stub)", "upgrade"),
+    ("Trade resources", "trade"),
+    ("Upgrade ship", "upgrade"),
     ("Undock — Mh-Lai system view", "undock"),
 ]
 
@@ -84,10 +84,11 @@ class StationScene(Scene):
                     )
                 )
             elif action == "trade":
-                # Stub for now
-                pass
+                from scz.station.trade import TradeScene
+                self.game.set_scene(TradeScene())
             elif action == "upgrade":
-                pass
+                from scz.station.customization import ShipCustomizationScene
+                self.game.set_scene(ShipCustomizationScene())
             elif action == "undock":
                 # Undock drops us in the Mh-Lai system view. From there
                 # the player flies past the outer orbit to enter hyperspace.
