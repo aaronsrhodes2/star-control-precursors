@@ -56,6 +56,8 @@ class InputManager:
         self.menu_next: bool = False
         # Time Drive — engage chronometric rewind (5-min real-time)
         self.rewind: bool = False
+        # Debug: open the scene switcher (F1)
+        self.open_switcher: bool = False
 
     def _refresh_joysticks(self) -> None:
         self.joysticks = []
@@ -78,6 +80,7 @@ class InputManager:
         self.menu_prev = False
         self.menu_next = False
         self.rewind = False
+        self.open_switcher = False
 
         # ----- Keyboard (level axes from held keys) -----
         keys = pygame.key.get_pressed()
@@ -118,7 +121,11 @@ class InputManager:
         for ev in events:
             if ev.type == pygame.KEYDOWN:
                 if ev.key == pygame.K_ESCAPE:
-                    self.quit = True
+                    # Esc backs out of the current scene (cancel). The
+                    # outermost scene treats unhandled cancel as quit.
+                    # This prevents the "I pressed Esc and lost my game"
+                    # bug; window-close / Start button / Alt+F4 still quit.
+                    self.cancel = True
                 elif ev.key in (pygame.K_RETURN, pygame.K_SPACE):
                     self.confirm = True
                 elif ev.key == pygame.K_BACKSPACE:
@@ -133,6 +140,9 @@ class InputManager:
                     self.menu_next = True
                 elif ev.key == pygame.K_r:
                     self.rewind = True
+                elif ev.key == pygame.K_F1:
+                    # Debug: open the scene switcher
+                    self.open_switcher = True
 
             elif ev.type == pygame.JOYBUTTONDOWN:
                 if ev.button == XBOX_A:

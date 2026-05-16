@@ -191,6 +191,22 @@ class PlanetSurfaceScene(Scene):
         # Border
         pygame.draw.rect(screen, (40, 40, 70), self.surface_rect, 2)
 
+        # Persistent LIFT OFF prompt in top-right of the surface area
+        # (very visible — players miss the bottom-left controls hint)
+        if self.font is not None:
+            liftoff_font = pygame.font.SysFont("consolas", 22, bold=True)
+            liftoff_text = "[ LIFT OFF: Esc / B ]"
+            text_surf = liftoff_font.render(liftoff_text, True, (255, 230, 140))
+            tw, th = text_surf.get_size()
+            tx = self.surface_rect.right - tw - 16
+            ty = self.surface_rect.top + 16
+            # Background box for legibility against any terrain palette
+            pad = 8
+            box = pygame.Rect(tx - pad, ty - pad, tw + pad * 2, th + pad * 2)
+            pygame.draw.rect(screen, (20, 20, 40, 200), box)
+            pygame.draw.rect(screen, (180, 160, 100), box, 1)
+            screen.blit(text_surf, (tx, ty))
+
         # Deposits
         for d in self.deposits:
             if d.collected:

@@ -12,7 +12,6 @@ import argparse
 import sys
 
 from scz.engine.game import Game
-from scz.hyperspace.scene import HyperspaceScene
 
 
 def main() -> int:
@@ -27,6 +26,13 @@ def main() -> int:
     )
     parser.add_argument(
         "--height", type=int, default=None, help="Override logical height"
+    )
+    parser.add_argument(
+        "--scene",
+        default="menu",
+        choices=("menu", "hyperspace"),
+        help="Which scene to launch into (default: menu). "
+             "Use 'hyperspace' to skip the title screen.",
     )
     args = parser.parse_args()
 
@@ -46,7 +52,14 @@ def main() -> int:
         target_fps=60,
         fullscreen=fullscreen,
     )
-    game.set_scene(HyperspaceScene())
+
+    if args.scene == "hyperspace":
+        from scz.hyperspace.scene import HyperspaceScene
+        game.set_scene(HyperspaceScene())
+    else:
+        from scz.scenes.stubs import MainMenuScene
+        game.set_scene(MainMenuScene())
+
     game.run()
     return 0
 

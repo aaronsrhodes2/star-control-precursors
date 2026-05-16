@@ -95,6 +95,11 @@ class HyperspaceScene(Scene):
         self.player_x = max(0.0, min(UNIVERSE_MAX - 1, self.player_x))
         self.player_y = max(0.0, min(UNIVERSE_MAX - 1, self.player_y))
 
+        # Esc/cancel at top-level scene → quit game (no parent to back to)
+        if inp.cancel and self.game is not None:
+            self.game.quit()
+            return
+
         # Confirm near a star → enter that system
         if inp.confirm and self.game is not None:
             nearby = self.starmap.find_nearest_star(

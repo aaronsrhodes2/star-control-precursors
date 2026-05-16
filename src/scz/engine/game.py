@@ -41,17 +41,42 @@ class Game:
         self.running = True
         self.input = InputManager()
         self.current_scene: Scene | None = None
+        # An overlay scene is rendered on top of and intercepts input from
+        # the main scene without unloading it. Used for the F1 scene-
+        # switcher (and future modal dialogs).
+        self.overlay_scene: Scene | None = None
         self.target_fps = target_fps
         self.frame_count = 0
         self.time_drive = TimeDrive()
 
     def set_scene(self, scene: Scene) -> None:
         """Replace the current scene with a new one."""
+        # Setting a new main scene closes any active overlay.
+        self.close_overlay()
         if self.current_scene is not None:
             self.current_scene.on_exit()
         scene.game = self
         self.current_scene = scene
         scene.on_enter()
+
+    def open_overlay(self, scene: Scene) -> None:
+        """Open a modal overlay on top of the current scene.
+
+        The main scene is paused (not updated, but still rendered as
+        backdrop). Input goes to the overlay only. The overlay can
+        call close_overlay() to dismiss itself, or set_scene() to
+        replace the main scene entirely (which also closes the overlay).
+        """
+        if self.overlay_scene is not None:
+            self.overlay_scene.on_exit()
+        scene.game = self
+        self.overlay_scene = scene
+        scene.on_enter()
+
+    def close_overlay(self) -> None:
+        if self.overlay_scene is not None:
+            self.overlay_scene.on_exit()
+            self.overlay_scene = None
 
     def quit(self) -> None:
         """Request the loop to exit at end of current frame."""
@@ -72,14 +97,31 @@ class Game:
                     self.running = False
 
                 if self.current_scene is not None:
-                    # Time Drive sampling + rewind handling (engine layer)
+                    # F1 anywhere → open the scene switcher overlay.
+                    # Must be checked BEFORE updating scenes, and only when
+                    # no overlay is already up (so switcher's own F1 doesn't
+                    # toggle).
+                    if self.input.open_switcher and self.overlay_scene is None:
+                        from scz.scenes.switcher import SceneSwitcher
+                        self.open_overlay(SceneSwitcher())
+
+                    # Time Drive sampling + rewind handling (engine layer).
+                    # Only the main scene contributes to the rewind buffer.
                     self.time_drive.maybe_snapshot(self.current_scene)
                     self.time_drive.update(dt)
                     if self.input.rewind and self.time_drive.is_ready():
                         self.time_drive.rewind(self.current_scene)
 
-                    self.current_scene.update(dt, self.input)
+                    # Main scene always renders (as backdrop when overlay is up).
                     self.current_scene.render(self.screen)
+
+                    # Update the active scene. Overlay intercepts input if up.
+                    if self.overlay_scene is not None:
+                        self.overlay_scene.update(dt, self.input)
+                        self.overlay_scene.render(self.screen)
+                    else:
+                        self.current_scene.update(dt, self.input)
+
                     self.time_drive.render_overlay(self.screen)
 
                 pygame.display.flip()
