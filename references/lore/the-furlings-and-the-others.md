@@ -125,6 +125,23 @@ The game leaves several things genuinely uncertain, never resolved on screen:
 
 These should never be explained in dialog. They live in player speculation, like the Rainbow Worlds did in SC2.
 
+## 8b. Tone — The Humor Doctrine
+
+This is not a comedy. The Migration is real. Species die. The Cleansers exist. The Others are coming. **AND** the game's tonal signature is *the Furling protagonist's great sense of humor*. The player's dialog choices should include wry, deadpan, observational options where context allows. The protagonist's humor is what makes the gallows-walk *humane* rather than gray.
+
+**Source of laughter** = cultural friction:
+- **Cultural differences** — the Mycon biot solemnly reports a status the protagonist finds absurd. The player's choice can be deadpan-formal or mock-bureaucratic. The laugh is on the gap, not the Mycon (who can't tell).
+- **Physical differences** — the Arilou call the protagonist "shaggy one" with no irony. The protagonist's choice can lean into the absurdity ("yes, very shaggy, yes").
+- **Unexpected similarities** — the Mmrnmhrm say "Archive entry seven million two hundred forty thousand" with zero awareness this is comic. The player's choice can deadpan-reciprocate.
+
+**Most species don't have humor by their own lights.** A few outliers may — some Arilou are drily aware they sound condescending; a few Slylandro notice they over-share; the Persuader Halia has a weary warmth that can land as gently funny. But the comic register lives in the protagonist's voice, not theirs.
+
+**Other Furlings vary**: Halia (Persuader) is warm-weary, the Sage (Arilou-half) is enigmatic-not-funny, Cleansers are humorless on principle, Defenders are grim. The *player's* Furling is the default-funny one. Aaron's Steward.
+
+**The Others are NEVER funny.** Not in their speech ("frumple. you wear *meat* still."), not in the player's dialog options around them, not in flavor text or descriptions of rifts. If a Furling cracks a joke at an Other-rift sighting, the joke *lands wrong on purpose* — it's the player coping, and the world is too cold for the joke to land. The protagonist's humor breaks at the Others. That break is itself the horror.
+
+This doctrine applies to every dialog scene, canned fallback text, choice phrasing, Phase 3.5+ LLM prompts, combat banter, and encounter flavor. See [species-design-schema.md §4](species-design-schema.md) for the operationalized version.
+
 ## 9. The Three-Pillar Variation Principle (the game's core design philosophy)
 
 > **Architectural form**: variation is a cosmetic **layer over a static deterministic engine**, not woven through gameplay. The engine plays like a 1990s 2D space game; the variation layer sits on top, intercepting renders and audio output. One-way data flow — bugs in variation cannot corrupt gameplay. See [`variation-architecture.md`](variation-architecture.md) for the full pattern and the comprehensive catalog of variable elements (ships, planet surfaces, mineral nodes, biological specimens, NPC names, UI sounds — far more than just dialog/art/music).

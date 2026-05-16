@@ -108,3 +108,191 @@ If we author ships in priority order for the slice:
 10. **Invented Homesteader / Precursor ships** (super-melee filler)
 
 The Others' Vessel is post-slice content.
+
+## Stat Blocks (initial pass — tune in playtest)
+
+Each block conforms to [ship-design-schema.md](ship-design-schema.md). These are the first-pass numbers for slice combat; expect ±30% adjustments after the first sparring sessions. Speed numbers are in system-units/sec to match the existing engine (Furling Scout = 220).
+
+### Furling Scout *(Precursor — player default)*
+
+| Field | Value |
+|---|---|
+| Points | 130 |
+| Hull HP | 100 |
+| Shield HP | 80 |
+| Shield regen | 12/sec, after 2s no-damage delay |
+| Top speed | 220 |
+| Acceleration | 280 |
+| Turning rate | 3.0 rad/s |
+| Mass | 100 |
+| Energy pool | 60 |
+| Energy regen | 6/sec |
+
+- **Primary — Furling Beam**: 8 dmg, 4 energy/shot, 4 shots/sec, range 400, hitscan, single target. *"Slim coherent beam, warm gold."*
+- **Special — Time Drive Pulse** *(rare, expensive)*: rewinds the Scout's own hull+shield+position by 3 seconds. Energy 50; one use per fight unless TD module upgraded. **Counter**: the enemy can spend the 3 seconds gaining position; the Scout reappears where it *was*, not where it's gone. Skilled opponents bait the pulse.
+
+### Persuader Vessel *(Precursor — Furling diplomatic faction)*
+
+| Field | Value |
+|---|---|
+| Points | 110 |
+| Hull HP | 80 |
+| Shield HP | 90 |
+| Shield regen | 14/sec, after 2s delay |
+| Top speed | 200 |
+| Acceleration | 240 |
+| Turning rate | 2.8 rad/s |
+| Mass | 90 |
+| Energy pool | 80 |
+| Energy regen | 8/sec |
+
+- **Primary — Persuader Beam**: 5 dmg, 3 energy/shot, 3 shots/sec, range 360, hitscan. Weaker than Scout but cheaper.
+- **Special — Dialog Amplifier**: forces a 4-second truce window — neither ship can fire. Energy 40, single use. **Counter**: the truce ends and the Persuader is *still* a glass ship — the enemy uses the truce to reposition for a kill window. High risk, sometimes saves a life.
+
+### Arilou Skiff *(Precursor — Arilou cousins)*
+
+| Field | Value |
+|---|---|
+| Points | 120 |
+| Hull HP | 60 |
+| Shield HP | N/A (Quasi-Space evasion instead) |
+| Shield regen | 0 |
+| Top speed | 320 |
+| Acceleration | 420 |
+| Turning rate | 5.5 rad/s |
+| Mass | 55 |
+| Energy pool | 100 |
+| Energy regen | 10/sec |
+
+- **Primary — Pulse Caster**: 4 dmg, 2 energy/shot, 6 shots/sec, range 300, fast projectile (700 units/s). *"Quick teal pulses, fading."*
+- **Special — Quasi-Jump**: instant teleport up to 500 units in current heading; 1.5s invulnerability frame mid-jump. Energy 30, 5s cooldown. **Counter**: predictable jump targets — leading shots that arrive at jump destination catch the Skiff. Also, no shields means a single solid hit hurts.
+
+### Androsynth Refugee Cruiser *(Precursor — time-displaced refugees)*
+
+| Field | Value |
+|---|---|
+| Points | 135 |
+| Hull HP | 130 |
+| Shield HP | N/A |
+| Shield regen | 0 |
+| Top speed | 190 |
+| Acceleration | 220 |
+| Turning rate | 2.2 rad/s |
+| Mass | 130 |
+| Energy pool | 70 |
+| Energy regen | 6/sec |
+
+- **Primary — Twin Rail**: 10 dmg, 5 energy/shot, 2 shots/sec, range 500, projectile (1200 units/s). *"Two thin tracers from forward rails."*
+- **Special — Dimensional Shear Cannon**: 35 dmg single shot, range 600, slow projectile (400 units/s), but +50% damage to Others-aligned entities and stuns regular ships for 0.8s. Energy 50, 6s cooldown. **Counter**: the projectile is slow enough to be dodged sideways. Used as a finisher, not a duel weapon.
+
+### Defender Vessel *(Homesteader — Furling Defender faction)*
+
+| Field | Value |
+|---|---|
+| Points | 170 |
+| Hull HP | 180 |
+| Shield HP | 60 |
+| Shield regen | 8/sec, after 3s delay |
+| Top speed | 150 |
+| Acceleration | 130 |
+| Turning rate | 1.6 rad/s |
+| Mass | 180 |
+| Energy pool | 90 |
+| Energy regen | 5/sec |
+
+- **Primary — Heavy Beam**: 12 dmg, 6 energy/shot, 2 shots/sec, range 450, hitscan. *"Wide amber lance."*
+- **Special — Sa-Matra Prototype Lance**: 60 dmg, range 700, hitscan, **8-second cooldown**. Energy 60. **Counter**: the cooldown is brutal — the 8 seconds after a Lance is a window where the Defender is just a slow heavy with a regular beam. Fast ships hunt the cooldown.
+
+### Mmrnmhrm Sentinel *(Homesteader — autonomous robotics)*
+
+| Field | Value |
+|---|---|
+| Points | 155 |
+| Hull HP | 150 |
+| Shield HP | N/A (fabricator self-repair instead) |
+| Shield regen | 0 |
+| Top speed | 180 |
+| Acceleration | 200 |
+| Turning rate | 2.4 rad/s |
+| Mass | 140 |
+| Energy pool | 70 |
+| Energy regen | 7/sec |
+
+- **Primary — Particle Stream**: 6 dmg, 3 energy/shot, 5 shots/sec, range 380, projectile (900 units/s).
+- **Special — Mode Shift (Fabricator)**: enters fabricator mode for 4s — cannot fire or thrust, regenerates 20 HP/sec. Energy 40, single use per fight. **Counter**: during fabricator mode the Sentinel is stationary. A heavy hit during that window dominates the trade.
+
+### Proto-Ur-Quan Warship *(Homesteader — mid-uplift molluscoids)*
+
+| Field | Value |
+|---|---|
+| Points | 145 |
+| Hull HP | 170 |
+| Shield HP | N/A |
+| Shield regen | 0 |
+| Top speed | 170 |
+| Acceleration | 160 |
+| Turning rate | 1.9 rad/s |
+| Mass | 170 |
+| Energy pool | 50 |
+| Energy regen | 4/sec |
+
+- **Primary — Crushing Claw Burst**: 14 dmg, 4 energy/shot, 1.5 shots/sec, range 200 (short!), projectile (600 units/s). Damage scales with distance closed — full damage point-blank.
+- **Special — Ram Charge**: massive thrust burst for 1.5s, 80 dmg on contact. Energy 30, 5s cooldown. **Counter**: huge but committed move — sidestep it and they're past you with a 5s cooldown.
+
+### Proto-Qor-Ah Marauder *(Homesteader — mid-uplift, lethal-pure)*
+
+| Field | Value |
+|---|---|
+| Points | 95 |
+| Hull HP | 60 |
+| Shield HP | N/A |
+| Shield regen | 0 |
+| Top speed | 280 |
+| Acceleration | 380 |
+| Turning rate | 4.5 rad/s |
+| Mass | 70 |
+| Energy pool | 40 |
+| Energy regen | 5/sec |
+
+- **Primary — Spin Blade**: 18 dmg/sec continuous AOE, radius 80 around the ship, energy drain 6/sec while active. *"Whirring blade-segments deploy in a halo."*
+- **Special — Fanatic Burn**: enters fanatic state for 3s — top speed +50%, takes +50% damage, immune to flinch. Energy 30, 6s cooldown. **Counter**: glass cannon. Hit it once during fanatic-burn and the trade goes wildly bad for it. AI is suicidal so this is *not* hard — they come to you.
+
+### Cleanser Furling Cruiser *(slice combat climax)*
+
+| Field | Value |
+|---|---|
+| Points | 175 |
+| Hull HP | 150 |
+| Shield HP | 100 |
+| Shield regen | 10/sec, after 3s delay |
+| Top speed | 175 |
+| Acceleration | 180 |
+| Turning rate | 2.0 rad/s |
+| Mass | 150 |
+| Energy pool | 80 |
+| Energy regen | 6/sec |
+
+- **Primary — Stellar Disruption Beam**: 11 dmg, 5 energy/shot, 3 shots/sec, range 480, hitscan. *"Pale-white beam with a violet edge."*
+- **Special — Engineered Plague Spore**: deploys a slow-moving 60-radius AOE that does 6 dmg/sec to anything inside; lasts 4s. Energy 50, 8s cooldown. **Counter**: the cloud is slow and visible — move out of it. Plus the cooldown is long; bait the spore, then close.
+
+### Others' Vessel *(post-slice, hijack-only)*
+
+Non-Newtonian, decursion-weapon, sameness-as-terror. Stat-blocked separately when the post-slice hijack quest is authored; for slice purposes its existence is canon but its stats are not.
+
+## Asymmetric Matchup Matrix (first-pass intuition)
+
+Designer's gut after the first stat-block pass. To be confirmed in playtest:
+
+| ↓ vs → | Scout | Pers | Arilou | Andro | Defender | Mmrnmhrm | Proto-UQ | Proto-QA | Cleanser |
+|---|---|---|---|---|---|---|---|---|---|
+| Scout       | —     | fair  | weak   | strong | fair     | strong   | fair     | strong   | weak     |
+| Persuader   | fair  | —     | weak   | fair   | weak     | fair     | weak     | strong   | weak     |
+| Arilou      | strong| strong| —      | strong | weak     | strong   | strong   | fair     | weak     |
+| Androsynth  | weak  | fair  | weak   | —      | strong   | fair     | fair     | strong   | strong   |
+| Defender    | fair  | strong| strong | weak   | —        | fair     | fair     | strong   | fair     |
+| Mmrnmhrm    | weak  | fair  | weak   | fair   | fair     | —        | strong   | weak     | fair     |
+| Proto-UQ    | fair  | strong| weak   | fair   | fair     | weak     | —        | fair     | weak     |
+| Proto-QA    | weak  | weak  | fair   | weak   | weak     | strong   | fair     | —        | weak     |
+| Cleanser    | strong| strong| strong | weak   | fair     | fair     | strong   | strong   | —        |
+
+Read across a row to see how *that ship* fares against each opponent. The Scout has clear hard counters (Arilou, Cleanser) and clear cushions (Andro, Mmrnmhrm, Proto-QA) — exactly the asymmetric profile Aaron wants. The Cleanser is hard for *almost everyone*; the Arilou is hard for everyone *except* heavies. The points-buy compensates.
