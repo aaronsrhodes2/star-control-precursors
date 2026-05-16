@@ -78,6 +78,16 @@ class Starmap:
         self.stars: list[dict] = data["stars"]
         self.metadata: dict = data.get("metadata", {})
 
+        # Synthetic stars — known systems that aren't in the original SC2
+        # starmap because they don't exist in SC2's era. Mh-Lai is the
+        # Furling home; canon says the Furlings unmake it at Migration's
+        # end, so SC2 archaeologists find no trace — but in OUR era it is
+        # very much there and visible. Arilou Outpost is the Sage's seat.
+        from scz.content.arilou_outpost import arilou_outpost_star
+        from scz.content.home_system import home_star
+        self.stars.append(home_star())
+        self.stars.append(arilou_outpost_star())
+
         # Pre-filter Rainbow-being-seeded stars for special rendering
         self.rainbow_stars: list[dict] = [
             s for s in self.stars if s.get("defined_name") == "RAINBOW_BEING_SEEDED"

@@ -178,6 +178,32 @@ class HyperspaceScene(Scene):
         # --- Camera follows ship (with map-edge clamp) ---
         self._update_camera()
 
+        # Y (fire_secondary) → open a Quasi-Space portal, IF the Sage has
+        # gifted the portal spawner. The flag is set by Arilou-Sage dialog
+        # side-effects. Without the gift, Y does nothing here.
+        if inp.fire_secondary and self.game is not None:
+            if self.game.flags.get("has_quasispace_portal"):
+                from scz.quasispace.scene import QuasiSpaceScene
+                # Spawn the player at the portal nearest to our hyperspace
+                # position — the "near the Hearth" portal is closest to
+                # Mh-Lai. For the slice we just spawn at portal 1 (Arilou)
+                # when leaving the Outpost, portal 0 (Hearth) otherwise.
+                # Distance to each portal's exit_x/exit_y picks the right one.
+                from scz.quasispace.scene import build_portal_map
+                portals = build_portal_map()
+                # The entry-portal index is the portal whose exit point is
+                # closest to where we currently are in hyperspace. (i.e. you
+                # show up *next to* the portal you'd use to come back here.)
+                best_i = 0
+                best_d = float("inf")
+                for i, p in enumerate(portals):
+                    d = math.hypot(p.exit_x - self.player_x, p.exit_y - self.player_y)
+                    if d < best_d:
+                        best_d = d
+                        best_i = i
+                self.game.set_scene(QuasiSpaceScene(entry_portal_index=best_i))
+                return
+
         # Esc/cancel at top-level scene → quit game (no parent to back to)
         if inp.cancel and self.game is not None:
             self.game.quit()

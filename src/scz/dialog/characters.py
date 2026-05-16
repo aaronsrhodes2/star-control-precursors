@@ -8,7 +8,20 @@ voice prompt. The FSM and choice categories stay deterministic.
 
 from __future__ import annotations
 
+from typing import Any
+
 from scz.dialog.data import DialogChoice, DialogCharacter, DialogState, build_state_dict
+
+
+# ---------------------------------------------------------------------------
+# Side effect helpers — used by DialogChoice.side_effect.
+# ---------------------------------------------------------------------------
+
+def _grant_quasispace_portal(game: Any) -> None:
+    """The Sage's gift: a portal spawner + portal map. Sets the flag the
+    HyperspaceScene reads to enable the Y-button portal opener.
+    """
+    game.flags["has_quasispace_portal"] = True
 
 
 # ---------------------------------------------------------------------------
@@ -138,6 +151,134 @@ def commander_halia() -> DialogCharacter:
                         "I'll head out.",
                         next_state_id=None,
                         category="FAREWELL",
+                    ),
+                ],
+            ),
+        ),
+    )
+
+
+# ---------------------------------------------------------------------------
+# Arilou Sage — keeper of the Outpost, gives the QuasiSpace portal + map
+# ---------------------------------------------------------------------------
+# Voice: patient, layered, speaks in nested clauses; never quite confirms,
+# never quite denies; calls the player "young one"; folds tense (uses "will
+# have been" / "are about to have done"). They've already half-left for
+# Quasi-Space and time grammar is fraying.
+
+def arilou_sage() -> DialogCharacter:
+    """The Arilou Sage. After the gift_portal state, game.flags
+    ['has_quasispace_portal'] = True for the rest of the session.
+    """
+    return DialogCharacter(
+        name="Sage Lwen-Olou",
+        title="Keeper of the Outpost, Arilou Elder",
+        species_id="ARILOU",
+        portrait_color=(140, 240, 210),  # teal/mint Arilou
+        initial_state="start",
+        states=build_state_dict(
+            DialogState(
+                id="start",
+                npc_text=(
+                    "Young one. We were expecting you — or have been. "
+                    "The grammar is hard to keep clean once one is half "
+                    "outside the river.\n\n"
+                    "You came across the cluster. Slowly. We watched you "
+                    "from a moment that has not yet been. Tell me — "
+                    "what does the Steward of Mh-Lai ask of the Sage?"
+                ),
+                choices=[
+                    DialogChoice(
+                        "I need your guidance on the Others.",
+                        next_state_id="about_others",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Teach me to travel faster.",
+                        next_state_id="about_quasispace",
+                        category="ASK_TASK",
+                    ),
+                    DialogChoice(
+                        "Farewell, Sage.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_others",
+                npc_text=(
+                    "The Others. Yes. You feel them already, I think — "
+                    "the ripples in the deep. We have felt them longer.\n\n"
+                    "They are not coming. They have always been coming. "
+                    "The question is only whether the Quiet will be "
+                    "deep enough when they arrive.\n\n"
+                    "The Furling Council debates. The Arilou have "
+                    "decided. We will step sideways — into the folds — "
+                    "and pull the door closed behind us. Some of you "
+                    "should consider the same."
+                ),
+                choices=[
+                    DialogChoice(
+                        "How do you 'step sideways'?",
+                        next_state_id="about_quasispace",
+                        category="ASK_TASK",
+                    ),
+                    DialogChoice(
+                        "Thank you, Sage.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_quasispace",
+                npc_text=(
+                    "Quasi-Space. A neighbor-fold to your hyperspace — "
+                    "thinner, kinder, faster. We open portals through "
+                    "it; the geometry on the other side is small enough "
+                    "that what takes you a day takes us a thought.\n\n"
+                    "The Sentries argue we should not share this. I "
+                    "argue otherwise. You are kin, young one, and the "
+                    "Others do not care which of us they hear."
+                ),
+                choices=[
+                    DialogChoice(
+                        "I would accept the gift.",
+                        next_state_id="gift_portal",
+                        category="AGREE",
+                    ),
+                    DialogChoice(
+                        "Tell me more first.",
+                        next_state_id="about_others",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Farewell, Sage.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="gift_portal",
+                npc_text=(
+                    "Then take it. A Portal Spawner — small enough to "
+                    "fit in the seam of your ship — and a Portal Map, "
+                    "which will know where the folds open. Twelve in "
+                    "all. One quite near your Hearth.\n\n"
+                    "Press it when you wish to step sideways. Your "
+                    "hyperspace will fold; Quasi-Space will fold back. "
+                    "Use the nearest exit-portal to return.\n\n"
+                    "Go in quiet, Steward. We will see you — or have "
+                    "seen you — again."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Thank you. I will use it well.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                        side_effect=_grant_quasispace_portal,
                     ),
                 ],
             ),

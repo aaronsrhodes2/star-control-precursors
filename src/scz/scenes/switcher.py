@@ -31,13 +31,14 @@ def _entries():
         ShipCustomizationScene,
         ClusterStatusBoardScene,
         ArchiveScene,
-        QuasiSpaceScene,
     )
     # Real implementations (replacing stubs)
-    from scz.dialog.characters import commander_halia
+    from scz.dialog.characters import arilou_sage, commander_halia
     from scz.dialog.scene import DialogScene
     from scz.station.scene import StationScene
     from scz.content.home_system import home_star
+    from scz.content.arilou_outpost import arilou_outpost_star
+    from scz.quasispace.scene import QuasiSpaceScene
 
     # Returning Hyperspace/System/Planet to fresh instances loses state,
     # which is expected for the debug switcher — we're jumping for testing.
@@ -72,24 +73,43 @@ def _entries():
     def _home_system():
         return SystemScene(home_star())
 
+    def _arilou_system():
+        return SystemScene(arilou_outpost_star())
+
+    def _arilou_sanctuary_orbit():
+        from scz.system.scene import SystemScene as _Sys
+        sys = _Sys(arilou_outpost_star())
+        planet = next(p for p in sys.planets if p.name == "Arilou Sanctuary")
+        return PlanetOrbitScene(planet=planet, star=arilou_outpost_star(), parent_scene_cls=_Sys)
+
+    def _mh_lai_orbit():
+        from scz.system.scene import SystemScene as _Sys
+        sys = _Sys(home_star())
+        planet = next(p for p in sys.planets if p.name == "Mh-Lai")
+        return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
+
     return [
         # Live scenes
-        ("Main Menu",              lambda: MainMenuScene(),         pygame.K_0),
-        ("Hyperspace (galaxy)",    lambda: HyperspaceScene(),       pygame.K_1),
-        ("Mh-Lai System (home)",   _home_system,                    pygame.K_2),
-        ("Star System (Sol)",      _fresh_system,                   pygame.K_3),
-        ("Planet Orbit (Sol I)",   _fresh_orbit,                    pygame.K_4),
-        ("Planet Surface (Sol I)", _fresh_planet,                   pygame.K_5),
-        ("Station — Mh-Lai",       lambda: StationScene(),          pygame.K_6),
-        ("Dialog — Cmdr Halia",    lambda: DialogScene(commander_halia()), pygame.K_7),
+        ("Main Menu",                lambda: MainMenuScene(),                pygame.K_0),
+        ("Hyperspace (galaxy)",      lambda: HyperspaceScene(),              pygame.K_1),
+        ("Mh-Lai System (home)",     _home_system,                           pygame.K_2),
+        ("Mh-Lai Orbit",             _mh_lai_orbit,                          pygame.K_3),
+        ("Arilou Outpost System",    _arilou_system,                         pygame.K_4),
+        ("Arilou Sanctuary Orbit",   _arilou_sanctuary_orbit,                pygame.K_5),
+        ("Star System (Sol)",        _fresh_system,                          pygame.K_6),
+        ("Planet Orbit (Sol I)",     _fresh_orbit,                           pygame.K_7),
+        ("Planet Surface (Sol I)",   _fresh_planet,                          pygame.K_8),
+        ("Station — Mh-Lai",         lambda: StationScene(),                 pygame.K_9),
+        ("Dialog — Cmdr Halia",      lambda: DialogScene(commander_halia()), None),
+        ("Dialog — Arilou Sage",     lambda: DialogScene(arilou_sage()),     None),
+        ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
         # Stubs
-        ("Observation Encounter",  lambda: ObservationScene(),      pygame.K_8),
-        ("Melee Combat",           lambda: MeleeCombatScene(),      pygame.K_9),
-        ("Furling Council",        lambda: CouncilScene(),          None),
-        ("Ship Customization",     lambda: ShipCustomizationScene(), None),
-        ("Cluster Status Board",   lambda: ClusterStatusBoardScene(), None),
-        ("Bio-Archive",            lambda: ArchiveScene(),          None),
-        ("Quasi-Space",            lambda: QuasiSpaceScene(),       None),
+        ("Observation Encounter",    lambda: ObservationScene(),             None),
+        ("Melee Combat",             lambda: MeleeCombatScene(),             None),
+        ("Furling Council",          lambda: CouncilScene(),                 None),
+        ("Ship Customization",       lambda: ShipCustomizationScene(),       None),
+        ("Cluster Status Board",     lambda: ClusterStatusBoardScene(),      None),
+        ("Bio-Archive",              lambda: ArchiveScene(),                 None),
     ]
 
 

@@ -28,6 +28,25 @@ SYSTEM_PLAYER_SPEED = 220.0  # system-local units / sec
 # Distance at which the player can "enter orbit" of a planet (system-local units)
 PLANET_INTERACT_RADIUS = 40.0
 
+# Auto-zoom — the view tightens as the ship approaches a planet so the
+# player isn't squinting at a tiny dot near a tiny dot. Distances are in
+# system-local units; zoom is a multiplier on the base "fit the whole
+# system" scale.
+#
+# Near a planet (closer than ZOOM_NEAR_DIST) → MAX_AUTO_ZOOM.
+# Far from any planet (farther than ZOOM_FAR_DIST) → MIN_AUTO_ZOOM.
+# Linear blend between. ZOOM_LERP_RATE controls how snappily we slide.
+MIN_AUTO_ZOOM = 1.0
+MAX_AUTO_ZOOM = 4.0
+ZOOM_NEAR_DIST = 70.0
+ZOOM_FAR_DIST = 300.0
+ZOOM_LERP_RATE = 5.5
+
+# System boundary — a circle around the star. Crossing it leaves the
+# system to hyperspace at the star's coords. Padding past the outermost
+# orbit so the player has room to maneuver around the edge planets.
+SYSTEM_BOUNDARY_PAD = 220.0
+
 
 class SystemScene(Scene):
     """View of a single star system with orbiting planets."""
@@ -49,6 +68,9 @@ class SystemScene(Scene):
             # Mh-Lai / home star — hand-built planet layout
             from scz.content.home_system import home_planets
             self.planets = home_planets()
+        elif star.get("arilou_outpost"):
+            from scz.content.arilou_outpost import arilou_outpost_planets
+            self.planets = arilou_outpost_planets()
         else:
             self.planets = generate_system(
                 star_x=star["x"],
@@ -57,8 +79,10 @@ class SystemScene(Scene):
                 star_color=star["color"],
                 cluster_name=star.get("cluster_name", "unknown"),
             )
-        # Player position in system-local coords, starts at the "edge"
+        # Player position in system-local coords (origin = the star).
+        # Spawn just inside the boundary on the +x axis facing inward.
         max_orbit = max((p.orbit_radius for p in self.planets), default=200.0)
+        self.system_radius: float = max_orbit + SYSTEM_BOUNDARY_PAD
         self.player_x: float = max_orbit + 80.0
         self.player_y: float = 0.0
         self.player_heading: float = math.pi  # facing inward
@@ -66,10 +90,18 @@ class SystemScene(Scene):
         # Time within the scene; used for orbit animation
         self.time_in_scene: float = 0.0
 
+        # Auto-zoom state — zoom is the multiplier on base_scale. The
+        # camera follows the ship at high zoom and clamps to the system
+        # bounds at low zoom (so the system stays centered when zoomed out).
+        self.zoom: float = MIN_AUTO_ZOOM
+        self.target_zoom: float = MIN_AUTO_ZOOM
+        self.camera_x: float = 0.0
+        self.camera_y: float = 0.0
+
         # Set in on_enter
-        self.scale: float = 1.0           # system-units to screen-pixels
-        self.center_x: float = 0.0
-        self.center_y: float = 0.0
+        self.base_scale: float = 1.0      # system-units to screen-pixels at zoom=1
+        self.screen_w: int = 0
+        self.screen_h: int = 0
         self.font: pygame.font.Font | None = None
         self.title_font: pygame.font.Font | None = None
 
@@ -80,15 +112,15 @@ class SystemScene(Scene):
     def on_enter(self) -> None:
         assert self.game is not None
         w, h = self.game.screen.get_size()
-        # Fit the maximum orbit (plus the player's spawn distance) in the view
-        max_orbit = max((p.orbit_radius for p in self.planets), default=200.0)
-        view_radius = max_orbit + 120.0  # extra space for player movement
+        self.screen_w = w
+        self.screen_h = h
+        # Base scale: at zoom=1.0 the whole system circle fits in the smaller
+        # screen dimension (so the boundary is fully visible at zoom-out).
         half = min(w, h) / 2 - SYSTEM_VIEW_MARGIN
-        self.scale = half / view_radius
-        self.center_x = w / 2
-        self.center_y = h / 2
+        self.base_scale = half / self.system_radius
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
+        self._update_camera()
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
@@ -104,13 +136,21 @@ class SystemScene(Scene):
         speed = SYSTEM_PLAYER_SPEED * dt
         self.player_x += mx * speed
         self.player_y += my * speed
-        # Clamp to a reasonable bounding box
-        max_orbit = max((p.orbit_radius for p in self.planets), default=200.0)
-        max_dist = max_orbit + 150.0
-        dist = math.hypot(self.player_x, self.player_y)
-        if dist > max_dist:
-            self.player_x = self.player_x * (max_dist / dist)
-            self.player_y = self.player_y * (max_dist / dist)
+
+        # Crossing the system boundary leaves the system back to hyperspace.
+        # Position the player at the boundary on the way out (no teleport
+        # snap) and hand off.
+        dist_from_star = math.hypot(self.player_x, self.player_y)
+        if dist_from_star > self.system_radius and self.game is not None:
+            self._exit_to_hyperspace()
+            return
+
+        # Auto-zoom: target zoom is high near a planet, low far from any.
+        self._update_zoom(dt)
+
+        # Camera follows ship (clamped at low zoom so the boundary stays
+        # in frame)
+        self._update_camera()
 
         # Confirm near a planet → enter orbit (unless gas giant).
         # The orbit scene is the canonical safe-zone where Furling cloak
@@ -127,26 +167,49 @@ class SystemScene(Scene):
                     )
                 )
 
-        # Exit to hyperspace on CANCEL (B / Backspace)
+        # Exit to hyperspace on CANCEL (B / Backspace) — same as crossing
+        # the boundary; this just lets the player back out manually.
         if inp.cancel and self.game is not None:
-            # Lazy import to avoid circular dependency
-            from scz.hyperspace.scene import HyperspaceScene
-            # Build a hyperspace scene at the position of this star
-            hyper = HyperspaceScene()
-            hyper.player_x = float(self.star["x"])
-            hyper.player_y = float(self.star["y"])
-            self.game.set_scene(hyper)
+            self._exit_to_hyperspace()
+
+    def _exit_to_hyperspace(self) -> None:
+        from scz.hyperspace.scene import HyperspaceScene
+        hyper = HyperspaceScene()
+        hyper.player_x = float(self.star["x"])
+        hyper.player_y = float(self.star["y"])
+        self.game.set_scene(hyper)
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((4, 4, 14))
 
-        # Draw orbit guides (faint)
+        es = self._effective_scale()
+        star_sx, star_sy = self._system_to_screen(0.0, 0.0)
+
+        # System boundary — faint dashed circle. Pulses brighter when the
+        # ship is near it (warning that crossing leaves the system).
+        dist_from_star = math.hypot(self.player_x, self.player_y)
+        edge_frac = min(1.0, dist_from_star / self.system_radius)
+        boundary_alpha = int(30 + 70 * edge_frac)
+        boundary_color = (
+            min(255, 60 + int(120 * edge_frac)),
+            min(255, 70 + int(60 * edge_frac)),
+            min(255, 100 + int(20 * edge_frac)),
+        )
+        pygame.draw.circle(
+            screen,
+            boundary_color,
+            (int(star_sx), int(star_sy)),
+            int(self.system_radius * es),
+            1,
+        )
+
+        # Draw orbit guides (faint), camera-relative
         for planet in self.planets:
-            r = planet.orbit_radius * self.scale
+            r_pix = planet.orbit_radius * es
             pygame.draw.circle(
                 screen, (28, 28, 48),
-                (int(self.center_x), int(self.center_y)),
-                int(r),
+                (int(star_sx), int(star_sy)),
+                int(r_pix),
                 1,
             )
 
@@ -171,11 +234,13 @@ class SystemScene(Scene):
                 int(240 - pulse * 30),
                 int(150 + pulse * 40),
             )
+            # Match the scaled planet size used in _draw_planet
+            scaled_size = max(3, int(landing_target.size * max(0.6, self.zoom * 0.55)))
             pygame.draw.circle(
                 screen,
                 ring_color,
                 (int(x), int(y)),
-                landing_target.size + 8 + int(pulse * 4),
+                scaled_size + 8 + int(pulse * 4),
                 1,
             )
 
@@ -209,13 +274,71 @@ class SystemScene(Scene):
     # Helpers
     # ------------------------------------------------------------------
 
+    # ------------------------------------------------------------------
+    # Camera + zoom
+    # ------------------------------------------------------------------
+
+    def _effective_scale(self) -> float:
+        return self.base_scale * self.zoom
+
     def _system_to_screen(self, sx: float, sy: float) -> tuple[float, float]:
-        return (self.center_x + sx * self.scale, self.center_y + sy * self.scale)
+        es = self._effective_scale()
+        return (
+            self.screen_w / 2 + (sx - self.camera_x) * es,
+            self.screen_h / 2 + (sy - self.camera_y) * es,
+        )
+
+    def _update_zoom(self, dt: float) -> None:
+        """Auto-zoom toward MAX near a planet, toward MIN far from any.
+
+        Uses the *raw* distance to the nearest planet (no scale factor).
+        Linear blend between ZOOM_NEAR_DIST and ZOOM_FAR_DIST.
+        """
+        nearest = self._nearest_planet()
+        if nearest is None:
+            self.target_zoom = MIN_AUTO_ZOOM
+        else:
+            psx, psy = nearest.position_at(self.time_in_scene)
+            d = math.hypot(self.player_x - psx, self.player_y - psy)
+            if d <= ZOOM_NEAR_DIST:
+                self.target_zoom = MAX_AUTO_ZOOM
+            elif d >= ZOOM_FAR_DIST:
+                self.target_zoom = MIN_AUTO_ZOOM
+            else:
+                frac = (ZOOM_FAR_DIST - d) / (ZOOM_FAR_DIST - ZOOM_NEAR_DIST)
+                self.target_zoom = (
+                    MIN_AUTO_ZOOM + frac * (MAX_AUTO_ZOOM - MIN_AUTO_ZOOM)
+                )
+        if abs(self.target_zoom - self.zoom) > 1e-4:
+            t = min(1.0, dt * ZOOM_LERP_RATE)
+            self.zoom += (self.target_zoom - self.zoom) * t
+
+    def _update_camera(self) -> None:
+        """Camera follows the ship, clamped at low zoom so the whole
+        system boundary stays in frame."""
+        self.camera_x = self.player_x
+        self.camera_y = self.player_y
+        es = self._effective_scale()
+        half_w_sys = (self.screen_w / 2) / es
+        half_h_sys = (self.screen_h / 2) / es
+        R = self.system_radius
+        # If the whole circle fits on this axis, center the system.
+        if half_w_sys >= R:
+            self.camera_x = 0.0
+        else:
+            self.camera_x = max(-R + half_w_sys, min(R - half_w_sys, self.camera_x))
+        if half_h_sys >= R:
+            self.camera_y = 0.0
+        else:
+            self.camera_y = max(-R + half_h_sys, min(R - half_h_sys, self.camera_y))
 
     def _draw_star(self, screen: pygame.Surface) -> None:
         color = STAR_COLOR_RGB.get(self.star["color"], (220, 200, 120))
-        base_radius = STAR_TYPE_RADIUS.get(self.star["type"], 2) * 8 + 14
-        cx, cy = self.center_x, self.center_y
+        # Star sprite size scales modestly with zoom so it doesn't dominate
+        # at high zoom or vanish at low zoom.
+        z = max(0.7, min(1.6, self.zoom * 0.7))
+        base_radius = int((STAR_TYPE_RADIUS.get(self.star["type"], 2) * 8 + 14) * z)
+        cx, cy = self._system_to_screen(0.0, 0.0)
         # Outer glow
         for i in range(4):
             r = base_radius + i * 8
@@ -238,22 +361,24 @@ class SystemScene(Scene):
     def _draw_planet(self, screen: pygame.Surface, planet: Planet) -> None:
         sx, sy = planet.position_at(self.time_in_scene)
         x, y = self._system_to_screen(sx, sy)
+        # Planet sprite size scales with zoom so it grows as we close in.
+        size = max(3, int(planet.size * max(0.6, self.zoom * 0.55)))
         # Body
-        pygame.draw.circle(screen, planet.color, (int(x), int(y)), planet.size)
+        pygame.draw.circle(screen, planet.color, (int(x), int(y)), size)
         # Light/shadow hint (a faint darker arc opposite the star)
         dx, dy = sx, sy
         d = math.hypot(dx, dy) or 1.0
-        ox = -dx / d * planet.size * 0.3
-        oy = -dy / d * planet.size * 0.3
+        ox = -dx / d * size * 0.3
+        oy = -dy / d * size * 0.3
         shadow = (planet.color[0] // 3, planet.color[1] // 3, planet.color[2] // 3)
         pygame.draw.circle(
-            screen, shadow, (int(x + ox), int(y + oy)), int(planet.size * 0.85)
+            screen, shadow, (int(x + ox), int(y + oy)), int(size * 0.85)
         )
         # Repaint the lit side
-        ox2 = dx / d * planet.size * 0.2
-        oy2 = dy / d * planet.size * 0.2
+        ox2 = dx / d * size * 0.2
+        oy2 = dy / d * size * 0.2
         pygame.draw.circle(
-            screen, planet.color, (int(x + ox2), int(y + oy2)), int(planet.size * 0.7)
+            screen, planet.color, (int(x + ox2), int(y + oy2)), int(size * 0.7)
         )
 
     def _draw_player(self, screen: pygame.Surface) -> None:
@@ -287,8 +412,9 @@ class SystemScene(Scene):
         for p in self.planets:
             psx, psy = p.position_at(self.time_in_scene)
             d = math.hypot(self.player_x - psx, self.player_y - psy)
-            # Landing range scales with planet size (gas giants visible from further)
-            range_units = PLANET_INTERACT_RADIUS + p.size / self.scale
+            # Landing range scales with planet size (gas giants visible from
+            # further). Use the base scale so the range is zoom-independent.
+            range_units = PLANET_INTERACT_RADIUS + p.size / self.base_scale
             if d <= range_units:
                 return p
         return None
@@ -344,6 +470,32 @@ class SystemScene(Scene):
             else:
                 color = (150, 160, 180)
             screen.blit(self.font.render(label, True, color), (x, y))
+            y += 22
+
+        # Edge-of-system warning
+        dist = math.hypot(self.player_x, self.player_y)
+        edge_frac = dist / self.system_radius
+        if edge_frac > 0.85:
+            y += 8
+            pulse = (math.sin(pygame.time.get_ticks() / 180) + 1) / 2
+            warn_color = (
+                int(220 - pulse * 30),
+                int(160 - pulse * 60),
+                int(80 - pulse * 30),
+            )
+            screen.blit(
+                self.font.render(
+                    "APPROACHING SYSTEM EDGE", True, warn_color
+                ),
+                (x, y),
+            )
+            y += 22
+            screen.blit(
+                self.font.render(
+                    "  cross to exit to hyperspace", True, (180, 160, 130)
+                ),
+                (x, y),
+            )
             y += 22
 
         # Landing prompt

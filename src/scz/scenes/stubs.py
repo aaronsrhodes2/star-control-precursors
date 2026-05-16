@@ -332,20 +332,4 @@ class ArchiveScene(StubScene):
     ]
 
 
-class QuasiSpaceScene(StubScene):
-    TITLE = "Quasi-Space"
-    SUBTITLE = "Arilou-shortcut travel through adjacent dimensional folds"
-    ACCENT = (200, 180, 255)
-    DETAILS = [
-        "An alternate travel layer — accessed at specific portal points in",
-        "hyperspace, available monthly per Arilou portal cycle.",
-        "",
-        "Quasi-Space has its own map (12 portals total) where every portal",
-        "exits to a specific location in normal hyperspace. Crossing it lets",
-        "the player skip the slow drag through hyperspace.",
-        "",
-        "Visually distinct: tinted ambient, different scale, otherworldly UI.",
-        "Music is also distinct (Quasi-Space ambient theme, see music-system.md).",
-        "",
-        "The Arilou voluntary-exile arc canonically lives here.",
-    ]
+# QuasiSpaceScene is now a real scene — see scz/quasispace/scene.py.

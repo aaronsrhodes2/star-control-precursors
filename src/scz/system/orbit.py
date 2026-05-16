@@ -99,6 +99,15 @@ class PlanetOrbitScene(Scene):
             self.game.set_scene(sys_scene)
             return
 
+        # Y (fire_secondary) → context action. Each special location in the
+        # game (home station, Arilou Sanctuary, Council outposts, ...) gets
+        # its own orbital hail. Action resolved by planet name.
+        if inp.fire_secondary and self.game is not None:
+            action = self._context_action()
+            if action is not None:
+                action()
+                return
+
         # A → deploy lander, drop to surface
         if inp.confirm and self.game is not None:
             from scz.planet.scene import PlanetSurfaceScene
@@ -111,6 +120,50 @@ class PlanetOrbitScene(Scene):
                 )
             )
             return
+
+    def _context_action(self):
+        """Return a callable or None for the Y-button orbital hail.
+
+        Keyed off the planet name — each canonical orbital location
+        registers here. The label shown in the HUD comes from
+        _context_action_label(), which must match the keys here.
+        """
+        name = self.planet.name
+        if name == "Mh-Lai":
+            return self._dock_at_station
+        if name == "Arilou Sanctuary":
+            return self._hail_arilou_sage
+        return None
+
+    def _context_action_label(self) -> str | None:
+        name = self.planet.name
+        if name == "Mh-Lai":
+            return "Dock at Mh-Lai Station"
+        if name == "Arilou Sanctuary":
+            return "Hail the Sage"
+        return None
+
+    def _dock_at_station(self) -> None:
+        from scz.station.scene import StationScene
+        assert self.game is not None
+        self.game.set_scene(StationScene())
+
+    def _hail_arilou_sage(self) -> None:
+        from scz.dialog.characters import arilou_sage
+        from scz.dialog.scene import DialogScene
+        from scz.system.orbit import PlanetOrbitScene as _Orbit
+        assert self.game is not None
+        # When dialog ends, return to orbit at this planet.
+        planet = self.planet
+        star = self.star
+        parent_cls = self.parent_scene_cls
+
+        def _back_to_orbit() -> "_Orbit":
+            return _Orbit(planet=planet, star=star, parent_scene_cls=parent_cls)
+
+        self.game.set_scene(
+            DialogScene(character=arilou_sage(), parent_factory=_back_to_orbit)
+        )
 
     def render(self, screen: pygame.Surface) -> None:
         backdrop = ORBIT_BACKDROP.get(self.planet.type, (6, 6, 18))
@@ -336,9 +389,17 @@ class PlanetOrbitScene(Scene):
         )
         prompts = [
             ("[A]  Deploy Lander", a_color),
-            ("[B]  Leave Orbit",   (200, 200, 220)),
-            ("[R]  Rewind",        (150, 170, 190)),
         ]
+        context_label = self._context_action_label()
+        if context_label is not None:
+            y_color = (
+                int(200 + pulse * 55),
+                int(230 + pulse * 25),
+                int(180 + pulse * 40),
+            )
+            prompts.append((f"[Y]  {context_label}", y_color))
+        prompts.append(("[B]  Leave Orbit",   (200, 200, 220)))
+        prompts.append(("[R]  Rewind",        (150, 170, 190)))
         for label, color in prompts:
             screen.blit(self.font.render(label, True, color), (x, bottom))
             bottom += 24

@@ -107,9 +107,12 @@ def walk_orbit_and_surface() -> TestScript:
         0  Main Menu
         1  Hyperspace
         2  Mh-Lai System (home)
-        3  Star System (Sol)
-        4  Planet Orbit (Sol I)
-        5  Planet Surface (Sol I)
+        3  Mh-Lai Orbit
+        4  Arilou Outpost System
+        5  Arilou Sanctuary Orbit
+        6  Star System (Sol)
+        7  Planet Orbit (Sol I)
+        8  Planet Surface (Sol I)
         ...
     """
     s = TestScript()
@@ -123,8 +126,8 @@ def walk_orbit_and_surface() -> TestScript:
     s.press("open_switcher")
     s.wait(0.5)
 
-    # Navigate 4 entries down to "Planet Orbit (Sol I)"
-    for _ in range(4):
+    # Navigate 7 entries down to "Planet Orbit (Sol I)"
+    for _ in range(7):
         s.press("menu_down")
         s.wait(0.12)
     s.press("confirm")
@@ -159,8 +162,171 @@ def walk_orbit_and_surface() -> TestScript:
     return s
 
 
+def walk_arilou_sage() -> TestScript:
+    """Story beat 2 — travel to the Arilou Sage, accept the portal gift,
+    use Quasi-Space to return home, and dock at Mh-Lai Station.
+
+    Beats walked:
+      1. MainMenu → Station → undock → Mh-Lai System
+      2. Cross system boundary → Hyperspace (at Mh-Lai)
+      3. Autopilot toward Arilou Outpost → SystemScene(Arilou)
+      4. Jump to Arilou Sanctuary Orbit via the scene switcher
+         (precise in-system navigation is fiddly to script; we test the
+         dialog/orbital flow rather than orbital intercept)
+      5. Y → Hail Sage → DialogScene
+      6. Walk dialog: start → about_quasispace → gift_portal → farewell
+         (the gift's side_effect sets game.flags["has_quasispace_portal"])
+      7. Back to Arilou Sanctuary Orbit
+      8. B → Arilou Outpost System → cross boundary → Hyperspace
+      9. Y → Quasi-Space (only works because the flag was set in step 6)
+     10. Fly to "near the Hearth" portal → A → Hyperspace at Mh-Lai region
+     11. Autopilot toward Mh-Lai → SystemScene(Mh-Lai)
+     12. Jump to Mh-Lai Orbit via switcher
+     13. Y → Dock at Station → StationScene
+
+    Switcher entry indices (must match scenes/switcher.py order):
+        0  Main Menu
+        1  Hyperspace
+        2  Mh-Lai System
+        3  Mh-Lai Orbit
+        4  Arilou Outpost System
+        5  Arilou Sanctuary Orbit
+        ...
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Walk to the Arilou Sage and back via Quasi-Space")
+
+    # ----- Step 1: MainMenu → Station -----
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    # ----- Undock — 4th menu item -----
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("SystemScene")
+
+    # ----- Step 2: Cross system boundary (Mh-Lai radius ~720, spawn x=580) -----
+    # Hold "right" (toward edge) for ~1 second; player moves 220 units, crosses.
+    s.move(1.0, 0.0, 1.5)
+    s.wait(0.3)
+    s.expect_scene("HyperspaceScene")
+
+    # ----- Step 3: Autopilot to Arilou Outpost -----
+    # Aim direction: from Mh-Lai (1900,1600) toward Arilou (3500,2400).
+    # Normalized (0.894, 0.447). Holding this then pressing confirm engages
+    # autopilot — autopilot finds the nearest star in our 45-degree cone,
+    # which will be Arilou Outpost.
+    s.set_axis(0.894, 0.447)
+    s.wait(0.2)
+    s.press("confirm")
+    s.release_axis()
+    # Wait for autopilot to cross + auto-enter the system.
+    # Hyperspace distance ~1789 units at PLAYER_SPEED=1200/sec = ~1.5 wall sec.
+    # At 3x speed that's ~4.5 game-seconds.
+    s.wait(5.0)
+    s.expect_scene("SystemScene")
+
+    # ----- Step 4: Jump to Arilou Sanctuary Orbit via switcher -----
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(5):    # entry index 5 = "Arilou Sanctuary Orbit"
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # ----- Step 5: Y → Hail Sage -----
+    s.press("fire_secondary")
+    s.wait(0.6)
+    s.expect_scene("DialogScene")
+    s.expect_dialog_state("start")
+
+    # ----- Step 6: Walk the Sage dialog -----
+    # Choice 1 ("guidance on Others") at index 0, choice 2 ("travel faster") at 1
+    # We pick "Teach me to travel faster" (index 1) → about_quasispace
+    s.press("menu_down")
+    s.wait(0.2)
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("about_quasispace")
+
+    # In about_quasispace, choice 0 = "I would accept the gift"
+    s.press("confirm")
+    s.wait(0.5)
+    s.expect_dialog_state("gift_portal")
+
+    # In gift_portal, only one choice — farewell with side_effect
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # ----- Step 8: Leave orbit, leave Arilou system -----
+    s.press("cancel")
+    s.wait(0.5)
+    s.expect_scene("SystemScene")
+    # Cross system boundary (Arilou max_orbit ~450, system_radius ~670, spawn 530)
+    s.move(1.0, 0.0, 1.5)
+    s.wait(0.3)
+    s.expect_scene("HyperspaceScene")
+
+    # ----- Step 9: Y → Quasi-Space (the gift is live) -----
+    s.press("fire_secondary")
+    s.wait(0.6)
+    s.expect_scene("QuasiSpaceScene")
+
+    # ----- Step 10: Fly to "near the Hearth" portal -----
+    # We spawn at the Arilou portal (qs=(1600, 1000)). The Hearth portal is
+    # at qs=(400, 1000). Direction: (-1, 0). At QS_PLAYER_SPEED=900,
+    # 1200 units takes 1.33 wall-sec = ~4.0 game-sec at 3x speed. Then
+    # PORTAL_USE_RADIUS = 80; we want to stop just at the portal.
+    s.move(-1.0, 0.0, 1.4)    # ~3.78 wall-sec of motion, covers 1190 of 1200
+    s.wait(0.1)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("HyperspaceScene")
+
+    # ----- Step 11: Autopilot toward Mh-Lai -----
+    # We arrive at (2700, 1600). Mh-Lai is at (1900, 1600). Direction (-1, 0).
+    s.set_axis(-1.0, 0.0)
+    s.wait(0.2)
+    s.press("confirm")
+    s.release_axis()
+    # 800 units at 1200/sec = 0.67 wall-sec = ~2.0 game-sec
+    s.wait(2.5)
+    s.expect_scene("SystemScene")
+
+    # ----- Step 12-13: Jump to Mh-Lai Orbit via switcher, dock -----
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(3):    # entry index 3 = "Mh-Lai Orbit"
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    s.press("fire_secondary")    # Y → Dock at Mh-Lai Station
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    s.set_speed(1.0)
+    s.log("Arilou Sage arc complete. The Sage's gift is in the ship's hold.")
+    s.wait(1.0)
+    s.end()
+    return s
+
+
 # Registry — main.py uses this to look up scripts by name.
 SCRIPTS = {
-    "walk_tutorial_path":   walk_tutorial_path,
-    "walk_orbit_and_surface": walk_orbit_and_surface,
+    "walk_tutorial_path":      walk_tutorial_path,
+    "walk_orbit_and_surface":  walk_orbit_and_surface,
+    "walk_arilou_sage":        walk_arilou_sage,
 }

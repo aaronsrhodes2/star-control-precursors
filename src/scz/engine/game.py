@@ -57,6 +57,12 @@ class Game:
         self.test_harness: TestHarness | None = None
         self.test_speed: float = 1.0
 
+        # Persistent game-state flags. Dialog side-effects and quest beats
+        # write here; scenes read these to gate features. Treat as a flat
+        # key/value store (booleans, ints, names) — no nested structure.
+        # Examples: has_quasispace_portal, talked_to_arilou_sage.
+        self.flags: dict[str, object] = {}
+
     def set_scene(self, scene: Scene) -> None:
         """Replace the current scene with a new one."""
         # Setting a new main scene closes any active overlay.
@@ -129,6 +135,15 @@ class Game:
         try:
             while self.running:
                 real_dt = self.clock.tick(self.target_fps) / 1000.0
+                # Cap dt: the very first frame after clock.tick() returns
+                # the wall time elapsed since the clock was constructed
+                # (often 100-500ms of pygame init). Without a cap, that
+                # spike multiplied by test_speed batches several scripted
+                # actions into a single frame, which coalesces edge-
+                # triggered input pulses (multiple presses → one read).
+                # Cap at 2 frames' worth (~33ms at 60fps) so a slow frame
+                # still progresses normally but never floods the schedule.
+                real_dt = min(real_dt, 2.0 / self.target_fps)
                 # Apply the test-mode speed multiplier. real_dt is wall time;
                 # dt is game time. The harness uses dt for its scheduling so
                 # scripts are speed-independent.
