@@ -92,6 +92,18 @@ class HyperspaceScene(Scene):
         self.player_x = max(0.0, min(UNIVERSE_MAX - 1, self.player_x))
         self.player_y = max(0.0, min(UNIVERSE_MAX - 1, self.player_y))
 
+    def snapshot(self) -> dict | None:
+        return {
+            "player_x": self.player_x,
+            "player_y": self.player_y,
+            "player_heading": self.player_heading,
+        }
+
+    def restore(self, state: dict) -> None:
+        self.player_x = float(state["player_x"])
+        self.player_y = float(state["player_y"])
+        self.player_heading = float(state["player_heading"])
+
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((6, 6, 18))
 
@@ -168,6 +180,24 @@ class HyperspaceScene(Scene):
         self._hud_line(
             screen, x, y, f"Pos {self.player_x:7.0f} {self.player_y:7.0f}", (150, 170, 200)
         )
+        y += 22
+
+        # Time Drive indicator
+        if self.game is not None:
+            td = self.game.time_drive
+            if td.is_ready():
+                self._hud_line(screen, x, y, "TIME DRIVE  READY", (130, 230, 180))
+            else:
+                remaining = td.time_until_ready()
+                mm = int(remaining) // 60
+                ss = int(remaining) % 60
+                self._hud_line(
+                    screen,
+                    x,
+                    y,
+                    f"TIME DRIVE  charging {mm}:{ss:02d}",
+                    (180, 160, 110),
+                )
         y += 32
 
         # Nearest star
@@ -207,19 +237,23 @@ class HyperspaceScene(Scene):
         )
 
         # Controls hint pinned to bottom
-        controls_y = screen.get_height() - 150
+        controls_y = screen.get_height() - 180
         self._hud_line(screen, x, controls_y, "CONTROLS", (200, 210, 230))
         controls_y += 28
         self._hud_line(
-            screen, x, controls_y, "Move:   WASD / L-stick", (130, 150, 180)
+            screen, x, controls_y, "Move:    WASD / L-stick", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Map:    M / Y", (130, 150, 180)
+            screen, x, controls_y, "Map:     M / Y", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Quit:   Esc / Start", (130, 150, 180)
+            screen, x, controls_y, "Rewind:  R / Back", (130, 150, 180)
+        )
+        controls_y += 22
+        self._hud_line(
+            screen, x, controls_y, "Quit:    Esc / Start", (130, 150, 180)
         )
 
     def _hud_line(

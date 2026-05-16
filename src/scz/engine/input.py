@@ -54,6 +54,8 @@ class InputManager:
         self.quit: bool = False
         self.menu_prev: bool = False
         self.menu_next: bool = False
+        # Time Drive — engage chronometric rewind (5-min real-time)
+        self.rewind: bool = False
 
     def _refresh_joysticks(self) -> None:
         self.joysticks = []
@@ -75,6 +77,7 @@ class InputManager:
         self.quit = False
         self.menu_prev = False
         self.menu_next = False
+        self.rewind = False
 
         # ----- Keyboard (level axes from held keys) -----
         keys = pygame.key.get_pressed()
@@ -128,6 +131,8 @@ class InputManager:
                     self.menu_prev = True
                 elif ev.key == pygame.K_RIGHTBRACKET:
                     self.menu_next = True
+                elif ev.key == pygame.K_r:
+                    self.rewind = True
 
             elif ev.type == pygame.JOYBUTTONDOWN:
                 if ev.button == XBOX_A:
@@ -145,7 +150,8 @@ class InputManager:
                 elif ev.button == XBOX_START:
                     self.quit = True
                 elif ev.button == XBOX_BACK:
-                    self.cancel = True
+                    # Back button = "go back in time" — engage Time Drive
+                    self.rewind = True
 
             elif ev.type == pygame.JOYDEVICEADDED:
                 self._refresh_joysticks()

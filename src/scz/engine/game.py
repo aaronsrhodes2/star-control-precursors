@@ -6,6 +6,7 @@ import pygame
 
 from scz.engine.input import InputManager
 from scz.engine.scene import Scene
+from scz.engine.time_drive import TimeDrive
 
 
 class Game:
@@ -42,6 +43,7 @@ class Game:
         self.current_scene: Scene | None = None
         self.target_fps = target_fps
         self.frame_count = 0
+        self.time_drive = TimeDrive()
 
     def set_scene(self, scene: Scene) -> None:
         """Replace the current scene with a new one."""
@@ -70,8 +72,15 @@ class Game:
                     self.running = False
 
                 if self.current_scene is not None:
+                    # Time Drive sampling + rewind handling (engine layer)
+                    self.time_drive.maybe_snapshot(self.current_scene)
+                    self.time_drive.update(dt)
+                    if self.input.rewind and self.time_drive.is_ready():
+                        self.time_drive.rewind(self.current_scene)
+
                     self.current_scene.update(dt, self.input)
                     self.current_scene.render(self.screen)
+                    self.time_drive.render_overlay(self.screen)
 
                 pygame.display.flip()
                 self.frame_count += 1

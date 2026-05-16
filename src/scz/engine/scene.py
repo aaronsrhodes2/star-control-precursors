@@ -35,3 +35,16 @@ class Scene:
 
     def render(self, screen: pygame.Surface) -> None:
         """Per-frame render to the screen surface."""
+
+    # ----- Time Drive API -----
+    # Scenes opt in to rewind by overriding snapshot() and restore().
+    # Returning None from snapshot() makes this scene non-rewindable
+    # (the Time Drive will skip taking snapshots in this scene).
+
+    def snapshot(self) -> dict | None:
+        """Return a JSON-serializable dict of rewindable state, or None
+        to mark this scene non-rewindable (e.g. mid-combat lock-in)."""
+        return None
+
+    def restore(self, state: dict) -> None:
+        """Restore from a state dict produced by snapshot()."""
