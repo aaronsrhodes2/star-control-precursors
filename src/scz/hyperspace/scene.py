@@ -9,6 +9,7 @@ from pathlib import Path
 
 import pygame
 
+from scz.content.species_visual import get_warp_pod_colors
 from scz.engine.scene import Scene
 from scz.hyperspace.starmap import Starmap, UNIVERSE_MAX
 
@@ -325,10 +326,10 @@ class HyperspaceScene(Scene):
     def _draw_player_ship(
         self, screen: pygame.Surface, x: float, y: float, heading: float
     ) -> None:
-        # Draw the warp pod (red teardrop wrapping the ship). The pod
-        # represents what every SC2 player saw as the red "hyperspace field"
-        # — except they were *inside* it; we're outside looking in.
-        self._draw_warp_pod(screen, x, y, heading)
+        # Draw the Furling warp pod (red teardrop wrapping the ship).
+        # Player is always FURLING_SCOUT for now; other species' ships will
+        # get their own colors when encounter rendering lands.
+        self._draw_warp_pod(screen, x, y, heading, "FURLING_SCOUT")
 
         # Triangle with tip in heading direction — the ship itself, inside
         # the pod
@@ -364,12 +365,22 @@ class HyperspaceScene(Scene):
             screen.blit(label, (x - lw / 2, y + 42))
 
     def _draw_warp_pod(
-        self, screen: pygame.Surface, x: float, y: float, heading: float
+        self,
+        screen: pygame.Surface,
+        x: float,
+        y: float,
+        heading: float,
+        species_id: str = "FURLING_SCOUT",
     ) -> None:
-        """Draw the ship's red warp-drive pod — an asymmetric teardrop
-        oriented along the heading. Forward end is elongated and slightly
-        pointier; back end is rounded.
+        """Draw a warp-drive pod — an asymmetric teardrop oriented along
+        heading. Color set comes from the species palette so each species
+        is identifiable on sight in hyperspace.
         """
+        colors = get_warp_pod_colors(species_id)
+        interior = colors["interior"]
+        rim = colors["rim"]
+        glow = colors["glow"]
+
         # Forward unit vector (heading 0 = up, +y down in screen)
         fx = math.sin(heading)
         fy = -math.cos(heading)
@@ -398,34 +409,37 @@ class HyperspaceScene(Scene):
                 )
             )
 
-        # Outer red glow (translucent, rendered on alpha surface)
+        # Outer glow — concentric translucent circles, species-tinted
         glow_pad = 18
         glow_w = int(max(pod_forward, pod_back) * 2 + glow_pad * 2)
         glow_h = int(pod_side * 2 + glow_pad * 2)
         glow_surf = pygame.Surface((glow_w, glow_h), pygame.SRCALPHA)
-        # We're drawing the glow as a series of concentric translucent
-        # ellipses centered on the surface. The pod's heading is encoded
-        # in the polygon shape we drew above, but for the glow we use a
-        # simple radial halo (cheaper, looks like a heat-bloom).
         cx, cy = glow_w // 2, glow_h // 2
-        for r, alpha in ((glow_w // 2, 14), (glow_w // 2 - 6, 28), (glow_w // 2 - 14, 44)):
+        glow_rgb = glow[:3]
+        glow_a = glow[3] if len(glow) > 3 else 60
+        for r, alpha_frac in (
+            (glow_w // 2, 0.25), (glow_w // 2 - 6, 0.5), (glow_w // 2 - 14, 0.85)
+        ):
             if r > 0:
-                pygame.draw.circle(glow_surf, (220, 80, 80, alpha), (cx, cy), r)
+                pygame.draw.circle(
+                    glow_surf,
+                    (*glow_rgb, int(glow_a * alpha_frac)),
+                    (cx, cy),
+                    r,
+                )
         screen.blit(
-            glow_surf, (int(x - cx), int(y - cy)), special_flags=pygame.BLEND_PREMULTIPLIED
+            glow_surf, (int(x - cx), int(y - cy)),
+            special_flags=pygame.BLEND_PREMULTIPLIED,
         )
 
-        # Pod fill (dark red interior)
-        pygame.draw.polygon(screen, (50, 14, 16), outer)
-        # Pod outline (brighter red rim)
-        pygame.draw.polygon(screen, (200, 80, 80), outer, 2)
-        # Tiny brighter front "arc" for direction sense
-        front_hi_color = (255, 140, 140)
-        front_pts = [outer[0]]
-        for i in (1, n_points - 1):
-            front_pts.append(outer[i])
-        # outer[0] is the very front of the pod by construction (t=0 → cos_t=1)
-        pygame.draw.lines(screen, front_hi_color, False, front_pts[:3], 2)
+        # Pod fill (dark interior)
+        pygame.draw.polygon(screen, interior, outer)
+        # Pod outline (brighter rim)
+        pygame.draw.polygon(screen, rim, outer, 2)
+        # Brighter front "arc" for direction sense — slightly brightened rim
+        front_hi_color = tuple(min(255, c + 50) for c in rim)
+        front_pts = [outer[0], outer[1], outer[n_points - 1]]
+        pygame.draw.lines(screen, front_hi_color, False, front_pts, 2)
 
     def _draw_autopilot_line(self, screen: pygame.Surface) -> None:
         """Line from ship to autopilot target, with a pulsing marker at the destination."""
