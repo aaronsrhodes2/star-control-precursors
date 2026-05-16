@@ -31,6 +31,12 @@ from scz.planet.deposits import (
     RESOURCE_VISUAL,
     generate_deposits,
 )
+from scz.planet.hazards import (
+    Hazard,
+    LANDER_HP_BASE,
+    LANDER_REPLACEMENT_COST,
+    generate_hazards,
+)
 from scz.system.planet import PLANET_VISUAL
 
 if TYPE_CHECKING:
@@ -128,6 +134,32 @@ class PlanetSurfaceScene(Scene):
         self.recent_pickup_age: float = 0.0
         self.recent_pickup_label: str = ""    # custom label (e.g. for the package)
 
+        # Trip haul — staged here per pickup; commits to game.cargo on
+        # successful lift-off. If the lander is destroyed, this haul is
+        # LOST. The player has to balance "should I keep tractoring, or
+        # lift off with what I have?"
+        self.trip_haul: dict[str, int] = {
+            "COMMON": 0, "USEFUL": 0, "BIO": 0, "ENERGY": 0,
+        }
+
+        # Hazards on this planet (deterministic per seed; empty on safe
+        # worlds like Furlmart).
+        self.hazards: list[Hazard] = generate_hazards(
+            (star["x"], star["y"], self.planet_index),
+            self.planet_type,
+            planet_name=self.planet_name,
+        )
+
+        # Lander HP — starts full each surface visit. Future hull
+        # modules can grow this via effective_stat("lander_hp_bonus").
+        self.lander_hp: float = LANDER_HP_BASE
+        self.lander_destroyed: bool = False
+        self.destruction_msg: str = ""
+        self.destruction_age: float = 0.0
+
+        # Time on the surface; used by periodic hazards
+        self.surface_time: float = 0.0
+
         # Set in on_enter
         self.surface_rect: pygame.Rect | None = None
         self.font: pygame.font.Font | None = None
@@ -165,6 +197,16 @@ class PlanetSurfaceScene(Scene):
             )
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
+        self.surface_time += dt
+
+        # If the lander already died, hold on the wreck for a moment,
+        # then auto-eject to orbit (player can re-deploy from there).
+        if self.lander_destroyed:
+            self.destruction_age += dt
+            if self.destruction_age >= 2.5:
+                self._exit_to_orbit(committed=False)
+            return
+
         # Movement
         mx, my = inp.move_x, inp.move_y
         if mx != 0.0 or my != 0.0:
@@ -179,6 +221,20 @@ class PlanetSurfaceScene(Scene):
         # Clamp to surface bounds
         self.lander_x = max(0.0, min(1.0, self.lander_x))
         self.lander_y = max(0.0, min(1.0, self.lander_y))
+
+        # Hazards — apply damage to the lander when in contact with an
+        # active hazard. lander_hp is per-trip; reaches 0 → destroyed.
+        for h in self.hazards:
+            if not h.is_active(self.surface_time):
+                continue
+            dx = h.x - self.lander_x
+            dy = h.y - self.lander_y
+            if math.hypot(dx, dy) <= h.radius:
+                self.lander_hp -= h.damage_per_sec * dt
+                if self.lander_hp <= 0.0:
+                    self.lander_hp = 0.0
+                    self._destroy_lander(h.type)
+                    return
 
         # Tractor-beam pull: anything inside the effective radius is
         # collected (no shooting, no killing — life and minerals both
@@ -201,27 +257,74 @@ class PlanetSurfaceScene(Scene):
             if self.recent_pickup_age > 2.5:
                 self.recent_pickup = None
 
-        # Exit on CANCEL — lift off back to orbit (the safe-zone).
-        # The orbit scene's "Leave Orbit" then drops back to the system view.
+        # Exit on CANCEL — lift off back to orbit. Trip haul commits
+        # to game.cargo on successful lift-off.
         if inp.cancel and self.game is not None:
-            from scz.system.orbit import PlanetOrbitScene
-            from scz.system.scene import SystemScene as _Sys
-            # Reconstitute the orbit context. We need a Planet object;
-            # PlanetSurfaceScene normalizes its inputs, so re-build a
-            # Planet-shaped object from what we kept.
-            planet = _ReconstitutedPlanet(
-                index=self.planet_index,
-                name=self.planet_name,
-                type=self.planet_type,
-                color=self.planet_color,
+            self._exit_to_orbit(committed=True)
+
+    def _exit_to_orbit(self, committed: bool) -> None:
+        """Leave the surface back to PlanetOrbitScene.
+
+        committed=True (lift-off): commit trip_haul to game.cargo.
+        committed=False (destruction): trip_haul is LOST; pay
+        replacement cost from game.cargo.
+        """
+        assert self.game is not None
+        if committed:
+            for t, v in self.trip_haul.items():
+                if v > 0:
+                    self.game.cargo[t] = self.game.cargo.get(t, 0) + v
+        else:
+            # Lander destruction — pay replacement cost out of game.cargo
+            # (already-banked minerals from prior trips). The trip's haul
+            # is lost; only previously-committed cargo can pay the bill.
+            for t, cost in LANDER_REPLACEMENT_COST.items():
+                have = self.game.cargo.get(t, 0)
+                paid = min(have, cost)
+                self.game.cargo[t] = have - paid
+                # If we couldn't fully pay, the rest is "on credit" —
+                # for slice MVP we just absorb it. The lander always
+                # gets rebuilt (no soft-lock).
+
+        from scz.system.orbit import PlanetOrbitScene
+        from scz.system.scene import SystemScene as _Sys
+        planet = _ReconstitutedPlanet(
+            index=self.planet_index,
+            name=self.planet_name,
+            type=self.planet_type,
+            color=self.planet_color,
+        )
+        self.game.set_scene(
+            PlanetOrbitScene(
+                planet=planet,
+                star=self.star,
+                parent_scene_cls=_Sys,
             )
-            self.game.set_scene(
-                PlanetOrbitScene(
-                    planet=planet,
-                    star=self.star,
-                    parent_scene_cls=_Sys,
-                )
-            )
+        )
+
+    def _destroy_lander(self, hazard_type: str) -> None:
+        """Begin the lander-destruction sequence. The scene holds on the
+        wreck for a couple seconds, then auto-ejects to orbit. Trip haul
+        is lost; cost flagged in destruction_msg for the HUD."""
+        assert self.game is not None
+        self.lander_destroyed = True
+        self.destruction_age = 0.0
+        haul_summary = ", ".join(
+            f"{v} {t.lower()}" for t, v in self.trip_haul.items() if v > 0
+        ) or "no haul"
+        cost_summary = ", ".join(
+            f"{cost} {t.lower()}" for t, cost in LANDER_REPLACEMENT_COST.items()
+        )
+        self.destruction_msg = (
+            f"LANDER LOST  ·  {hazard_type}\n"
+            f"trip haul lost: {haul_summary}\n"
+            f"replacement: {cost_summary}"
+        )
+        # Track total losses for player awareness / future achievements
+        losses = self.game.flags.get("landers_lost", 0)
+        self.game.flags["landers_lost"] = (losses if isinstance(losses, int) else 0) + 1
+        print(f"[lander] destroyed by {hazard_type} on {self.planet_name}; "
+              f"trip lost: {haul_summary}; replacement cost: {cost_summary}")
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((6, 6, 18))
@@ -256,6 +359,10 @@ class PlanetSurfaceScene(Scene):
             pygame.draw.rect(screen, (180, 160, 100), box, 1)
             screen.blit(text_surf, (tx, ty))
 
+        # Hazards (rendered UNDER deposits + lander so deposits are
+        # still readable when one's inside a hazard zone)
+        self._draw_hazards(screen, ground_rect)
+
         # Deposits
         for d in self.deposits:
             if d.collected:
@@ -272,6 +379,10 @@ class PlanetSurfaceScene(Scene):
 
         # Lander
         self._draw_lander(screen, ground_rect)
+
+        # Destruction overlay
+        if self.lander_destroyed:
+            self._draw_destruction_overlay(screen)
 
         # Recent pickup floater
         if self.recent_pickup is not None and self.font is not None:
@@ -326,19 +437,20 @@ class PlanetSurfaceScene(Scene):
     def _on_pickup(self, d: Deposit) -> None:
         """Apply the side-effects of a tractor collection.
 
-        Default behavior: add to game.cargo by type + value, set the
-        floater. Subclasses or special deposit types can override the
-        label / set additional game.flags (e.g. for the Scanner Mk III
-        package — see deposits.py).
+        Ordinary minerals go to the TRIP HAUL — staged until the lander
+        lifts off cleanly. If the lander is destroyed by a hazard, the
+        trip haul is lost. Quest items (Scanner Mk III, etc.) commit
+        immediately and survive destruction — they're routed via the
+        ship's stasis bay, not the cargo hold.
 
         Cargo capacity (effective_stat("cargo_max", LANDER_CARGO_BASE))
-        gates ordinary mineral pickups. Quest items always tractor in
-        — they don't count against capacity. If cargo is full, the
-        tractor visibly fails: floater shows "cargo full".
+        applies to the COMBINED total of ship cargo + this trip's haul
+        — you can't bring back more than your hold can fit even if you
+        survive the trip.
         """
         assert self.game is not None
         if d.type == "PACKAGE_SCANNER_MK3":
-            # Quest item — sets the cargo flag for the upgrade pickup
+            # Quest item — immediate commit; survives lander destruction
             self.game.flags["scanner_mk3_in_cargo"] = True
             self.game.flags["scanner_mk3_collected"] = True
             self.game.uninstalled_modules["scanner_mk3"] = (
@@ -348,19 +460,20 @@ class PlanetSurfaceScene(Scene):
             self.recent_pickup_label = "Scanner Mk III  ·  install at station"
             self.recent_pickup_age = 0.0
             return
-        # Ordinary mineral / bio / energy resource — respect cargo_max
-        cargo_total = sum(self.game.cargo.values())
+        # Ordinary mineral — respect combined cargo_max (ship hold +
+        # trip haul). Out of room → tractor visibly fails.
+        ship_total = sum(self.game.cargo.values())
+        haul_total = sum(self.trip_haul.values())
         cargo_max = int(self.game.effective_stat("cargo_max", LANDER_CARGO_BASE))
-        remaining = cargo_max - cargo_total
+        remaining = cargo_max - ship_total - haul_total
         if remaining <= 0:
-            # Cargo full — un-collect, show feedback
             d.collected = False
             self.recent_pickup = (d.type, 0)
             self.recent_pickup_label = "cargo full — upgrade hold at station"
             self.recent_pickup_age = 0.0
             return
         added = min(d.value, remaining)
-        self.game.cargo[d.type] = self.game.cargo.get(d.type, 0) + added
+        self.trip_haul[d.type] = self.trip_haul.get(d.type, 0) + added
         self.recent_pickup = (d.type, added)
         self.recent_pickup_label = ""
         self.recent_pickup_age = 0.0
@@ -368,6 +481,50 @@ class PlanetSurfaceScene(Scene):
     # ------------------------------------------------------------------
     # Helpers
     # ------------------------------------------------------------------
+
+    def _draw_hazards(
+        self, screen: pygame.Surface, ground_rect: pygame.Rect
+    ) -> None:
+        """Render each hazard as a colored ring on the ground. Active
+        hazards are bright + filled; inactive (between pulses) are a
+        faint outline so the player can see the threat-zones."""
+        for h in self.hazards:
+            cx = ground_rect.x + h.x * ground_rect.width
+            cy = ground_rect.y + h.y * ground_rect.height
+            r = int(h.radius * ground_rect.width)
+            active = h.is_active(self.surface_time)
+            if active:
+                # Translucent filled circle in hazard color
+                surf = pygame.Surface((r * 2 + 4, r * 2 + 4), pygame.SRCALPHA)
+                fill = (*h.color, 110)
+                pygame.draw.circle(surf, fill, (r + 2, r + 2), r)
+                pygame.draw.circle(surf, (*h.color, 220), (r + 2, r + 2), r, 2)
+                screen.blit(surf, (int(cx) - r - 2, int(cy) - r - 2))
+            else:
+                # Faint dashed outline so the player can SEE the danger
+                # before it activates again
+                dim = (h.color[0] // 3, h.color[1] // 3, h.color[2] // 3)
+                pygame.draw.circle(screen, dim, (int(cx), int(cy)), r, 1)
+
+    def _draw_destruction_overlay(self, screen: pygame.Surface) -> None:
+        """Fullscreen wreck banner. Held for ~2.5s then we auto-eject."""
+        if self.font is None or self.title_font is None:
+            return
+        w, h = screen.get_size()
+        # Dim layer
+        dim = pygame.Surface((w, h), pygame.SRCALPHA)
+        dim.fill((30, 0, 0, 140))
+        screen.blit(dim, (0, 0))
+        # Big banner
+        title = self.title_font.render(
+            "LANDER DESTROYED", True, (255, 120, 100)
+        )
+        tw, th = title.get_size()
+        screen.blit(title, ((w - tw) // 2, h // 2 - th - 20))
+        for i, line in enumerate(self.destruction_msg.split("\n")[1:]):
+            text = self.font.render(line, True, (240, 230, 220))
+            lw, _ = text.get_size()
+            screen.blit(text, ((w - lw) // 2, h // 2 + 4 + i * 26))
 
     def _draw_lander(self, screen: pygame.Surface, ground_rect: pygame.Rect) -> None:
         x = ground_rect.x + self.lander_x * ground_rect.width
@@ -425,26 +582,67 @@ class PlanetSurfaceScene(Scene):
         )
         y += 28
 
-        # Lander status
-        screen.blit(self.font.render("LANDER DEPLOYED", True, (200, 200, 220)), (x, y))
+        # Lander HP bar — color shifts red as HP drops
+        screen.blit(self.font.render("LANDER", True, (200, 200, 220)), (x, y))
         y += 24
         assert self.game is not None
+        hp_frac = max(0.0, self.lander_hp / LANDER_HP_BASE)
+        # Bar
+        bar_w = 280
+        bar_h = 12
+        pygame.draw.rect(screen, (30, 30, 50), (x, y, bar_w, bar_h))
+        hp_color = (
+            int(220 - 80 * hp_frac),
+            int(80 + 140 * hp_frac),
+            int(80 + 60 * hp_frac),
+        )
+        pygame.draw.rect(screen, hp_color, (x, y, int(bar_w * hp_frac), bar_h))
+        pygame.draw.rect(screen, (90, 100, 130), (x, y, bar_w, bar_h), 1)
+        screen.blit(
+            self.font.render(
+                f"  HP {int(self.lander_hp)} / {int(LANDER_HP_BASE)}",
+                True, (180, 200, 220),
+            ),
+            (x + bar_w + 6, y - 3),
+        )
+        y += 24
+
         cargo = self.game.cargo
         cargo_total = sum(cargo.values())
+        haul_total = sum(self.trip_haul.values())
         cargo_max = int(self.game.effective_stat("cargo_max", LANDER_CARGO_BASE))
         screen.blit(
-            self.font.render(f"Cargo: {cargo_total} / {cargo_max}", True, (160, 180, 200)),
+            self.font.render(
+                f"Ship hold: {cargo_total} + {haul_total} trip  /  {cargo_max} max",
+                True, (160, 180, 200),
+            ),
             (x, y),
         )
         y += 32
 
-        # Per-resource breakdown
-        screen.blit(self.font.render("HOLD CONTENTS", True, (200, 210, 230)), (x, y))
+        # Per-resource breakdown — trip haul + ship hold side-by-side
+        screen.blit(self.font.render("THIS TRIP   ·   SHIP HOLD", True, (200, 210, 230)), (x, y))
         y += 24
         for rtype in ("COMMON", "USEFUL", "BIO", "ENERGY"):
             color = RESOURCE_VISUAL[rtype]["color"]
-            label = f"  {rtype.lower():8s}  {cargo.get(rtype, 0):4d}"
+            trip = self.trip_haul.get(rtype, 0)
+            held = cargo.get(rtype, 0)
+            label = f"  {rtype.lower():7s}  {trip:4d}     {held:4d}"
             screen.blit(self.font.render(label, True, color), (x, y))
+            y += 22
+
+        # Hazards summary
+        if self.hazards:
+            y += 8
+            n_active = sum(1 for h in self.hazards if h.is_active(self.surface_time))
+            warn_color = (220, 130, 80) if n_active > 0 else (140, 140, 160)
+            screen.blit(
+                self.font.render(
+                    f"HAZARDS  {n_active} active / {len(self.hazards)} total",
+                    True, warn_color,
+                ),
+                (x, y),
+            )
             y += 22
 
         # Deposit count remaining

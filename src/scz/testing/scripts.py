@@ -581,6 +581,76 @@ def walk_tutorial_beat_3_to_5() -> TestScript:
     return s
 
 
+def walk_hazard_destroys_lander() -> TestScript:
+    """Hazard system — drive the lander into a heat zone and watch it die.
+
+    Validates:
+      - Trip haul is staged separately from ship cargo
+      - Surface hazards damage the lander each frame they overlap
+      - At HP=0, the lander is destroyed; auto-ejects to orbit after a
+        ~2.5s wreck-banner hold
+      - game.flags["landers_lost"] increments
+      - Replacement cost is paid from game.cargo on destruction
+      - Trip haul is LOST (not transferred to ship cargo)
+
+    Target: Mh-Lai II (DESERT) — has 3 heat hazards (always-on, 8 dmg/s).
+    The lander spawns at (0.50, 0.95). The biggest hazard is at
+    (0.50, 0.40) radius 0.139, so driving straight up puts us in it.
+    Pre-seed 100 COMMON in cargo so the 30-COMMON replacement is paid.
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Hazard test — drive into heat zone on Mh-Lai II, die")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # Pre-seed cargo for the replacement cost to draw from
+    s.set_cargo({"COMMON": 100, "USEFUL": 0, "BIO": 0, "ENERGY": 0})
+
+    # Jump to "Mh-Lai II Orbit (hazardous)" — entry 26 (last in switcher)
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(26):
+        s.press("menu_down")
+        s.wait(0.1)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # A → Deploy Lander
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetSurfaceScene")
+
+    # Lander spawns at (0.50, 0.95). Drive UP into the big heat hazard
+    # at (0.50, 0.40) radius 0.139. At LANDER_SPEED=0.20, going from
+    # y=0.95 → y=0.40 takes 2.75 game-sec. Hold up for 3.0 sec to
+    # ensure we're inside.
+    s.set_axis(0.0, -1.0)
+    s.wait(3.0)
+    s.release_axis()
+    # We're now inside the heat zone (always-on, 8 dmg/sec).
+    # Lander HP = 100; time to die ≈ 100/8 = 12.5 sec. Then a 2.5 sec
+    # wreck dwell before auto-eject. 16 sec buffer covers both.
+    s.wait(16.0)
+    # Auto-eject should have happened: back to PlanetOrbitScene
+    s.expect_scene("PlanetOrbitScene")
+    s.expect_flag("landers_lost", 1)
+    # Replacement cost: 30 COMMON deducted from cargo (started at 100)
+    s.expect_cargo("COMMON", 70)
+    # Trip haul was never committed to ship cargo (we collected nothing
+    # because we drove straight to the hazard, but even if we had, it
+    # would be lost). USEFUL/BIO/ENERGY remain at 0.
+    s.expect_cargo("USEFUL", 0)
+
+    s.set_speed(1.0)
+    s.log("Hazard test complete — lander wrecked, trip lost, cost paid.")
+    s.wait(0.6)
+    s.end()
+    return s
+
+
 def walk_upgrade_loop() -> TestScript:
     """The core gameplay loop — undock, scan, collect, return, sell, buy.
 
@@ -1343,4 +1413,5 @@ SCRIPTS = {
     "walk_tutorial_arc":       walk_tutorial_arc,
     "walk_slylandro_cloak":    walk_slylandro_cloak,
     "walk_upgrade_loop":       walk_upgrade_loop,
+    "walk_hazard_destroys_lander": walk_hazard_destroys_lander,
 }

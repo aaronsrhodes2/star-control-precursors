@@ -112,6 +112,14 @@ def _entries():
         planet = next(p for p in sys.planets if p.name == "Furlmart")
         return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
 
+    def _mh_lai_2_orbit():
+        # Mh-Lai II (DESERT, hazardous) — heat-hazard test target. NOT
+        # for tutorial use; player gets here via exploration.
+        from scz.system.scene import SystemScene as _Sys
+        sys = _Sys(home_star())
+        planet = next(p for p in sys.planets if p.name == "Mh-Lai II")
+        return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
+
     return [
         # Live scenes
         ("Main Menu",                lambda: MainMenuScene(),                pygame.K_0),
@@ -141,6 +149,7 @@ def _entries():
         ("Furling Council",          lambda: CouncilScene(),                 None),
         ("Cluster Status Board",     lambda: ClusterStatusBoardScene(),      None),
         ("Bio-Archive",              lambda: ArchiveScene(),                 None),
+        ("Mh-Lai II Orbit (hazardous)", _mh_lai_2_orbit,                     None),
     ]
 
 
