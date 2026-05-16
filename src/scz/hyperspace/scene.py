@@ -20,6 +20,9 @@ STARMAP_JSON = _CONTENT_ROOT / "universe" / "stars.json"
 # Ship movement speed in universe units per second
 PLAYER_SPEED = 1200.0
 
+# How close (universe units) the player must be to a star to "enter" it.
+STAR_ENTER_RADIUS = 250.0
+
 # Sol's coordinates in the precursor-era universe (the player's home, before
 # humans exist). From src/scz/content/universe/stars.json.
 SOL_X = 1793.0
@@ -92,6 +95,20 @@ class HyperspaceScene(Scene):
         self.player_x = max(0.0, min(UNIVERSE_MAX - 1, self.player_x))
         self.player_y = max(0.0, min(UNIVERSE_MAX - 1, self.player_y))
 
+        # Confirm near a star → enter that system
+        if inp.confirm and self.game is not None:
+            nearby = self.starmap.find_nearest_star(
+                self.player_x, self.player_y, max_distance=STAR_ENTER_RADIUS
+            )
+            if nearby is not None:
+                # Compute distance to confirm it's truly within entry range
+                dx = nearby["x"] - self.player_x
+                dy = nearby["y"] - self.player_y
+                if math.hypot(dx, dy) <= STAR_ENTER_RADIUS:
+                    # Lazy import to avoid circular dependency
+                    from scz.system.scene import SystemScene
+                    self.game.set_scene(SystemScene(nearby))
+
     def snapshot(self) -> dict | None:
         return {
             "player_x": self.player_x,
@@ -124,9 +141,27 @@ class HyperspaceScene(Scene):
         nearest = self.starmap.find_nearest_star(
             self.player_x, self.player_y, max_distance=400.0
         )
+        # Compute distance to nearest star for "press A to enter" prompt
+        in_entry_range = False
+        if nearest is not None:
+            dx = nearest["x"] - self.player_x
+            dy = nearest["y"] - self.player_y
+            in_entry_range = math.hypot(dx, dy) <= STAR_ENTER_RADIUS
+            if in_entry_range:
+                # Draw an "enter prompt" circle around the nearest star
+                psx, psy = self.universe_to_screen(nearest["x"], nearest["y"])
+                pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2  # 0..1
+                ring_r = int(14 + pulse * 4)
+                pygame.draw.circle(
+                    screen,
+                    (180 + int(pulse * 50), 220, 255),
+                    (int(psx), int(psy)),
+                    ring_r,
+                    1,
+                )
 
         # HUD
-        self._draw_hud(screen, nearest)
+        self._draw_hud(screen, nearest, in_entry_range)
 
     # --- helpers ---
 
@@ -149,7 +184,12 @@ class HyperspaceScene(Scene):
         # Player position crosshair (subtle)
         pygame.draw.circle(screen, (60, 90, 130), (int(x), int(y)), 18, 1)
 
-    def _draw_hud(self, screen: pygame.Surface, nearest: dict | None) -> None:
+    def _draw_hud(
+        self,
+        screen: pygame.Surface,
+        nearest: dict | None,
+        in_entry_range: bool = False,
+    ) -> None:
         assert self.font is not None
         assert self.title_font is not None
 
@@ -217,6 +257,16 @@ class HyperspaceScene(Scene):
                 y += 22
             if nearest.get("primordial"):
                 self._hud_line(screen, x, y, "(primordial)", (180, 130, 200))
+                y += 22
+            if in_entry_range:
+                # Pulse the prompt color
+                pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2
+                c = (
+                    int(180 + pulse * 75),
+                    int(220 + pulse * 35),
+                    255,
+                )
+                self._hud_line(screen, x, y, "[ENTER:  A / Space]", c)
                 y += 22
             y += 10
         else:
