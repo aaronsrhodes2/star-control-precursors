@@ -581,6 +581,180 @@ def walk_tutorial_beat_3_to_5() -> TestScript:
     return s
 
 
+def walk_upgrade_loop() -> TestScript:
+    """The core gameplay loop — undock, scan, collect, return, sell, buy.
+
+    Aaron's watch-and-comment loop. Two iterations:
+
+    Iteration 0 (warm-up): pre-seed some minerals (the player is already
+      back home with cargo), sell at Trade, buy Cargo Pod +50 to expand
+      the hold from 200 to 250.
+
+    Iteration 1 (real loop): undock to Mh-Lai system, jump to Furlmart
+      Orbit, deploy lander, drive a sweep to tractor minerals, lift off,
+      jump to Mh-Lai Orbit, dock at Station, sell, buy another module.
+
+    Validates the upgrade-buying flow + that the Cargo Pod +50 module
+    actually expands cargo_max from 200 to 250 via game.effective_stat.
+    """
+    s = TestScript()
+    s.set_speed(3.0)
+    s.log("Upgrade loop — Trade > Customization > Collect > repeat")
+
+    s.wait(0.6)
+    s.expect_scene("MainMenuScene")
+
+    # ============ Iteration 0 — warm-up: pre-seeded cargo, sell, buy ============
+    # Pretend the player just came back from a fruitful run
+    s.set_cargo({"COMMON": 100, "USEFUL": 20, "BIO": 5})
+
+    s.press("confirm")    # MainMenu → Station
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    # Trade — navigate to "Trade resources" (menu index 1)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("TradeScene")
+    # "Sell ALL minerals" is index 4
+    for _ in range(4):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.4)
+    # 100*1 + 20*4 + 5*6 = 210 credits
+    s.expect_credits(210)
+    s.press("cancel")     # back to Station — selected resets to 0
+    s.wait(0.4)
+    s.expect_scene("StationScene")
+
+    # Customization — buy Cargo Pod +50 (cheapest tier-1 at 50c).
+    # "Upgrade ship" is menu index 2; selected=0 after returning from
+    # Trade, so two menu_downs.
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("ShipCustomizationScene")
+    # Default focus is slots; switch to modules column
+    s.press("menu_next")
+    s.wait(0.2)
+    # Available modules list (no quest items in inventory): catalog order
+    # is FUEL_TANK, SHIELD_BOOSTER, BEAM_MOD, CARGO_POD, ... — Cargo Pod
+    # at index 3. Navigate 3 down and confirm.
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")    # install Cargo Pod +50
+    s.wait(0.4)
+    s.expect_module_installed("hull", "cargo_pod_plus_50")
+    s.expect_credits(160)    # 210 - 50
+
+    # Back to Station — selected resets to 0 (Talk)
+    s.press("cancel")
+    s.wait(0.4)
+    s.expect_scene("StationScene")
+
+    # ============ Iteration 1 — undock, collect, return, sell, buy ============
+    # Undock is index 3 — navigate down 3 times from selected=0
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("SystemScene")
+
+    # Jump to Furlmart Orbit via switcher (entry 4)
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(4):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # A → Deploy lander
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetSurfaceScene")
+
+    # Drive a sweep across the surface to tractor deposits. Lander
+    # spawns at (0.5, 0.95). LANDER_SPEED=0.20 surface-units/sec.
+    # Zigzag path covers a wide area of Furlmart's deposit field.
+    s.move(0.0, -1.0, 2.0)    # up 0.40 units → y ≈ 0.55
+    s.move(-1.0, 0.0, 1.5)    # left 0.30 units → x ≈ 0.20
+    s.move(0.0, -1.0, 1.0)    # up 0.20 units → y ≈ 0.35
+    s.move(1.0, 0.0, 3.0)     # right 0.60 units → x ≈ 0.80
+    s.move(0.0, 1.0, 0.7)     # down 0.14 units → y ≈ 0.49
+    s.move(-1.0, 0.0, 2.0)    # left 0.40 units → x ≈ 0.40
+
+    # Lift off → orbit
+    s.press("cancel")
+    s.wait(0.5)
+    s.expect_scene("PlanetOrbitScene")
+
+    # Jump to Mh-Lai Orbit (entry 3) to dock at station
+    s.press("open_switcher")
+    s.wait(0.5)
+    for _ in range(3):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("PlanetOrbitScene")
+
+    # Y → Dock at Mh-Lai Station
+    s.press("fire_secondary")
+    s.wait(0.6)
+    s.expect_scene("StationScene")
+
+    # Sell what we collected — Trade
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("TradeScene")
+    for _ in range(4):
+        s.press("menu_down")
+        s.wait(0.12)
+    s.press("confirm")    # Sell ALL
+    s.wait(0.4)
+    s.press("cancel")
+    s.wait(0.4)
+    s.expect_scene("StationScene")
+
+    # Buy another upgrade — the Scanner Mk III was tractored from Furlmart
+    # during the lander sweep (the package deposit), so it's now the first
+    # item in the available modules list (quest rewards come first).
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("menu_down")
+    s.wait(0.15)
+    s.press("confirm")
+    s.wait(0.6)
+    s.expect_scene("ShipCustomizationScene")
+    s.press("menu_next")
+    s.wait(0.2)
+    s.press("confirm")    # install Scanner Mk III (index 0 — quest reward)
+    s.wait(0.4)
+    s.expect_module_installed("sensor", "scanner_mk3")
+    s.expect_flag("scanner_mk3_installed", True)
+    s.press("cancel")
+    s.wait(0.4)
+    s.expect_scene("StationScene")
+
+    s.set_speed(1.0)
+    s.log("Loop complete — sold twice, two modules installed, hold expanded.")
+    s.wait(1.5)
+    s.end()
+    return s
+
+
 def walk_slylandro_cloak() -> TestScript:
     """Slylandro Cloak quest — first non-Arilou non-tutorial species.
 
@@ -1168,4 +1342,5 @@ SCRIPTS = {
     "walk_tutorial_beat_6":    walk_tutorial_beat_6,
     "walk_tutorial_arc":       walk_tutorial_arc,
     "walk_slylandro_cloak":    walk_slylandro_cloak,
+    "walk_upgrade_loop":       walk_upgrade_loop,
 }

@@ -473,10 +473,13 @@ class HyperspaceScene(Scene):
     def _draw_furling_scout(
         self, screen: pygame.Surface, x: float, y: float, heading: float
     ) -> None:
-        """Draw the ship inside its warp pod: a structural ring (modular
-        upgrade slots) with a central oriented football (crew + engineering
-        + propulsion + command). See species_visual.py for color palette
-        when we extend to other ships.
+        """Draw the ship: a thick structural ring (modular upgrade slots)
+        wrapping a long oriented football (crew + engineering + propulsion
+        + command). Module slots are visible on the ring — filled ones
+        show their installed-module marker; empty ones are faint outlines.
+
+        Reference: the Alcubierre warp-metric image Aaron shared, blue
+        ring + central body, but with a longer body and a thicker ring.
         """
         # Forward unit vector (heading 0 = up, +y down in screen)
         fx = math.sin(heading)
@@ -485,17 +488,10 @@ class HyperspaceScene(Scene):
         sx = math.cos(heading)
         sy = math.sin(heading)
 
-        # Outer hull ring — the modular upgrade carrier
-        ring_outer = 10
-        ring_inner = 7
-        pygame.draw.circle(screen, (200, 230, 255), (int(x), int(y)), ring_outer, 0)
-        pygame.draw.circle(screen, (50, 14, 20), (int(x), int(y)), ring_inner, 0)
-        pygame.draw.circle(screen, (160, 200, 240), (int(x), int(y)), ring_outer, 1)
-
-        # Central football hull — oriented oval along heading
-        football_long = 6.0  # half-length along heading
-        football_short = 3.0  # half-width perpendicular
-        n_points = 16
+        # Central football hull — LONGER along the heading (was 6×3, now 11×3.5)
+        football_long = 11.0
+        football_short = 3.5
+        n_points = 18
         football_pts = []
         for i in range(n_points):
             t = i / n_points * 2.0 * math.pi
@@ -510,16 +506,93 @@ class HyperspaceScene(Scene):
         pygame.draw.polygon(screen, (240, 245, 255), football_pts)
         pygame.draw.polygon(screen, (100, 140, 200), football_pts, 1)
 
-        # Cross-hatching on the football (the "stitched" look from the
-        # warp-field reference image — suggests the hull's segmentation)
-        # Draw a forward "spine" line and 3 perpendicular ribs.
-        for rib_t in (-0.5, 0.0, 0.5):
-            rib_forward = rib_t * football_long * 0.8
+        # Cross-hatching ribs along the football (the "stitched" look from
+        # the warp-field reference image — suggests hull segmentation).
+        for rib_t in (-0.7, -0.35, 0.0, 0.35, 0.7):
+            rib_forward = rib_t * football_long * 0.85
             ax = x + rib_forward * fx - football_short * 0.7 * sx
             ay = y + rib_forward * fy - football_short * 0.7 * sy
             bx = x + rib_forward * fx + football_short * 0.7 * sx
             by = y + rib_forward * fy + football_short * 0.7 * sy
             pygame.draw.line(screen, (100, 140, 200), (ax, ay), (bx, by), 1)
+
+        # The ring nacelle — BIGGER + THICKER than the original. Carries
+        # the modular upgrade slots; each slot is rendered as a marker
+        # on the ring (filled if a module is installed, faint outline if
+        # empty).
+        ring_outer = 17
+        ring_thickness = 4
+        # Draw the ring as a thick blue annulus (filled outer minus filled inner)
+        pygame.draw.circle(screen, (60, 130, 220), (int(x), int(y)), ring_outer, 0)
+        pygame.draw.circle(screen, (10, 20, 40), (int(x), int(y)), ring_outer - ring_thickness, 0)
+        # Outline highlights
+        pygame.draw.circle(screen, (160, 210, 255), (int(x), int(y)), ring_outer, 1)
+        pygame.draw.circle(screen, (90, 140, 200), (int(x), int(y)), ring_outer - ring_thickness, 1)
+
+        # Module slot markers — 7 slots arranged evenly around the ring,
+        # starting at the top and going clockwise. Filled slots get a
+        # bright dot; empty slots get a thin outline ring.
+        self._draw_module_slots(screen, x, y, heading, ring_outer)
+
+    # Module slot order on the ring (canonical) — top, then clockwise.
+    # This is the visual mapping; the actual slot-name → angle order is
+    # arbitrary but stable.
+    _MODULE_SLOT_ORDER: tuple[str, ...] = (
+        "weapon", "field", "sensor", "drive", "hull", "crew_1", "crew_2",
+    )
+
+    # Module-id → marker color. Falls back to a neutral pale color.
+    _MODULE_COLOR_DEFAULTS: dict[str, tuple[int, int, int]] = {
+        "scanner_mk3": (140, 230, 200),
+        "hyperspace_echo_sensor": (200, 140, 230),
+        "bio_architect": (130, 230, 130),
+        "rainbow_resonator": (255, 220, 100),
+        "fuel_tank_plus_50": (220, 180, 100),
+        "shield_booster_i": (120, 180, 240),
+        "beam_mod_i": (255, 200, 130),
+        "cargo_pod_plus_50": (180, 200, 220),
+        "quasi_drive_compact": (180, 230, 200),
+        "crew_archivist": (200, 220, 240),
+        "crew_warden": (220, 160, 140),
+        "crew_tunneler": (160, 220, 200),
+    }
+
+    def _draw_module_slots(
+        self, screen: pygame.Surface, x: float, y: float, heading: float, ring_outer: int
+    ) -> None:
+        """Draw one marker per module slot around the ring.
+
+        Slot positions are static relative to the ship (they rotate with
+        the ship's heading so the visual is consistent for each slot
+        across orientations).
+        """
+        if self.game is None:
+            return
+        slot_count = len(self._MODULE_SLOT_ORDER)
+        for i, slot_name in enumerate(self._MODULE_SLOT_ORDER):
+            # Angle around the ring, measured from "forward" (top). +y is
+            # screen-down so we negate for natural top-clockwise.
+            angle = -math.pi / 2 + (i / slot_count) * 2 * math.pi
+            # Rotate by ship heading so slots stay in fixed positions
+            # relative to the ship body
+            world_angle = angle + heading
+            sx = math.sin(world_angle)
+            sy = -math.cos(world_angle)
+            # Position the marker centered on the ring (between inner and outer edges)
+            marker_r_offset = ring_outer - 2
+            mx = x + sx * marker_r_offset
+            my = y + sy * marker_r_offset
+
+            mod_id = self.game.ship_modules.get(slot_name)
+            if mod_id is not None:
+                # Filled — bright dot in module's color
+                color = self._MODULE_COLOR_DEFAULTS.get(mod_id, (220, 230, 250))
+                pygame.draw.circle(screen, color, (int(mx), int(my)), 3)
+                pygame.draw.circle(screen, (255, 255, 255), (int(mx), int(my)), 4, 1)
+            else:
+                # Empty — faint dark dot
+                pygame.draw.circle(screen, (30, 50, 80), (int(mx), int(my)), 3)
+                pygame.draw.circle(screen, (80, 100, 130), (int(mx), int(my)), 3, 1)
 
     def _draw_warp_pod(
         self,

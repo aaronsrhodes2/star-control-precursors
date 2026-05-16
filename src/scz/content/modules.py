@@ -68,7 +68,9 @@ MANTLE_RESONANCE_BIO_ARCHITECT = Module(
     slot="crew_1",
     tier=0,
     cost_credits=0,
-    deltas={"tractor_radius": 1.5, "lander_replication_speed": 1.4},
+    # All deltas are ADDITIVE — base + sum(installed_module.deltas)
+    # tractor_radius base is 0.030 (planet/scene.py), bonus +0.015 = 50% bigger
+    deltas={"tractor_radius_bonus": 0.015, "lander_replication_bonus": 0.4},
     description="Mycon gift — tractor beam +50% radius, landers replicate 40% faster.",
 )
 

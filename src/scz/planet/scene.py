@@ -57,15 +57,16 @@ class _ReconstitutedPlanet:
 # Surface coords are 0..1; this is "screen-fractions per second."
 LANDER_SPEED = 0.20
 
-# Lander cargo capacity (MVP: generous)
-LANDER_CARGO_MAX = 200
+# Lander cargo capacity (BASE; modules add to this via game.effective_stat)
+LANDER_CARGO_BASE = 200
 
 # Tractor beam radius (surface-local units). The lander doesn't have to
-# *touch* a deposit — anything inside this radius is pulled in. Future
-# lander upgrades grow this radius. Per Aaron's design: life and minerals
-# are both tractored, never shot. No "kill the creature for bio-data"
+# *touch* a deposit — anything inside this radius is pulled in. The
+# Mycon Bio-Architect module grows it via game.effective_stat
+# ("tractor_radius_bonus"). Per Aaron's design: life and minerals are
+# both tractored, never shot. No "kill the creature for bio-data"
 # mechanic exists in this game.
-TRACTOR_BEAM_RADIUS = 0.030
+TRACTOR_BEAM_BASE = 0.030
 
 # Per-planet-type surface palette: (background, terrain_overlay)
 # Background is the "sky" color; terrain is the surface tint.
@@ -179,15 +180,19 @@ class PlanetSurfaceScene(Scene):
         self.lander_x = max(0.0, min(1.0, self.lander_x))
         self.lander_y = max(0.0, min(1.0, self.lander_y))
 
-        # Tractor-beam pull: anything inside TRACTOR_BEAM_RADIUS is collected
-        # (no shooting, no killing — life and minerals are both pulled).
+        # Tractor-beam pull: anything inside the effective radius is
+        # collected (no shooting, no killing — life and minerals both
+        # pulled). Bio-Architect module grows the radius.
         assert self.game is not None
+        tractor_radius = self.game.effective_stat(
+            "tractor_radius_bonus", TRACTOR_BEAM_BASE
+        )
         for d in self.deposits:
             if d.collected:
                 continue
             dx = d.x - self.lander_x
             dy = d.y - self.lander_y
-            if math.hypot(dx, dy) <= TRACTOR_BEAM_RADIUS:
+            if math.hypot(dx, dy) <= tractor_radius:
                 d.collected = True
                 self._on_pickup(d)
 
@@ -325,6 +330,11 @@ class PlanetSurfaceScene(Scene):
         floater. Subclasses or special deposit types can override the
         label / set additional game.flags (e.g. for the Scanner Mk III
         package — see deposits.py).
+
+        Cargo capacity (effective_stat("cargo_max", LANDER_CARGO_BASE))
+        gates ordinary mineral pickups. Quest items always tractor in
+        — they don't count against capacity. If cargo is full, the
+        tractor visibly fails: floater shows "cargo full".
         """
         assert self.game is not None
         if d.type == "PACKAGE_SCANNER_MK3":
@@ -337,12 +347,23 @@ class PlanetSurfaceScene(Scene):
             self.recent_pickup = ("PACKAGE_SCANNER_MK3", 1)
             self.recent_pickup_label = "Scanner Mk III  ·  install at station"
             self.recent_pickup_age = 0.0
-        else:
-            # Ordinary mineral / bio / energy resource
-            self.game.cargo[d.type] = self.game.cargo.get(d.type, 0) + d.value
-            self.recent_pickup = (d.type, d.value)
-            self.recent_pickup_label = ""
+            return
+        # Ordinary mineral / bio / energy resource — respect cargo_max
+        cargo_total = sum(self.game.cargo.values())
+        cargo_max = int(self.game.effective_stat("cargo_max", LANDER_CARGO_BASE))
+        remaining = cargo_max - cargo_total
+        if remaining <= 0:
+            # Cargo full — un-collect, show feedback
+            d.collected = False
+            self.recent_pickup = (d.type, 0)
+            self.recent_pickup_label = "cargo full — upgrade hold at station"
             self.recent_pickup_age = 0.0
+            return
+        added = min(d.value, remaining)
+        self.game.cargo[d.type] = self.game.cargo.get(d.type, 0) + added
+        self.recent_pickup = (d.type, added)
+        self.recent_pickup_label = ""
+        self.recent_pickup_age = 0.0
 
     # ------------------------------------------------------------------
     # Helpers
@@ -353,7 +374,11 @@ class PlanetSurfaceScene(Scene):
         y = ground_rect.y + self.lander_y * ground_rect.height
         # Tractor-beam radius — faint pulsing circle that visualizes the
         # collection range. Anything inside this ring gets tractored in.
-        tractor_pixel_radius = TRACTOR_BEAM_RADIUS * ground_rect.width
+        assert self.game is not None
+        tractor_radius = self.game.effective_stat(
+            "tractor_radius_bonus", TRACTOR_BEAM_BASE
+        )
+        tractor_pixel_radius = tractor_radius * ground_rect.width
         pulse = (math.sin(pygame.time.get_ticks() / 280) + 1) / 2
         beam_color = (
             int(180 + pulse * 60),
@@ -406,8 +431,9 @@ class PlanetSurfaceScene(Scene):
         assert self.game is not None
         cargo = self.game.cargo
         cargo_total = sum(cargo.values())
+        cargo_max = int(self.game.effective_stat("cargo_max", LANDER_CARGO_BASE))
         screen.blit(
-            self.font.render(f"Cargo: {cargo_total} / {LANDER_CARGO_MAX}", True, (160, 180, 200)),
+            self.font.render(f"Cargo: {cargo_total} / {cargo_max}", True, (160, 180, 200)),
             (x, y),
         )
         y += 32

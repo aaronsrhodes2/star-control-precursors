@@ -85,6 +85,26 @@ class Game:
         # Key: module_id, value: count (most modules are unique so usually 1)
         self.uninstalled_modules: dict[str, int] = {}
 
+    def effective_stat(self, stat: str, base: float = 0.0) -> float:
+        """Return the ship's live effective value for a stat.
+
+        Reads `game.ship_modules` and sums each installed module's
+        `deltas[stat]`. The `base` argument is the unmodified default;
+        callers pass their own baseline. Use this everywhere a scene
+        needs to know the player's *current* stats (cargo_max, top_speed,
+        primary_damage, etc.) rather than hard-coding constants.
+        """
+        from scz.content.modules import MODULES
+        total = base
+        for mod_id in self.ship_modules.values():
+            if mod_id is None:
+                continue
+            mod = MODULES.get(mod_id)
+            if mod is None:
+                continue
+            total += mod.deltas.get(stat, 0.0)
+        return total
+
     def set_scene(self, scene: Scene) -> None:
         """Replace the current scene with a new one."""
         # Setting a new main scene closes any active overlay.
