@@ -1,8 +1,25 @@
 # Factions and the Furling War
 
-> Companion to [the-furlings-and-the-others.md](the-furlings-and-the-others.md). This doc enumerates the political-military factions of the late Furling era and explains how the war they fight against each other shapes the player's slice.
+> Companion to [the-furlings-and-the-others.md](the-furlings-and-the-others.md) and [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md). The Precursors-and-Homesteaders doc defines the high-level **Stay (Homesteaders) vs. Go (Precursors)** binary; this doc enumerates the *method-factions* within each side and explains how the war among them shapes the player's slice.
 
-The Migration plan looks simple on paper: *"Evacuate every sentient species to the neighboring universe before the Others arrive."* It is not simple in practice. The plan requires every Furling and every species to agree, on a tight timeline, to abandon the only home they have ever known. They do not agree. They never will. The war that erupts among the Furlings is not over whether to leave — it is over **what to do with those who won't**.
+The Migration plan has three viable strategies — Migrate, Cloak, Hide-in-Quasi-Space — and one unviable one (Fight). Settling the political question of *which species takes which strategy* turns into civil war. The war isn't fundamentally about whether the Others are coming; both sides accept that (the Deniers excepted). The war is over **what to do with species who refuse to migrate AND refuse to cloak AND refuse to hide**.
+
+## The High-Level Split — Where Each Method-Faction Sits
+
+The method-factions enumerated below all sit under either the **Precursors** (Go) or **Homesteaders** (Stay) umbrella. Quick alignment table:
+
+| Method-Faction | Side (Stay/Go) | Notes |
+|---|---|---|
+| Persuaders | **Precursor** | Lead the Migration; do the diplomatic work |
+| Compellers | **Precursor** | Pragmatists; sedation/deception for stubborn Homesteader cases |
+| Cleansers | **Precursor** (extreme) | Euthanize uncloakable Homesteaders to keep the Quiet sufficient |
+| Defenders | **Homesteader** | Refuse to flee; build the Sa-Matra; stay and fight |
+| Deniers | **Homesteader** | Reject the threat entirely |
+| Hiders | **Split**: cloak-and-leave (Precursor) / cloak-and-stay (Homesteader) / join the Arilou (third path) |
+
+The Hider faction is the most interesting because their *engineering* (the Slylandro Cloaking Satellite, dimensional folds, sub-threshold-emission research) is used by all three paths. They are the technical wing of the entire debate; their politics depend on which client they're building for.
+
+The faction details below remain as-is, with the understanding that they sit under the Stay/Go umbrella.
 
 ## The Furling Factions
 

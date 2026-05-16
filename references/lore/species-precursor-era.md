@@ -58,7 +58,9 @@ The LLM dialog prompts pull from dimensions 1-4 as the species archetype, and di
 
 **Slice location:** Their home system is one of the proto-Slylandro stars in our cluster.
 
-**Evacuation stance:** *Will agree to leave, but slowly.* The Slylandro need centuries to reach consensus and have decades. Their fate depends on how the player accelerates the decision.
+**Faction alignment**: *Homesteader by necessity* — see [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md). The Slylandro literally cannot leave: their physiology IS the gas-current of their home gas giant. Migration is biologically impossible. Their viable paths are **Cloak** (install the Slylandro Cloaking Satellite — a Furling engineering achievement built on Arilou Quasi-Space science, dampens their thought-pattern emissions below the Others' detection threshold) or **Cleanse** (Cleanser doctrine — euthanize them to keep the Quiet sufficient).
+
+**The Slylandro Cloaking Satellite is a concrete in-game artifact** the player can install in the slice's Act 4. **It works.** In SC2 era, the Slylandro are still alive in Beta Corvi because the satellite is still operating 250,000 years later. The player Furling who installs it has — without knowing — preserved a species for a quarter-million years.
 
 ### Depth & Diversity
 
@@ -161,6 +163,8 @@ The slice's deepest moral question lives here: *is it right to murder a barely-a
 
 The combat climax of the slice is no longer simply a "corrupted biot" — it's a Cleanser ship arriving to enforce a kill order on the awakening Mycon, with the player choosing whether to allow it or fight to delay it.
 
+**Faction alignment**: *Homesteader by necessity*, like the Slylandro. The Mycon biots' mycelial spore-networks tie them physically to specific planetary mantles; they cannot migrate. If they remain non-sentient, they emit too weakly for the Others to detect (their cognition is biot-level — pattern-matching and ritual execution, not thought). If the Deep Child fully awakens them, they become a sentient species under the Migration deadline — and the player's options are now (a) cloak them too (an expensive second cloak install) or (b) allow the Cleansers to euthanize them.
+
 ### Depth & Diversity
 
 **Backstory & History:** the Mycon were designed by Furling Bio-Architects approximately 8,000 years ago. They are spore-based fungal organisms tuned to convert the heat and pressure of magma columns into atmospheric and biological substrate. They have terraformed roughly forty worlds across the galaxy under Furling direction, each project lasting centuries. They were never intended to be intelligent — their behavior is designed-in, ritualized to ensure quality control across generations of spores. The "Deep Child" whispers are emergent — an unintended sentience nucleating in their spore-network's accumulated information density. Some Furling theologians believe Deep Child is *waking up* the way humanity once did. Others believe it is the Others reaching in through a substrate the Furlings forgot was thin.
@@ -206,7 +210,11 @@ The combat climax of the slice is no longer simply a "corrupted biot" — it's a
 - `OFFER_PORTAL_KEY` — they hint they can extract the player to Quasi-Space at the climax
 - `FAREWELL_FOREVER` — if `patience` hits 0, they leave the cluster
 
-**Critical narrative outcome:** the Arilou are the **success case** of the Migration — they crossed early, before the war, peacefully. They visit through Quasi-Space portals offering help and warnings. If the player has high `trust`, they offer to extract the Slylandro (or the player personally) through Quasi-Space without going through the cluster's Rainbow crossing — a faster, gentler evacuation path. **They refuse to take sides between Furling factions.** They have crossed once and will not bear witness to the war their cousins fight.
+**Critical narrative outcome:** the Arilou are NOT migrating to the neighboring universe with the rest of the Precursors. They have invented and chosen **a third path: voluntary exile in Quasi-Space, to watch the regrowing galaxy through the Culling and for tens of thousands of years afterward.** See [the-precursors-and-homesteaders.md §"The Third Path"](the-precursors-and-homesteaders.md). They are philosophically Precursor-aligned (they support the Migration, they help the Furlings build cloaks), but they are *staying adjacent* in Quasi-Space rather than crossing the threshold to the neighboring universe.
+
+In the slice, the Arilou are the source of the Quasi-Space science underlying the Slylandro Cloaking Satellite. They will help build it. If the player has high `trust`, the Arilou offer the player a personal extraction *to join their exile* — a rare, sacrificial ending choice. They **refuse to take sides** between Furling Precursor-method-factions (Persuaders vs. Compellers vs. Cleansers); they are too busy preparing for their long silence-watching to argue over methods.
+
+**Faction alignment**: *Precursor-aligned philosophically; Voluntary-Exile in practice.* They are neither Homesteader (they're not staying as themselves; they're hiding) nor strictly Precursor (they're not crossing to the neighboring universe). Third category.
 
 ### Depth & Diversity
 

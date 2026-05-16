@@ -2,9 +2,11 @@
 
 In *Star Control 2*, the Rainbow Worlds are an unresolved mystery: ten unique planets that emit a "rainbow" signal, each in a different SC2 cluster, which together trace a **spatial arrow**. The game never explains why the Precursors placed them, and SC2-era observers assume the arrow points toward the Galactic Core.
 
-**In our game, the player places them — and the arrow points somewhere else.** See [the-furlings-and-the-others.md](the-furlings-and-the-others.md) for the canonical narrative. The arrow points to a **dimensional crossing to a neighboring universe** — the Furlings' migration destination. It is *both* an exit-sign (for the evacuating species, *now*) and a **return-map** (for after the Others pass, decades or centuries from now).
+**In our game, the player places them — and the arrow points somewhere else.** The arrow points to a **dimensional crossing to a neighboring universe** — the destination of the **Precursors faction**'s Migration. (Important: "Precursors" is the in-fiction name of the *migrating faction*, of which the Furlings are one member. The Furlings call themselves Furlings; in retrospect, SC2-era observers will misread "Precursors" as referring to the Furlings specifically — see [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md).)
 
-The Rainbow Worlds aren't just lore — they're the **mechanical and narrative spine** of the slice and the larger game.
+The Rainbow Worlds are *both* an exit-sign (for the evacuating Precursors, *now*) and a **return-map** (for after the Others pass, decades or centuries from now). They are aimed at the dimensional crossing, which in our universe's coordinate system *projects through the galaxy's center* — which is why SC2 archaeologists, 250,000 years later, will conclude the arrow points "to the Core."
+
+The Rainbow Worlds aren't just lore — they're the **mechanical and narrative spine** of the slice and the larger game. They are placed by the player regardless of whether their specific cluster's species choose to migrate, cloak-and-stay (the Slylandro path), or hide-and-watch (the Arilou path). The cluster's Rainbow World is a contribution to the *galaxy-wide* arrow, not a per-cluster evacuation marker.
 
 ## The Canon Mystery (SC2)
 

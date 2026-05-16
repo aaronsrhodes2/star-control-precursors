@@ -1,14 +1,16 @@
 # The Furlings and the Others — Canonical Narrative Bible
 
 > **This document supersedes `precursor-worldbuilding.md` as the canonical narrative reference for the game.** That document is preserved as the original lore foundation; this one folds in the major narrative additions and is the authoritative source for design questions.
+>
+> **The high-level factional split (Homesteaders vs. Precursors) and the canonical meaning of the word "Precursors" are defined in [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md).** This document references that one for the formal structure of the debate.
 
 ---
 
 ## 1. The Furlings (who you are)
 
-The "Precursors" call themselves **Furlings** — the Furred Ones. The word "precursor" is what *future* species will use for them in retrospect, 250,000 years from now, when archaeologists piece together the Sa-Matra and the Rainbow Worlds and the modular ship designs. In their own time, the Furlings are no one's precursor — they are the present, the apex, the gardeners of a galaxy that is still mostly silence and pre-sentient mud.
+The Furlings are the gardeners of this galaxy. They call themselves **Furlings** — the Furred Ones — and they call their migration faction (the species choosing to leave) **the Precursors** (*those who go before*; see [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md)). In SC2-era hindsight, 250,000 years from now, archaeologists will misread the word "Precursors" as referring to the *Furlings as a species*; they will be wrong, but the misinterpretation will stick. **In-fiction, in our game, the Furlings call themselves Furlings, and "Precursors" is a faction name.**
 
-The player IS a Furling. The game uses "Furling" as the in-character term throughout. The game's *title* — *Star Control Zero: The Precursors* — is for SC2 fans who already know the lore-name; in-fiction, the word "precursor" is never spoken.
+The player IS a Furling. The game uses "Furling" as the in-character term for the player's species throughout. The game's *title* — *Star Control Zero: The Precursors* — works on both readings: SC2 fans recognize the word; in-fiction it names the faction the player can choose to join.
 
 Physiologically the Furlings are 5-8 meter shaggy giants, non-bipedal, mammoth-furred. Long-lived. Comparatively few in number (~tens of millions across the galaxy, vs. the trillions of life-forms they cultivate). They reproduce slowly and value memory above almost everything else; an Archivist's role is honored above a Warden's.
 
@@ -21,10 +23,12 @@ Through deep-dimensional tunneling — a research program meant to understand th
 The terrible discovery had three parts:
 
 1. **The Others are real.** They exist in (or beneath) a dimensional layer adjacent to our 3D manifold. They are not gods, not demons — they are something more like a metabolism that lives in physics itself.
-2. **The Others are summoned by intelligence.** They detect *concentrations of mind*. A galaxy of trillions of plants and bacteria is invisible to them. A galaxy of thousands of sentient civilizations is a beacon. Once they sense sentience, they come.
+2. **The Others detect complex thought patterns at great distance.** Bacteria, plants, and pre-sentient animal colonies are invisible to them. Single sentient civilizations are detectable across many light-years. Concentrations of sentient civilizations — a galaxy like ours — flare like a signal-fire. Cognitive enhancement, AI infrastructure, and mass telepathy *amplify* the signature; cognitive dampening (cloaking satellites, dimensional folds, deep slumber) *reduces* it. The Furlings believe they know the Others' detection threshold; they cannot be certain.
 3. **The Others cull.** When the Others arrive, they erase every concentration of intelligence in the affected region. Then — and this is the strange mercy — they move on. The Culling has a duration. Galaxies recover. Life regrows. But everyone who was sentient at the time of the Culling is gone.
 
 The Furlings do not know exactly how soon the Others will arrive in our galaxy. The dimensional ripples — the same ones the Furlings sense and the Slylandro testify to — are early signals. The window is decades, maybe a century. Not millennia.
+
+**Gameplay consequence**: any in-game system that increases or decreases a species' thought-pattern signature is gameplay-relevant. The Mycon biots' awakening into Deep Child sentience is *literally an emission spike* that could pull the Others a year early. This is why the Cleansers want it suppressed. (See [the-precursors-and-homesteaders.md §"The Others' Detection Mechanism"](the-precursors-and-homesteaders.md).)
 
 ## 3. The Strategy — the Furling Migration Plan
 
@@ -36,30 +40,33 @@ The Furlings discovered that a **nearby universe** — adjacent to ours through 
 
 The plan has three pillars:
 
-1. **The Rainbow Worlds** — the dimensional crossing must be marked. The ten Rainbow Worlds form a directional arrow pointing toward the crossing. They are both an exit-sign (for the evacuating species) and a return-map (for after the Others pass). The arrow encodes the crossing's location precisely.
-2. **The Migration** — every sentient civilization in the galaxy must be transported through the crossing to the nearby universe.
-3. **The Quiet** — for the duration of the Culling, no sentience may remain in the galaxy. **Not one civilization. Not one holdout.** A single conscious species emitting mind-light during the Culling defeats the entire plan; the Others will linger, sweep further, find everyone hidden behind dimensional veils. The Quiet must be absolute.
+1. **The Rainbow Worlds** — the dimensional crossing must be marked. The ten Rainbow Worlds form a directional arrow pointing toward the crossing. They are both an exit-sign (for the evacuating Precursor faction) and a return-map (for after the Others pass).
+2. **The Migration** — every sentient civilization in the galaxy must either evacuate to the neighboring universe (joining the **Precursors** faction) or be cloaked sufficiently to fall below the Others' detection threshold (the **Slylandro Cloaking Satellite** is the canonical example — a high-end Furling engineering achievement that protects the Slylandro through the Culling because they biologically cannot leave their gas giant).
+3. **The Quiet** — for the duration of the Culling, no sentience may *emit detectable thought patterns* in the galaxy. Cloaks count as silence. Migration counts as silence. But an uncloaked, awake, sentient species is a flare that brings the Others closer. **The Quiet must be sufficient.**
 
-That third pillar is the moral abyss the entire game lives inside.
+Three pillars give three viable strategies for any given species: **Go** (join the Precursor faction, migrate), **Cloak** (stay home but get below the threshold, *Homesteader-with-cloak* path), or **Hide** (the Arilou's voluntary exile in Quasi-Space — see [the-precursors-and-homesteaders.md §"The Third Path"](the-precursors-and-homesteaders.md)).
+
+The fourth, unviable but believed-by-some, is **Fight**. The Defender faction of Homesteaders attempts it. They build the Sa-Matra. They probably lose. The Sa-Matra survives them and is found by the Ur-Quan 250,000 years later — but in the meantime, every Defender is a sentience emission *and* a target.
+
+This is the moral abyss the entire game lives inside: any uncloaked Homesteader who refuses to leave is, by their continued existence, lengthening the Culling for everyone else.
 
 ## 4. The Conflict — why this isn't a happy story
 
-Not every species wants to leave. Some don't believe. Some prefer to fight. Some are too attached to their homeworlds. Some have religious objections. Some are too small or too slow to evacuate in time. Some are sentient but barely (the Mycon biots, awakening into the Deep Child) — are they intelligent enough to count? Some Furlings disagree with the migration itself.
+The galaxy's sentient civilizations split into two named factions over the Migration. The terminology is canonized in [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md):
 
-The Furlings have factions. Briefly (full breakdown in [factions-and-war.md](factions-and-war.md)):
+- **The Precursors** — *those who go before*. Lead by the Furlings; includes species that believe the warning, can biologically migrate, and choose to evacuate to the neighboring universe.
+- **The Homesteaders** — *those who stay*. Heterogeneous: deniers, defenders, the biologically rooted (Mycon, Slylandro), the honor-bound, the cynics who distrust the Furlings.
+- **The Arilou's Third Path** — voluntary exile to Quasi-Space to *watch* the regrowing galaxy through the Culling. Precursor-aligned philosophically; physically remain adjacent. Sacrificial.
 
-- **Persuaders** — convince every species to leave, peacefully. Take as long as needed within the deadline.
-- **Compellers** — when persuasion fails, force them. Loading ships under sedation. Lying about destinations. The end justifies the kindness of the means.
-- **Cleansers** — euthanize species who refuse to leave. Their deaths are tragic but spare the millions of evacuating species from the Others' linger. *"One last Quiet, given as a gift."*
-- **Defenders** — reject the migration. Build the Sa-Matra. Stay and fight. (A minority but a militant one.)
-- **Deniers** — the Others aren't real / aren't coming / can be bargained with. (A shrinking but loud faction.)
-- **Hiders** — partial solution: shield individual systems. The Others won't notice a single planet's worth of mind among a galaxy of silence. (Plausible but unproven.)
+Within the Furlings, the Precursor majority subdivides into method-factions — Persuaders (peaceful evac), Compellers (sedation/deception when needed), and Cleansers (euthanize Homesteaders to keep the Quiet absolute). Within the Homesteaders, sub-factions include Defenders (fight, build the Sa-Matra), Deniers (reject the threat), and Hiders (build cloaking enclaves). The engineering Hiders are split: some build cloaks then migrate; some build cloaks and stay inside them; some join the Arilou. Full breakdown in [factions-and-war.md](factions-and-war.md).
 
-And it gets worse. Some species who join the migration **demand** the Furlings deal harshly with the holdouts — *"If you can't make them leave, kill them. Or we won't go either."* The Compellers and Cleansers grow not just from Furling fear but from refugee pressure. A peaceful evacuation becomes a war of conscience among the people doing the saving.
+The Slylandro are the slice's exemplar Homesteader-with-cloak: they cannot migrate (their physiology is the gas-current of their home gas giant), so the Furlings build them the **Slylandro Cloaking Satellite** — a self-maintaining orbital construct that dampens their thought-pattern emissions below the Others' detection threshold. **The satellite works**: in SC2 era, the Slylandro are still alive in Beta Corvi, 250,000 years later, because the satellite is still running. The player Furling may help install it as one of the slice's final tasks.
 
-**War erupts.** Not in one moment but in waves: skirmishes between Furling factions over a holdout species; alliances between refugee races against deniers; sabotage of evacuation fleets by species who claim the Furlings are fabricating the Others; mass-extinction events that some Cleansers carry out in secret. By the time the dimensional crossing opens, the Furling civilization is fractured. Many of those who go through the crossing have blood on their hands.
+And it gets worse. Some Precursor species **demand** the Furlings deal harshly with the Homesteaders — *"If you can't make them leave or cloak, kill them. Or we won't go either."* The Compellers and Cleansers grow not just from Furling fear but from refugee pressure. A peaceful evacuation becomes a war of conscience among the people doing the saving.
 
-The Arilou are the success case — they crossed early, peacefully, before the conflict bloomed. They come back through the portal occasionally, offering quiet help, but they refuse to take sides in the war. They cannot bear to.
+**War erupts.** Not in one moment but in waves: skirmishes between Furling factions over a Homesteader species; alliances between Precursor races against Deniers; sabotage of evacuation fleets by Defenders who claim the Furlings are fabricating the Others; mass-extinction events that some Cleansers carry out in secret. By the time the dimensional crossing opens, the Furling civilization is fractured. Many of those who go through the crossing have blood on their hands.
+
+The Arilou do not take sides between Furling factions. They are too busy preparing for their voluntary exile, and they grieve in advance for everyone — Homesteader and Precursor alike — who will not survive the Culling. They appear in the slice as quiet helpers; they will not fight, they will not condemn, they will offer access to Quasi-Space tech (including the cloaking science underpinning the Slylandro satellite).
 
 ## 5. The Player's Role in This
 
@@ -67,28 +74,29 @@ The player is a junior Furling Steward assigned to a frontier cluster. The clust
 
 You will:
 
-- Meet the Slylandro, who are sentient and wise and the only species in your cluster who can grasp what's happening. You will need to evacuate them — or convince them, or coerce them, or worse.
-- Discover the Mycon biots in your cluster are starting to wake up (the Deep Child whispers). They are not yet sentient. *Should they be allowed to become so?* Killing them now is genocide; letting them awaken means you must also evacuate them in time, or kill them later.
-- Observe the proto-Ur-Quan limpets. They are non-sentient. The Council had been debating whether to uplift them, and that debate is now mooted by the Migration — uplifting them now means another civilization to evacuate. **The slice's quiet horror is recognizing that "leave them as animals" is now considered a mercy.**
-- Be visited by Arilou cousins offering help.
+- Meet the Slylandro, who are sentient and wise and the only species in your cluster who can grasp what's happening. They cannot biologically migrate — they *are* the gas currents of their gas giant — so their viable paths are **the Cloaking Satellite** (install Furling cloak tech, become invisible to the Others, ride out the Culling at home) or **the kindness of euthanasia** (Cleanser doctrine). You can lobby for either.
+- Discover the Mycon biots in your cluster are starting to wake up (the Deep Child whispers). They are not yet sentient. *Should they be allowed to become so?* Their mycelial roots prevent migration, so awakening creates another Homesteader-with-cloak case — or another Cleanser-target case. Killing them now is genocide; letting them awaken means you must also cloak them in time, or kill them later.
+- Observe the proto-Ur-Quan limpets. They are non-sentient. The Council had been debating whether to uplift them, and that debate is now mooted by the Migration — uplifting them now means another civilization to handle. **The slice's quiet horror is recognizing that "leave them as animals" is now considered a mercy.**
+- Be visited by Arilou cousins who are preparing for their own voluntary exile in Quasi-Space and offering help (cloaking science is part of what they bring).
 - Be visited (later in the slice) by a Cleanser faction emissary who has come to your cluster specifically because of the Slylandro question. They want to *help*.
 
 Your choices ripple forward to the SC2 canon. Many of the cruelties of the SC2 universe (Ur-Quan slavery, Mycon planet-burning, the Sa-Matra's existence) can be traced back to decisions made in the Furling era — decisions made by people like you, by Stewards who were trying to do the right thing in an impossible situation.
 
 ## 6. The Slice's Four Acts (revised)
 
-The vertical slice's story arc, revised under the new narrative:
+The vertical slice's story arc:
 
 - **Act 1 — Arrival and Diagnosis.** You arrive at your cluster as a junior Steward. You meet the Slylandro (tutorial NPC), the proto-Ur-Quan (passive observation), the Mycon biots (status reports). You scan the dimensional ripples and confirm: the Others are not centuries away. They are decades.
-- **Act 2 — The Plan.** A senior Furling (Council faction representative, faction depends on a random/early choice) briefs you. Your job is to evacuate the Slylandro, decide what to do with the awakening Mycon, and report back. The Arilou arrive separately and offer help.
-- **Act 3 — The Cleanser Arrives.** A Cleanser-faction Furling enters your cluster. They believe the Slylandro evacuation is taking too long. They have come to euthanize the Slylandro and burn the Mycon hive before the Deep Child can fully awaken. You must decide: cooperate, negotiate for more time, or oppose them — possibly in combat (the slice's combat climax).
-- **Act 4 — The Seeding.** With or without the Cleanser's pressure, you place your cluster's Rainbow World. The dimensional crossing opens locally. The final choice: cross with the evacuees (saving them, leaving the galaxy), stay as a Watcher to monitor the Culling and the holdouts, or — if you sided with the Cleansers — close the door behind the cleansed cluster and follow.
+- **Act 2 — The Plan.** A senior Furling (Council faction representative) briefs you on the cluster's task tree: seed the Rainbow World (always required — the broader Migration needs all 10 worlds regardless of any single cluster's species choices); decide the Slylandro path (Cloak or Cleanse); decide the Mycon path (suppress whispers or accept awakening). The Arilou arrive separately, share Quasi-Space science (which underpins the cloak), and prepare their own retreat to voluntary exile.
+- **Act 3 — The Cleanser Arrives.** A Cleanser-faction Furling enters your cluster. They believe the cluster's Slylandro question is taking too long and the Mycon awakening is too risky. They demand you stand aside while they euthanize both. You decide: cooperate, negotiate for more time (build the cloak before they can act), or oppose them — possibly in combat (the slice's combat climax: a Cleanser cruiser).
+- **Act 4 — The Tasks and the Door.** Act-3-dependent tasks: place the cluster's **Rainbow World** (always — see [rainbow-worlds-arc.md](rainbow-worlds-arc.md)); install the **Slylandro Cloaking Satellite** if Slylandro will stay; usher whatever migrating species into the crossing. Then the personal ending: cross with the Migration (join the Precursors), stay as a Watcher in the bereft galaxy, join the Arilou in Quasi-Space (rare, requires high Arilou trust), or stand with the Homesteaders against the coming Culling (Defender path).
 
-The four endings reflect:
-- **Persuader Path**: you saved the Slylandro, you let the Mycon stay non-sentient, you defied the Cleanser. The Council eventually thanks you; you cross with the migration. Your name is preserved in Furling memory.
-- **Compeller Path**: you forced the Slylandro to evacuate, lied about destinations or used sedation, but no one died. The Council looks the other way.
-- **Cleanser Path**: you sided with the Cleansers and the Slylandro died for the Quiet. The Council formally awards you a commendation. Your name is preserved in the Quiet Ledger. (You did the necessary thing. You will not forget it.)
-- **Defender Path**: you refused to evacuate. You sided with the holdouts. You stayed in the galaxy with the Sa-Matra defense. The slice ends with you watching the migration leave you behind. (SC2 canon is closer to this branch than the others.)
+The endings reflect the path the player walked:
+- **Persuader / Cloak Path**: you saved the Slylandro by installing the cloak; you let the Mycon stay non-sentient; you defied the Cleanser. The Council eventually thanks you. You cross with the Migration. The Slylandro will be alive in SC2 era because of you.
+- **Compeller Path**: you forced choices through (sedated awakening biots into suppression-stasis; compressed Slylandro deliberation to days by lying about deadlines); no one died, but trust is gone.
+- **Cleanser Path**: you sided with the Cleansers; the Slylandro died for the Quiet; no cloak needed. The Council awards you a commendation. The Slylandro will NOT exist in SC2 era — and the SC2 lore canon will have a hole the player can feel.
+- **Defender / Homesteader Path**: you refused the Migration entirely; you stayed with the Slylandro and the Mycon as a defender; the slice ends with you watching the Migration leave. (Closest to SC2 canon — most of the SC2-era surviving species are descendants of Homesteader paths in clusters like yours.)
+- **Arilou Path** (rare): if you have high Arilou trust, they offer to take you to Quasi-Space with them. You become one of the watchers — one of the (canonically possible) Furling Hider-faction researchers who joined the Arilou.
 
 ## 7. Constraints This Places on the Other Design Docs
 
