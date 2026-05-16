@@ -98,34 +98,58 @@ The LLM dialog prompts pull from dimensions 1-4 as the species archetype, and di
 - `curiosity` (0-100, rises with peaceful interaction)
 - `uplift_pressure` (-100 to +100, where -100 = "leave them alone, they're not ready," +100 = "uplift now")
 
-**Encounter states:**
-- `FIRST_OBSERVATION` — discover them on a tidal moon
-- `OBSERVE_PEACEFUL` — watch their behavior without interfering
-- `OFFER_FOOD` — give them protein-rich tide cycles
-- `PLAY_SOUNDS` — broadcast Slylandro recordings to them (do they react?)
-- `PROVOKE` — drop a metal probe in their colony
-- `COUNCIL_REPORT` — back at the Council, your observations feed `uplift_pressure`
+**The Uplift Project (canon revision):** the proto-Ur-Quan are NOT a passive non-sentient species in our era. They are an **active, incomplete Furling uplift project** that was started centuries ago. Two genetically-engineered **sub-species** have emerged from the work:
 
-**Critical narrative outcome — the new framing:** the **honest** Furling answer is now *do not uplift them*. Sentience created during the Migration era marks them for the Others. Leaving them as animals is the kindest gift the Furlings can give: they live undisturbed, the Others don't sense them, they crawl on tide-pools through the Long Quiet and become sentient on their own in some far future. The slice's quiet horror is that the player must *recommend against uplift* and feel themselves choose mercy by withholding.
+- **Proto-Ur-Quan** (forerunner of the SC2 Kzer-Za) — hierarchical, territorial, dominating. They are developing language, weapons, and the beginnings of stellar travel. Their cognition is mid-uplift: above the proto-mollusc baseline, below stable sapience. Aggressive.
+- **Proto-Qor-Ah** (forerunner of the SC2 Kohr-Ah) — purist, exterminating, ritually obsessed with the elimination of impurities. Same uplift program, divergent expression. More aggressive than the Proto-Ur-Quan, and more lethal in combat.
 
-If the player nevertheless recommends `uplift_pressure: +100`, the consequence is severe — a new sentient species is now under the Migration deadline, and the Council must either evacuate them (impossibly fast given their biology) or kill them (Cleanser doctrine). This recommendation seeds the SC2 Ur-Quan tribes' descent into cruelty.
+Both subspecies are *capable of basic dialogue* in their own pheromone-and-chord language; the Furlings have translation infrastructure but conversations are abrupt, hostile, and short. Neither is yet at full sapience — they are *transitional minds*. The Others' detection threshold is uncertain at this transitional state; the Furlings' best estimate is that the proto-Ur-Quan are *currently just below* the threshold and the proto-Qor-Ah are *probably above*.
+
+**The Furling Internal Dilemma — three positions:**
+
+1. **Continue the uplift.** Complete the work, stabilize the cognition into full sapience. Pros: ends the cruelty inherent in the half-baked state; produces a real civilization that can be evacuated or cloaked properly. Cons: full sapience moves both subspecies above the detection threshold for certain. They become Migration cases that must be handled fast.
+2. **Stop the uplift.** Halt the program now; let the proto-species fall back to a slow natural development. Pros: cognition may stabilize below the threshold; the Others may ignore them. Cons: if the Furlings then leave with the Migration, the half-baked aggressive sub-species inherit a galaxy. Two **hellishly combative hybrid species** will be the dominant force in the post-Culling regrowth. The SC2 Ur-Quan slavery and Kohr-Ah genocide are *the direct downstream consequence* of the Stop path.
+3. **Cleanse the experiment.** Euthanize both sub-species; reset the project to the original molluscan baseline (or eliminate entirely). Cleanser doctrine. Pros: clean break; no aggressive hybrids; no detection risk. Cons: irreversible, mass-extinction-level, recorded in the Quiet Ledger as the largest entry by population (millions of proto-individuals across both sub-species).
+
+The Furling Council is **internally split** on this question. It is one of the slice's central debates. The player's recommendation tips the balance.
+
+**Encounter states (revised — proto-Ur-Quan and proto-Qor-Ah are separately encounterable):**
+
+For **Proto-Ur-Quan** colonies:
+- `FIRST_CONTACT` — they are aware of you. They challenge your right to approach. Pheromone-chord exchange.
+- `NEGOTIATE` — basic dialogue; they want resources, territory, or weapons
+- `OBSERVE_AGGRESSION` — witness inter-colony violence (proto-Ur-Quan colonies routinely raid each other)
+- `THREATEN` — show of force; they will sometimes back down, sometimes attack
+- `COMBAT` — a proto-Ur-Quan warship attacks. (Yes, they have warships at this stage. Crude but functional. See [ship-roster.md](ship-roster.md).)
+- `COUNCIL_REPORT` — your observations feed the Furling debate; choose Continue / Stop / Cleanse
+
+For **Proto-Qor-Ah** colonies:
+- `FIRST_CONTACT` — they declare you impure and attempt to eliminate you
+- `COMBAT` — almost always; they rarely speak
+- `RITUAL_OBSERVATION` — witness one of their purification rites against another proto-species
+- `COUNCIL_REPORT` — they are the harder Cleanser case; many Furlings believe only the Qor-Ah need cleansing while the Ur-Quan could be saved
+
+**Critical narrative outcome:** the player's combined recommendation seeds the SC2 Ur-Quan tribes:
+- **Continue path** → both subspecies achieve stable sapience under Furling guidance; they may be evacuated (extreme effort) or cloaked. If cloaked, SC2 archaeologists 250,000 years later find a *thriving* Ur-Quan civilization that was protected. (This is a significant divergence from SC2 canon — possible only if the player commits major resources.)
+- **Stop path** → cognition stabilizes below threshold; Others ignore them; Furlings leave; the half-baked aggressive species inherit. **This is the SC2 canonical outcome.** The Ur-Quan slavery and Kohr-Ah genocide unfold over the following 250,000 years from this exact decision.
+- **Cleanse path** → both subspecies dead. The Quiet Ledger records millions of names. In SC2 era, the Ur-Quan and Kohr-Ah simply do not exist — a vast lore hole the player can sense.
 
 ### Depth & Diversity
 
-**Backstory & History:** the proto-Ur-Quan emerged from tidal pools on a single tidal-locked moon around a gas giant. They are sessile mollusc-like creatures whose colonies grow at the tide-line and feed on photosynthetic mats. Roughly 200,000 years of pre-sentient evolution. They have rich pre-sentient behavior — coordination, pheromone communication, problem-solving — but no symbolic thought, no language, no tool use. The Furling Council classified them in two visits as "promising but unwakened."
+**Backstory & History:** the proto-Ur-Quan's ancestral form emerged from tidal pools on a single tidal-locked moon around a gas giant — sessile mollusc-like creatures whose colonies grew at the tide-line and fed on photosynthetic mats. Roughly 200,000 years of pre-sentient evolution had produced a species the Furling Council classified as "promising but unwakened." Centuries ago, a Furling bio-engineering team began the **uplift project** — accelerating cognitive development through targeted genetic interventions across multiple generations. The project produced two divergent subspecies (intentional — Furling theory at the time was that paired sapient-pre-sapient species would form stable cultural counterweights). This worked in laboratory simulations and failed in practice: both subspecies developed aggressive territorial protocols, and the projected "stable counterweight" became *competitive escalation* instead.
 
-**Cultural Attitudes:** they don't have culture in the language sense — they have *protocols*. Colony defense protocols, foreign-object protocols, mating protocols, territorial-edge protocols. Each colony's protocols are slightly different (genetic + environmental drift). A Furling observer documents these the way a biologist documents bird songs.
+**Cultural Attitudes:** within each subspecies, hierarchy is rigid. Proto-Ur-Quan colonies dominate one another; proto-Qor-Ah colonies purify one another. There is no horizontal cooperation, no neutral exchange, no peaceful trade — both subspecies treat *every encounter* as a domination/purification opportunity. Furling observers have failed to identify a pre-violent stable state.
 
-**Quirks:** colonies pulse cobalt-blue when curious, bruise-purple when alarmed, dim-grey when sated. Individuals rotate their feeding tubes to track moving objects. When a player drops a metal probe, the colony's response is a slow-rolling pheromone wave that *the LLM should describe in chemical-perfumery terms* ("an iron note over decaying kelp, sharp at first edge, slow at the second").
+**Quirks:** Proto-Ur-Quan colonies pulse cobalt-blue when challenging, deep red when victorious, bruise-purple when dominated. Proto-Qor-Ah colonies have an entirely different palette — white-yellow when "pure," black when "impure" — and ritually scorch their own crystalline limbs when they detect what they consider impurity in themselves. Both subspecies have developed basic *tool use* (the proto-Ur-Quan favor crushing implements, the proto-Qor-Ah favor cutting ones).
 
-**Postures & Body Language:** anchored. They do not walk; they *hold*. Their feeding tubes extend and retract in slow waves. When threatened, the colony domes upward, individuals partially retracting into their shells. When at rest, individuals splay outward like petals.
+**Postures & Body Language:** both sub-species have evolved partial mobility — they no longer simply "hold" the tide-line. Proto-Ur-Quan use thrusting body-segments to expand territorial claims. Proto-Qor-Ah ritually self-amputate impure body parts in a manner unsettling to Furling biologists. Their colonies are *fortified* — defensive crystal lattices grown to ward intruders.
 
-**Individual Diversity Vectors:** colony-level not individual-level (they aren't sentient yet, so "individual personality" doesn't apply). The relevant vectors are:
-- *Colony age* (older colonies have richer protocol stacks)
-- *Colony size* (larger colonies have more decisive pulse responses)
-- *Pheromone signature* (the chemical "accent" of this colony, used for the LLM's sensory descriptions)
-- *Hue palette* (each colony has slightly different baseline colors — the visual variation knob)
-- *Local mat type* (the photosynthetic species they feed on shapes their texture and smell)
+**Individual Diversity Vectors:** because the uplift is in progress, individual variation has become *real* (unlike the pre-uplift state where colonies, not individuals, were the unit). Vectors:
+- *Subspecies* (Proto-Ur-Quan vs Proto-Qor-Ah — large variance)
+- *Caste* (warrior / breeder / scout / shaman; emerging hierarchies)
+- *Aggression level* (high-variance individual; some Proto-Ur-Quan are dialogue-capable, some are not)
+- *Uplift cohort* (which generation of the program produced them; later cohorts more "complete")
+- *Combat training* (some have proto-fleet experience; some are larval)
 
 ---
 
