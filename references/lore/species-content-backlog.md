@@ -62,18 +62,18 @@ For each species we add:
 6. Add a full entry to [species-precursor-era.md](species-precursor-era.md) following the existing format (Backstory, Cultural Attitudes, Quirks, Postures, Individual Diversity Vectors).
 7. Add the ship to [ship-roster.md](ship-roster.md) with combat AI baseline.
 
-## Initial Picks (placeholder — finalize later)
+## Initial Picks (finalized)
 
-Suggested first invented species to lock in:
+Two of the four invented-species slots are now filled by **canonical SC2 species we get to flesh out** (because they're extinct in SC2 with sparse canon — see [furling-artifacts-and-callforwards.md](furling-artifacts-and-callforwards.md)). The remaining two slots are still genuinely invented.
 
-| Slot | Side | Suggested concept | Why this one |
+| Slot | Side | Species | Source |
 |---|---|---|---|
-| Invented Stay #1 | Homesteader | **The Reincarnators** | Spiritual variety; ship combat AI is "high caution" because they don't fear death but value beauty in combat; voice is serene-resigned |
-| Invented Stay #2 | Homesteader | **The Defiant** | Combat-coded; aggressive ship with low caution; provides a "war-band" matchup distinct from the proto-Ur-Quan |
-| Invented Go #1 | Precursor | **The Engineered** | A Furling-built helper species; their ship is a transport/escort with strong logistics weapons (tractor beam, repair drones); diplomatic; loyal |
-| Invented Go #2 | Precursor | **The Curious** | Light-fast exploration ship; weak in combat but evasive; voice is wide-eyed and overwhelming-everything-with-questions |
+| Stay #1 | Homesteader | **The Taalo** | SC2-canonical, extinct by SC2 era. Peaceful crystalline-amphibian pacifists. Make the **Protector** psionic-shield (which outlives them). Die in the Culling. **Cannot be saved** — the slice's most poignant beat. |
+| Stay #2 | Homesteader | **The Defiant** (invented) | Combat-coded; aggressive ship with low caution; war-band matchup distinct from the proto-Ur-Quan; voice is proud-doomed |
+| Go #1 | Precursor | **The Burvixese** | SC2-canonical, extinct by SC2 era. Industrious humanoid engineers. Make the **Burv Broadcasters** (galaxy-wide hyperwave memorial network — "we were here. If you find this, you are not alone."). Migrate with the Furlings; their broadcasters survive them in our galaxy. Slice's most cheerful Precursor encounter. |
+| Go #2 | Precursor | **The Curious** (invented) | Light-fast exploration ship; weak in combat but evasive; voice is wide-eyed and overwhelming-everything-with-questions |
 
-These can be designed in detail when content authoring begins. For now they are placeholders.
+This gives us **two fanservice species** (Taalo, Burvixese) tied directly to SC2 lore items players will recognize, and **two invented species** (Defiant, Curious) that exist purely for the Furling-era story. Good balance.
 
 ## Naming Conventions
 
