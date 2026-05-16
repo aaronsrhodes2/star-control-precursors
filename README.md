@@ -15,7 +15,39 @@ Two reasons:
 
 ## Status
 
-Early development. See [the design plan](../../Users/aaron/.claude/plans/i-want-to-make-indexed-summit.md) for the full vertical slice scope and roadmap.
+Phase 2 (Engine MVP) in progress. The hyperspace scene works: the precursor-era starmap renders, the player ship can fly around it with controller or keyboard, and the HUD shows the nearest star with its lore tag.
+
+## Running
+
+Requires Python 3.13+. From the project root (PowerShell):
+
+```powershell
+python -m venv .venv
+.venv\Scripts\python.exe -m pip install -e .
+.venv\Scripts\python.exe -m scz
+```
+
+### Controls
+
+- **Move**: WASD / Arrow keys / Left analog stick
+- **Quit**: Esc / Start button
+- **Confirm** (later scenes): Space, Enter / A button
+- **Cancel** (later scenes): Backspace / B button
+- **Map** (not wired yet): M / Y button
+
+## Status by Phase
+
+- ✅ **Phase 0** — project skeleton, references, lore docs
+- ✅ **Phase 0.5** — SC2 universe extracted to JSON, precursor-era derived
+- 🚧 **Phase 2** — engine MVP
+  - ✅ Hyperspace scene with starmap, player ship, controller/keyboard input
+  - ⏸ Star system view
+  - ⏸ Planet surface
+  - ⏸ Melee combat
+  - ⏸ Save/load
+- ⏸ **Phase 3** — LLM dialog layer
+- ⏸ **Phase 3.5** — variation layer (per-individual portraits, music stems, combat personality, banter)
+- ⏸ **Phase 4** — vertical slice content (4 species, the Cleanser climax, Rainbow World seeding)
 
 ## Project Layout
 

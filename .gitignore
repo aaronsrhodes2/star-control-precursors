@@ -11,6 +11,8 @@ env/
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
+build/
+dist/
 
 # Game saves (local only)
 saves/*
