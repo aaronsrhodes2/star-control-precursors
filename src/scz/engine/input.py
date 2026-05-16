@@ -145,6 +145,12 @@ class InputManager:
                 elif ev.key == pygame.K_F1:
                     # Debug: open the scene switcher
                     self.open_switcher = True
+                elif ev.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
+                    # Keyboard zoom-out (also bound to LB on controller)
+                    self.menu_prev = True
+                elif ev.key in (pygame.K_EQUALS, pygame.K_KP_PLUS):
+                    # Keyboard zoom-in (also bound to RB on controller)
+                    self.menu_next = True
 
             elif ev.type == pygame.JOYBUTTONDOWN:
                 if ev.button == XBOX_A:

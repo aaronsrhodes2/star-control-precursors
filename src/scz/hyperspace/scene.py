@@ -33,6 +33,15 @@ SOL_Y = 1450.0
 HUD_WIDTH = 360
 MAP_MARGIN = 40
 
+# Zoom: 1.0 fits the whole galaxy in the map view. Higher = zoomed in.
+# Default starts close enough that the player ship is unmistakable; press
+# LB / - to zoom out to the full-galaxy view (the "map screen" feel).
+DEFAULT_ZOOM = 5.0
+MIN_ZOOM = 0.8
+MAX_ZOOM = 25.0
+ZOOM_STEP = 1.4        # button-press multiplier
+ZOOM_LERP = 8.0        # smoothing per second (higher = snappier)
+
 
 class HyperspaceScene(Scene):
     """The galactic map view with a movable player ship."""
@@ -44,56 +53,82 @@ class HyperspaceScene(Scene):
         self.player_y: float = SOL_Y
         self.player_heading: float = 0.0  # radians, 0 = up
 
+        # Zoom + camera. Camera always tries to follow the ship; at very low
+        # zoom (whole galaxy visible) the clamp keeps it centered on the
+        # universe so we don't show empty space beyond the map edges.
+        self.zoom: float = DEFAULT_ZOOM
+        self.target_zoom: float = DEFAULT_ZOOM
+        self.camera_x: float = SOL_X
+        self.camera_y: float = SOL_Y
+
         # Set in on_enter once we know the screen size
-        self.map_scale: float = 1.0
-        self.map_offset_x: float = 0.0
-        self.map_offset_y: float = 0.0
+        self.map_view_x: int = 0
+        self.map_view_y: int = 0
+        self.map_view_w: int = 0
+        self.map_view_h: int = 0
+        self.base_scale: float = 1.0   # scale at zoom == 1.0
         self.font: pygame.font.Font | None = None
         self.title_font: pygame.font.Font | None = None
+        self.small_font: pygame.font.Font | None = None
 
     # --- transform between universe and screen coordinates ---
 
+    def _effective_scale(self) -> float:
+        return self.base_scale * self.zoom
+
     def universe_to_screen(self, ux: float, uy: float) -> tuple[float, float]:
-        sx = self.map_offset_x + ux * self.map_scale
-        sy = self.map_offset_y + uy * self.map_scale
-        return sx, sy
+        es = self._effective_scale()
+        center_x = self.map_view_x + self.map_view_w / 2
+        center_y = self.map_view_y + self.map_view_h / 2
+        return (
+            center_x + (ux - self.camera_x) * es,
+            center_y + (uy - self.camera_y) * es,
+        )
 
     # --- Scene API ---
 
     def on_enter(self) -> None:
         assert self.game is not None
         w, h = self.game.screen.get_size()
-        map_area_w = w - HUD_WIDTH - 2 * MAP_MARGIN
-        map_area_h = h - 2 * MAP_MARGIN
-        scale = min(map_area_w / UNIVERSE_MAX, map_area_h / UNIVERSE_MAX)
-        self.map_scale = scale
-        map_w = UNIVERSE_MAX * scale
-        map_h = UNIVERSE_MAX * scale
-        self.map_offset_x = HUD_WIDTH + MAP_MARGIN + (map_area_w - map_w) / 2
-        self.map_offset_y = MAP_MARGIN + (map_area_h - map_h) / 2
+        self.map_view_x = HUD_WIDTH + MAP_MARGIN
+        self.map_view_y = MAP_MARGIN
+        self.map_view_w = w - HUD_WIDTH - 2 * MAP_MARGIN
+        self.map_view_h = h - 2 * MAP_MARGIN
+        # base_scale: zoom=1.0 fits the whole universe in the SMALLER dimension
+        # of the map view (so it's never cropped at full zoom-out).
+        self.base_scale = min(self.map_view_w, self.map_view_h) / UNIVERSE_MAX
 
-        # Init fonts — sized for 1920x1080. We could scale by window height
-        # but for now keep them fixed since 1920x1080 is the target.
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
+        self.small_font = pygame.font.SysFont("consolas", 14)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
-        # Move the player ship in universe space
+        # --- Zoom (LB / RB on controller, - / = on keyboard) ---
+        if inp.menu_prev:
+            self.target_zoom = max(self.target_zoom / ZOOM_STEP, MIN_ZOOM)
+        if inp.menu_next:
+            self.target_zoom = min(self.target_zoom * ZOOM_STEP, MAX_ZOOM)
+        # Smooth toward target zoom
+        if abs(self.target_zoom - self.zoom) > 1e-4:
+            t = min(1.0, dt * ZOOM_LERP)
+            self.zoom += (self.target_zoom - self.zoom) * t
+
+        # --- Movement ---
         mx, my = inp.move_x, inp.move_y
         if mx != 0.0 or my != 0.0:
-            # Normalize so diagonal isn't faster
             mag = math.hypot(mx, my)
             if mag > 1.0:
                 mx /= mag
                 my /= mag
-            # Update heading (where the ship points)
             self.player_heading = math.atan2(mx, -my)  # 0 = up
         speed = PLAYER_SPEED * dt
         self.player_x += mx * speed
         self.player_y += my * speed
-        # Clamp to universe bounds
         self.player_x = max(0.0, min(UNIVERSE_MAX - 1, self.player_x))
         self.player_y = max(0.0, min(UNIVERSE_MAX - 1, self.player_y))
+
+        # --- Camera follows ship (with map-edge clamp) ---
+        self._update_camera()
 
         # Esc/cancel at top-level scene → quit game (no parent to back to)
         if inp.cancel and self.game is not None:
@@ -106,39 +141,69 @@ class HyperspaceScene(Scene):
                 self.player_x, self.player_y, max_distance=STAR_ENTER_RADIUS
             )
             if nearby is not None:
-                # Compute distance to confirm it's truly within entry range
                 dx = nearby["x"] - self.player_x
                 dy = nearby["y"] - self.player_y
                 if math.hypot(dx, dy) <= STAR_ENTER_RADIUS:
-                    # Lazy import to avoid circular dependency
                     from scz.system.scene import SystemScene
                     self.game.set_scene(SystemScene(nearby))
+
+    def _update_camera(self) -> None:
+        """Center camera on the ship, clamping to keep view inside the map."""
+        self.camera_x = self.player_x
+        self.camera_y = self.player_y
+        es = self._effective_scale()
+        # Half the visible area, in universe units
+        half_w_uni = (self.map_view_w / 2) / es
+        half_h_uni = (self.map_view_h / 2) / es
+        if half_w_uni >= UNIVERSE_MAX / 2:
+            # Zoomed out enough that the whole universe fits; center on map
+            self.camera_x = UNIVERSE_MAX / 2
+        else:
+            self.camera_x = max(half_w_uni, min(UNIVERSE_MAX - half_w_uni, self.camera_x))
+        if half_h_uni >= UNIVERSE_MAX / 2:
+            self.camera_y = UNIVERSE_MAX / 2
+        else:
+            self.camera_y = max(half_h_uni, min(UNIVERSE_MAX - half_h_uni, self.camera_y))
 
     def snapshot(self) -> dict | None:
         return {
             "player_x": self.player_x,
             "player_y": self.player_y,
             "player_heading": self.player_heading,
+            "zoom": self.zoom,
+            "target_zoom": self.target_zoom,
         }
 
     def restore(self, state: dict) -> None:
         self.player_x = float(state["player_x"])
         self.player_y = float(state["player_y"])
         self.player_heading = float(state["player_heading"])
+        if "zoom" in state:
+            self.zoom = float(state["zoom"])
+        if "target_zoom" in state:
+            self.target_zoom = float(state["target_zoom"])
 
     def render(self, screen: pygame.Surface) -> None:
         screen.fill((6, 6, 18))
 
+        # Clip drawing to the map view area so stars don't paint over the HUD
+        # while we're panning/zooming.
+        map_rect = pygame.Rect(
+            self.map_view_x, self.map_view_y, self.map_view_w, self.map_view_h
+        )
+        screen.set_clip(map_rect)
+
         # Universe boundary
         ux0, uy0 = self.universe_to_screen(0.0, 0.0)
-        ubw = UNIVERSE_MAX * self.map_scale
-        ubh = UNIVERSE_MAX * self.map_scale
-        pygame.draw.rect(screen, (30, 30, 60), (ux0, uy0, ubw, ubh), 1)
+        ux1, uy1 = self.universe_to_screen(UNIVERSE_MAX, UNIVERSE_MAX)
+        pygame.draw.rect(
+            screen, (30, 30, 60), (ux0, uy0, ux1 - ux0, uy1 - uy0), 1
+        )
 
         # Stars
         self.starmap.render(screen, self.universe_to_screen)
 
-        # Player ship — small triangle pointing in heading direction
+        # Player ship + always-visible "FURLING SCOUT" label
         px, py = self.universe_to_screen(self.player_x, self.player_y)
         self._draw_player_ship(screen, px, py, self.player_heading)
 
@@ -146,16 +211,14 @@ class HyperspaceScene(Scene):
         nearest = self.starmap.find_nearest_star(
             self.player_x, self.player_y, max_distance=400.0
         )
-        # Compute distance to nearest star for "press A to enter" prompt
         in_entry_range = False
         if nearest is not None:
             dx = nearest["x"] - self.player_x
             dy = nearest["y"] - self.player_y
             in_entry_range = math.hypot(dx, dy) <= STAR_ENTER_RADIUS
             if in_entry_range:
-                # Draw an "enter prompt" circle around the nearest star
                 psx, psy = self.universe_to_screen(nearest["x"], nearest["y"])
-                pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2  # 0..1
+                pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2
                 ring_r = int(14 + pulse * 4)
                 pygame.draw.circle(
                     screen,
@@ -164,6 +227,9 @@ class HyperspaceScene(Scene):
                     ring_r,
                     1,
                 )
+
+        # Reset clip so HUD draws normally
+        screen.set_clip(None)
 
         # HUD
         self._draw_hud(screen, nearest, in_entry_range)
@@ -174,7 +240,7 @@ class HyperspaceScene(Scene):
         self, screen: pygame.Surface, x: float, y: float, heading: float
     ) -> None:
         # Triangle with tip in heading direction
-        size = 10
+        size = 11
         local = [(0, -size), (-size * 0.6, size * 0.5), (size * 0.6, size * 0.5)]
         cos_h = math.cos(heading)
         sin_h = math.sin(heading)
@@ -186,8 +252,24 @@ class HyperspaceScene(Scene):
         pygame.draw.polygon(screen, (255, 255, 255), pts)
         pygame.draw.polygon(screen, (90, 180, 255), pts, 1)
 
-        # Player position crosshair (subtle)
-        pygame.draw.circle(screen, (60, 90, 130), (int(x), int(y)), 18, 1)
+        # Always-visible locator ring + pulsing outer ring so the ship is
+        # findable even when zoomed all the way out.
+        pulse = (math.sin(pygame.time.get_ticks() / 400) + 1) / 2  # 0..1
+        pygame.draw.circle(screen, (90, 180, 255), (int(x), int(y)), 20, 1)
+        pygame.draw.circle(
+            screen,
+            (60 + int(pulse * 70), 130 + int(pulse * 60), 200),
+            (int(x), int(y)),
+            int(28 + pulse * 6),
+            1,
+        )
+
+        # "FURLING SCOUT" label below the ship, always rendered (small font
+        # so it doesn't clutter when zoomed in).
+        if self.small_font is not None:
+            label = self.small_font.render("FURLING SCOUT", True, (180, 220, 255))
+            lw, _ = label.get_size()
+            screen.blit(label, (x - lw / 2, y + 28))
 
     def _draw_hud(
         self,
@@ -278,6 +360,13 @@ class HyperspaceScene(Scene):
             self._hud_line(screen, x, y, "Empty space.", (100, 110, 130))
             y += 32
 
+        # Zoom indicator
+        zoom_label = f"ZOOM  {self.zoom:.1f}x"
+        if abs(self.zoom - self.target_zoom) > 0.05:
+            zoom_label += f"  →  {self.target_zoom:.1f}x"
+        self._hud_line(screen, x, y, zoom_label, (180, 200, 220))
+        y += 22
+
         # Stats
         self._hud_line(
             screen, x, y, f"{len(self.starmap.stars)} stars", (130, 150, 180)
@@ -292,7 +381,7 @@ class HyperspaceScene(Scene):
         )
 
         # Controls hint pinned to bottom
-        controls_y = screen.get_height() - 180
+        controls_y = screen.get_height() - 230
         self._hud_line(screen, x, controls_y, "CONTROLS", (200, 210, 230))
         controls_y += 28
         self._hud_line(
@@ -300,11 +389,19 @@ class HyperspaceScene(Scene):
         )
         controls_y += 22
         self._hud_line(
-            screen, x, controls_y, "Map:     M / Y", (130, 150, 180)
+            screen, x, controls_y, "Zoom:    - / =  /  LB / RB", (130, 150, 180)
+        )
+        controls_y += 22
+        self._hud_line(
+            screen, x, controls_y, "Enter:   Space / A", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
             screen, x, controls_y, "Rewind:  R / Back", (130, 150, 180)
+        )
+        controls_y += 22
+        self._hud_line(
+            screen, x, controls_y, "Switch:  F1 / R3", (130, 150, 180)
         )
         controls_y += 22
         self._hud_line(
