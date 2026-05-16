@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Game saves (local only)
+saves/*
+!saves/.gitkeep
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*~
+
+# Build artifacts
+build/
+dist/
+*.spec
+
+# Large reference data we don't want to commit
+references/uqm-source/
+references/uqm-content/
+references/*.uqm
+references/*.tgz
+
+# Secrets / local config
+.env
+.env.local
+*.local.json
