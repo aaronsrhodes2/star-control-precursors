@@ -101,6 +101,19 @@ class SystemScene(Scene):
             self.player_x = self.player_x * (max_dist / dist)
             self.player_y = self.player_y * (max_dist / dist)
 
+        # Confirm near a planet → land on it (unless gas giant)
+        if inp.confirm and self.game is not None:
+            target = self._planet_in_landing_range()
+            if target is not None and target.type != "GAS_GIANT":
+                from scz.planet.scene import PlanetSurfaceScene
+                self.game.set_scene(
+                    PlanetSurfaceScene(
+                        planet=target,
+                        star=self.star,
+                        parent_scene_cls=SystemScene,
+                    )
+                )
+
         # Exit to hyperspace on CANCEL (B / Backspace)
         if inp.cancel and self.game is not None:
             # Lazy import to avoid circular dependency
@@ -134,8 +147,27 @@ class SystemScene(Scene):
         # Player ship
         self._draw_player(screen)
 
+        # Landing-range indicator on the nearest in-range planet
+        landing_target = self._planet_in_landing_range()
+        if landing_target is not None:
+            psx, psy = landing_target.position_at(self.time_in_scene)
+            x, y = self._system_to_screen(psx, psy)
+            pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2
+            ring_color = (
+                int(255 - pulse * 60),
+                int(240 - pulse * 30),
+                int(150 + pulse * 40),
+            )
+            pygame.draw.circle(
+                screen,
+                ring_color,
+                (int(x), int(y)),
+                landing_target.size + 8 + int(pulse * 4),
+                1,
+            )
+
         # HUD
-        self._draw_hud(screen)
+        self._draw_hud(screen, landing_target)
 
     # ------------------------------------------------------------------
     # Time Drive integration
@@ -235,11 +267,22 @@ class SystemScene(Scene):
             if d < best_d:
                 best_d = d
                 best = p
-        if best is not None and best_d <= PLANET_INTERACT_RADIUS + best.size / self.scale:
-            return best
-        return best  # always return nearest; let HUD show interact-range separately
+        return best
 
-    def _draw_hud(self, screen: pygame.Surface) -> None:
+    def _planet_in_landing_range(self) -> Planet | None:
+        """Return the nearest planet if it's within landing range, else None."""
+        for p in self.planets:
+            psx, psy = p.position_at(self.time_in_scene)
+            d = math.hypot(self.player_x - psx, self.player_y - psy)
+            # Landing range scales with planet size (gas giants visible from further)
+            range_units = PLANET_INTERACT_RADIUS + p.size / self.scale
+            if d <= range_units:
+                return p
+        return None
+
+    def _draw_hud(
+        self, screen: pygame.Surface, landing_target: Planet | None = None
+    ) -> None:
         assert self.font is not None
         assert self.title_font is not None
 
@@ -280,10 +323,39 @@ class SystemScene(Scene):
             (x, y),
         )
         y += 26
-        # List planets briefly
+        # List planets briefly; highlight the landing target
         for p in self.planets:
             label = f"  {p.name}  —  {p.type.lower()}"
-            screen.blit(self.font.render(label, True, (150, 160, 180)), (x, y))
+            if p is landing_target:
+                color = (220, 230, 180)
+            else:
+                color = (150, 160, 180)
+            screen.blit(self.font.render(label, True, color), (x, y))
+            y += 22
+
+        # Landing prompt
+        if landing_target is not None:
+            y += 8
+            if landing_target.type == "GAS_GIANT":
+                screen.blit(
+                    self.font.render(
+                        "Cannot land on gas giant", True, (220, 130, 100)
+                    ),
+                    (x, y),
+                )
+            else:
+                pulse = (math.sin(pygame.time.get_ticks() / 200) + 1) / 2
+                c = (
+                    int(180 + pulse * 75),
+                    int(220 + pulse * 35),
+                    int(150 + pulse * 50),
+                )
+                screen.blit(
+                    self.font.render(
+                        f"[LAND on {landing_target.name}:  A / Space]", True, c
+                    ),
+                    (x, y),
+                )
             y += 22
 
         # Time Drive readout (consistent with hyperspace HUD)
