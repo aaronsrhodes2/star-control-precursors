@@ -35,6 +35,36 @@ STAR_TYPE_RADIUS: dict[str, int] = {
 UNIVERSE_MAX = 10000.0
 
 
+# --- Label visibility tiers ---
+# Like real-world digital maps: big landmarks show from far out, small ones
+# only when you zoom in close. Tuned by star type. Lore-tagged stars (Sol,
+# Slylandro home, etc.) show one tier earlier so plot-critical destinations
+# remain findable. Rainbow Worlds always show because they're the central
+# plot artifacts and the player will be hunting for them.
+LABEL_MIN_ZOOM_BY_TYPE: dict[str, float] = {
+    "SUPER_GIANT_STAR": 0.8,   # ~always visible (galaxy view shows them all)
+    "GIANT_STAR": 2.5,         # mid-zoom
+    "DWARF_STAR": 7.0,         # close zoom only
+}
+LABEL_MIN_ZOOM_LORE_TAGGED: dict[str, float] = {
+    "SUPER_GIANT_STAR": 0.8,
+    "GIANT_STAR": 0.8,
+    "DWARF_STAR": 2.5,         # one tier earlier than untagged dwarfs
+}
+LABEL_MIN_ZOOM_RAINBOW: float = 0.8   # always visible — plot-critical
+
+# Subtle tints applied to label text so each star color reads slightly
+# different. Mixed with off-white for legibility.
+LABEL_COLOR_BY_STAR: dict[str, tuple[int, int, int]] = {
+    "BLUE_BODY":   (200, 220, 255),
+    "WHITE_BODY":  (230, 230, 240),
+    "YELLOW_BODY": (245, 235, 200),
+    "GREEN_BODY":  (210, 240, 215),
+    "ORANGE_BODY": (245, 220, 190),
+    "RED_BODY":    (245, 205, 200),
+}
+
+
 # Type alias for the universe→screen transform function
 TransformFn = Callable[[float, float], tuple[float, float]]
 
@@ -90,6 +120,54 @@ class Starmap:
                 rx = ix + int(ring_radius * math.cos(a))
                 ry = iy + int(ring_radius * math.sin(a))
                 pygame.draw.circle(surface, c, (rx, ry), 1)
+
+    def render_labels(
+        self,
+        surface: pygame.Surface,
+        transform: TransformFn,
+        zoom: float,
+        font: pygame.font.Font,
+    ) -> None:
+        """Draw star-name labels next to stars whose visibility tier the
+        current zoom level reaches. Call after render() so labels sit on
+        top of star sprites.
+        """
+        # Pre-resolve per-star threshold to avoid dict lookups in the loop
+        for star in self.stars:
+            name = star.get("cluster_name")
+            if not name:
+                continue
+
+            defined = star.get("defined_name")
+            star_type = star.get("type", "DWARF_STAR")
+
+            # Decide visibility threshold
+            if defined == "RAINBOW_BEING_SEEDED":
+                threshold = LABEL_MIN_ZOOM_RAINBOW
+            elif defined:
+                threshold = LABEL_MIN_ZOOM_LORE_TAGGED.get(star_type, 5.0)
+            else:
+                threshold = LABEL_MIN_ZOOM_BY_TYPE.get(star_type, 5.0)
+
+            if zoom < threshold:
+                continue
+
+            sx, sy = transform(star["x"], star["y"])
+            # Cheap on-screen test — skip labels well outside the surface
+            sw, sh = surface.get_size()
+            if sx < -100 or sx > sw + 100 or sy < -50 or sy > sh + 50:
+                continue
+
+            color = LABEL_COLOR_BY_STAR.get(star.get("color"), (220, 220, 230))
+            text = font.render(name, True, color)
+            # Subtle shadow so the label reads against bright stars or
+            # nebulous backgrounds we may add later.
+            shadow = font.render(name, True, (10, 10, 20))
+            radius = STAR_TYPE_RADIUS.get(star_type, 2)
+            ox = int(sx) + radius + 6
+            oy = int(sy) - text.get_height() // 2
+            surface.blit(shadow, (ox + 1, oy + 1))
+            surface.blit(text, (ox, oy))
 
     def find_nearest_star(
         self, ux: float, uy: float, max_distance: float = 200.0

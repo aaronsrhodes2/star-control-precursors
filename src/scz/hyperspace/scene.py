@@ -202,6 +202,13 @@ class HyperspaceScene(Scene):
 
         # Stars
         self.starmap.render(screen, self.universe_to_screen)
+        # Star-name labels — tiered by star size (supergiants from far out,
+        # dwarfs only when zoomed in close; lore-tagged + Rainbow stars
+        # always visible).
+        if self.small_font is not None:
+            self.starmap.render_labels(
+                screen, self.universe_to_screen, self.zoom, self.small_font
+            )
 
         # Player ship + always-visible "FURLING SCOUT" label
         px, py = self.universe_to_screen(self.player_x, self.player_y)
