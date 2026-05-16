@@ -13,19 +13,29 @@ class Game:
 
     Holds one current scene (no stack yet; we'll add modal push later).
     Caps the loop at target_fps and feeds dt to the scene.
+
+    Renders at the logical (width, height). With fullscreen=True we use
+    pygame.SCALED so the logical resolution is preserved regardless of the
+    monitor's actual size — much friendlier than asking the OS to change
+    display mode.
     """
 
     def __init__(
         self,
-        width: int = 1280,
-        height: int = 720,
+        width: int = 1920,
+        height: int = 1080,
         title: str = "Star Control Zero: The Precursors",
         target_fps: int = 60,
+        fullscreen: bool = True,
     ) -> None:
         pygame.init()
         pygame.joystick.init()
-        self.screen = pygame.display.set_mode((width, height))
+        flags = 0
+        if fullscreen:
+            flags = pygame.FULLSCREEN | pygame.SCALED
+        self.screen = pygame.display.set_mode((width, height), flags)
         pygame.display.set_caption(title)
+        pygame.mouse.set_visible(not fullscreen)
         self.clock = pygame.time.Clock()
         self.running = True
         self.input = InputManager()

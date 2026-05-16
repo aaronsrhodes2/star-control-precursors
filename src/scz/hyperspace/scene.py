@@ -25,9 +25,10 @@ PLAYER_SPEED = 1200.0
 SOL_X = 1793.0
 SOL_Y = 1450.0
 
-# UI margins
-HUD_WIDTH = 240
-MAP_MARGIN = 20
+# UI margins. Sized to look good at 1920x1080. The HUD scales naturally to
+# fit narrower windows because the map area auto-fits the remaining space.
+HUD_WIDTH = 360
+MAP_MARGIN = 40
 
 
 class HyperspaceScene(Scene):
@@ -68,9 +69,10 @@ class HyperspaceScene(Scene):
         self.map_offset_x = HUD_WIDTH + MAP_MARGIN + (map_area_w - map_w) / 2
         self.map_offset_y = MAP_MARGIN + (map_area_h - map_h) / 2
 
-        # Init fonts
-        self.font = pygame.font.SysFont("consolas", 14)
-        self.title_font = pygame.font.SysFont("consolas", 18, bold=True)
+        # Init fonts — sized for 1920x1080. We could scale by window height
+        # but for now keep them fixed since 1920x1080 is the target.
+        self.font = pygame.font.SysFont("consolas", 18)
+        self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         # Move the player ship in universe space
@@ -120,8 +122,7 @@ class HyperspaceScene(Scene):
         self, screen: pygame.Surface, x: float, y: float, heading: float
     ) -> None:
         # Triangle with tip in heading direction
-        size = 7
-        # Local coords (tip up): (0,-size), (-size*0.6, size*0.5), (size*0.6, size*0.5)
+        size = 10
         local = [(0, -size), (-size * 0.6, size * 0.5), (size * 0.6, size * 0.5)]
         cos_h = math.cos(heading)
         sin_h = math.sin(heading)
@@ -134,7 +135,7 @@ class HyperspaceScene(Scene):
         pygame.draw.polygon(screen, (90, 180, 255), pts, 1)
 
         # Player position crosshair (subtle)
-        pygame.draw.circle(screen, (60, 90, 130), (int(x), int(y)), 12, 1)
+        pygame.draw.circle(screen, (60, 90, 130), (int(x), int(y)), 18, 1)
 
     def _draw_hud(self, screen: pygame.Surface, nearest: dict | None) -> None:
         assert self.font is not None
@@ -146,57 +147,57 @@ class HyperspaceScene(Scene):
             screen, (40, 40, 70), (HUD_WIDTH, 0), (HUD_WIDTH, screen.get_height()), 1
         )
 
-        x = 14
-        y = 16
+        x = 22
+        y = 24
 
         title = self.title_font.render(
             "STAR CONTROL ZERO", True, (210, 220, 240)
         )
         screen.blit(title, (x, y))
-        y += 22
+        y += 34
         sub = self.font.render("The Precursors", True, (140, 160, 200))
         screen.blit(sub, (x, y))
-        y += 16
+        y += 22
         sub2 = self.font.render("Furling Era", True, (140, 160, 200))
         screen.blit(sub2, (x, y))
-        y += 26
+        y += 36
 
         # Player state
         self._hud_line(screen, x, y, "FURLING SCOUT", (180, 220, 255))
-        y += 18
+        y += 24
         self._hud_line(
             screen, x, y, f"Pos {self.player_x:7.0f} {self.player_y:7.0f}", (150, 170, 200)
         )
-        y += 22
+        y += 32
 
         # Nearest star
         if nearest is not None:
             self._hud_line(screen, x, y, "NEAREST STAR", (220, 200, 140))
-            y += 18
+            y += 24
             label = nearest.get("cluster_name", "<unknown>")
             self._hud_line(screen, x, y, label, (240, 230, 200))
-            y += 16
+            y += 22
             sub = f"{nearest.get('type', '?').replace('_STAR', '').lower()}, {nearest.get('color', '?').replace('_BODY', '').lower()}"
             self._hud_line(screen, x, y, sub, (180, 170, 150))
-            y += 16
+            y += 22
             if nearest.get("defined_name"):
                 self._hud_line(
                     screen, x, y, nearest["defined_name"], (180, 220, 180)
                 )
-                y += 16
+                y += 22
             if nearest.get("primordial"):
                 self._hud_line(screen, x, y, "(primordial)", (180, 130, 200))
-                y += 16
-            y += 6
+                y += 22
+            y += 10
         else:
             self._hud_line(screen, x, y, "Empty space.", (100, 110, 130))
-            y += 22
+            y += 32
 
         # Stats
         self._hud_line(
             screen, x, y, f"{len(self.starmap.stars)} stars", (130, 150, 180)
         )
-        y += 16
+        y += 22
         self._hud_line(
             screen,
             x,
@@ -204,20 +205,19 @@ class HyperspaceScene(Scene):
             f"{len(self.starmap.rainbow_stars)} Rainbow seeds",
             (200, 180, 120),
         )
-        y += 32
 
-        # Controls hint
-        controls_y = screen.get_height() - 110
+        # Controls hint pinned to bottom
+        controls_y = screen.get_height() - 150
         self._hud_line(screen, x, controls_y, "CONTROLS", (200, 210, 230))
-        controls_y += 18
+        controls_y += 28
         self._hud_line(
             screen, x, controls_y, "Move:   WASD / L-stick", (130, 150, 180)
         )
-        controls_y += 16
+        controls_y += 22
         self._hud_line(
             screen, x, controls_y, "Map:    M / Y", (130, 150, 180)
         )
-        controls_y += 16
+        controls_y += 22
         self._hud_line(
             screen, x, controls_y, "Quit:   Esc / Start", (130, 150, 180)
         )
