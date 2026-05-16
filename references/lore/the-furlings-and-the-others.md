@@ -110,6 +110,8 @@ These should never be explained in dialog. They live in player speculation, like
 
 ## 9. The Three-Pillar Variation Principle (the game's core design philosophy)
 
+> **Architectural form**: variation is a cosmetic **layer over a static deterministic engine**, not woven through gameplay. The engine plays like a 1990s 2D space game; the variation layer sits on top, intercepting renders and audio output. One-way data flow — bugs in variation cannot corrupt gameplay. See [`variation-architecture.md`](variation-architecture.md) for the full pattern and the comprehensive catalog of variable elements (ships, planet surfaces, mineral nodes, biological specimens, NPC names, UI sounds — far more than just dialog/art/music).
+
 **Static assets become wallpaper.** This is the truth that defines Star Control Zero's design. SC2 had great art, great music, great dialog — and players muted the music, skipped the dialog, and stopped noticing the art, because every encounter was visually, sonically, and verbally identical to the last one. The work was wasted.
 
 Star Control Zero rejects identity-by-repetition. Three pillars of the game produce *varied output around a fixed identity*:
