@@ -220,6 +220,18 @@ Banter calls are async (LLM has latency). Implementation:
 
 Personality vectors are deterministic, so a save-and-reload reproduces the same fight. Banter text is *not* deterministic by default (LLMs are sampled), but we can seed the LLM call for reproducibility if that matters.
 
+## Defensive Doctrine — Shields vs Hull (per furling-tech-mechanics §5)
+
+Combat balance and AI behavior both turn on a single asymmetry: **the Furling Scout has regenerating shields; most other ships do not.** The full design lives in [furling-tech-mechanics.md "Annoyance #5"](furling-tech-mechanics.md); the short version that affects AI:
+
+- Furling ships (Scout, Persuader, Defender, **Cleanser**) have shields. The Cleanser fight is therefore even on this axis.
+- Almost everyone else has hull only. Damage them and they don't get it back — the engagement clock is one-way for them.
+- The player's natural strategy against non-Furling enemies is **bide-and-strike**: attack, withdraw, let shields regen, attack again. The enemy can't match this cycle. AI on the player's opponents needs to *understand* this so it isn't trivially exploitable — caution + persistence axes interact with shield state.
+
+For Layer 1 (engine AI): non-shielded ships factor in their bleed clock — they should NOT engage at the player's preferred range if the player is regenerating. The decision function reads `(my_hull_pct, my_has_shields, enemy_has_shields, enemy_shield_pct)` and biases retreat thresholds accordingly. Without this, every fight devolves to "stand at sniper range until the bleed wins."
+
+Solo-captained ship: crew never die. Damage hits ship state only. AI never targets "crew" because it isn't a stat. Out-of-combat hull repair is a mineral cost paid at safe-zones.
+
 ## Auto-Fight Toggle (in every combat scene)
 
 Combat exposes an **AUTO-FIGHT** toggle (default off) — when on, the engine AI flies the *player's* ship using the same decision function as the opponent. This is a first-class feature, not a debug switch:

@@ -62,7 +62,8 @@ This is a player-decision tool, not just an undo button. Knowing the rewind cost
 
 - **Fuel regenerates passively.** The ship's antimatter capacitors refill from cosmic flux at a rate that's small but always positive. You will never run out of fuel mid-cluster. You may have to *wait* a few seconds at the edge of a long hop, but you will never strand.
 - **Landers are remote-piloted drones, manufactured on the spot.** No crew aboard. If a lander is destroyed by a hostile planet (lightning, lava, hostile life), the ship's onboard fabricator prints a replacement in a few seconds. *Loss* costs you a small mineral fraction and a few seconds; it never grounds you.
-- **No "supplies" stat.** The ship's recyclers handle crew biomass needs indefinitely. There is no "you must return home to restock" loop.
+- **The same fabricator repairs the hull out of combat.** Hull damage (see *Annoyance #5*) is undone over time when the ship is docked or sitting at a safe-zone (orbit, Quasi-Space) by spending minerals from the hold. There is no "return to drydock" loop; the lander fabricator IS the drydock, scaled up. Mineral cost is non-trivial — repairing after a hard fight should cost a real fraction of your resources — but it never gates you.
+- **No "supplies" stat.** Recyclers handle the Steward's biomass needs indefinitely. There is no "you must return home to restock" loop.
 - **Tractor-beam collection (per Aaron's design): never shoot living things.** SC2's "shoot the life-form for bio-data" mechanic is *not* in this game. Furling landers carry tractor beams with a visible collection radius — anything inside, mineral or biological, is gently pulled in. Better lander modules (a future module slot) grow the beam radius, so progression makes you a more capable but also *gentler* collector. The lore frame: Furlings tend the galaxy; they don't harvest it.
 
 This eliminates ~half of SC2's busywork without removing the *interesting* resource decision — which is "what do you spend your minerals on?" (modules, ship upgrades, alliance gifts), not "do I have enough fuel to get there?"
@@ -75,12 +76,12 @@ This eliminates ~half of SC2's busywork without removing the *interesting* resou
 
 ### Module categories
 
-- **Hull modules** — armor type, structure, crew capacity (Furling crew capsules), hangar (drone storage), cargo (mineral hold)
+- **Hull modules** — armor type, structure (hull HP), hangar (drone storage), cargo (mineral hold). The ship is solo-captained by the Steward; there is no "crew complement" stat and no crew that dies in combat (see *Annoyance #5*).
 - **Drive modules** — sublight thrusters, hyperdrive class, *Time Drive capacity* (yes, you can upgrade the Time Drive to rewind longer or recharge faster), Quasi-Space access
 - **Weapon modules** — beam, missile, point-defense; each species' tech offers a different weapon style
 - **Sensor modules** — bio-scanner, mineral-scanner, *Other-detector* (advanced versions of this are quest rewards mid-slice), *dimensional-rift* sensor
-- **Field modules** — shields, cloaking field, terraforming projector, dialog amplifier (better Slylandro contact range), *Rainbow Resonator* (the special module used for seeding Rainbow Worlds)
-- **Crew specialists** — a Furling Archivist (better dialog context), a Bio-Architect (faster lander replication), a Warden (better combat AI assist), a Tunneler (Quasi-Space navigation)
+- **Field modules** — *shield projector* (Furling-rare; see *Annoyance #5*), cloaking field, terraforming projector, dialog amplifier (better Slylandro contact range), *Rainbow Resonator* (the special module used for seeding Rainbow Worlds)
+- **Crew specialists** — passenger-class upgrade slots; crew never die in combat, they're treated like advisors who give passive benefits. Slice picks: a Furling Archivist (better dialog context), a Bio-Architect (faster lander replication, larger tractor-beam radius), a Warden (sharper auto-fight AI when piloting for the Steward), a Tunneler (cheaper Quasi-Space portal use, more portals visible on the map)
 
 ### How upgrades are earned
 
@@ -92,6 +93,39 @@ This eliminates ~half of SC2's busywork without removing the *interesting* resou
 ### Visual
 
 The ship's silhouette in combat / star-system view **changes based on installed modules.** A heavily-shielded ship looks different from a fast scout, even if they're the same base hull. The variation layer applies on top of *that* — every Cleanser cruiser is one base + module config + per-instance variation, so they all look related but distinct.
+
+## Annoyance #5 — Crew Casualties → Solo-Captained Ship + Rare-Shield Doctrine
+
+**SC2 pain (two of them, conflated):** (1) every fight chewed through crew, who were both your *hit points* and the conceit of your "officers," so losing a fight felt like losing people; (2) every ship had the same defensive layer ("crew"), so combat was just exchanging damage until somebody ran out — no defensive *strategy*.
+
+**Furling fix:**
+
+### One Steward, one ship — crew don't die
+
+The Furling Scout is **solo-captainable.** Aaron, the player, IS the Steward; nobody else lives on the ship. Crew specialists are upgrades, not redshirts — they sit in the module list with their own benefits (Archivist, Bio-Architect, Warden, Tunneler) and survive every fight. Combat damage hits the *ship*, not the people; victory and defeat are about the metal, the field, and the player's choices, not about funeral counts.
+
+This kills the SC2 "I won the fight but lost three crew, was that worth it?" anxiety. It also kills the "I'm out of crew so my ship is useless" softlock. The Steward, alone, sails on.
+
+### Regenerating shields + non-regenerating hull (the Furling combat doctrine)
+
+The Furling Scout has the classic two-layer defense:
+
+- **Shields** are regenerating. They absorb the first damage. When not taking damage for a few seconds, they recharge. Full shields → fresh attack run.
+- **Hull** is non-regenerating *in combat*. When shields drop, hull takes the bleed. Hull lost in combat is lost until you spend minerals at a safe-zone (see *Annoyance #3* — same fabricator that prints landers patches the hull).
+
+**This is rare technology.** Most ships in the galaxy — Proto-Ur-Quan, Proto-Qor-Ah, refugees, Mmrnmhrm Sentinels, even most Furling Defenders — have *only* hull. Damage them, and they don't get it back. The Furlings have shielding because the Persuader faction prioritized survivable scouts (you can't persuade what you're dead from).
+
+**The doctrine this creates:** the Furling Scout's edge in combat is *patience*. Attack, withdraw, let shields regen, attack again. An attrition-cycle that the enemy cannot match because they're bleeding from the moment shields go down. A skilled player turns a 1v1 against a heavier ship into a series of clean attack runs.
+
+This is the player's *strategic* advantage, distinct from raw firepower or maneuverability. It also gives the Time Drive a tactical buddy — a Time-Drive rewind reverses hull damage too, so the Furling has *two* defensive layers compared to one for everyone else.
+
+### The Cleanser exception
+
+The slice's combat climax is a Cleanser Furling Cruiser. Cleansers, being Furlings, **also have shields.** This is the fight that strips the player's "I always have an edge" — the same doctrine applies to both sides, so the Cleanser fight is decided by piloting and weapon timing, not by attrition. Other Furling ships (Persuader, Defender) similarly have shields. The Arilou Skiff has *Quasi-Space evasion*, which is a different defensive layer entirely.
+
+### Out-of-combat repair
+
+After combat, the Steward returns to a safe-zone — orbit, Quasi-Space, station, or anywhere with the fabricator powered — and pays minerals to restore hull. Mineral cost scales with damage taken; a heavy fight should cost a meaningful fraction of the hold. There is no other path back to full hull (no "auto-repair over time" in hyperspace). The mineral economy is what makes repair a real decision: do you spend on repair, or on a module upgrade?
 
 ## Orbit-Cloak and Hyperspace Pursuit (gameplay flow canon)
 

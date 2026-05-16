@@ -1,6 +1,6 @@
 # Ship Roster Design — Stay/Go Balance and the Others' Ship
 
-> Design canon for the playable ship roster. Two principles: (1) Homesteader (Stay) and Precursor (Go) sides must have **equal ship counts and rough combat parity** so super-melee is balanced; (2) the Others' ship is special — **not normally playable**, only acquirable through a one-of-a-kind hijack quest. Combat AI for each ship follows the three-layer architecture in [combat-ai.md](combat-ai.md).
+> Design canon for the playable ship roster. Two principles: (1) Homesteader (Stay) and Precursor (Go) sides must have **equal ship counts and rough combat parity** so super-melee is balanced; (2) the Others' ship is special — **not normally playable**, only acquirable through a one-of-a-kind hijack quest. Combat AI for each ship follows the three-layer architecture in [combat-ai.md](combat-ai.md). Defensive doctrine follows [furling-tech-mechanics.md "Annoyance #5"](furling-tech-mechanics.md): regenerating shields are *Furling-rare*; almost every non-Furling ship in this roster has hull only, which is the central asymmetry the player exploits.
 
 ## Slice-Scope Roster (Phase 4 content target)
 
@@ -8,29 +8,30 @@ We aim for **5 ships per side** at slice scope (10 total + Cleanser variant + Ot
 
 ### Precursor (Go) side — 5 ships
 
-| Ship | Species/Origin | Role | Hull | Key Mechanic |
-|---|---|---|---|---|
-| **Furling Scout** | Furling (player default) | Balanced, modular | Medium | Time Drive (mid-combat tactical rewind possible at high upgrade) |
-| **Persuader Vessel** | Furling Persuader faction | Diplomatic, light combat | Light-medium | Dialog-amplifier weapon (forces brief truce in combat — risky utility) |
-| **Arilou Skiff** | Arilou cousins | Fast, evasive | Light | Quasi-Space short-jump (brief invulnerability + teleport) |
-| **Androsynth Refugee Cruiser** | Androsynth (time-displaced) | Medium-armor, science-tech | Medium | Dimensional-shear cannon (damages standard ships AND has a chance to disrupt Others-aligned entities) |
-| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | Variable |
+| Ship | Species/Origin | Role | Hull | Shield? | Key Mechanic |
+|---|---|---|---|---|---|
+| **Furling Scout** | Furling (player default) | Balanced, modular | Medium | **Yes** | Time Drive (mid-combat tactical rewind possible at high upgrade) |
+| **Persuader Vessel** | Furling Persuader faction | Diplomatic, light combat | Light-medium | **Yes** | Dialog-amplifier weapon (forces brief truce in combat — risky utility) |
+| **Arilou Skiff** | Arilou cousins | Fast, evasive | Light | No (Quasi-Space evasion instead) | Quasi-Space short-jump (brief invulnerability + teleport) |
+| **Androsynth Refugee Cruiser** | Androsynth (time-displaced) | Medium-armor, science-tech | Medium | No | Dimensional-shear cannon (damages standard ships AND has a chance to disrupt Others-aligned entities) |
+| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | TBD | Variable |
 
 ### Homesteader (Stay) side — 5 ships
 
-| Ship | Species/Origin | Role | Hull | Key Mechanic |
-|---|---|---|---|---|
-| **Defender Vessel** | Furling Defender faction | Heavy, slow | Heavy | Sa-Matra prototype beam (high damage, long cooldown) |
-| **Mmrnmhrm Sentinel** | Mmrnmhrm (autonomous) | Transforming | Medium-heavy | Mode-shift (combat / scout / fabricator); fabricator-mode repairs hull mid-combat |
-| **Proto-Ur-Quan Warship** | Proto-Ur-Quan (mid-uplift) | Aggressive, ramming-capable | Medium | Crushing-claw forward arc (high damage close-range) |
-| **Proto-Qor-Ah Marauder** | Proto-Qor-Ah (mid-uplift, lethal) | Glass-cannon, fanatic | Light-medium | Cutting-blade spinning attack (continuous AOE in close range; suicidal aggression in AI) |
-| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | Variable |
+| Ship | Species/Origin | Role | Hull | Shield? | Key Mechanic |
+|---|---|---|---|---|---|
+| **Defender Vessel** | Furling Defender faction | Heavy, slow | Heavy | **Yes** | Sa-Matra prototype beam (high damage, long cooldown) |
+| **Mmrnmhrm Sentinel** | Mmrnmhrm (autonomous) | Transforming | Medium-heavy | No (mid-fight fabricator instead) | Mode-shift (combat / scout / fabricator); fabricator-mode repairs hull mid-combat |
+| **Proto-Ur-Quan Warship** | Proto-Ur-Quan (mid-uplift) | Aggressive, ramming-capable | Medium | No | Crushing-claw forward arc (high damage close-range) |
+| **Proto-Qor-Ah Marauder** | Proto-Qor-Ah (mid-uplift, lethal) | Glass-cannon, fanatic | Light-medium | No | Cutting-blade spinning attack (continuous AOE in close range; suicidal aggression in AI) |
+| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | TBD | Variable |
 
 ### Special — Cleanser Furling Cruiser
 
 The **Cleanser Cruiser** is the slice's combat climax (see [factions-and-war.md](factions-and-war.md) and [combat-ai.md](combat-ai.md)). Technically Precursor-aligned (method-faction Cleanser is a Precursor sub-position) but in combat appears against the player AND against Homesteader species. For super-melee, treat as a **neutral / Precursor-extreme variant** of the Furling base hull with unique Cleanser modules:
 
 - Medium-heavy hull
+- **Shields, like all Furling ships** — this is the slice's only enemy fight where the bide-and-strike doctrine doesn't give the player an automatic edge. Cleanser vs Furling Scout is a *fair* fight on defense; it's decided by piloting, weapon timing, and personality
 - **Quiet weapons** — engineered plagues, stellar-disruption beam (these are the Cleansers' planet-elimination tools downscaled to ship-vs-ship)
 - AI: high persistence, moderate hesitation, formal banter
 
