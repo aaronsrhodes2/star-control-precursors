@@ -626,6 +626,62 @@ MMRNMHRM_PEACE = ContextSpec(
 
 
 # ---------------------------------------------------------------------------
+# The Bargainers peace theme (concept species — lore expansion 2026-05-17)
+#
+# The Bargainers believe the Others can be NEGOTIATED with. They've
+# worked out a complex theory of inter-dimensional trade. They are wrong.
+# They will die confidently.
+#
+# Sonic identity (matches the spreadsheet AUDIO_INFO row):
+#   "Confident-merchant-diplomatic. Smooth brass-and-velvet chord-progressions,
+#    persuasive woodwind solos, the air of someone fully convinced their
+#    argument is closing. Eventual horror under that — a held minor-second
+#    whisper that wants to scream but won't."
+# Queued at round=2 for when credits return.
+# ---------------------------------------------------------------------------
+
+BARGAINERS_PEACE = ContextSpec(
+    name="bargainers",
+    category="species_peace",
+    key="E flat major",
+    bpm=88,
+    duration_s=90,
+    description="The Bargainers — confident-merchant-diplomatic; tragic certainty under apparent persuasion",
+    sc2_inspiration="",  # no SC2 antecedent — concept-only Furling-era species
+    sc2_idiom="",
+    round=2,
+    notes=(
+        "Tonal trick: the surface is reassuring (closing-the-deal jazz "
+        "confidence), but the ambient layer holds a quiet dissonant minor-"
+        "second beneath that keeps wanting to scream but doesn't. The "
+        "Bargainers will die believing they've made the sale. The music "
+        "knows; they don't."
+    ),
+    stems=_standard_5stem(
+        "E flat major", 88,
+        ("confident-merchant-diplomatic species theme, smooth brass-and-velvet "
+         "persuasion under which a quiet dread is being suppressed"),
+        bass_body=("walking double-bass jazz line in major-key reassurance, "
+                   "warm and confident, no drums no melody no pads"),
+        perc_body=("brush snare + soft ride cymbal, intimate-jazz-club tempo, "
+                   "the rhythm of an unhurried negotiation, no melody no bass "
+                   "no pads"),
+        pad_body=("smooth brass-section sustained chords with velvet woodwind "
+                  "underneath, persuasive major-7 colors, the harmonic backing "
+                  "of someone closing a deal, no melody no drums no bass"),
+        lead_body=("persuasive woodwind solo line — clarinet or saxophone — "
+                   "stating a confident melodic argument that always lands "
+                   "on the tonic, the sound of certainty, no drums no bass "
+                   "no pads"),
+        amb_body=("under the surface: a held minor-second whisper (two notes "
+                  "a semitone apart sustaining together) that creates "
+                  "constant subliminal dissonance, the tragic counter-truth "
+                  "the Bargainers don't hear, no melody no drums no bass"),
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
 # Lemmkin peace theme (NEW SPECIES, 2026-05-17 lore expansion)
 #
 # Lemmkin = anthropomorphic squirrels with no fear (vestigial amygdala),
@@ -707,6 +763,7 @@ ROUND_2_QUEUED: list[ContextSpec] = [
     ANDROSYNTH_PEACE,
     MMRNMHRM_PEACE,
     LEMMKIN_PEACE,
+    BARGAINERS_PEACE,
 ]
 
 # All defined contexts (extends with each round).

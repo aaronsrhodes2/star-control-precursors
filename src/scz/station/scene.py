@@ -39,6 +39,12 @@ PLANET_MH_LAI_PATH = os.path.join(
 class StationScene(Scene):
     """Mh-Lai Station hub view."""
 
+    # No starbase music track yet — Furling civilization theme set is
+    # queued for future generation (Furling home / Mh-Lai). Until then
+    # leave music_context = None and let the prior scene's music carry
+    # through. Set this to "furling_home" once that track lands.
+    music_context: str | None = None
+
     # Class-level seeded starfield so it doesn't shimmer on re-entry
     _starfield: list[tuple[int, int, int]] | None = None
     # Class-level cached planet sprite (None once we've tried and failed)

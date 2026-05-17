@@ -91,6 +91,8 @@ SURFACE_PALETTES: dict[str, tuple[tuple[int, int, int], tuple[int, int, int]]] =
 class PlanetSurfaceScene(Scene):
     """Top-down lander view of a planet's surface."""
 
+    music_context = "planet_lander"  # assets/music/planet_lander/ (Round-2 queued)
+
     def __init__(
         self,
         planet,            # planet dict OR Planet dataclass with .name, .type, .index
@@ -171,6 +173,9 @@ class PlanetSurfaceScene(Scene):
 
     def on_enter(self) -> None:
         assert self.game is not None
+        # SFX: lander drone swooshing into position over the surface
+        if hasattr(self.game, "sfx"):
+            self.game.sfx.play("lander/lander_arrive")
         w, h = self.game.screen.get_size()
         # Reserve a HUD on the left, surface fills the rest with margin
         HUD_W = 360
@@ -270,6 +275,12 @@ class PlanetSurfaceScene(Scene):
         replacement cost from game.cargo.
         """
         assert self.game is not None
+        # SFX: lander_arrive (the swoosh-into-hover) reverse-feels right
+        # for lift-off too — drone leaving the surface. Until/unless we
+        # generate a dedicated lift_off.wav, reuse arrive. Drone goes
+        # up like it came down.
+        if hasattr(self.game, "sfx"):
+            self.game.sfx.play("lander/lander_arrive")
         if committed:
             for t, v in self.trip_haul.items():
                 if v > 0:
@@ -449,6 +460,23 @@ class PlanetSurfaceScene(Scene):
         survive the trip.
         """
         assert self.game is not None
+        # SFX hook: per-resource-type pickup sound. Aaron's 3-bucket
+        # SFX library (pickup_animal / pickup_vegetable / pickup_mineral)
+        # maps onto the current 4-type deposit classification:
+        #   BIO     -> pickup_animal   (organic-life sample)
+        #   ENERGY  -> pickup_mineral  (energy-crystal class)
+        #   COMMON / USEFUL -> pickup_mineral (rock class)
+        # pickup_vegetable currently unused — reserved for a future FLORA
+        # deposit type. When that lands, add a branch here.
+        if hasattr(self.game, "sfx"):
+            sfx_name = {
+                "BIO": "lander/pickup_animal",
+                "ENERGY": "lander/pickup_mineral",
+                "COMMON": "lander/pickup_mineral",
+                "USEFUL": "lander/pickup_mineral",
+                "PACKAGE_SCANNER_MK3": "ui/notification",  # quest pickup
+            }.get(d.type, "lander/pickup_mineral")
+            self.game.sfx.play(sfx_name)
         if d.type == "PACKAGE_SCANNER_MK3":
             # Quest item — immediate commit; survives lander destruction
             self.game.flags["scanner_mk3_in_cargo"] = True
