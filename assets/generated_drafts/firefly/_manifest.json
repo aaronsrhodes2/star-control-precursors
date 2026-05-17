@@ -322,5 +322,1046 @@
     "destination": null,
     "manifest_entry_to_update": null,
     "notes": ""
+  },
+  "tier1_artifacts/artifact_distress_beacon_device": {
+    "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_distress_beacon_device.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_distress_beacon_device.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:54:21.113116+00:00",
+    "status": "pending",
+    "tags": [
+      "artifacts"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_artifacts/artifact_rainbow_resonator": {
+    "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_rainbow_resonator.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_rainbow_resonator.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:54:21.130920+00:00",
+    "status": "pending",
+    "tags": [
+      "artifacts"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_artifacts/artifact_talos_resonator": {
+    "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_talos_resonator.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_talos_resonator.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:58:19.700306+00:00",
+    "status": "pending",
+    "tags": [
+      "artifacts"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_arilou_sage": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_arilou_sage.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_arilou_sage.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T14:54:31.158851+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_burvixese_engineer": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_burvixese_engineer.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_burvixese_engineer.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T18:04:35.886757+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_chenjesu_witness": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_chenjesu_witness.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_chenjesu_witness.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T18:06:30.859278+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_coel_tessar": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_coel_tessar.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_coel_tessar.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T14:59:36.005064+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_commander_halia": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_commander_halia.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_commander_halia.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T17:16:39.777747+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_melnorme_vermilion": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_melnorme_vermilion.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_melnorme_vermilion.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T15:32:11.172930+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_mmrnmhrm_sentinel": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_mmrnmhrm_sentinel.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_mmrnmhrm_sentinel.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T16:25:00.680624+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_planar_witness": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_planar_witness.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_planar_witness.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T16:25:19.426021+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_proto_qor_ah": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_qor_ah.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_qor_ah.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T18:12:21.845757+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_proto_urquan": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_urquan.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_urquan.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T18:15:06.167950+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_sentry_drone_47t": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_sentry_drone_47t.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_sentry_drone_47t.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T15:32:11.758571+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_slylandro_witness": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_slylandro_witness.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_slylandro_witness.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T14:51:21.546934+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_taalo": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_taalo.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_taalo.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T18:08:58.290118+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T19:44:06.915819+00:00"
+  },
+  "tier1_avatars/avatar_utwig_elder": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_utwig_elder.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_utwig_elder.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T17:17:10.375896+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_avatars/avatar_vael_souren_cleanser": {
+    "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_vael_souren_cleanser.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_vael_souren_cleanser.png",
+    "aspect": "2:3",
+    "generated_at": "2026-05-17T17:16:54.964922+00:00",
+    "status": "pending",
+    "tags": [
+      "avatars"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_cleanser_arrival": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_cleanser_arrival.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cleanser_arrival.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T05:05:05.810438+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_cloak_install": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_cloak_install.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cloak_install.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T05:13:31.210330+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_council_convocation": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_council_convocation.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_council_convocation.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T19:03:21.016307+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_decursion_swap": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_decursion_swap.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_decursion_swap.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T17:37:27.087575+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_deep_child": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_deep_child.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_deep_child.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T05:13:31.192683+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_drahn_destruction": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_drahn_destruction.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T04:19:10.169211+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_migration_portal": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_migration_portal.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_migration_portal.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T05:05:05.777316+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_others_consuming": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_consuming.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_others_consuming.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T17:41:58.428903+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_others_emerging": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_emerging.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_others_emerging.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T17:39:34.186869+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_others_rift": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_rift.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_others_rift.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T05:13:31.129662+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_rainbow_seeding": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_rainbow_seeding.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_rainbow_seeding.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T05:06:25.798613+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_talos_erasure": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_talos_erasure.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_talos_erasure.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T19:00:43.275785+00:00",
+    "status": "pending",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_dialog_backgrounds/bg_alien_ship": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_alien_ship.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_alien_ship.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T16:25:50.752032+00:00",
+    "status": "pending",
+    "tags": [
+      "dialog_backgrounds"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_dialog_backgrounds/bg_furling_bridge": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_furling_bridge.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_furling_bridge.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T14:39:31.184602+00:00",
+    "status": "pending",
+    "tags": [
+      "dialog_backgrounds"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_dialog_backgrounds/bg_open_space": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_open_space.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_open_space.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T16:25:54.878978+00:00",
+    "status": "pending",
+    "tags": [
+      "dialog_backgrounds"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_dialog_backgrounds/bg_planet_surface": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_planet_surface.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_planet_surface.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T16:25:46.751614+00:00",
+    "status": "pending",
+    "tags": [
+      "dialog_backgrounds"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_cleanser": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_cleanser.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:21:32.731178+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_compeller": {
+    "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_compeller.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_compeller.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T19:11:28.578228+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_compeller_v1_hands": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_compeller_v1_hands.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T19:06:21.702934+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_defender": {
+    "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_defender.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_defender.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:49:56.786498+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_denier": {
+    "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_denier.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_denier.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T05:17:35.839111+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_hider": {
+    "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_hider.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_hider.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:54:21.040594+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_persuader": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_persuader.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:21:28.140185+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_faction_insignia/insignia_talos": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_talos.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:24:07.196670+00:00",
+    "status": "pending",
+    "tags": [
+      "faction_insignia"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_furling_reference/furling_compeller": {
+    "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_compeller.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_compeller.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T17:17:40.320186+00:00",
+    "status": "pending",
+    "tags": [
+      "furling_reference"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_furling_reference/furling_defender": {
+    "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_defender.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_defender.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T17:17:55.242276+00:00",
+    "status": "pending",
+    "tags": [
+      "furling_reference"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_furling_reference/furling_denier": {
+    "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_denier.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_denier.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T17:18:26.733167+00:00",
+    "status": "pending",
+    "tags": [
+      "furling_reference"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_furling_reference/furling_hider": {
+    "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_hider.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_hider.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T17:18:09.493426+00:00",
+    "status": "pending",
+    "tags": [
+      "furling_reference"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_furling_reference/furling_persuader": {
+    "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_persuader.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_persuader.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T17:17:26.482363+00:00",
+    "status": "pending",
+    "tags": [
+      "furling_reference"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_furling_reference/furling_talos": {
+    "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_talos.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_talos.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T17:18:43.183131+00:00",
+    "status": "pending",
+    "tags": [
+      "furling_reference"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_lander/lander_furling_v1_legs": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling_v1_legs.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T03:16:44.530859+00:00",
+    "status": "pending",
+    "tags": [
+      "lander"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_nebula/bg_galaxy_nebula": {
+    "prompt_path": "tools/firefly_prompts/tier1_nebula/bg_galaxy_nebula.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_nebula/bg_galaxy_nebula.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T16:25:58.376185+00:00",
+    "status": "pending",
+    "tags": [
+      "nebula"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_arilou_sanctuary": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_arilou_sanctuary.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:19:08.506774+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_beta_corvi": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_beta_corvi.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:13:57.283203+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_drahn_v1_melnorme_misread": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_drahn_v1_melnorme_misread.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:44:22.380734+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_gorno_iii": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_gorno_iii.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_gorno_iii.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:48:29.653405+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_mh_lai": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_mh_lai.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:11:13.411753+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_procyon": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_procyon.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:13:59.417025+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_proto_urquan_moon": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_proto_urquan_moon.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_proto_urquan_moon.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:56:30.231797+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_proto_urquan_moon_v1_labeled": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_proto_urquan_moon_v1_labeled.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:53:53.959885+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_sol_iii": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_sol_iii.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:16:19.298616+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_spire": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_spire.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:16:17.559414+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_talos_system": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_talos_system.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_talos_system.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:51:10.295506+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_xylos_prime": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_xylos_prime.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_xylos_prime.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:46:01.864515+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_burvixese_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_burvixese_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_burvixese_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:19:15.519986+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_chenjesu_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_chenjesu_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_chenjesu_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:21:46.483785+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_proto_qor_ah_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_proto_qor_ah_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_proto_qor_ah_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:27:26.249487+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_proto_urquan_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_proto_urquan_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_proto_urquan_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:30:52.231576+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_taalo_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_taalo_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_taalo_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:24:55.784832+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_utwig_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_utwig_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_utwig_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:37:53.473836+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_resource_icons/icon_resource_bio": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_resource_icons/icon_resource_bio.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:27:42.266610+00:00",
+    "status": "pending",
+    "tags": [
+      "resource_icons"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_resource_icons/icon_resource_common": {
+    "prompt_path": "tools/firefly_prompts/tier1_resource_icons/icon_resource_common.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_resource_icons/icon_resource_common.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:57:13.608502+00:00",
+    "status": "pending",
+    "tags": [
+      "resource_icons"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_resource_icons/icon_resource_energy": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_resource_icons/icon_resource_energy.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:27:43.903160+00:00",
+    "status": "pending",
+    "tags": [
+      "resource_icons"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_resource_icons/icon_resource_useful": {
+    "prompt_path": "tools/firefly_prompts/tier1_resource_icons/icon_resource_useful.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_resource_icons/icon_resource_useful.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:59:31.770248+00:00",
+    "status": "pending",
+    "tags": [
+      "resource_icons"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_androsynth_cruiser": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_androsynth_cruiser.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:08:59.991805+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_melnorme_trader_v2": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_melnorme_trader_v2.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:30:09.330796+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_others_vessel": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_others_vessel.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_others_vessel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:43:26.133438+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_planar_blade": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_planar_blade.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_planar_blade.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T18:41:05.979417+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_proto_qor_ah": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_proto_qor_ah.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:11:11.815646+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_sentry_drone_47t": {
+    "prompt_path": "",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_sentry_drone_47t.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:09:01.615169+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ui/icon_module_scanner": {
+    "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_scanner.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ui/icon_module_scanner.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T05:18:22.260532+00:00",
+    "status": "pending",
+    "tags": [
+      "ui"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ui/icon_module_weapon": {
+    "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_weapon.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ui/icon_module_weapon.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T05:18:22.313872+00:00",
+    "status": "pending",
+    "tags": [
+      "ui"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
   }
 }

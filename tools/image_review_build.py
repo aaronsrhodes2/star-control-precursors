@@ -46,10 +46,70 @@ def _load_manifest() -> dict:
     return json.loads(MANIFEST.read_text(encoding="utf-8"))
 
 
+def _save_manifest(manifest: dict) -> None:
+    """Atomically write the manifest back to disk."""
+    tmp = MANIFEST.with_suffix(".json.tmp")
+    tmp.write_text(
+        json.dumps(manifest, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
+    tmp.replace(MANIFEST)
+
+
 def _list_firefly_pngs() -> list[Path]:
     if not FIREFLY_DIR.is_dir():
         return []
     return sorted(FIREFLY_DIR.rglob("*.png"))
+
+
+# Aspect ratio inferred from file dimensions, with sensible defaults per tier
+def _infer_aspect(p: Path) -> str:
+    tier = p.relative_to(FIREFLY_DIR).parts[0]
+    # Quick tier-based defaults (image dimensions match)
+    if tier == "tier1_avatars":
+        return "2:3"
+    if tier == "tier1_cutscenes":
+        return "16:9"
+    return "1:1"  # ships, portraits, planets, insignia, artifacts, etc.
+
+
+def _file_mtime_iso(p: Path) -> str:
+    """Return the file's mtime as a UTC ISO8601 string."""
+    from datetime import datetime, timezone
+    return datetime.fromtimestamp(p.stat().st_mtime, tz=timezone.utc).isoformat()
+
+
+def index_untracked(manifest: dict, pngs: list[Path]) -> int:
+    """Auto-create manifest entries for any PNG that's on disk but not yet
+    indexed. New entries default to status=pending so they show up in the
+    review queue. The prompt_path is inferred from the conventional filename
+    layout (tools/firefly_prompts/<tier>/<name>.txt) and only set if the
+    file actually exists.
+
+    Returns the number of new entries added.
+    """
+    added = 0
+    for p in pngs:
+        key = _key_from_path(p)
+        if key in manifest:
+            continue
+        tier = _tier_of_path(p)
+        name = p.stem
+        prompt_rel = f"tools/firefly_prompts/{tier}/{name}.txt"
+        prompt_exists = (ROOT / prompt_rel).exists()
+        manifest[key] = {
+            "prompt_path": prompt_rel if prompt_exists else "",
+            "image_path": p.relative_to(ROOT).as_posix(),
+            "aspect": _infer_aspect(p),
+            "generated_at": _file_mtime_iso(p),
+            "status": "pending",
+            "tags": [tier.replace("tier1_", "")],
+            "destination": None,
+            "manifest_entry_to_update": None,
+            "notes": "",
+        }
+        added += 1
+    return added
 
 
 def _load_prompt_body(prompt_path_rel: str) -> str:
@@ -123,8 +183,26 @@ def _render_image_card(p: Path, manifest_entry: dict | None) -> str:
         else:
             prompt_html = f'<div class="prompt-full prompt-single">{_esc(prompt_body)}</div>'
 
+    # Review action buttons — only render when the image is tracked
+    # in the manifest (otherwise there's no key to POST to). Untracked
+    # images need to be added to the manifest first.
+    actions_html = ""
+    if manifest_entry is not None:
+        actions_html = f"""
+        <div class="actions" data-key="{_esc(key)}">
+          <button class="action-btn approve" data-action="keep" title="Approve — wire this into the game">✓ Approve</button>
+          <button class="action-btn reroll" data-action="reroll_requested" title="Mark for re-generation with adjusted prompt">↻ Re-roll</button>
+          <button class="action-btn reject" data-action="reject" title="Reject — don't use, don't re-roll">✗ Reject</button>
+        </div>
+        <details class="notes-edit">
+          <summary>📝 Edit note</summary>
+          <textarea class="notes-input" rows="3" placeholder="what to change on the re-roll, or why rejected">{_esc(notes)}</textarea>
+          <button class="save-notes-btn">Save note</button>
+          <span class="save-feedback"></span>
+        </details>"""
+
     return f"""
-    <div class="img-card" data-name="{_esc(name)}" data-status="{_esc(status)}" data-tier="{_esc(_tier_of_path(p))}">
+    <div class="img-card" data-name="{_esc(name)}" data-status="{_esc(status)}" data-tier="{_esc(_tier_of_path(p))}" data-key="{_esc(key)}">
       <a class="thumb" href="{img_url}" target="_blank" rel="noopener">
         <img loading="lazy" src="{img_url}" alt="{_esc(name)}" />
       </a>
@@ -140,6 +218,7 @@ def _render_image_card(p: Path, manifest_entry: dict | None) -> str:
         </div>
         {dest_html}
         {notes_html}
+        {actions_html}
         {prompt_html}
       </div>
     </div>"""
@@ -227,8 +306,39 @@ HTML_HEAD = """<!doctype html>
   .chip-reject  { background: rgba(255,68,68,.12);  color: var(--danger); border: 1px solid var(--danger); }
   .chip-wired   { background: rgba(0,204,255,.12);  color: var(--info); border: 1px solid var(--info); }
   .chip-untracked { background: rgba(255,170,0,.12); color: var(--warn); border: 1px solid var(--warn); }
+  .chip-reroll_requested { background: rgba(255,170,0,.15); color: var(--warn); border: 1px solid var(--warn); }
   .notes { color: var(--warn); font-size: .8em; font-style: italic; }
   .dest { color: var(--info); font-size: .8em; font-family: monospace; }
+  .actions { display: flex; gap: .3em; margin-top: .25em; }
+  .action-btn {
+    flex: 1; background: var(--panel); color: var(--muted); border: 1px solid var(--border);
+    padding: .3em .5em; cursor: pointer; border-radius: 3px; font-family: inherit;
+    font-size: .8em; transition: background .15s, color .15s, border-color .15s;
+  }
+  .action-btn:hover { color: var(--text); background: #1c1c24; }
+  .action-btn.approve:hover { color: var(--accent); border-color: var(--accent); }
+  .action-btn.reroll:hover  { color: var(--warn);   border-color: var(--warn);   }
+  .action-btn.reject:hover  { color: var(--danger); border-color: var(--danger); }
+  .action-btn.active.approve { color: var(--accent); border-color: var(--accent); background: rgba(0,255,136,.08); }
+  .action-btn.active.reroll  { color: var(--warn);   border-color: var(--warn);   background: rgba(255,170,0,.08); }
+  .action-btn.active.reject  { color: var(--danger); border-color: var(--danger); background: rgba(255,68,68,.08); }
+  .action-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .notes-edit { margin-top: .25em; font-size: .8em; }
+  .notes-edit summary { cursor: pointer; color: var(--muted); outline: none; }
+  .notes-edit summary:hover { color: var(--text); }
+  .notes-input {
+    width: 100%; margin-top: .3em; background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 3px; padding: .3em .5em;
+    font-family: inherit; font-size: .85em; resize: vertical;
+  }
+  .save-notes-btn {
+    background: var(--panel); color: var(--muted); border: 1px solid var(--border);
+    padding: .25em .7em; margin-top: .3em; cursor: pointer; border-radius: 3px;
+    font-family: inherit; font-size: .8em;
+  }
+  .save-notes-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .save-feedback { font-size: .75em; margin-left: .6em; color: var(--accent); }
+  .save-feedback.error { color: var(--danger); }
   .prompt { margin-top: .2em; }
   .prompt summary { cursor: pointer; color: var(--muted); font-size: .8em; outline: none; }
   .prompt summary:hover { color: var(--text); }
@@ -292,6 +402,84 @@ document.addEventListener('keydown', e => {
     searchInput.blur();
   }
 });
+
+// ============================================================
+// Review action buttons — POST status updates to /api/review/<key>
+// ============================================================
+
+function updateCardChip(card, newStatus) {
+  const chip = card.querySelector('.chip');
+  if (!chip) return;
+  // Remove old chip-* class
+  chip.className = chip.className.replace(/\\bchip-\\S+/g, '').trim();
+  chip.classList.add('chip', 'chip-' + newStatus);
+  chip.textContent = newStatus;
+  card.dataset.status = newStatus;
+}
+
+function highlightActiveButton(actionsEl, status) {
+  actionsEl.querySelectorAll('.action-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.action === status);
+  });
+}
+
+async function postReview(key, payload) {
+  const r = await fetch('/api/review/' + encodeURIComponent(key), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + await r.text());
+  return await r.json();
+}
+
+// Wire up Approve/Re-roll/Reject buttons
+document.querySelectorAll('.actions').forEach(actionsEl => {
+  const key = actionsEl.dataset.key;
+  const card = actionsEl.closest('.img-card');
+  // Pre-highlight whichever status is currently set
+  highlightActiveButton(actionsEl, card.dataset.status);
+  actionsEl.querySelectorAll('.action-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const status = btn.dataset.action;
+      actionsEl.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+      try {
+        await postReview(key, { status });
+        updateCardChip(card, status);
+        highlightActiveButton(actionsEl, status);
+      } catch (e) {
+        alert('Failed to update review: ' + e.message);
+      } finally {
+        actionsEl.querySelectorAll('.action-btn').forEach(b => b.disabled = false);
+      }
+    });
+  });
+});
+
+// Wire up notes save buttons
+document.querySelectorAll('.notes-edit').forEach(editEl => {
+  const card = editEl.closest('.img-card');
+  const key = card.dataset.key;
+  const textarea = editEl.querySelector('.notes-input');
+  const saveBtn = editEl.querySelector('.save-notes-btn');
+  const feedback = editEl.querySelector('.save-feedback');
+  if (!saveBtn) return;
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true;
+    feedback.classList.remove('error');
+    feedback.textContent = 'saving...';
+    try {
+      await postReview(key, { notes: textarea.value });
+      feedback.textContent = '✓ saved';
+      setTimeout(() => { feedback.textContent = ''; }, 2000);
+    } catch (e) {
+      feedback.classList.add('error');
+      feedback.textContent = '✗ ' + e.message;
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+});
 </script>
 </body>
 </html>
@@ -301,6 +489,13 @@ document.addEventListener('keydown', e => {
 def build() -> Path:
     manifest = _load_manifest()
     pngs = _list_firefly_pngs()
+
+    # Auto-index any PNGs that aren't in the manifest yet so they show up
+    # in the review UI with action buttons. New entries default to pending.
+    added = index_untracked(manifest, pngs)
+    if added > 0:
+        _save_manifest(manifest)
+        print(f"indexed {added} new images into the manifest")
 
     # Build (tier -> [(path, manifest_entry_or_None)])
     by_tier: dict[str, list[tuple[Path, dict | None]]] = defaultdict(list)
@@ -385,7 +580,12 @@ if __name__ == "__main__":
     n_imgs = len(_list_firefly_pngs())
     print(f"wrote {p} ({n_imgs} images indexed)")
     print()
-    print("Serve from the project root (same server the audio player uses):")
+    print("Start the review server (replaces python -m http.server):")
     print(f"  cd {ROOT}")
-    print("  python -m http.server 8770")
+    print("  .venv/Scripts/python.exe tools/image_review_server.py")
     print("Then open: http://localhost:8770/tools/image_review.html")
+    print()
+    print("Approve/Re-roll/Reject buttons POST back to the manifest at")
+    print("  assets/generated_drafts/firefly/_manifest.json")
+    print("Claude reads this manifest in future sessions to know which")
+    print("images to wire in, which to re-generate, and which to drop.")
