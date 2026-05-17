@@ -273,6 +273,7 @@ class StationScene(StubScene):
     TITLE = "Station / Home Port"
     SUBTITLE = "Furling waystation — commander, trade, upgrade"
     ACCENT = (180, 220, 240)
+    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cloak_install.png"
     DETAILS = [
         "The Furling equivalent of SC2's Earth Starbase. Three sub-modes:",
         "",
