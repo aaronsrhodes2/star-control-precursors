@@ -29,25 +29,15 @@
     "notes": "",
     "reviewed_at": "2026-05-17T21:17:35.787300+00:00"
   },
-  "sfx/lander/lander_touchdown": {
-    "status": "reroll_requested",
-    "notes": "Lander doesn't touch down, it's a hovering drone, it needs to swoosh into hovering position",
-    "reviewed_at": "2026-05-17T21:18:08.808875+00:00"
-  },
-  "sfx/lander/pickup_clink": {
-    "status": "reject",
-    "notes": "Split the sound into three sounds for animal vegetable, mineral",
-    "reviewed_at": "2026-05-17T21:18:52.572213+00:00"
-  },
   "sfx/scan/scan_sweep": {
     "status": "keep",
     "notes": "",
     "reviewed_at": "2026-05-17T20:45:34.593643+00:00"
   },
   "sfx/scan/scan_begin": {
-    "status": "pending",
+    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
+    "reviewed_at": "2026-05-17T21:54:00.116162+00:00"
   },
   "sfx/scan/scan_complete": {
     "status": "keep",
@@ -77,22 +67,22 @@
   "sfx/ships/furling_scout/primary_impact": {
     "status": "pending",
     "notes": "it needs to be less abrupt on the tail end\n",
-    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
+    "reviewed_at": "2026-05-17T21:57:42.083960+00:00"
   },
   "sfx/ships/furling_scout/special_fire": {
-    "status": "pending",
+    "status": "keep",
     "notes": "ehe special ability is it immediately stops us where we are and when we let go, we resume our previous direction and momentum",
-    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
+    "reviewed_at": "2026-05-17T21:54:18.263414+00:00"
   },
   "sfx/ships/furling_scout/special_impact": {
-    "status": "pending",
+    "status": "keep",
     "notes": "No special impact, but it should just be the reverse of the special weapon fire sound in this case.",
-    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
+    "reviewed_at": "2026-05-17T21:54:21.432357+00:00"
   },
   "sfx/ui/alert_danger": {
     "status": "pending",
-    "notes": "more like a 80s red alert",
-    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
+    "notes": "make it three short burps\n",
+    "reviewed_at": "2026-05-17T21:57:42.083960+00:00"
   },
   "sfx/ui/menu_cancel": {
     "status": "keep",
@@ -120,8 +110,28 @@
     "reviewed_at": "2026-05-17T20:53:14.451604+00:00"
   },
   "sfx/ships/mmrnmhrm_sentinel/primary_fire": {
-    "status": "pending",
+    "status": "keep",
     "notes": "more like machine gun fire\n",
-    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
+    "reviewed_at": "2026-05-17T21:54:27.975564+00:00"
+  },
+  "sfx/lander/lander_arrive": {
+    "status": "keep",
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:53:40.517993+00:00"
+  },
+  "sfx/lander/pickup_animal": {
+    "status": "keep",
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:53:44.125273+00:00"
+  },
+  "sfx/lander/pickup_mineral": {
+    "status": "keep",
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:53:46.657608+00:00"
+  },
+  "sfx/lander/pickup_vegetable": {
+    "status": "keep",
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:53:48.591985+00:00"
   }
 }

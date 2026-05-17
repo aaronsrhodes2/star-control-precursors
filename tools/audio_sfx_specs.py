@@ -41,10 +41,11 @@ class SfxSpec:
     # 1 = Round-1 sample; 2 = Round-2 expanded sample (targeted, ~20 sounds);
     # 3 = Round-3 re-rolls from listen-pass-2 feedback;
     # 4 = Round-4 re-rolls from listen-pass-3 feedback;
-    # 5+ = remaining inventory queued for future rounds. Default round
+    # 5 = Round-5 re-rolls from listen-pass-4 feedback;
+    # 6+ = remaining inventory queued for future rounds. Default round
     # is always set one ABOVE the highest current round so newly-added
     # specs don't accidentally fire on the next --round N run.
-    round: int = 5
+    round: int = 6
     notes: str = ""
     # If set ("out_subdir/name"), the generator skips ElevenLabs and
     # produces this SFX by sample-reversing the named source SFX.
@@ -130,16 +131,15 @@ UI_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="alert_danger", category="ui", out_subdir="ui",
-        # Round 4: Aaron — "more like a 80s red alert"
-        # The Round-3 fuzzy take was the wrong direction; he wants the iconic
-        # Star-Trek-TNG-era red alert klaxon: brassy synth horn, repeating
-        # two-note alternation, urgent but musical.
-        prompt="classic 1980s sci-fi bridge red-alert klaxon: brassy synth-horn "
-               "two-note alternating siren pattern repeating twice, urgent "
-               "warning tone with musical pitch interval, iconic starship-bridge "
-               "emergency feel, mid-bright not piercing",
-        duration_s=1.6, prompt_influence=0.9, round=4,
-        notes="Round-4 re-roll: 80s Star-Trek-style klaxon (brassy two-note).",
+        # Round 5: Aaron — "make it three short burps" (new direction;
+        # previous klaxon/fuzzy directions both wrong). Compact 3-beep
+        # warning, not a sustained klaxon.
+        prompt="three short urgent warning burps, evenly spaced staccato beeps "
+               "in mid-bright frequency, each beep about 150ms with small gap "
+               "between, sci-fi HUD danger-detected pattern, audible and "
+               "attention-grabbing but compact, no sustained tones",
+        duration_s=1.2, prompt_influence=0.9, round=5,
+        notes="Round-5 re-roll: three short burps (replacing klaxon direction).",
     ),
     SfxSpec(
         name="hud_acknowledge", category="ui", out_subdir="ui",
@@ -168,7 +168,7 @@ UI_SFX: list[SfxSpec] = [
 # ---------------------------------------------------------------------------
 
 def _ship(species_id: str, ship_id: str, primary_fire: str, primary_impact: str,
-          special_fire: str, special_impact: str, *, round_no: int = 5) -> list[SfxSpec]:
+          special_fire: str, special_impact: str, *, round_no: int = 6) -> list[SfxSpec]:
     """Emit the 4-SFX bundle for one ship."""
     sub = f"ships/{ship_id}"
     return [
@@ -205,15 +205,19 @@ SHIP_SFX.extend([
             prompt_influence=0.9,
             notes="Round-3 re-roll: warp-fabric + snap-back tail."),
     SfxSpec(name="primary_impact", category="weapon", out_subdir="ships/furling_scout",
-            # Round 4: Aaron — "it needs to be less abrupt on the tail end"
-            # The metal-tearing direction was right; only the cutoff was harsh.
-            prompt="violent metallic tear with a slow decay: sharp ripping shriek of "
-                   "steel being torn open, scrape-and-shred contact, then a long "
-                   "fading metallic ring-out tail that decays gently over the back "
-                   "half of the clip — no abrupt cutoff, weighty but graceful release",
-            duration_s=1.2, species_id="FURLING_SCOUT", round=4,
+            # Round 5: Aaron — STILL "less abrupt on the tail end" (3rd flag).
+            # R4 had 1.2s with gentle decay language but still felt cut off.
+            # Extending duration to 2.0s and re-engineering the prompt to
+            # describe a SHORT transient + LONG smooth fade explicitly as
+            # the structural shape.
+            prompt="metal-tearing impact with very long slow fade: brief sharp "
+                   "metallic ripping attack in the first 0.3 seconds, immediately "
+                   "transitioning into 1.7 seconds of softly decaying metallic "
+                   "ring-out that gradually fades to complete silence at the end, "
+                   "no abrupt edge anywhere, smooth dying resonance",
+            duration_s=2.0, species_id="FURLING_SCOUT", round=5,
             prompt_influence=0.9,
-            notes="Round-4 re-roll: same metal-tear shape, longer gentler decay tail."),
+            notes="Round-5 re-roll: extended to 2s, explicit short-attack/long-fade structure."),
     SfxSpec(name="special_fire", category="weapon", out_subdir="ships/furling_scout",
             # Round 4: Aaron flagged this for re-roll again with the same note as
             # Round 3 (the Time Drive freeze mechanic). The Round-3 take read as
