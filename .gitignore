@@ -45,3 +45,4 @@ references/*.tgz
 .env.local
 *.local.json
 tools/audio_player.html
+tools/image_review.html
