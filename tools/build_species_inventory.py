@@ -34,6 +34,15 @@ COLUMNS = [
     "articulation_rig",
     "background_specs",       # comma-joined BackgroundSpec.name list
     "voice_profile_doc",      # path to references/lore/voice_profiles/*.md
+    # --- Audio fields (added 2026-05-17 by audio chat) ---
+    # `sonic_signature` is the prose anchor that drives BOTH music
+    # generation prompts and per-ship SFX prompts. Keep it specific
+    # and DISTINCT across species (Rule 5).
+    "sonic_signature",
+    "music_context",          # assets/music/<this>/  (dir name; may be future)
+    "music_status",            # placeholder | queued | round1..N | final
+    "weapon_sfx_dir",          # assets/sfx/ships/<ship_id>/  (or empty if no ship)
+    "weapon_sfx_status",       # placeholder | queued | generated | wired
 ]
 
 
@@ -138,6 +147,181 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "bipedal_humanoid",
         "planet_surface",
         "",
+    ),
+}
+
+
+# ---------------------------------------------------------------------------
+# Audio info keyed by species_id, added 2026-05-17 by the audio chat.
+# Tuple shape: (sonic_signature, music_context, music_status,
+#               weapon_sfx_dir, weapon_sfx_status)
+#
+# The sonic_signature is the prose anchor for BOTH music generation
+# prompts AND per-ship weapon SFX prompts. Keep it specific and
+# distinct across species. When in doubt, the lore docs win; when the
+# lore is silent, fill in something creative + distinct.
+#
+# music_status values:
+#   placeholder  -- nothing generated; no music_context dir exists yet
+#   queued       -- prompt drafted in audio_context_specs.py but not generated
+#   round1..N    -- generated and committed in that round
+#   final        -- locked, will not be regenerated
+# weapon_sfx_status: placeholder | queued | generated | wired
+# ---------------------------------------------------------------------------
+AUDIO_INFO: dict[str, tuple[str, str, str, str, str]] = {
+    "FURLING_SCOUT": (
+        "Warm-organic-tech. Wood and resin, copper bells, plucked sinew strings, deep bass purr from a civilization that hears the world through its own fur. Weapons sound like a deep gong wrapped in fur — cushioned, sustained, layered overtones.",
+        "furling_home",
+        "queued",
+        "assets/sfx/ships/furling_scout/",
+        "queued",
+    ),
+    "PERSUADER_FACTION": (
+        "Diplomatic-reluctant Furling. Soft strings, warm winds, almost-apologetic. Weapons are non-lethal warning shots — gentle siren wind-up + soft electrostatic disorient.",
+        "council_persuader",
+        "queued",
+        "assets/sfx/ships/persuader_vessel/",
+        "queued",
+    ),
+    "CLEANSER_FACTION": (
+        "Monolithic religious dread. Pipe organs, taiko thumps, Furling chant fragments at the edge of intelligibility. Weapons are CEREMONIAL — slow ratchet windup + finishing-blow toll like a hangman's bell.",
+        "cleanser_council",
+        "round1",
+        "assets/sfx/ships/cleanser_cruiser/",
+        "queued",
+    ),
+    "DEFENDER_FACTION": (
+        "Stalwart-honest Furling. Clean military reliability, bright brass-and-steel, no embellishment. Weapons are HONEST — solid mechanical chunk + clean impact, no theatrics.",
+        "council_defender",
+        "queued",
+        "assets/sfx/ships/defender_vessel/",
+        "queued",
+    ),
+    "COMPELLER_FACTION": (
+        "Coercive Furling. Hard mechanical clicks, tightened cables, restrained menace under apparent calm. Weapons are RESTRAINTS — magnetic lock-on tone + grappling-claw thud.",
+        "council_compeller",
+        "queued",
+        "assets/sfx/ships/compeller_vessel/",
+        "placeholder",
+    ),
+    "HIDER_FACTION": (
+        "Veiled Furling. Hush, fabric-rustle, dampened resonance, almost-silent. Weapons are SUPPRESSED — muffled discharge + soft absorption thump.",
+        "council_hider",
+        "queued",
+        "assets/sfx/ships/hider_vessel/",
+        "placeholder",
+    ),
+    "DENIER_FACTION": (
+        "In-denial Furling. Brittle major-key cheer, slightly-off pitched bells, forced calm. Weapons are SHOULDN'T-BE-WORKING — fizzy mis-aligned crackle + apologetic small impact.",
+        "council_denier",
+        "queued",
+        "assets/sfx/ships/denier_vessel/",
+        "placeholder",
+    ),
+    "ARILOU": (
+        "Quietly weird, quasi-space displaced. Gentle phase-shifting, time-stretched chimes, dimensional whisper. Weapons phase in and out — soft warble + delayed dimensional reverb impact. State stem: 'patience' (fades as the Sage gives up on you).",
+        "arilou",
+        "queued",
+        "assets/sfx/ships/arilou_skiff/",
+        "queued",
+    ),
+    "ANDROSYNTH": (
+        "Human-improvised, retro-Atari-on-warm-analog. Refugees making do with what they have. Weapons are jury-rigged charged-particle bursts — sharp tinny zap + crunchy improvised impact.",
+        "androsynth",
+        "queued",
+        "assets/sfx/ships/androsynth_cruiser/",
+        "queued",
+    ),
+    "MELNORME": (
+        "Bio-cargo trader. Resonant gold/silver chimes, low gravelly cargo-hold bass, enigmatic. Weapons are RESONANT TRADE-NETWORK BURSTS — long bell tone wind-up + soft dispersal (they prefer not to harm; cargo damage costs them).",
+        "melnorme",
+        "queued",
+        "assets/sfx/ships/melnorme_trader/",
+        "queued",
+    ),
+    "MMRNMHRM": (
+        "Cold-precise robot. Synthetic hum, no warmth, perfect frequencies, microsecond timing. Weapons are tight directed beams — silent click + crisp surgical hit.",
+        "mmrnmhrm",
+        "queued",
+        "assets/sfx/ships/mmrnmhrm_sentinel/",
+        "queued",
+    ),
+    "MYCON_BIOT": (
+        "Organic-fungal-ritual. Chanting, wet thrumming, deep bio-mechanical pulses, distorted alien voices murmuring. Weapons are biological projectiles — wet thwip + ripping organic impact. State stems: 'obedience' + 'heresy' (Deep Child awakening).",
+        "mycon",
+        "queued",
+        "assets/sfx/ships/mycon_biot/",
+        "placeholder",
+    ),
+    "SLYLANDRO": (
+        "Airy, vast, gas-giant scale. Wind through pressure shells, deep slow-modulated bass, distant tonal hums. Weapons (rare): electrostatic discharges between cloud bodies — soft thunder. State stems: 'awe' + 'worry'.",
+        "slylandro",
+        "round1",
+        "assets/sfx/ships/slylandro_envoy/",
+        "placeholder",
+    ),
+    "PROTO_URQUAN_LIMPETS": (
+        "Primordial-raw. Guttural calls, struck stone, animal-hide drums, bone whistles. Weapons are organic kinetics (claws, slings, bio-acid) — animal roar of release + wet impact.",
+        "proto_species_wonder",
+        "queued",
+        "assets/sfx/ships/proto_ur_quan/",
+        "queued",
+    ),
+    "PROTO_QOR_AH": (
+        "Primordial-aggressive divergence. Sharper strikes, harder dissonance than its sibling Ur-Quan line. Wood splinters under chitin, more guttural calls.",
+        "proto_species_wonder",
+        "queued",
+        "assets/sfx/ships/proto_qor_ah/",
+        "queued",
+    ),
+    "CHENJESU": (
+        "Crystalline-resonant. Struck quartz, sympathetic harmonic overtones, ancient stillness. Weapons: focused-resonance lance — building harmonic tone + glassy shatter on impact. (Below the Others' threshold because they don't broadcast.)",
+        "chenjesu",
+        "queued",
+        "",  # no ship yet — Chenjesu are rooted in slice era
+        "placeholder",
+    ),
+    "UTWIG": (
+        "Mournful-shame-cloaked. Veiled drums, distant mournful horns, ceremonial bells under fabric. Weapons (when forced): repentant single-shot — drum-roll wind-up + heavy stone impact. The long shame is their cognitive cloak.",
+        "utwig",
+        "queued",
+        "assets/sfx/ships/utwig_vessel/",
+        "placeholder",
+    ),
+    "TAALO": (
+        "Silicon-meditative. Stone-on-stone, slow geological harmonics, multi-millennial patience. Weapons (rare): mineral fracture — long sub-bass crack + scattering pebble shower.",
+        "taalo",
+        "queued",
+        "assets/sfx/ships/taalo_vessel/",
+        "placeholder",
+    ),
+    "BURVIXESE": (
+        "Be-Loud-doctrine. Bright brass fanfares, four-handed metal percussion, fearless announcement. Weapons: declarative cannon — herald-trumpet windup + bright satisfying boom. (Most die during slice — survivors migrate.)",
+        "burvixese",
+        "queued",
+        "assets/sfx/ships/burvixese_vessel/",
+        "placeholder",
+    ),
+    "PLANAR": (
+        "Edge-on-quiet. Slicing whistle on the plane, silence off-plane, deliberate stereo flatness. Weapons: planar-arc shotgun — paper-flat whoosh + dimensional cut impact.",
+        "planar",
+        "queued",
+        "assets/sfx/ships/planar_vessel/",
+        "placeholder",
+    ),
+    "OTHERS": (
+        "Never-funny. Subharmonic hum below hearing, broken radio of voices speaking in reverse, the SOUND OF BEING SEEN. Weapons: decursion — silent reality-tear + reality-stitching-back-wrongly. Treated as cinematic stinger SFX, not combat SFX (Others are not in super-melee).",
+        "others_reveal",
+        "queued",
+        "",  # no super-melee ship
+        "placeholder",
+    ),
+    "SENTRY_DRONE_47T": (
+        "Industrial-robotic. Furling-built sentry; mechanical clicks, servo whines, no warmth. Weapons are basic stun/disable — buzzing electrical zap + clinical disable impact. The 'unionized' variant has the same sound; the politics is in dialog, not in tone.",
+        "",  # no per-species music; uses combat music
+        "queued",
+        "assets/sfx/ships/sentry_drone_47t/",
+        "queued",
     ),
 }
 
@@ -923,7 +1107,8 @@ def main() -> int:
             continue
         species_id = row[0]
         layered = LAYERED_INFO.get(species_id, ("", "", "", ""))
-        writer.writerow(tuple(row) + layered)
+        audio = AUDIO_INFO.get(species_id, ("", "", "", "", ""))
+        writer.writerow(tuple(row) + layered + audio)
     if close_after:
         out.close()
         print(f"wrote {args.output}", file=sys.stderr)

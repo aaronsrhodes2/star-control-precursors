@@ -38,6 +38,13 @@ class ContextSpec:
     duration_s: int                    # 90 for loops, 30-45 for stingers
     description: str                   # one-line summary for humans
     stems: dict[str, str]              # stem_name -> prompt body
+    # SC2 source track this context echoes -- a tracker .mod or 3DO .ogg
+    # under references/uqm-source/sc2/content/. Used to seed the prompt
+    # with an "in the spirit of <described idiom>" line so our generated
+    # music inherits the family resemblance Aaron asked for. Empty when
+    # the context is SCZ-original (no SC2 equivalent).
+    sc2_inspiration: str = ""
+    sc2_idiom: str = ""                # 1-2 sentence prompt-ready description of the SC2 source
     # Round identifier for staged execution (1 = first batch sample).
     round: int = 1
     notes: str = ""
@@ -47,15 +54,21 @@ class ContextSpec:
 # Prompt template helpers
 # ---------------------------------------------------------------------------
 
-def _stem_prompt(role_caps: str, body: str, key: str, bpm: int, mood: str) -> str:
+def _stem_prompt(role_caps: str, body: str, key: str, bpm: int, mood: str,
+                 sc2_idiom: str = "") -> str:
     """Standardize the per-stem prompt template.
 
     Front-load "Isolated <ROLE> STEM" because ElevenLabs Music is more
     responsive to high-level musical framing than to negation. Tail
-    clause "stems-only mix" reinforces the isolation goal."""
+    clause "stems-only mix" reinforces the isolation goal.
+
+    If `sc2_idiom` is provided, it's spliced in as a "in the spirit of"
+    line -- this is how Aaron's "use the SC2 90s tracks as basis" rule
+    is plumbed through to every stem prompt."""
+    spirit = f", in the spirit of {sc2_idiom}" if sc2_idiom else ""
     return (
         f"Isolated {role_caps} STEM for layered production: {body}, "
-        f"in {key} at {bpm} bpm, {mood}, stems-only mix"
+        f"in {key} at {bpm} bpm, {mood}{spirit}, stems-only mix"
     )
 
 
@@ -69,14 +82,16 @@ def _standard_5stem(
     pad_body: str,
     lead_body: str,
     amb_body: str,
+    sc2_idiom: str = "",
 ) -> dict[str, str]:
     """Standard 5-stem set (bass / percussion / pad / lead / ambient)."""
+    sf = sc2_idiom
     return {
-        "bass": _stem_prompt("BASS", bass_body, key, bpm, mood),
-        "percussion": _stem_prompt("DRUMS", perc_body, key, bpm, mood),
-        "pad": _stem_prompt("PAD", pad_body, key, bpm, mood),
-        "lead": _stem_prompt("LEAD MELODY", lead_body, key, bpm, mood),
-        "ambient": _stem_prompt("AMBIENT TEXTURE", amb_body, key, bpm, mood),
+        "bass": _stem_prompt("BASS", bass_body, key, bpm, mood, sf),
+        "percussion": _stem_prompt("DRUMS", perc_body, key, bpm, mood, sf),
+        "pad": _stem_prompt("PAD", pad_body, key, bpm, mood, sf),
+        "lead": _stem_prompt("LEAD MELODY", lead_body, key, bpm, mood, sf),
+        "ambient": _stem_prompt("AMBIENT TEXTURE", amb_body, key, bpm, mood, sf),
     }
 
 
@@ -88,12 +103,14 @@ def _stinger_3stem(
     drone_body: str,
     pulse_body: str,
     texture_body: str,
+    sc2_idiom: str = "",
 ) -> dict[str, str]:
     """3-stem set for cinematic stingers (drone / pulse / texture)."""
+    sf = sc2_idiom
     return {
-        "drone": _stem_prompt("DRONE BASS", drone_body, key, bpm, mood),
-        "pulse": _stem_prompt("RHYTHMIC PULSE", pulse_body, key, bpm, mood),
-        "texture": _stem_prompt("AMBIENT TEXTURE", texture_body, key, bpm, mood),
+        "drone": _stem_prompt("DRONE BASS", drone_body, key, bpm, mood, sf),
+        "pulse": _stem_prompt("RHYTHMIC PULSE", pulse_body, key, bpm, mood, sf),
+        "texture": _stem_prompt("AMBIENT TEXTURE", texture_body, key, bpm, mood, sf),
     }
 
 
@@ -108,6 +125,8 @@ HYPERSPACE_PEACE = ContextSpec(
     bpm=108,
     duration_s=90,
     description="Hyperspace travel — peaceful; the player's 'ship at speed' theme",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/hyper.ogg",
+    sc2_idiom="the classic SC2 hyperspace travel theme — flowing minor-key chord progressions on analog synth pads, mid-tempo propulsive bass, ProTracker-derived 3DO arrangement, restless forward momentum",
     round=1,
     stems=_standard_5stem(
         "C minor", 108, "sci-fi space-flight, mid-tempo propulsive, hopeful but vast",
@@ -116,6 +135,7 @@ HYPERSPACE_PEACE = ContextSpec(
         pad_body="warm analog synth pad, long sustained chords, atmospheric and propulsive, no melody no drums no bass",
         lead_body="mid-tempo synth arpeggio, hopeful melodic phrase, no drums no bass no pads",
         amb_body="subtle space drone wash, distant cosmic wind, sparkles, no melody no drums no bass",
+        sc2_idiom="the classic SC2 hyperspace travel theme — flowing minor-key synth progressions, ProTracker-derived 3DO arrangement",
     ),
 )
 
@@ -131,6 +151,8 @@ COMBAT_LOW = ContextSpec(
     bpm=132,
     duration_s=90,
     description="Low-risk skirmish — engaged but not in real danger",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/battle.ogg",
+    sc2_idiom="the SC2 supermelee battle theme — driving distorted bass, aggressive percussion, urgent action-game tempo, 3DO orchestrated synth",
     round=1,
     stems=_standard_5stem(
         "D minor", 132, "tense action, driving propulsion, controlled risk",
@@ -139,6 +161,7 @@ COMBAT_LOW = ContextSpec(
         pad_body="aggressive minor-key brass-pad stabs on the downbeat, no melody no drums no bass",
         lead_body="staccato synth riff, defiant melodic figure with tense intervals, no drums no bass no pads",
         amb_body="filtered sirens and radio chatter texture, no melody no drums no bass",
+        sc2_idiom="the SC2 supermelee battle theme — driving distorted bass, aggressive percussion, 3DO synth",
     ),
 )
 
@@ -157,6 +180,8 @@ SLYLANDRO_PEACE = ContextSpec(
     bpm=78,
     duration_s=90,
     description="Slylandro friendly — awed gas-bag aliens; state stems = awe + worry",
+    sc2_inspiration="references/uqm-source/sc2/content/base/comm/slylandro/slylandro.mod",
+    sc2_idiom="the SC2 Slylandro comm theme — eerie slow chord beds, distant gas-giant winds, multitracker chiptune idiom, wonder edging into unease",
     round=1,
     stems={
         **_standard_5stem(
@@ -166,6 +191,7 @@ SLYLANDRO_PEACE = ContextSpec(
             pad_body="airy choral synth pad in major-key suspensions, very wide stereo, no melody no drums no bass",
             lead_body="slow flute-like solo, curious upward phrases, no drums no bass no pads",
             amb_body="gas-giant wind, distant chimes, gentle vinyl crackle, no melody no drums no bass",
+            sc2_idiom="the SC2 Slylandro comm theme — eerie chord beds, gas-giant winds, multitracker chiptune",
         ),
         # State-driven layer: AWE — rises as the player builds rapport
         "awe": _stem_prompt(
@@ -202,6 +228,8 @@ CLEANSER_COUNCIL = ContextSpec(
     bpm=72,
     duration_s=90,
     description="Cleanser-Council theme — dread, conviction, monolithic resolve",
+    sc2_inspiration="",  # SCZ-original (Cleanser is a Furling faction; no SC2 antecedent)
+    sc2_idiom="",
     round=1,
     stems=_standard_5stem(
         "E flat minor", 72,
@@ -233,6 +261,8 @@ TITLE_MENU = ContextSpec(
     bpm=66,
     duration_s=90,
     description="Title screen — mystery, scale, the Furred Ones gazing at the stars",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/credits.ogg",
+    sc2_idiom="the SC2 credits theme — mythic, vast, ancient civilization at scale, 3DO orchestrated, slow majestic chord progression",
     round=1,
     stems=_stinger_3stem(
         "F minor", 66,
@@ -240,6 +270,7 @@ TITLE_MENU = ContextSpec(
         drone_body="deep slow-evolving synth drone, swells of low harmonic content",
         pulse_body="slow heartbeat-like sub-pulse, occasional resonant metallic tap",
         texture_body="distant alien choral pads, soft solar wind, slow shimmer",
+        sc2_idiom="the SC2 credits theme — mythic ancient scale, 3DO orchestrated synth",
     ),
 )
 
