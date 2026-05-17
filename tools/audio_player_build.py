@@ -92,13 +92,39 @@ def _esc(s: str) -> str:
             .replace('"', "&quot;").replace("'", "&#39;"))
 
 
-def _render_music_section(ctx_dir: Path, manifest: dict) -> str:
+def _review_actions_html(review_key: str, review_status: str, review_notes: str) -> str:
+    """Approve / Re-roll / Reject buttons + notes editor.
+
+    Mirror of the image-reviewer pattern. POSTs to /api/audio-review/<key>
+    on click; the audio_review_server.py (which is the image_review_server
+    extended on 2026-05-17) persists to assets/_audio_review.json.
+    """
+    return f"""
+        <div class="review-actions" data-review-key="{_esc(review_key)}" data-review-status="{_esc(review_status)}">
+          <button class="action-btn approve" data-action="keep" title="Approve — lock this take">✓ Approve</button>
+          <button class="action-btn reroll" data-action="reroll_requested" title="Mark for re-generation with adjusted prompt">↻ Re-roll</button>
+          <button class="action-btn reject" data-action="reject" title="Reject — don't use">✗ Reject</button>
+          <span class="chip chip-{_esc(review_status)} review-chip">{_esc(review_status)}</span>
+        </div>
+        <details class="notes-edit">
+          <summary>📝 Note</summary>
+          <textarea class="notes-input" rows="2" placeholder="what to change on re-roll, why rejected, mix preferences, etc.">{_esc(review_notes)}</textarea>
+          <button class="save-notes-btn">Save note</button>
+          <span class="save-feedback"></span>
+        </details>"""
+
+
+def _render_music_section(ctx_dir: Path, manifest: dict, review_state: dict) -> str:
     name = ctx_dir.name
     key = manifest.get("key", "?")
     bpm = manifest.get("bpm", "?")
     desc = manifest.get("description", "")
     category = manifest.get("category", "")
     dur = manifest.get("duration_s", "?")
+    review_key = f"music/{name}"
+    review_entry = review_state.get(review_key, {}) or {}
+    review_status = review_entry.get("status") or "pending"
+    review_notes = review_entry.get("notes") or ""
 
     audio_files = (
         sorted(ctx_dir.glob("*.mp3"))
@@ -138,7 +164,7 @@ def _render_music_section(ctx_dir: Path, manifest: dict) -> str:
         </div>""")
 
     return f"""
-    <section class="music-ctx" data-ctx="{_esc(name)}">
+    <section class="music-ctx" data-ctx="{_esc(name)}" data-review-status="{_esc(review_status)}">
       <h3>{_esc(name)} <span class="meta">— {_esc(str(key))} / {_esc(str(bpm))} bpm / {_esc(str(dur))}s loop</span></h3>
       <p class="desc">{_esc(desc)}</p>
       <p class="category">[{_esc(category)}]</p>
@@ -147,12 +173,13 @@ def _render_music_section(ctx_dir: Path, manifest: dict) -> str:
         <button class="stop-btn" onclick="stopAllStems('{_esc(name)}')">⏹ Stop</button>
         <button class="reset-btn" onclick="resetStems('{_esc(name)}')">reset volumes</button>
       </div>
+      {_review_actions_html(review_key, review_status, review_notes)}
       <div class="stems">{''.join(stems_html)}
       </div>
     </section>"""
 
 
-def _render_sfx_group(group_label: str, paths: list[Path]) -> str:
+def _render_sfx_group(group_label: str, paths: list[Path], review_state: dict) -> str:
     items_html = []
     for p in paths:
         spec = _try_lookup_sfx_spec(p.stem, group_label) or {}
@@ -160,13 +187,19 @@ def _render_sfx_group(group_label: str, paths: list[Path]) -> str:
         dur = spec.get("duration_s", "")
         loop_flag = spec.get("loop", False)
         cat = spec.get("category", "")
+        # Per-SFX review state. Key is the audio-review key: sfx/<subdir>/<name>
+        sfx_key = f"sfx/{group_label}/{p.stem}"
+        review_entry = review_state.get(sfx_key, {}) or {}
+        review_status = review_entry.get("status") or "pending"
+        review_notes = review_entry.get("notes") or ""
         items_html.append(f"""
-        <div class="sfx-item{' loopable' if loop_flag else ''}">
+        <div class="sfx-item{' loopable' if loop_flag else ''}" data-review-status="{_esc(review_status)}">
           <button class="play-sfx" onclick="playSfx(this)">▶</button>
           <span class="sfx-name">{_esc(p.stem)}</span>
           <span class="sfx-meta">{_esc(str(dur))}s{' · LOOP' if loop_flag else ''}{(' · ' + _esc(cat)) if cat else ''}</span>
           <span class="sfx-prompt">{_esc(prompt)}</span>
           <audio src="{_audio_url(p)}" preload="metadata" {'loop' if loop_flag else ''}></audio>
+          {_review_actions_html(sfx_key, review_status, review_notes)}
         </div>""")
     return f"""
     <section class="sfx-group">
@@ -250,6 +283,54 @@ HTML_HEAD = """<!doctype html>
   .summary { color: var(--muted); margin-bottom: 1em; }
   details { margin-top: .5em; }
   details summary { cursor: pointer; color: var(--accent); font-size: .85em; }
+
+  /* Status-chip palette (mirrors image_review.html) */
+  .chip {
+    padding: .15em .55em; border-radius: 3px; font-size: .75em; font-weight: bold;
+    text-transform: uppercase; letter-spacing: .05em;
+  }
+  .chip-pending           { background: rgba(136,136,160,.15); color: var(--muted); border: 1px solid var(--muted); }
+  .chip-keep              { background: rgba(0,255,136,.12);   color: var(--accent); border: 1px solid var(--accent); }
+  .chip-reject            { background: rgba(255,68,68,.12);   color: #ff4444;       border: 1px solid #ff4444; }
+  .chip-reroll_requested  { background: rgba(255,170,0,.15);   color: var(--warn);   border: 1px solid var(--warn); }
+  .chip-wired             { background: rgba(0,204,255,.12);   color: #00ccff;       border: 1px solid #00ccff; }
+
+  /* Approve / Re-roll / Reject buttons + notes editor */
+  .review-actions { display: flex; gap: .3em; margin-top: .4em; align-items: center; }
+  .action-btn {
+    background: var(--panel); color: var(--muted); border: 1px solid var(--border);
+    padding: .3em .55em; cursor: pointer; border-radius: 3px; font-family: inherit;
+    font-size: .8em; transition: background .15s, color .15s, border-color .15s;
+  }
+  .action-btn:hover { color: var(--text); background: #1c1c24; }
+  .action-btn.approve:hover { color: var(--accent); border-color: var(--accent); }
+  .action-btn.reroll:hover  { color: var(--warn);   border-color: var(--warn);   }
+  .action-btn.reject:hover  { color: #ff4444;       border-color: #ff4444; }
+  .action-btn.active.approve { color: var(--accent); border-color: var(--accent); background: rgba(0,255,136,.08); }
+  .action-btn.active.reroll  { color: var(--warn);   border-color: var(--warn);   background: rgba(255,170,0,.08); }
+  .action-btn.active.reject  { color: #ff4444;       border-color: #ff4444;       background: rgba(255,68,68,.08); }
+  .action-btn:disabled { opacity: .5; cursor: not-allowed; }
+  .review-chip { margin-left: .4em; }
+  .notes-edit { margin-top: .25em; font-size: .8em; }
+  .notes-edit summary { color: var(--muted); }
+  .notes-edit summary:hover { color: var(--text); }
+  .notes-input {
+    width: 100%; max-width: 480px; margin-top: .3em; background: var(--bg); color: var(--text);
+    border: 1px solid var(--border); border-radius: 3px; padding: .3em .5em;
+    font-family: inherit; font-size: .85em; resize: vertical;
+  }
+  .save-notes-btn {
+    background: var(--panel); color: var(--muted); border: 1px solid var(--border);
+    padding: .25em .7em; margin-top: .3em; cursor: pointer; border-radius: 3px;
+    font-family: inherit; font-size: .8em;
+  }
+  .save-notes-btn:hover { color: var(--accent); border-color: var(--accent); }
+  .save-feedback { font-size: .75em; margin-left: .6em; color: var(--accent); }
+  .save-feedback.error { color: #ff4444; }
+
+  /* For SFX items the action row sits underneath the grid */
+  .sfx-item .review-actions { grid-column: 1 / -1; margin-top: .15em; padding-left: 50px; }
+  .sfx-item .notes-edit     { grid-column: 1 / -1; padding-left: 50px; }
 </style>
 </head>
 <body>
@@ -454,6 +535,84 @@ if (typeof state.masterVol === 'number') {
   masterInput.value = state.masterVol;
   setMasterVolume(state.masterVol);
 }
+// ============================================================
+// Approve/Re-roll/Reject buttons — POST to /api/audio-review/<key>
+// ============================================================
+async function postAudioReview(key, payload) {
+  const r = await fetch('/api/audio-review/' + encodeURIComponent(key), {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!r.ok) throw new Error('HTTP ' + r.status + ': ' + await r.text());
+  return await r.json();
+}
+
+function updateReviewChip(actionsEl, newStatus) {
+  const chip = actionsEl.querySelector('.review-chip');
+  if (chip) {
+    chip.className = chip.className.replace(/\bchip-\S+/g, '').trim();
+    chip.classList.add('chip', 'chip-' + newStatus, 'review-chip');
+    chip.textContent = newStatus;
+  }
+  actionsEl.dataset.reviewStatus = newStatus;
+  // Reflect status on the parent card too (for filter logic later).
+  const card = actionsEl.closest('.music-ctx, .sfx-item');
+  if (card) card.dataset.reviewStatus = newStatus;
+}
+
+function highlightActiveActionBtn(actionsEl, status) {
+  actionsEl.querySelectorAll('.action-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.action === status);
+  });
+}
+
+document.querySelectorAll('.review-actions').forEach(actionsEl => {
+  const key = actionsEl.dataset.reviewKey;
+  highlightActiveActionBtn(actionsEl, actionsEl.dataset.reviewStatus);
+  actionsEl.querySelectorAll('.action-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const newStatus = btn.dataset.action;
+      actionsEl.querySelectorAll('.action-btn').forEach(b => b.disabled = true);
+      try {
+        await postAudioReview(key, { status: newStatus });
+        updateReviewChip(actionsEl, newStatus);
+        highlightActiveActionBtn(actionsEl, newStatus);
+      } catch (e) {
+        alert('Failed to update review: ' + e.message);
+      } finally {
+        actionsEl.querySelectorAll('.action-btn').forEach(b => b.disabled = false);
+      }
+    });
+  });
+});
+
+document.querySelectorAll('.notes-edit').forEach(editEl => {
+  // The actions row is the previous sibling of the notes-edit details
+  const actionsEl = editEl.previousElementSibling;
+  if (!actionsEl || !actionsEl.classList.contains('review-actions')) return;
+  const key = actionsEl.dataset.reviewKey;
+  const textarea = editEl.querySelector('.notes-input');
+  const saveBtn = editEl.querySelector('.save-notes-btn');
+  const feedback = editEl.querySelector('.save-feedback');
+  if (!saveBtn) return;
+  saveBtn.addEventListener('click', async () => {
+    saveBtn.disabled = true;
+    feedback.classList.remove('error');
+    feedback.textContent = 'saving...';
+    try {
+      await postAudioReview(key, { notes: textarea.value });
+      feedback.textContent = '✓ saved';
+      setTimeout(() => { feedback.textContent = ''; }, 2000);
+    } catch (e) {
+      feedback.classList.add('error');
+      feedback.textContent = '✗ ' + e.message;
+    } finally {
+      saveBtn.disabled = false;
+    }
+  });
+});
+
 // Initialize every audio's stemVol dataset (must happen before applying
 // restored values so the master-volume rescale works).
 document.querySelectorAll('audio[data-stem]').forEach(a => {
@@ -491,19 +650,32 @@ document.querySelectorAll('.music-ctx').forEach(ctx => {
 """
 
 
+def _load_audio_review_manifest() -> dict:
+    """Read assets/_audio_review.json so the initial render can show each
+    item's current review status (chip + active-button highlight)."""
+    p = ROOT / "assets" / "_audio_review.json"
+    if not p.exists():
+        return {}
+    try:
+        return json.loads(p.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
 def build() -> Path:
     contexts = _list_music_contexts()
     sfx_groups = _list_sfx_groups()
+    review_state = _load_audio_review_manifest()
 
     music_sections = []
     for ctx_dir, manifest in contexts:
-        s = _render_music_section(ctx_dir, manifest)
+        s = _render_music_section(ctx_dir, manifest, review_state)
         if s.strip():
             music_sections.append(s)
 
     sfx_sections = []
     for group_label, paths in sfx_groups.items():
-        sfx_sections.append(_render_sfx_group(group_label, paths))
+        sfx_sections.append(_render_sfx_group(group_label, paths, review_state))
 
     total_audio_files = sum(
         len(list(d.glob("*.mp3"))) + len(list(d.glob("*.wav"))) + len(list(d.glob("*.ogg")))

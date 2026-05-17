@@ -1,36 +1,54 @@
-"""Image-review HTTP server — drop-in replacement for `python -m http.server`.
+"""Review HTTP server — drop-in replacement for `python -m http.server`.
 
 Serves project files identically to `python -m http.server 8770` AND exposes
 POST endpoints that write Aaron's approve/reroll/reject decisions back into
-`assets/generated_drafts/firefly/_manifest.json`.
+two persistent manifests:
 
-Why: the manifest is the durable contract between Aaron (reviewing the
-generated images at http://localhost:8770/tools/image_review.html) and Claude
-(reading the manifest in a future session to know which images to keep,
-which to re-generate with adjusted prompts, and which to discard).
+  - `assets/generated_drafts/firefly/_manifest.json` (image reviews)
+  - `assets/_audio_review.json` (music + SFX reviews, 2026-05-17 add)
+
+Filename is still `image_review_server.py` for back-compat with everything
+that already invokes it; the file now powers both reviewers.
 
 Standard-library only — no Flask, no requirements.txt entry needed. Just:
 
     cd D:/Aaron/development/star-control-precursors
     .venv/Scripts/python.exe tools/image_review_server.py
 
-Then open http://localhost:8770/tools/image_review.html and click the
-Approve / Re-roll / Reject buttons on each card. Notes are saved per-card.
+Then open EITHER:
+  http://localhost:8770/tools/image_review.html   -- images
+  http://localhost:8770/tools/audio_player.html   -- music + SFX
+
+And click the Approve / Re-roll / Reject buttons on each card. Notes save
+per-card.
 
 API (POST application/json):
+
+  IMAGES
     POST /api/review/<image_key>
       body: { "status"?: "keep"|"reroll_requested"|"reject"|"wired", "notes"?: str }
-      effect: updates manifest[<image_key>] in place, plus sets
-              reviewed_at = current UTC ISO timestamp
-      response: { "ok": true, "entry": { ... updated entry ... } }
+      effect: updates image manifest[<image_key>] in place
+      response: { "ok": true, "entry": { ... }, "key": "..." }
 
     POST /api/review-all
-      body: { "<key1>": {"status":..., "notes":...}, "<key2>": {...} }
-      effect: batch update
+      body: { "<key1>": {"status":..., "notes":...}, ... }
       response: { "ok": true, "updated": [keys...] }
 
     GET /api/manifest
-      returns the current manifest as JSON (useful for the UI to refresh)
+      returns the image manifest as JSON
+
+  AUDIO  (2026-05-17 add)
+    POST /api/audio-review/<key>
+      key shapes:
+        music/<context>            -- per-music-context (granularity:
+                                      whole context, not per stem)
+        sfx/<out_subdir>/<name>    -- per-SFX file
+      body / response: same shape as the image endpoint
+      Auto-creates the entry if not present (audio review manifest
+      starts empty; entries materialize on first Aaron action).
+
+    GET /api/audio-manifest
+      returns the audio review manifest as JSON
 """
 
 from __future__ import annotations
@@ -44,6 +62,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 MANIFEST = ROOT / "assets" / "generated_drafts" / "firefly" / "_manifest.json"
+AUDIO_MANIFEST = ROOT / "assets" / "_audio_review.json"
 
 PORT = 8770
 
@@ -61,6 +80,19 @@ def _save_manifest(manifest: dict) -> None:
     tmp = MANIFEST.with_suffix(".json.tmp")
     tmp.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
     tmp.replace(MANIFEST)
+
+
+def _load_audio_manifest() -> dict:
+    if not AUDIO_MANIFEST.exists():
+        return {}
+    return json.loads(AUDIO_MANIFEST.read_text(encoding="utf-8"))
+
+
+def _save_audio_manifest(manifest: dict) -> None:
+    AUDIO_MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    tmp = AUDIO_MANIFEST.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(AUDIO_MANIFEST)
 
 
 class ReviewHandler(http.server.SimpleHTTPRequestHandler):
@@ -92,10 +124,65 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
         if self.path == "/api/manifest":
             self._send_json(200, _load_manifest())
             return
+        if self.path == "/api/audio-manifest":
+            self._send_json(200, _load_audio_manifest())
+            return
         # Everything else: static file serving
         super().do_GET()
 
     def do_POST(self):  # noqa: N802
+        # --- AUDIO REVIEW (2026-05-17) ---
+        if self.path.startswith("/api/audio-review/"):
+            from urllib.parse import unquote
+            key = unquote(self.path[len("/api/audio-review/"):])
+            data = self._read_json_body()
+            if "status" in data and data["status"] not in VALID_STATUSES:
+                self._send_json(400, {
+                    "error": f"invalid status {data['status']!r}, "
+                             f"want one of {sorted(VALID_STATUSES)}"})
+                return
+            manifest = _load_audio_manifest()
+            # Auto-create entry on first action (unlike image review,
+            # which requires the entry to be pre-indexed).
+            entry = manifest.setdefault(key, {
+                "status": "pending",
+                "notes": "",
+                "reviewed_at": None,
+            })
+            if "status" in data:
+                entry["status"] = data["status"]
+            if "notes" in data:
+                entry["notes"] = data["notes"]
+            entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+            _save_audio_manifest(manifest)
+            self._send_json(200, {"ok": True, "entry": entry, "key": key})
+            return
+
+        if self.path == "/api/audio-review-all":
+            data = self._read_json_body()
+            if not isinstance(data, dict):
+                self._send_json(400, {"error": "body must be a JSON object"})
+                return
+            manifest = _load_audio_manifest()
+            now = datetime.now(timezone.utc).isoformat()
+            updated = []
+            for key, patch in data.items():
+                if not isinstance(patch, dict):
+                    continue
+                entry = manifest.setdefault(key, {
+                    "status": "pending", "notes": "", "reviewed_at": None,
+                })
+                if "status" in patch and patch["status"] in VALID_STATUSES:
+                    entry["status"] = patch["status"]
+                if "notes" in patch:
+                    entry["notes"] = patch["notes"]
+                entry["reviewed_at"] = now
+                updated.append(key)
+            _save_audio_manifest(manifest)
+            self._send_json(200, {"ok": True, "updated": updated})
+            return
+
+        # --- IMAGE REVIEW (original) ---
         if self.path.startswith("/api/review/"):
             key = self.path[len("/api/review/"):]
             data = self._read_json_body()
