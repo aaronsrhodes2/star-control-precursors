@@ -67,6 +67,27 @@ PORTRAIT_SPEAK_PER_CHAR_S = 0.025
 PORTRAIT_SPEAK_MIN_S = 1.0
 PORTRAIT_SPEAK_MAX_S = 4.0
 
+# Layered-render layout (only used when character.avatar_path is set).
+# A rectangular scene panel takes the place of the circular disc — the
+# background fills the panel, the transparent avatar floats on top with
+# procedural motion. Name/title/text shift right to clear the wider
+# panel. All coords assume a 1920x1080 canvas; the panel scales with
+# the screen via render-time clamping.
+LAYERED_PANEL_X = 40
+LAYERED_PANEL_Y = 60
+LAYERED_PANEL_W = 420
+LAYERED_PANEL_H = 600
+LAYERED_PANEL_BORDER_PX = 3
+LAYERED_NAME_X = LAYERED_PANEL_X + LAYERED_PANEL_W + 40
+LAYERED_NAME_Y = 110
+LAYERED_TEXT_AREA_X = LAYERED_NAME_X
+LAYERED_TEXT_AREA_Y = 240
+LAYERED_TEXT_AREA_W = 1920 - LAYERED_NAME_X - 160
+LAYERED_TEXT_AREA_H = 380
+LAYERED_AVATAR_MARGIN_PX = 24
+# Headroom for animation translation inside the panel.
+LAYERED_AVATAR_ANIM_HEADROOM_PX = 14
+
 
 class DialogScene(Scene):
     """A conversation with one NPC."""
@@ -98,6 +119,14 @@ class DialogScene(Scene):
         # portrait shape.
         self._portrait_surface: pygame.Surface | None = None
         self._portrait_failed: bool = False
+        # Layered-render surfaces (only when character.avatar_path is set).
+        # _avatar_surface holds the transparent character image, pre-scaled
+        # to fit inside (panel - margin) bounds with anim headroom. The
+        # background list is pre-scaled to panel dims; the active one is
+        # picked at render time. None means "fall through to legacy disc".
+        self._avatar_surface: pygame.Surface | None = None
+        self._background_surfaces: list[pygame.Surface] = []
+        self._active_background_idx: int = 0
         # Animation clock + state-change tracker for the speaking bob.
         self._time: float = 0.0
         self._state_entered_at: float = 0.0
@@ -111,7 +140,13 @@ class DialogScene(Scene):
         self.fonts["npc"] = pygame.font.SysFont("consolas", 24)
         self.fonts["choice"] = pygame.font.SysFont("consolas", 22)
         self.fonts["small"] = pygame.font.SysFont("consolas", 16)
-        self._load_portrait_image()
+        # Prefer the layered (avatar + backgrounds) render path. If the
+        # avatar fails to load OR the character has no avatar configured,
+        # fall through to the legacy disc loader.
+        if self.character.avatar_path is not None:
+            self._load_layered_surfaces()
+        if self._avatar_surface is None:
+            self._load_portrait_image()
 
     def _load_portrait_image(self) -> None:
         """Load + scale character.portrait_image_path (if any) once per
@@ -139,6 +174,50 @@ class DialogScene(Scene):
         scale = min(target / rw, target / rh)
         new_size = (max(1, int(rw * scale)), max(1, int(rh * scale)))
         self._portrait_surface = pygame.transform.smoothscale(raw, new_size)
+
+    def _load_layered_surfaces(self) -> None:
+        """Load + pre-scale the avatar and each registered background for
+        the layered render path. The avatar is the transparent character
+        PNG; backgrounds are scene-setting backdrops. If avatar loading
+        fails, leave `_avatar_surface` None so the caller falls back to
+        the legacy disc."""
+        avatar_path_str = self.character.avatar_path
+        if not avatar_path_str:
+            return
+        avatar_path = Path(avatar_path_str)
+        if not avatar_path.is_absolute():
+            avatar_path = _PROJECT_ROOT / avatar_path_str
+        if not avatar_path.exists():
+            return
+        try:
+            raw = pygame.image.load(str(avatar_path)).convert_alpha()
+        except pygame.error:
+            return
+        # Scale the avatar to fit the panel interior (panel minus border
+        # minus margin), with an anim-headroom bonus so the avatar can
+        # translate without revealing transparent edges of the panel.
+        target_w = LAYERED_PANEL_W - 2 * LAYERED_AVATAR_MARGIN_PX
+        target_h = LAYERED_PANEL_H - 2 * LAYERED_AVATAR_MARGIN_PX
+        rw, rh = raw.get_size()
+        s = min(target_w / rw, target_h / rh)
+        new_size = (max(1, int(rw * s)), max(1, int(rh * s)))
+        self._avatar_surface = pygame.transform.smoothscale(raw, new_size)
+        # Backgrounds — scale each to panel dims. Iterating tuple keeps
+        # the registered order so the active-index selection is stable.
+        for bg in self.character.backgrounds:
+            bg_path = Path(bg.image_path)
+            if not bg_path.is_absolute():
+                bg_path = _PROJECT_ROOT / bg.image_path
+            if not bg_path.exists():
+                continue
+            try:
+                raw_bg = pygame.image.load(str(bg_path)).convert_alpha()
+            except pygame.error:
+                continue
+            scaled = pygame.transform.smoothscale(
+                raw_bg, (LAYERED_PANEL_W, LAYERED_PANEL_H)
+            )
+            self._background_surfaces.append(scaled)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self._time += dt
@@ -196,62 +275,34 @@ class DialogScene(Scene):
         # No actual stars — just a subtle gradient via a dark rect
         pygame.draw.rect(screen, (16, 18, 32), (0, sh // 2, sw, sh // 2))
 
-        # Portrait — image if loaded, else colored disc fallback.
-        cx, cy = PORTRAIT_X, PORTRAIT_Y
+        # Procedural animation offsets — shared by both render paths.
+        # Idle sway/breath are always on; speak bob fires for the first
+        # 1-4 s of each new state (duration scales with npc_text length).
+        anim_x, anim_y, anim_tilt_rad = self._procedural_offsets()
 
-        # Idle animation (always on): the portrait sways horizontally and
-        # breathes vertically inside its rim. Hz values are deliberately
-        # incommensurate so the motion never visually loops.
-        anim_x = math.sin(self._time * 2.0 * math.pi * PORTRAIT_IDLE_SWAY_HZ)
-        anim_x *= PORTRAIT_IDLE_SWAY_AMPLITUDE_X
-        anim_y = math.sin(self._time * 2.0 * math.pi * PORTRAIT_IDLE_BREATH_HZ)
-        anim_y *= PORTRAIT_IDLE_BREATH_AMPLITUDE_Y
-        # Speaking bob: a faster vertical jitter for the first N seconds
-        # after a state change, where N scales with npc_text length.
-        if self._is_speaking():
-            anim_y += (
-                math.sin(self._time * 2.0 * math.pi * PORTRAIT_SPEAK_BOB_HZ)
-                * PORTRAIT_SPEAK_BOB_AMPLITUDE_Y
+        if self._avatar_surface is not None:
+            self._render_layered(screen, anim_x, anim_y, anim_tilt_rad)
+            name_x = LAYERED_NAME_X
+            name_y = LAYERED_NAME_Y
+            text_rect = (
+                LAYERED_TEXT_AREA_X, LAYERED_TEXT_AREA_Y,
+                LAYERED_TEXT_AREA_W, LAYERED_TEXT_AREA_H,
             )
-
-        if self._portrait_surface is not None:
-            # Build a circular alpha mask the size of the portrait disc,
-            # blit the (slightly-oversized) image into it shifted by the
-            # animation offsets, then mask + blit onto screen. The rim is
-            # drawn at FIXED coordinates so the character moves INSIDE the
-            # rim instead of dragging it around.
-            d = 2 * PORTRAIT_RADIUS
-            disc = pygame.Surface((d, d), pygame.SRCALPHA)
-            iw, ih = self._portrait_surface.get_size()
-            offset_x = (d - iw) // 2 + int(round(anim_x))
-            offset_y = (d - ih) // 2 + int(round(anim_y))
-            disc.blit(self._portrait_surface, (offset_x, offset_y))
-            mask = pygame.Surface((d, d), pygame.SRCALPHA)
-            pygame.draw.circle(mask, (255, 255, 255, 255), (d // 2, d // 2), PORTRAIT_RADIUS)
-            disc.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
-            screen.blit(disc, (cx - PORTRAIT_RADIUS, cy - PORTRAIT_RADIUS))
         else:
-            # Fallback: no inner image to translate, so move the whole disc.
-            pygame.draw.circle(
-                screen, self.character.portrait_color,
-                (cx + int(round(anim_x)), cy + int(round(anim_y))),
-                PORTRAIT_RADIUS,
-            )
-        # Ring around the portrait, slightly darker — drawn at the FIXED
-        # portrait center so it acts as the static window the character
-        # inhabits.
-        rim = tuple(max(0, c - 50) for c in self.character.portrait_color)
-        pygame.draw.circle(screen, rim, (cx, cy), PORTRAIT_RADIUS, 3)
+            self._render_legacy_disc(screen, anim_x, anim_y)
+            name_x = NAME_X
+            name_y = NAME_Y
+            text_rect = (TEXT_AREA_X, TEXT_AREA_Y, TEXT_AREA_W, TEXT_AREA_H)
 
         # Name + title
         name_surf = self.fonts["title"].render(
             self.character.name, True, (235, 240, 250)
         )
-        screen.blit(name_surf, (NAME_X, NAME_Y))
+        screen.blit(name_surf, (name_x, name_y))
         title_surf = self.fonts["subtitle"].render(
             self.character.title, True, (160, 180, 210)
         )
-        screen.blit(title_surf, (NAME_X, NAME_Y + 44))
+        screen.blit(title_surf, (name_x, name_y + 44))
 
         # NPC text block — word-wrapped
         state = self._current_state()
@@ -259,7 +310,7 @@ class DialogScene(Scene):
             screen,
             state.npc_text,
             self.fonts["npc"],
-            (TEXT_AREA_X, TEXT_AREA_Y, TEXT_AREA_W, TEXT_AREA_H),
+            text_rect,
             (230, 230, 240),
         )
 
@@ -285,6 +336,99 @@ class DialogScene(Scene):
             min(PORTRAIT_SPEAK_MAX_S, len(state.npc_text) * PORTRAIT_SPEAK_PER_CHAR_S),
         )
         return (self._time - self._state_entered_at) < speech_s
+
+    def _procedural_offsets(self) -> tuple[float, float, float]:
+        """Compute the current frame's (sway_x, breath_y, tilt_rad) for
+        the portrait. Reads articulation amplitude overrides if present
+        on the character; falls back to defaults otherwise."""
+        spec = self.character.articulation
+        sway_amp = spec.sway_amplitude_px if spec else PORTRAIT_IDLE_SWAY_AMPLITUDE_X
+        breath_amp = spec.breath_amplitude_px if spec else PORTRAIT_IDLE_BREATH_AMPLITUDE_Y
+        bob_amp = spec.speak_bob_amplitude_px if spec else PORTRAIT_SPEAK_BOB_AMPLITUDE_Y
+        tilt_amp = spec.speak_tilt_amplitude_rad if spec else 0.0
+
+        anim_x = math.sin(self._time * 2.0 * math.pi * PORTRAIT_IDLE_SWAY_HZ) * sway_amp
+        anim_y = math.sin(self._time * 2.0 * math.pi * PORTRAIT_IDLE_BREATH_HZ) * breath_amp
+        anim_tilt = 0.0
+        if self._is_speaking():
+            anim_y += math.sin(self._time * 2.0 * math.pi * PORTRAIT_SPEAK_BOB_HZ) * bob_amp
+            anim_tilt = math.sin(self._time * 2.0 * math.pi * PORTRAIT_SPEAK_BOB_HZ * 0.6) * tilt_amp
+        return anim_x, anim_y, anim_tilt
+
+    def _render_legacy_disc(
+        self, screen: pygame.Surface, anim_x: float, anim_y: float
+    ) -> None:
+        """Render the original circular-disc portrait. Used when the
+        character has portrait_image_path but no avatar_path."""
+        cx, cy = PORTRAIT_X, PORTRAIT_Y
+        if self._portrait_surface is not None:
+            d = 2 * PORTRAIT_RADIUS
+            disc = pygame.Surface((d, d), pygame.SRCALPHA)
+            iw, ih = self._portrait_surface.get_size()
+            offset_x = (d - iw) // 2 + int(round(anim_x))
+            offset_y = (d - ih) // 2 + int(round(anim_y))
+            disc.blit(self._portrait_surface, (offset_x, offset_y))
+            mask = pygame.Surface((d, d), pygame.SRCALPHA)
+            pygame.draw.circle(mask, (255, 255, 255, 255), (d // 2, d // 2), PORTRAIT_RADIUS)
+            disc.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
+            screen.blit(disc, (cx - PORTRAIT_RADIUS, cy - PORTRAIT_RADIUS))
+        else:
+            pygame.draw.circle(
+                screen, self.character.portrait_color,
+                (cx + int(round(anim_x)), cy + int(round(anim_y))),
+                PORTRAIT_RADIUS,
+            )
+        rim = tuple(max(0, c - 50) for c in self.character.portrait_color)
+        pygame.draw.circle(screen, rim, (cx, cy), PORTRAIT_RADIUS, 3)
+
+    def _render_layered(
+        self, screen: pygame.Surface, anim_x: float, anim_y: float, anim_tilt_rad: float
+    ) -> None:
+        """Render the layered scene panel: background (full-bleed inside
+        the panel) + transparent avatar (centered, animated). Both layers
+        are clipped to the panel rect so the avatar can translate outside
+        the visible area without bleeding into the dialog text."""
+        panel_rect = pygame.Rect(
+            LAYERED_PANEL_X, LAYERED_PANEL_Y, LAYERED_PANEL_W, LAYERED_PANEL_H,
+        )
+
+        # Panel surface composes the layers; we blit it to the screen at
+        # the end so clipping is local.
+        panel = pygame.Surface((LAYERED_PANEL_W, LAYERED_PANEL_H), pygame.SRCALPHA)
+
+        # Background — pick the active one if any, else a dark navy fill
+        # that matches the prompt-spec background color so avatar-on-bg
+        # looks consistent with avatar-on-fallback.
+        if self._background_surfaces:
+            bg = self._background_surfaces[
+                self._active_background_idx % len(self._background_surfaces)
+            ]
+            panel.blit(bg, (0, 0))
+        else:
+            panel.fill((10, 14, 26))
+
+        # Avatar — rotate first (if speaking-tilt is non-zero), then translate
+        # within the panel. Rotation uses rotozoom to also handle scaling=1.
+        avatar_surf = self._avatar_surface
+        assert avatar_surf is not None
+        if abs(anim_tilt_rad) > 0.001:
+            avatar_surf = pygame.transform.rotozoom(
+                avatar_surf, math.degrees(anim_tilt_rad), 1.0,
+            )
+        aw, ah = avatar_surf.get_size()
+        avatar_cx = LAYERED_PANEL_W // 2 + int(round(anim_x))
+        # Bottom-anchor the avatar with a small margin so feet/base are
+        # near the panel floor and the head/upper body draws the eye.
+        avatar_bottom = LAYERED_PANEL_H - LAYERED_AVATAR_MARGIN_PX
+        avatar_top = avatar_bottom - ah + int(round(anim_y))
+        panel.blit(avatar_surf, (avatar_cx - aw // 2, avatar_top))
+
+        # Frame the panel with a subtle border so it reads as a portrait
+        # window rather than free-floating art. Uses the character's
+        # portrait_color for tonal coherence.
+        screen.blit(panel, panel_rect.topleft)
+        rim = tuple(min(255, max(0, c)) for c in self.character.portrait_color)
+        pygame.draw.rect(screen, rim, panel_rect, LAYERED_PANEL_BORDER_PX)
 
     def _exit_dialog(self) -> None:
         if self.game is None:

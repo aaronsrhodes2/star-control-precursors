@@ -1,0 +1,19 @@
+# aspect: 2:3
+# notes: Reusable dialog-scene backdrop for any NPC encountered on a
+# planetary surface. Vertical 2:3. Empty foreground for avatar
+# composition at runtime.
+
+A vertical alien planet-surface backdrop, viewed straight-on as if
+the camera stood at the avatar's eye level. Foreground: a level
+weathered-stone surface with subtle alien lichen growth in pale
+teal and gold, no figures. Mid-ground: stylized geological forms —
+twisted basalt spires, low ridges. Background: an alien sky tinted
+deep amber-orange near the horizon transitioning to deep violet at
+zenith, two small distant moons visible. A faint dust-haze sits
+just above the horizon. NO CHARACTERS, NO STRUCTURES, NO SHIPS —
+completely empty stage ready to host an avatar composited on top
+at runtime. Lighting: low alien sun creates long soft shadows
+toward camera, warm key with cool ambient fill. Style: stylized
+1990s sci-fi game backdrop, painterly, crisp at portrait-panel
+display size (~420x600 pixels). The composition should leave the
+middle vertical clear for an avatar figure.

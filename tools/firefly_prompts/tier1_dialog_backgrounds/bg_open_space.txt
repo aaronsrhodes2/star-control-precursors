@@ -1,0 +1,19 @@
+# aspect: 2:3
+# notes: Reusable dialog-scene backdrop for "we met in open space" — a
+# void-with-distant-objects view, used for floating/drone aliens or
+# ship-to-ship-comms-with-no-interior-visible. Vertical 2:3. Empty
+# foreground for avatar composition at runtime.
+
+A vertical open-space backdrop as if viewed through a starship
+viewport, straight-on at chest height. Deep cosmic black with a
+dense starfield, faint nebular wash of teal-and-magenta running
+diagonally across the upper half. A single distant ringed gas-giant
+sits in the upper-left quadrant glowing soft amber. The lower
+quadrant has the very faint suggestion of a Furling Scout's hull
+edge along the bottom (just a sliver of copper-rimmed plating) so
+viewers feel they're seeing this through a ship's window. NO
+CHARACTERS, NO ALIEN SHIPS — empty stage ready for an avatar
+composited on top at runtime. Lighting: cool starlight ambient,
+faint warm rim from the gas giant. Style: stylized 1990s sci-fi
+game backdrop, painterly, very dark and atmospheric. Composition
+leaves the middle-vertical clear for an avatar figure.

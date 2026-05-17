@@ -1,0 +1,21 @@
+# aspect: 2:3
+# notes: Reusable dialog-scene backdrop for any NPC encountered aboard
+# THEIR OWN ship — looks deliberately alien, unlike the Furling bridge.
+# Vertical 2:3. Empty foreground for avatar composition at runtime.
+
+A vertical alien starship interior backdrop, viewed straight-on at
+chest height. Architectural language deliberately ALIEN: organic
+curving wall ribs in a bone-ivory material with glowing veins of
+amber bioluminescent fluid running through them. The ceiling rises
+into a vaulted dome whose underside is covered in pulsing soft-pink
+membrane panels (suggesting living-tech). The floor in the
+foreground (lower third) appears to be polished obsidian-glass
+with very faint patterned light beneath. A large window or aperture
+behind shows a tilted alien starfield with one extremely close
+gas-giant in the upper-right corner, casting warm amber rim light
+into the room. NO CHARACTERS, NO CONTROL CONSOLES (this isn't a
+bridge — it's an audience chamber), NO SHIPS visible — empty stage.
+Lighting: warm amber from the gas giant + cool magenta accent from
+the membrane panels overhead. Style: stylized 1990s sci-fi game
+backdrop, painterly. Composition leaves the middle vertical clear
+for an avatar.

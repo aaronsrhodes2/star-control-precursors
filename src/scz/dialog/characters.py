@@ -10,7 +10,40 @@ from __future__ import annotations
 
 from typing import Any
 
-from scz.dialog.data import DialogChoice, DialogCharacter, DialogState, build_state_dict
+from scz.dialog.articulation import BIPEDAL_HUMANOID
+from scz.dialog.data import (
+    BackgroundSpec,
+    DialogChoice,
+    DialogCharacter,
+    DialogState,
+    build_state_dict,
+)
+
+
+# Reusable dialog backgrounds. Each one is generated once (16:9 vertical or
+# 2:3) and shared across the characters that fit the scene. When a
+# character has multiple backgrounds the dialog scene picks the first
+# for now; the future variation layer will rotate by encounter context.
+BG_FURLING_BRIDGE = BackgroundSpec(
+    name="furling_bridge",
+    image_path="assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_furling_bridge.png",
+    description="The bridge of a Furling Scout-class ship — your home base in conversation.",
+)
+BG_PLANET_SURFACE = BackgroundSpec(
+    name="planet_surface",
+    image_path="assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_planet_surface.png",
+    description="An alien planet surface viewed at chest height.",
+)
+BG_ALIEN_SHIP = BackgroundSpec(
+    name="alien_ship",
+    image_path="assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_alien_ship.png",
+    description="An alien audience-chamber interior (organic-tech architecture).",
+)
+BG_OPEN_SPACE = BackgroundSpec(
+    name="open_space",
+    image_path="assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_open_space.png",
+    description="Open void viewed through a Furling viewport.",
+)
 
 
 # ---------------------------------------------------------------------------
@@ -133,7 +166,12 @@ def commander_halia(game: Any = None) -> DialogCharacter:
         title="Persuader, Mh-Lai Station",
         species_id="FURLING_PERSUADER",
         portrait_color=(220, 180, 100),  # Persuader amber (fallback)
+        # Legacy disc portrait kept as a fallback; layered render takes
+        # precedence whenever avatar_path is set.
         portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_commander_halia_portrait.png",
+        avatar_path="assets/generated_drafts/firefly/tier1_avatars/avatar_commander_halia.png",
+        backgrounds=(BG_FURLING_BRIDGE,),
+        articulation=BIPEDAL_HUMANOID,
         initial_state=_halia_initial_state(game),
         states=build_state_dict(
             DialogState(

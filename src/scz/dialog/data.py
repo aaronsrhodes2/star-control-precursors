@@ -57,6 +57,60 @@ class DialogState:
     is_terminal: bool = False
 
 
+@dataclass(frozen=True)
+class Joint:
+    """A named pivot point on a character body, normalized to the avatar
+    image (0,0 = top-left, 1,1 = bottom-right). The renderer does NOT
+    use these for transforms yet — they're documentation for the future
+    PortraitAnimator that the variation layer will wire up (likely using
+    Flask-SD per-frame generation). For now, they exist so prompts can
+    cite specific joints and so handed-off characters carry the rig
+    description with them.
+    """
+
+    name: str                          # e.g. "head", "shoulder_l", "tendril_3"
+    pivot: tuple[float, float]         # normalized (x, y) in [0, 1]
+    rot_range_rad: tuple[float, float] = (-0.1, 0.1)
+    # Rough size hint for downstream cropping/masking when frames are
+    # generated independently. Normalized to avatar dims.
+    size_hint: tuple[float, float] = (0.1, 0.1)
+
+
+@dataclass(frozen=True)
+class ArticulationSpec:
+    """Describes a character's articulation rig — which body parts can
+    move and roughly how. Currently consumed only by the prompt-authoring
+    layer; the PortraitAnimator will use it when frame banks land."""
+
+    rig_type: str                      # "bipedal_humanoid", "gasbag_tendril", ...
+    joints: tuple[Joint, ...]
+    # Procedural-animation tuning specific to this rig. The dialog scene's
+    # default sway/breath constants are overridden by these when present.
+    breath_amplitude_px: float = 1.5
+    sway_amplitude_px: float = 2.0
+    speak_bob_amplitude_px: float = 1.5
+    # Optional head-tilt rotation amplitude (radians) for the procedural
+    # animator. 0 = translation only; > 0 = the whole avatar rotates
+    # slightly during speech. Read by DialogScene when wiring articulation
+    # to the render path.
+    speak_tilt_amplitude_rad: float = 0.0
+
+
+@dataclass(frozen=True)
+class BackgroundSpec:
+    """A scene-setting backdrop image for a character. A character can
+    carry several (e.g. their ship bridge, their planet surface, your
+    own ship) so the dialog scene can vary the setting per encounter.
+
+    The dialog scene currently picks `backgrounds[0]` whenever an avatar
+    is being rendered; the future variation layer will rotate through
+    them based on encounter context."""
+
+    name: str                          # e.g. "ship_bridge", "planet_surface"
+    image_path: str                    # project-relative
+    description: str = ""
+
+
 @dataclass
 class DialogCharacter:
     """All the data for one conversational NPC.
@@ -66,12 +120,21 @@ class DialogCharacter:
     image is available. species_id keys into the warp-pod palette so the
     dialog visual can match the ship visual.
 
-    portrait_image_path (optional): path (relative to project root) to a
-    PNG portrait image. When set, DialogScene blits this image in place
-    of the colored disc — per Rule 4a (call-forward respect), the SC2
-    comm portraits are the starting visual for species that already
-    appear in SC2. Format is whatever pygame.image.load accepts. Image
-    is auto-scaled to fit the portrait area, preserving aspect.
+    Visual fields (two render paths in DialogScene):
+
+    portrait_image_path (legacy): path to a single static PNG combining
+    character + backdrop, rendered as a circular disc in the upper-left.
+    Backwards-compatible with characters authored before the layered
+    render path landed.
+
+    avatar_path + backgrounds + articulation (layered): when avatar_path
+    is set, DialogScene renders a rectangular scene panel instead — first
+    the selected background, then the transparent-PNG avatar with
+    procedural animation on top. backgrounds is a tuple of scene-setting
+    backdrops the character can appear against; articulation describes
+    the body rig so the variation-layer animator can wire per-joint
+    transforms later. If avatar_path is set but backgrounds is empty,
+    the panel falls back to a dark-navy fill.
 
     initial_state names which state to enter first; states is the FSM.
     """
@@ -83,6 +146,10 @@ class DialogCharacter:
     initial_state: str
     states: dict[str, DialogState]
     portrait_image_path: str | None = None
+    # Layered-render fields (all optional; set together when migrating)
+    avatar_path: str | None = None
+    backgrounds: tuple[BackgroundSpec, ...] = ()
+    articulation: ArticulationSpec | None = None
 
 
 def build_state_dict(*states: DialogState) -> dict[str, DialogState]:

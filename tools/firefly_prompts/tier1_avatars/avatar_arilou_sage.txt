@@ -1,0 +1,31 @@
+# aspect: 2:3
+# notes: Articulated avatar for the Arilou Sage — bipedal humanoid with
+# elongated proportions. Plain matte dark navy background. Pose neutral
+# with arms visible.
+
+A full-body avatar painting of an Arilou Sage, an elder of the
+gentle gray-skinned humanoid species (call-forward to SC2 Arilou).
+Soft luminous gray skin with the faintest violet undertone, large
+almond-shaped black eyes, slim humanoid frame with elongated
+proportions (~1.8 m tall, narrow shoulders, long limbs). Wears a
+flowing pale-silver Sage robe with deep teal trim, hem reaching the
+ankles, sleeves loose around the wrists revealing thin gray hands
+with four long fingers each. The robe has no obvious belt, the
+silhouette is gently tapered. Pose: neutral standing three-quarter,
+weight evenly distributed, both arms hanging relaxed at the sides
+with hands visible at hip level, fingers gently spread (not crossed,
+not behind back). Head tilted slightly, contemplative gaze toward
+the viewer. Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-
+edge, no scene elements, no Quasi-Space distortion, no glow — the
+avatar will be composited onto separate background art at runtime.
+Lighting: even soft three-point with cool rim, no dramatic shadows.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid):
+- HEAD on NECK: long graceful neck visible
+- SHOULDERS L/R: robe falls naturally, shoulder joints implied
+- ELBOWS L/R: arms hang with subtle bend, elbows distinguishable
+- WRISTS L/R: hands fully visible, fingers separable
+- TORSO: gently tapered, robe drapes around it
+- Avoid: hidden hands, crossed arms, occluded face
+- Style: stylized 1990s sci-fi game character portrait, painterly,
+  crisp silhouette readable at 400x600 pixels in-game.

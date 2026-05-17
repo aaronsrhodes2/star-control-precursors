@@ -1,0 +1,29 @@
+# aspect: 2:3
+# notes: Articulated avatar for Coel Tessar, Androsynth refugee. Bipedal
+# clone-human. Plain matte dark navy background.
+
+A full-body avatar painting of Coel Tessar, an Androsynth refugee
+clone-human from the SC2-era future. Wiry adult male build (~1.7 m
+tall), pale skin with the faint blue undertone characteristic of
+Androsynth clones, close-cropped silver-gray hair, sharp gray eyes,
+the broken-chain Androsynth clone-mark stenciled on his right
+forearm. Wears practical scavenger-engineer coveralls in dark olive
+with copper-piping seams, sleeves rolled up to the elbows, a worn
+toolbelt at the hips with small tool loops visible. Boots and
+gauntlets. Pose: neutral standing three-quarter, weight on left
+leg, right knee very slightly bent, both arms relaxed with hands
+hanging at the sides — left hand in a relaxed fist, right hand open
+with palm slightly forward (as if mid-explanation). Watchful but
+not aggressive. Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-
+to-edge, no scene elements — composited at runtime. Lighting: even
+soft three-point with warm rim.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid):
+- HEAD on NECK: clear collar separation
+- SHOULDERS L/R: coverall seams visible at each shoulder
+- ELBOWS L/R: rolled-up sleeves expose the elbow joints
+- WRISTS L/R: gauntlet cuffs frame each wrist clearly
+- TORSO: toolbelt at hips defines the waist
+- Avoid: crossed arms, hidden hands
+- Style: stylized 1990s sci-fi game character portrait, painterly,
+  crisp silhouette readable at 400x600 pixels in-game.

@@ -1,0 +1,27 @@
+# aspect: 2:3
+# notes: Articulated avatar for Trade Master Vermilion — Melnorme
+# composite-cloud creature in a pod. Plain matte dark navy background.
+
+A full-body avatar painting of Trade Master Vermilion, a Melnorme
+trader. Body plan: a sentient composite gas-cloud organism contained
+in a vertical reinforced-glass trade pod, ~2.5 m tall. The cloud
+inside the pod is a mottled mix of saffron-orange, rust-red, and
+deep mahogany swirls, slowly flowing and reorganizing inside the
+transparent housing. Two slender mechanical manipulator arms extend
+from the pod's mid-section, ending in delicate three-finger
+articulated hands that float at hip-level (one slightly raised in
+gesture, the other relaxed). The pod itself has copper bracketing at
+the top and bottom, a frosted-glass speaker grille near the upper
+third where text is projected outward to communicate, and small
+indicator lights down one side. Pose: stationary upright with
+manipulators in mid-gesture. Background: SOLID MATTE DARK NAVY
+(#0a0e1a), edge-to-edge, no super-giant star, no spaceship interior
+— composited at runtime. Lighting: even soft three-point with warm
+amber rim from the cloud.
+
+ARTICULATION BRIEF (rig: composite_cloud):
+- POD TOP: visible, copper bracketing distinct from cloud body
+- CLOUD SWIRL: visible internal flow, articulating without limbs
+- MANIPULATOR L/R: slender arms with separable joints, hands clear
+- Avoid: occluded pod, manipulators crossed, ambiguous silhouette
+- Style: stylized 1990s sci-fi game character portrait, painterly.

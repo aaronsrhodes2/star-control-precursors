@@ -1,0 +1,26 @@
+# aspect: 2:3
+# notes: Articulated avatar for Sentry Drone 47-T — floating-drone rig.
+# Plain matte dark navy background.
+
+A full-body avatar painting of Sentry Drone 47-T, a small autonomous
+Furling station-defense drone. Body plan: a hovering oblate
+mechanical drone roughly 0.5 m wide, brushed-steel hull plates with
+copper edge-piping, a single central optical sensor (visible as a
+glowing turquoise lens cluster ~10 cm across) on the front upper
+face, and a rotating articulated turret arm extending downward from
+the underside ending in a small precision manipulator. Two small
+attitude-thrusters on the rear, visibly cool (not firing). The
+drone hovers ~1 m above an invisible floor — slight perspective
+suggests its weight floating. Hull bears the Furling Council
+geometric glyphs in subtle copper. Pose: stationary hover with
+turret arm angled slightly forward (active-but-not-aggressive).
+Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge, no
+scene elements — composited at runtime. Lighting: even soft
+three-point with cool turquoise rim from the sensor.
+
+ARTICULATION BRIEF (rig: floating_drone):
+- BODY: hull plates clearly delineated, sensor lens centered
+- TURRET: extending arm visibly separable from body
+- Avoid: occluded sensor, ambiguous front/back
+- Style: stylized 1990s sci-fi game character portrait, painterly,
+  crisp silhouette readable at 400x600 pixels in-game.

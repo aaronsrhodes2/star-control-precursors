@@ -1,0 +1,28 @@
+# aspect: 2:3
+# notes: Articulated avatar for the Slylandro Witness — gasbag-tendril
+# species. Plain matte dark navy background; tendrils splayed to show
+# each one's full silhouette so the future PortraitAnimator can animate
+# individual tendrils.
+
+A full-body avatar painting of a Slylandro Witness, a sentient
+gas-bag alien. Central bell-shaped body roughly 0.8 m tall, soft
+luminous amber-pink, slightly translucent, with delicate fractal
+veining visible through the membrane. Six discrete tendrils extend
+downward and outward from the bell's base, each one fully visible
+along its entire length — NOT crossed, NOT tangled, NOT overlapping.
+The tendrils are slender, ribboned, with subtle bioluminescent
+spots running along them. The bell has a constellation of small
+dark dots near its upper hemisphere serving as visual receptors.
+Pose: floating upright with all six tendrils splayed for visibility,
+the bell centered and not occluded. Background: SOLID MATTE DARK
+NAVY (#0a0e1a), edge-to-edge, no clouds, no atmosphere, no glow —
+the avatar will be composited onto separate background art at
+runtime. Lighting: even soft three-point with a touch of warmer rim
+on the bell, no dramatic cast shadows.
+
+ARTICULATION BRIEF (rig: gasbag_tendril):
+- BELL: central body, fully visible, no occlusion
+- TENDRILS 1-6: each one separable, root-to-tip visible, no tangles
+- Avoid: tendril knots, occluded bell, asymmetric mass
+- Style: stylized 1990s sci-fi game character portrait, painterly,
+  crisp silhouette readable at 400x600 pixels in-game.

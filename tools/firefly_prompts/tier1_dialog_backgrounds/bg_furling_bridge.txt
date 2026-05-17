@@ -1,0 +1,22 @@
+# aspect: 2:3
+# notes: A reusable dialog-scene backdrop for any NPC encountered ON the
+# player's Furling Scout bridge. Vertical 2:3 to fit the dialog panel.
+# NO character figure — backdrop only. Avatar composited on top at
+# runtime.
+
+A vertical empty Furling Scout starship bridge interior, viewed
+straight-on as if from a portrait camera mounted at chest height.
+Curved console arc in the foreground (lower third), softly glowing
+amber and turquoise control surfaces, holographic mission glyphs
+floating just above the consoles. Behind the console, a tall
+panoramic window showing the void of Quasi-Space: violet-pink
+nebular wash with faint dimensional ribbons. Architectural detail:
+the bridge ceiling arches up with copper inlay and small running
+lights. A second tier of consoles is partially visible at left and
+right edges. NO CREW, NO PEOPLE — completely empty bridge ready to
+host an avatar composited on top at runtime. Lighting: cool blue
+ambient with warm amber console glow, soft volumetric atmosphere.
+Style: stylized 1990s sci-fi game cinematic backdrop, painterly,
+crisp readability at portrait-panel display size (~420x600 pixels).
+The image should feel inhabited but empty — like a stage waiting
+for the actor.
