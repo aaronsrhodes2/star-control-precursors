@@ -10,7 +10,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from scz.dialog.articulation import BIPEDAL_HUMANOID
+from scz.dialog.articulation import (
+    BIPEDAL_HUMANOID,
+    COMPOSITE_CLOUD,
+    FLOATING_DRONE,
+    GASBAG_TENDRIL,
+)
 from scz.dialog.data import (
     BackgroundSpec,
     DialogChoice,
@@ -356,6 +361,9 @@ def arilou_sage() -> DialogCharacter:
         species_id="ARILOU",
         portrait_color=(140, 240, 210),  # teal/mint Arilou (fallback)
         portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_arilou_sage_portrait.png",
+        avatar_path="assets/generated_drafts/firefly/tier1_avatars/avatar_arilou_sage.png",
+        backgrounds=(BG_ALIEN_SHIP,),
+        articulation=BIPEDAL_HUMANOID,
         initial_state="start",
         states=build_state_dict(
             DialogState(
@@ -488,6 +496,9 @@ def coel_tessar() -> DialogCharacter:
         species_id="ANDROSYNTH",
         portrait_color=(200, 130, 200),
         portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_coel_tessar_portrait.png",
+        avatar_path="assets/generated_drafts/firefly/tier1_avatars/avatar_coel_tessar.png",
+        backgrounds=(BG_FURLING_BRIDGE,),
+        articulation=BIPEDAL_HUMANOID,
         initial_state="first_contact",
         states=build_state_dict(
             DialogState(
@@ -672,6 +683,9 @@ def slylandro_witness() -> DialogCharacter:
         species_id="SLYLANDRO",
         portrait_color=(140, 200, 200),
         portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_slylandro_witness_portrait.png",
+        avatar_path="assets/generated_drafts/firefly/tier1_avatars/avatar_slylandro_witness.png",
+        backgrounds=(BG_PLANET_SURFACE,),
+        articulation=GASBAG_TENDRIL,
         initial_state="first_meeting",
         states=build_state_dict(
             DialogState(
