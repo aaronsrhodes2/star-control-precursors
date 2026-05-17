@@ -1,0 +1,22 @@
+# aspect: 1:1
+# notes: dialog portrait — replaces the pixelated SC2 melnorme-000.png.
+# Same iconography as SC2 (one big eye, orange pod) but our own
+# higher-fidelity painterly version. Should hold up at 180px disc size.
+
+A close-up bust portrait of a "Melnorme Trade Master" — a Star
+Control universe alien merchant. A rounded, bulbous, orange
+exoskeletal pod the size of a head and shoulders, with a single
+enormous luminous deep-blue cyclopean eye dominating the center.
+The eye has a faint vertical-slit iris. Below the eye, a small
+horizontal mouth-slit shows several small ivory teeth, conveying
+a mercantile half-smile. The pod's surface is segmented orange
+chitin with darker reddish creases, like an arthropod carapace.
+A faint magenta/plasma-violet aura surrounds the figure — the
+ionization signature of the gas-cloud energy-being piloting from
+within. Lighting: dramatic warm rim-light from the right (a nearby
+super-giant star), deep shadow on the left, set against a near-
+black void with a few distant stars. Style: stylized 1990s game
+portrait art, painterly with crisp silhouette, faithful to the
+original Star Control II Melnorme silhouette but rendered at modern
+fidelity. The character should look formal, mercantile, slightly
+inscrutable. No human features; pure alien.

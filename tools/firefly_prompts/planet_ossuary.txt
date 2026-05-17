@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Ossuary is the Mmrnmhrm homeworld. Single heavily industrialized
+# planet dominated by the silent imposing ruins of the long-dead First-
+# Makers. Name evokes "bone repository" — feel like a planet that is
+# itself a graveyard-archive. NO Mmrnmhrm visible at this scale — just
+# the world.
+
+A planet sphere viewed from medium orbit, filling the frame. World
+name: Ossuary. Surface is a vast monochrome cityscape of bone-
+white and pale-grey megalithic ruins — pyramids, geometric
+ziggurats, perfect circular plazas — all empty, all silent,
+preserved across deep time. Between the ruined cities, plains of
+fine pale dust the color of weathered bone. Long shadows from a
+low cold sun stretch across everything. The atmosphere is thin
+and tinged faintly amber from suspended dust. No clouds, no
+greenery, no oceans — a fully cleared, fully archived world. A
+single bright spot of artificial light glows from one mid-latitude
+city (the Mmrnmhrm's still-active power node). The terminator
+shadow falls across the right side; the dust-amber atmosphere
+glows faintly along the day-night boundary. Background: deep
+starfield. Style: stylized 1990s sci-fi game asset, painterly,
+crisp circular silhouette. Ossuary should feel MOURNFUL — a
+beautiful planet kept in mourning by its remaining tenders.

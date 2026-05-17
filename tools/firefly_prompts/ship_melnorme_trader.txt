@@ -1,0 +1,19 @@
+# aspect: 1:1
+# notes: top-down combat sprite, transparent or near-black background.
+# If first run gives a 3/4 perspective, add "strictly orthographic
+# top-down view, camera directly above".
+
+A top-down orthographic view of an alien starship — a cyclopean
+"Melnorme Trade Pod". Shape: a thick rounded orange pod, asymmetric
+in the SC2 cyclopean tradition, with one large luminous blue optical
+cluster as its visible center. Hull is bright tangerine-orange with
+gold accents, deeply lit as if by a nearby super-giant star.
+Surrounding the pod, a faint plasma-violet ovoid envelope — the
+warp-drive halo — drawn as a translucent ring. Several small,
+rounded utility blisters cluster around the rim of the hull
+(thruster nodes and trade-port apertures). Two stubby fixed-position
+plasma cannon barrels poke forward, suggesting an unsporty merchant
+escort that can defend itself. Style: stylized 1990s sci-fi game
+art, painterly with crisp silhouette, deep black background, vivid
+saturated colors. The pod should read instantly as a Star Control
+universe trader. No human-style cockpit windows.

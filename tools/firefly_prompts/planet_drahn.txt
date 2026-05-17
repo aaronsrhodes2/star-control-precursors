@@ -1,0 +1,22 @@
+# aspect: 1:1
+# notes: planet sphere as seen from orbital approach. Wants to match
+# the existing UQM planet-sprite convention (round disc centered,
+# slight terminator shadow, no orbit ring overlay). Drahn is the
+# Melnorme homeworld — yellow dwarf orbit, unusual hot-deep-mantle
+# world, will be destroyed in the lore.
+
+A planet sphere viewed from medium orbit, filling the frame. World
+name: Drahn. Surface ranges from dark obsidian-rocky plains to
+crystalline-encrusted highlands of pale violet quartz. Spider-
+webbing across the whole surface: bright actinic-blue "lightning
+rivers" — ionization channels running between mantle vents,
+glowing as if etched on the planet by an arc-welder. Glowing
+orange-red dots are open mantle vents emitting heat. A thin
+atmosphere refracts the actinic-blue glow as a faint cyan halo
+around the planet's limb. The terminator shadow falls across the
+right third, with the lightning-rivers still glowing through the
+nightside, brighter against the dark. Lit by a warm yellow-dwarf
+sun from the upper left. Background: deep starfield. Style:
+stylized 1990s sci-fi game asset, painterly, crisp circular
+silhouette suitable as a sprite. Drahn should feel ALIVE — like a
+planet that is itself a piece of operating machinery.

@@ -1,0 +1,25 @@
+# aspect: 1:1
+# notes: dialog portrait for a Mycon biot in the early Deep Child
+# awakening stage. Note that SC2's Mycon were red-and-purple
+# pustule-blobs; ours are FURLING ENGINEERED terraforming biots
+# 250,000 years before SC2 — looser, less menacing, more "tool that
+# is starting to dream." If the first generation is too SC2-Mycon,
+# add "less menacing, more biological-laboratory specimen, NOT a
+# horror creature".
+
+A close-up portrait of a "Mycon Biot" — a Star-Control-universe
+fungal terraforming worker engineered by an ancient civilization.
+A bulbous mass of pale ochre and warm-grey fungal tissue, the size
+of a torso, asymmetric and slowly pulsing. From its sides extrude
+3-5 thin motile spore-tendrils that float as if in liquid, each
+tipped with a tiny chitinous sensor-bud. At its center, a soft
+internal glow — a bioluminescent centroid in cool teal-cyan — is
+just beginning to manifest, suggesting a nascent consciousness
+("the Deep Child") waking up inside the tool. Visible fine spore-
+dust drifts around the figure, gold-flecked motes against the dark.
+Lighting: warm low-angle illumination, deep shadow above, set
+against a near-black volcanic mantle-vent backdrop with a faint
+glow of magma below. Style: stylized 1990s sci-fi game portrait,
+painterly, crisp silhouette. The biot should look strange and
+biological but not horror — it is a worker, not a monster, in this
+era. Subtle uncanny quality from the central glow.
