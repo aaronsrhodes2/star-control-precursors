@@ -71,6 +71,13 @@ The factions are not formally chartered. They are tendencies, reading-rooms, mut
 **Weakness:** Untested at scale. The Others' senses are not well-mapped. One leak ends the Migration's effectiveness.
 **In the slice:** The Mycon biots, if they awaken into Deep Child sentience, might be candidates for the Hider strategy — they live underground, surrounded by spore-clouds that might mask mind-light. This is a genuinely-debated option in the player's Council reports.
 
+### Talos — *Be Loud. Be Heard. Be Spared.* (Homesteader, Stay-Side)
+**Doctrine:** The Others sense cognition. Fine — *meet them with cognition*. Build a transmitter that broadcasts our intelligence at such an overwhelming amplitude that the Others must either parley, recognize a peer, or simply pass us over as too costly to engage. *Hiding is cowardice; running is surrender; defending is suicide. The fourth path is to be brilliantly, deafeningly unignorable.*
+**Leverage:** The **Talos Resonator** — a Furling-built signal-amplifier device tuned to project the operator's full cognitive bandwidth across dimensional substrates. Mid-stage prototype during the slice; nearly operational by mid-game.
+**Weakness:** **Catastrophically wrong.** The Others do not parley. They do not recognize peers. They do not pass over the loud. They *eat the loud first*. The Talos broadcast is the equivalent of a dinner bell.
+**In the slice (mid-game event):** A small Talos faction enclave operating in a peripheral cluster system completes its Resonator and activates it. The player witnesses the broadcast — a brief moment of *enormous* signal flooding every comm channel, a defiant message in Furling — then **silence**, followed by an Other arrival that erases the system within minutes. The Talos device itself survives (it was built into the planet's mantle); the Others ignore the inert hardware after the broadcasters are gone.
+**SC2 callforward:** the surviving **Talos Resonator** is recoverable as a Furling-era artifact. SC2-era humans find one of these devices intact — its operators long dead — and recognize it as Precursor technology. It becomes a famous SC2 artifact: a still-functional broadcaster of unknown purpose. SC2 captains treat it as a mystery. The slice player knows what it really is: a martyr's loud goodbye.
+
 ## The Species' Responses (slice-relevant only)
 
 ### Slylandro (your slice's main sentient species)

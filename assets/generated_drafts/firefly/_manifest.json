@@ -3,8 +3,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_cloaking_satellite.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_cloaking_satellite.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:27:14+00:00",
+    "status": "pending",
     "tags": [
       "artifacts"
     ],
@@ -16,8 +16,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_backdrops/backdrop_council_chamber.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png",
     "aspect": "16:9",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:23:07+00:00",
+    "status": "pending",
     "tags": [
       "backdrops"
     ],
@@ -29,8 +29,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_distress_beacon.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png",
     "aspect": "16:9",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:24:56+00:00",
+    "status": "pending",
     "tags": [
       "cutscenes"
     ],
@@ -42,8 +42,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_lander/lander_furling.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:17:29+00:00",
+    "status": "pending",
     "tags": [
       "lander"
     ],
@@ -68,8 +68,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_ossuary.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_ossuary.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T02:51:52+00:00",
+    "status": "pending",
     "tags": [
       "planets"
     ],
@@ -94,8 +94,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mmrnmhrm_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mmrnmhrm_portrait.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:00:01+00:00",
+    "status": "pending",
     "tags": [
       "portraits"
     ],
@@ -107,8 +107,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mycon_biot_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T02:55:11+00:00",
+    "status": "pending",
     "tags": [
       "portraits"
     ],
@@ -120,8 +120,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_planar_blade_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:13:44+00:00",
+    "status": "pending",
     "tags": [
       "portraits"
     ],
@@ -146,8 +146,8 @@
     "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_drive.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_ui/icon_module_drive.png",
     "aspect": "1:1",
-    "generated_at": null,
-    "status": "queued",
+    "generated_at": "2026-05-17T03:19:36+00:00",
+    "status": "pending",
     "tags": [
       "ui"
     ],
