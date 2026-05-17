@@ -39,8 +39,9 @@ from audio_sfx_specs import (  # noqa: E402
 from eleven_sfx import sfx_bytes, DEFAULT_OUTPUT_FORMAT  # noqa: E402
 
 
-NORMALIZE_TARGET_PEAK = 0.9      # any peak below this scales up to here
-NORMALIZE_FLOOR_PEAK = 0.5       # peaks at/above this are left alone
+# Aaron 2026-05-17: Round-1 SFX too quiet, raised normalize target.
+NORMALIZE_TARGET_PEAK = 0.95     # any peak below this scales up to here
+NORMALIZE_FLOOR_PEAK = 0.6       # peaks at/above this are left alone
 
 
 ROOT = Path(__file__).resolve().parent.parent

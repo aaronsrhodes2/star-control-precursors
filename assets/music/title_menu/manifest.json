@@ -1,28 +1,38 @@
 {
   "context": "title_menu",
   "category": "cinematic",
-  "description": "Title screen \u2014 mystery, scale, the Furred Ones gazing at the stars",
+  "description": "Title screen \u2014 grand orchestrated anthem, 4-minute structured piece with a memorable hero-hook",
   "key": "F minor",
-  "bpm": 66,
-  "duration_s": 90,
+  "bpm": 72,
+  "duration_s": 240,
   "backend": "elevenlabs-music_v1/mp3_44100_192",
   "stems": {
-    "drone": {
-      "path": "assets/music/title_menu/drone.mp3",
-      "prompt": "Isolated DRONE BASS STEM for layered production: deep slow-evolving synth drone, swells of low harmonic content, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, in the spirit of the 1990s mythic sci-fi credits idiom \u2014 vast ancient scale, 3DO orchestrated synth, stems-only mix",
+    "bass": {
+      "path": "assets/music/title_menu/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: orchestral low end: tuba pedal tones, double-bass section, timpani rolls on section transitions, deep cinematic foundation; no drums no melody no pads, in F minor at 72 bpm, grand cinematic sci-fi orchestra, 4-minute structured piece: sparse intro -> layered build -> soaring hero-theme hook at 90s -> minor-key restatement -> fade. Striking, memorable, NOT ambient, in the spirit of 1990s mythic sci-fi credits \u2014 vast ancient scale, 3DO orchestrated, hero brass theme, stems-only mix",
       "format": "mp3_44100_192"
     },
-    "pulse": {
-      "path": "assets/music/title_menu/pulse.mp3",
-      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: slow heartbeat-like sub-pulse, occasional resonant metallic tap, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, in the spirit of the 1990s mythic sci-fi credits idiom \u2014 vast ancient scale, 3DO orchestrated synth, stems-only mix",
+    "percussion": {
+      "path": "assets/music/title_menu/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: orchestral percussion: timpani, ride cymbals, snare rolls, occasional gong on the hero-theme entry, restrained but deliberate; no melody no bass no pads, in F minor at 72 bpm, grand cinematic sci-fi orchestra, 4-minute structured piece: sparse intro -> layered build -> soaring hero-theme hook at 90s -> minor-key restatement -> fade. Striking, memorable, NOT ambient, in the spirit of 1990s mythic sci-fi credits \u2014 vast ancient scale, 3DO orchestrated, hero brass theme, stems-only mix",
       "format": "mp3_44100_192"
     },
-    "texture": {
-      "path": "assets/music/title_menu/texture.mp3",
-      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant alien choral pads, soft solar wind, slow shimmer, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, in the spirit of the 1990s mythic sci-fi credits idiom \u2014 vast ancient scale, 3DO orchestrated synth, stems-only mix",
+    "pad": {
+      "path": "assets/music/title_menu/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: sustained full string section \u2014 violins and cellos \u2014 with warm horns underneath, swelling on the hero theme, supportive chord beds throughout; no melody no drums no bass, in F minor at 72 bpm, grand cinematic sci-fi orchestra, 4-minute structured piece: sparse intro -> layered build -> soaring hero-theme hook at 90s -> minor-key restatement -> fade. Striking, memorable, NOT ambient, in the spirit of 1990s mythic sci-fi credits \u2014 vast ancient scale, 3DO orchestrated, hero brass theme, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/title_menu/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: MEMORABLE HEROIC BRASS THEME: French horns and trumpets stating a striking 4-bar hook melody that lands at the 90-second mark, then restates with variations. The HOOK is the most important element \u2014 make it singable. Hero theme in a minor key, noble but melancholy; no drums no bass no pads, in F minor at 72 bpm, grand cinematic sci-fi orchestra, 4-minute structured piece: sparse intro -> layered build -> soaring hero-theme hook at 90s -> minor-key restatement -> fade. Striking, memorable, NOT ambient, in the spirit of 1990s mythic sci-fi credits \u2014 vast ancient scale, 3DO orchestrated, hero brass theme, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "ambient": {
+      "path": "assets/music/title_menu/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant alien choral pads, soft solar wind, slow harmonic shimmer, mythic backing texture sustaining throughout; no melody no drums no bass, in F minor at 72 bpm, grand cinematic sci-fi orchestra, 4-minute structured piece: sparse intro -> layered build -> soaring hero-theme hook at 90s -> minor-key restatement -> fade. Striking, memorable, NOT ambient, in the spirit of 1990s mythic sci-fi credits \u2014 vast ancient scale, 3DO orchestrated, hero brass theme, stems-only mix",
       "format": "mp3_44100_192"
     }
   },
-  "generated_at": "2026-05-17T18:53:47Z",
-  "notes": ""
+  "generated_at": "2026-05-17T19:42:42Z",
+  "notes": "240-second piece. Each stem prompt names a 5-part structure so the generation hangs together rhythmically when stems are mixed: intro (0-30s, sparse) -> build (30-90s, layering in) -> hero theme with the HOOK (90-180s, full orchestra) -> restatement (180-210s, darker minor variation) -> fade (210-240s, intro motif returning)."
 }

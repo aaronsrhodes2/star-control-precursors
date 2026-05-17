@@ -392,10 +392,98 @@ function stopEverythingExcept(ctxName) {
   });
 }
 
-// On load, give every <audio> the initial stem volume so master scaling works.
+// ---- localStorage persistence (so slider tweaks survive nav-aways) ----
+const STATE_KEY = 'scz_audio_review_state_v1';
+
+function loadState() {
+  try {
+    return JSON.parse(localStorage.getItem(STATE_KEY) || '{}');
+  } catch (e) {
+    return {};
+  }
+}
+function saveState(state) {
+  try { localStorage.setItem(STATE_KEY, JSON.stringify(state)); }
+  catch (e) { /* quota / private-mode -- silent */ }
+}
+const state = loadState();
+// state = { masterVol: 0.7, stems: { "ctxName__stemName": { vol: 0.85, muted: false } } }
+state.stems = state.stems || {};
+
+function _stemKey(ctxName, stemName) { return ctxName + '__' + stemName; }
+
+// Wrap setStemVol to persist
+const _origSetStemVol = setStemVol;
+setStemVol = function(ctxName, stemName, v) {
+  _origSetStemVol(ctxName, stemName, v);
+  const k = _stemKey(ctxName, stemName);
+  state.stems[k] = state.stems[k] || {};
+  state.stems[k].vol = +v;
+  saveState(state);
+};
+const _origToggleMute = toggleMute;
+toggleMute = function(ctxName, stemName, btn) {
+  _origToggleMute(ctxName, stemName, btn);
+  const audios = _ctxAudios(ctxName).filter(a => a.dataset.stem === stemName);
+  if (audios.length) {
+    const k = _stemKey(ctxName, stemName);
+    state.stems[k] = state.stems[k] || {};
+    state.stems[k].muted = audios[0].muted;
+    saveState(state);
+  }
+};
+const _origResetStems = resetStems;
+resetStems = function(ctxName) {
+  _origResetStems(ctxName);
+  Object.keys(state.stems).forEach(k => {
+    if (k.startsWith(ctxName + '__')) delete state.stems[k];
+  });
+  saveState(state);
+};
+const _origSetMasterVolume = setMasterVolume;
+setMasterVolume = function(v) {
+  _origSetMasterVolume(v);
+  state.masterVol = +v;
+  saveState(state);
+};
+
+// On load: restore master + per-stem state. Master first so per-stem
+// scaling uses the right master.
+if (typeof state.masterVol === 'number') {
+  const masterInput = document.getElementById('master-vol');
+  masterInput.value = state.masterVol;
+  setMasterVolume(state.masterVol);
+}
+// Initialize every audio's stemVol dataset (must happen before applying
+// restored values so the master-volume rescale works).
 document.querySelectorAll('audio[data-stem]').forEach(a => {
   a.dataset.stemVol = 0.85;
   a.volume = 0.85 * masterVol;
+});
+// Now apply restored per-stem values, walking the actual stem rows so the
+// slider position + readout + mute button text all stay in sync.
+document.querySelectorAll('.music-ctx').forEach(ctx => {
+  const ctxName = ctx.dataset.ctx;
+  ctx.querySelectorAll('.stem').forEach(stem => {
+    const audio = stem.querySelector('audio');
+    const range = stem.querySelector('input[type="range"]');
+    const readout = stem.querySelector('.vol-readout');
+    const muteBtn = stem.querySelector('.mute-btn');
+    const k = _stemKey(ctxName, audio.dataset.stem);
+    const s = state.stems[k];
+    if (!s) return;
+    if (typeof s.vol === 'number') {
+      range.value = s.vol;
+      readout.textContent = (+s.vol).toFixed(2);
+      audio.dataset.stemVol = s.vol;
+      audio.volume = (+s.vol) * masterVol;
+    }
+    if (s.muted) {
+      audio.muted = true;
+      muteBtn.textContent = 'unmute';
+      muteBtn.classList.add('playing');
+    }
+  });
 });
 </script>
 </body>

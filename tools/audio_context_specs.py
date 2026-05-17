@@ -152,18 +152,19 @@ COMBAT_LOW = ContextSpec(
     key="D minor",
     bpm=132,
     duration_s=90,
-    description="Low-risk skirmish — engaged but not in real danger",
+    description="Low-risk skirmish — engaged but not in real danger (heavy-metal pivot 2026-05-17)",
     sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/battle.ogg",
-    sc2_idiom="the 1990s sci-fi combat-game battle idiom — driving distorted bass, aggressive percussion, urgent action-game tempo, 3DO orchestrated synth",
+    sc2_idiom="1990s sci-fi combat-game battle idiom crossed with classic heavy-metal — galloping distorted bass, double-kick drums, palm-muted electric-guitar riffs, screaming lead guitar",
     round=1,
     stems=_standard_5stem(
-        "D minor", 132, "tense action, driving propulsion, controlled risk",
-        bass_body="driving distorted synth bass riff with eighth-note motion, no drums no melody no pads",
-        perc_body="urgent live-sounding kit, fast hihats and snare backbeat with tom fills, no melody no bass no pads",
-        pad_body="aggressive minor-key brass-pad stabs on the downbeat, no melody no drums no bass",
-        lead_body="staccato synth riff, defiant melodic figure with tense intervals, no drums no bass no pads",
-        amb_body="filtered sirens and radio chatter texture, no melody no drums no bass",
-        sc2_idiom="the 1990s sci-fi combat-game battle idiom — driving distorted bass, aggressive percussion, 3DO orchestrated synth",
+        "D minor", 132,
+        "heavy-metal sci-fi combat, driving aggressive but musical, never harsh-for-the-sake-of-harsh",
+        bass_body="galloping palm-muted distorted electric bass guitar riff, eighth-note motion, no drums no melody no pads",
+        perc_body="thrash-metal kit with double-kick gallop on bass drum, crash and ride cymbals, tight snare backbeat, no melody no bass no pads",
+        pad_body="sustained distorted electric-guitar power chord stabs on the downbeats, no melody no drums no bass",
+        lead_body="screaming distorted lead electric-guitar melody with confident bluesy phrasing, hero-on-the-attack feel, no drums no bass no pads",
+        amb_body="industrial machine-room hum and amp-feedback texture, no melody no drums no bass",
+        sc2_idiom="1990s sci-fi combat-game battle crossed with classic heavy-metal — galloping distorted bass, double-kick drums, palm-muted electric guitars",
     ),
 )
 
@@ -260,19 +261,43 @@ TITLE_MENU = ContextSpec(
     name="title_menu",
     category="cinematic",
     key="F minor",
-    bpm=66,
-    duration_s=90,
-    description="Title screen — mystery, scale, the Furred Ones gazing at the stars",
+    bpm=72,
+    duration_s=240,  # 4-minute orchestrated piece per Aaron 2026-05-17
+    description="Title screen — grand orchestrated anthem, 4-minute structured piece with a memorable hero-hook",
     sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/credits.ogg",
-    sc2_idiom="the 1990s mythic sci-fi credits idiom — vast, ancient civilization at scale, 3DO orchestrated, slow majestic chord progression",
+    sc2_idiom="1990s mythic sci-fi credits idiom — vast ancient civilization at scale, 3DO orchestrated synth, slow majestic chord progression",
     round=1,
-    stems=_stinger_3stem(
-        "F minor", 66,
-        "vast, lonely, mythic, ancient civilization on the edge of revelation",
-        drone_body="deep slow-evolving synth drone, swells of low harmonic content",
-        pulse_body="slow heartbeat-like sub-pulse, occasional resonant metallic tap",
-        texture_body="distant alien choral pads, soft solar wind, slow shimmer",
-        sc2_idiom="the 1990s mythic sci-fi credits idiom — vast ancient scale, 3DO orchestrated synth",
+    notes=(
+        "240-second piece. Each stem prompt names a 5-part structure so the "
+        "generation hangs together rhythmically when stems are mixed: "
+        "intro (0-30s, sparse) -> build (30-90s, layering in) -> hero theme "
+        "with the HOOK (90-180s, full orchestra) -> restatement (180-210s, "
+        "darker minor variation) -> fade (210-240s, intro motif returning)."
+    ),
+    stems=_standard_5stem(
+        "F minor", 72,
+        ("grand cinematic sci-fi orchestra, 4-minute structured piece: "
+         "sparse intro -> layered build -> soaring hero-theme hook at 90s -> "
+         "minor-key restatement -> fade. Striking, memorable, NOT ambient"),
+        bass_body=("orchestral low end: tuba pedal tones, double-bass section, "
+                   "timpani rolls on section transitions, deep cinematic foundation; "
+                   "no drums no melody no pads"),
+        perc_body=("orchestral percussion: timpani, ride cymbals, snare rolls, "
+                   "occasional gong on the hero-theme entry, restrained but "
+                   "deliberate; no melody no bass no pads"),
+        pad_body=("sustained full string section — violins and cellos — with "
+                  "warm horns underneath, swelling on the hero theme, "
+                  "supportive chord beds throughout; no melody no drums no bass"),
+        lead_body=("MEMORABLE HEROIC BRASS THEME: French horns and trumpets "
+                   "stating a striking 4-bar hook melody that lands at the "
+                   "90-second mark, then restates with variations. The HOOK "
+                   "is the most important element — make it singable. Hero "
+                   "theme in a minor key, noble but melancholy; "
+                   "no drums no bass no pads"),
+        amb_body=("distant alien choral pads, soft solar wind, slow harmonic "
+                  "shimmer, mythic backing texture sustaining throughout; "
+                  "no melody no drums no bass"),
+        sc2_idiom="1990s mythic sci-fi credits — vast ancient scale, 3DO orchestrated, hero brass theme",
     ),
 )
 
