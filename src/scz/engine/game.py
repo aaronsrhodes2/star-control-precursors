@@ -2,11 +2,16 @@
 
 from __future__ import annotations
 
+import logging
+
 import pygame
 
 from scz.engine.input import InputManager
 from scz.engine.scene import Scene
 from scz.engine.time_drive import TimeDrive
+
+
+log = logging.getLogger("scz.engine.game")
 
 
 class Game:
@@ -29,6 +34,13 @@ class Game:
         target_fps: int = 60,
         fullscreen: bool = True,
     ) -> None:
+        # Mixer wants to be pre-init'd before pygame.init() runs so it
+        # picks up our preferred buffer size. Safe to skip if the env
+        # has no audio device — the StemMixer bootstrap will catch.
+        try:
+            pygame.mixer.pre_init(frequency=44100, channels=2, buffer=512)
+        except Exception:
+            pass
         pygame.init()
         pygame.joystick.init()
         flags = 0
@@ -41,6 +53,30 @@ class Game:
         self.running = True
         self.input = InputManager()
         self.current_scene: Scene | None = None
+
+        # Runtime audio — owned by the Game, plumbed to scenes via
+        # `scene.music_context` (string) + `scene.game.audio` access.
+        # Construction is silent on no-audio-device boxes (StemMixer's
+        # bootstrap traps pygame.error). Tests/headless can leave audio
+        # untouched and gameplay code keeps working.
+        from scz.audio.mixer import StemMixer
+        from scz.audio.director import MusicDirector
+        from scz.audio.sfx_bus import SfxBus
+        # 12 channels: 6 for music stems (Slylandro is heaviest at 7) +
+        # a few for overlapping SFX. Plenty for the slice's needs.
+        self._stem_mixer = StemMixer(channel_count=16)
+        try:
+            self._stem_mixer.bootstrap(frequency=44100, channels_stereo=2)
+            self._audio_ready = True
+        except Exception as e:
+            log.warning("audio bootstrap failed (continuing silently): %s", e)
+            self._audio_ready = False
+        self.music = MusicDirector(self._stem_mixer)
+        self.sfx = SfxBus()
+        # The currently-set music context name; tracked here so we can
+        # detect transitions without churning the Director on identity
+        # re-sets.
+        self._current_music_context: str | None = None
         # An overlay scene is rendered on top of and intercepts input from
         # the main scene without unloading it. Used for the F1 scene-
         # switcher (and future modal dialogs).
@@ -114,6 +150,18 @@ class Game:
         scene.game = self
         self.current_scene = scene
         scene.on_enter()
+        # Music handoff: each Scene class can declare a `music_context`
+        # attribute (string name matching assets/music/<context>/) and
+        # the Director cross-fades into it. None = leave music alone
+        # (carry over from the prior scene; useful for modal overlays
+        # and within-context transitions like dialog-over-hyperspace).
+        ctx = getattr(scene, "music_context", None)
+        if ctx and ctx != self._current_music_context:
+            try:
+                self.music.set_context(ctx, self)
+                self._current_music_context = ctx
+            except Exception as e:
+                log.warning("music context %s failed to load: %s", ctx, e)
 
     def open_overlay(self, scene: Scene) -> None:
         """Open a modal overlay on top of the current scene.
@@ -207,6 +255,11 @@ class Game:
 
                 if self.input.quit:
                     self.running = False
+
+                # Music ramps + state-driven layer refresh every frame.
+                # Director updates are cheap — pure volume ramping — so
+                # safe to call regardless of which scene is active.
+                self.music.update(dt, self)
 
                 if self.current_scene is not None:
                     # F1 anywhere → open the scene switcher overlay.

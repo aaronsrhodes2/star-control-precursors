@@ -303,6 +303,329 @@ TITLE_MENU = ContextSpec(
 
 
 # ---------------------------------------------------------------------------
+# A. Universal travel & exploration — Round 2 batch
+# ---------------------------------------------------------------------------
+
+SYSTEM_TRAVEL = ContextSpec(
+    name="system_travel",
+    category="travel",
+    key="D minor",
+    bpm=92,
+    duration_s=90,
+    description="In-system travel — contemplative exploration of a star system",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/space.ogg",
+    sc2_idiom="1990s sci-fi in-system exploration idiom — slower than hyperspace, "
+              "contemplative chord beds with occasional bright bell-like punctuation, "
+              "3DO orchestrated synth, sense of approach rather than transit",
+    round=2,
+    stems=_standard_5stem(
+        "D minor", 92,
+        "contemplative sci-fi in-system flight, slower-paced exploration, sense of approach",
+        bass_body="slow walking analog synth bassline, sustained low pulses, no drums no melody no pads",
+        perc_body="sparse mid-tempo brush kit with occasional rim-shots and shaker, no melody no bass no pads",
+        pad_body="warm slow-evolving analog pad in minor-key chord beds, atmospheric, no melody no drums no bass",
+        lead_body="occasional bright bell-tone melody fragments, restrained and curious, no drums no bass no pads",
+        amb_body="distant solar wind and gentle deep-space hum, no melody no drums no bass",
+        sc2_idiom="1990s sci-fi in-system exploration — slower than hyperspace, "
+                  "ProTracker-derived chord beds, 3DO synth",
+    ),
+)
+
+HYPERSPACE_PURSUIT = ContextSpec(
+    name="hyperspace_pursuit",
+    category="travel",
+    key="C minor",
+    bpm=140,
+    duration_s=90,
+    description="Hyperspace travel — chased; danger stalking, must escape",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/hyper.ogg",
+    sc2_idiom="1990s space-game pursuit idiom — same minor-key chord-progression "
+              "DNA as the peaceful hyperspace theme but faster and tenser, the "
+              "same melodic family in a panic state",
+    round=2,
+    notes="Should sound like the peaceful Hyperspace theme's tense cousin — "
+          "same key (C minor) for continuity, but +32 bpm and shifted to "
+          "a 'something is wrong' register so context transitions feel related.",
+    stems=_standard_5stem(
+        "C minor", 140,
+        "tense pursuit, fast-paced sci-fi flight, danger stalking, must escape",
+        bass_body="fast pulsing distorted synth bass with eighth-note urgency, no drums no melody no pads",
+        perc_body="driving four-on-the-floor with double-time hihats and occasional crash, anxious tom fills, no melody no bass no pads",
+        pad_body="dissonant minor-key brass stab pads, repeating tense rhythmic figure, no melody no drums no bass",
+        lead_body="urgent staccato synth riff, fearful melodic figure that climbs and falls, no drums no bass no pads",
+        amb_body="alarm-siren texture and panicked radio chatter, no melody no drums no bass",
+        sc2_idiom="1990s space-game pursuit — tense cousin of the peaceful "
+                  "hyperspace theme, ProTracker-derived",
+    ),
+)
+
+QUASISPACE_TRAVEL = ContextSpec(
+    name="quasispace_travel",
+    category="travel",
+    key="D flat major",
+    bpm=70,
+    duration_s=90,
+    description="Quasi-Space travel via Arilou portal — otherworldly, time-detached",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/quasispace.ogg",
+    sc2_idiom="1990s alien-dimensional-pocket idiom — drifting, time-stretched, "
+              "phase-shifted chimes, sense of being between places, 3DO synth",
+    round=2,
+    stems=_standard_5stem(
+        "D flat major", 70,
+        "otherworldly drifting through a non-Euclidean pocket dimension, time-detached",
+        bass_body="slow detuned synth drone, gentle phase-shifting low frequencies, no drums no melody no pads",
+        perc_body="very sparse soft mallet percussion with long reverb tails, almost ambient, no melody no bass no pads",
+        pad_body="airy choral synth pad with subtle pitch-bend modulation, time-stretched quality, no melody no drums no bass",
+        lead_body="distant phase-shifted bell-tone melody, dreamy and detached, no drums no bass no pads",
+        amb_body="reversed shimmer textures, subtle dimensional-echo aftertones, no melody no drums no bass",
+        sc2_idiom="1990s alien-dimensional-pocket idiom — drifting, "
+                  "time-stretched, ProTracker-derived",
+    ),
+)
+
+PLANET_ORBIT_CLOAKED = ContextSpec(
+    name="planet_orbit_cloaked",
+    category="travel",
+    key="E flat major",
+    bpm=80,
+    duration_s=90,
+    description="Planet orbit — cloaked and safe; scanning from above",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/orbit1.ogg",
+    sc2_idiom="1990s sci-fi planetary-orbit idiom — calm, observational, "
+              "soft sustained pads with gentle pulsing bass, 3DO synth, "
+              "sense of safety from a high vantage point",
+    round=2,
+    stems=_standard_5stem(
+        "E flat major", 80,
+        "calm safe orbital observation, scanner-active but invisible, soft watchful",
+        bass_body="warm sub-bass slow pulse on the downbeat, no drums no melody no pads",
+        perc_body="soft electronic shaker with gentle hihat, mostly quiet, no melody no bass no pads",
+        pad_body="warm major-key synth pad in slow sustained chords, atmospheric calm, no melody no drums no bass",
+        lead_body="soft chime-like melody motif, contemplative and watchful, no drums no bass no pads",
+        amb_body="gentle scanner-tone shimmer and distant planet-atmosphere whisper, no melody no drums no bass",
+        sc2_idiom="1990s sci-fi orbital idiom — calm observation, ProTracker-derived",
+    ),
+)
+
+PLANET_LANDER = ContextSpec(
+    name="planet_lander",
+    category="travel",
+    key="G major",
+    bpm=96,
+    duration_s=90,
+    description="Planet lander — surface collecting; methodical exploration",
+    sc2_inspiration="",  # no direct SC2 antecedent
+    sc2_idiom="",
+    round=2,
+    notes="Should sound like productive work on an alien surface — "
+          "methodical rhythm, slight wonder, never tense.",
+    stems=_standard_5stem(
+        "G major", 96,
+        "methodical sci-fi surface exploration, productive working tempo, slight wonder",
+        bass_body="steady walking analog synth bassline with optimistic forward motion, no drums no melody no pads",
+        perc_body="light kit with rim-shots and shaker, mid-tempo working rhythm, no melody no bass no pads",
+        pad_body="warm major-key synth pad with major-7 colors, atmospheric and inviting, no melody no drums no bass",
+        lead_body="bright synth melody with curious rising phrases, productive but slightly awed, no drums no bass no pads",
+        amb_body="alien wind through canyon, distant resource-detection chirps, no melody no drums no bass",
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# B. Combat — Round 2 batch (combat_low already in Round 1)
+# ---------------------------------------------------------------------------
+
+COMBAT_HIGH = ContextSpec(
+    name="combat_high",
+    category="combat",
+    key="D minor",
+    bpm=144,
+    duration_s=90,
+    description="High-risk skirmish — real danger, escalation past low-risk threshold",
+    sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/battle.ogg",
+    sc2_idiom="1990s sci-fi combat-game battle idiom — same heavy-metal "
+              "vocabulary as combat_low but faster, harder, with higher stakes",
+    round=2,
+    notes="Continuity with combat_low's heavy-metal pivot — same key (D minor), "
+          "+12 bpm, more aggressive riffs.",
+    stems=_standard_5stem(
+        "D minor", 144,
+        "escalated heavy-metal sci-fi combat, real-stakes danger, more aggressive than low-risk",
+        bass_body="aggressive palm-muted distorted electric bass riff with sixteenth-note gallop, no drums no melody no pads",
+        perc_body="hard thrash-metal kit with sustained double-kick, crash and china cymbals, snare rolls between fills, no melody no bass no pads",
+        pad_body="sustained heavy distorted power-chord stabs with chromatic motion, no melody no drums no bass",
+        lead_body="shredding distorted lead electric-guitar with fast melodic runs, defiant and dangerous, no drums no bass no pads",
+        amb_body="industrial machine-room hum, amp feedback, distant warning sirens, no melody no drums no bass",
+        sc2_idiom="1990s sci-fi combat — heavy-metal escalation, ProTracker-derived",
+    ),
+)
+
+COMBAT_BOSS = ContextSpec(
+    name="combat_boss",
+    category="combat",
+    key="E flat minor",
+    bpm=132,
+    duration_s=90,
+    description="Boss fight — Cleanser climax; religious-dread combat",
+    sc2_inspiration="",  # SCZ-original — Cleanser is a Furling faction
+    sc2_idiom="",
+    round=2,
+    notes="Bridges combat_low (heavy-metal sci-fi) and cleanser_council "
+          "(monolithic Furling dread). Same key as cleanser_council (Eb minor) "
+          "for thematic ties; combat tempo (132 bpm) for action.",
+    stems=_standard_5stem(
+        "E flat minor", 132,
+        "monolithic religious-dread combat, Cleanser boss climax, doom-metal sci-fi",
+        bass_body="thunderous detuned distorted electric bass with deep sub-bass doubling, doom-metal weight, no drums no melody no pads",
+        perc_body="massive taiko-and-thrash hybrid kit with double-kick gallop and crash cymbals, ceremonial weight, no melody no bass no pads",
+        pad_body="distorted cathedral pipe-organ stabs in minor-key chord progression, religious dread, no melody no drums no bass",
+        lead_body="solo distorted electric-guitar lead with mournful conviction, hero-against-fate phrasing, no drums no bass no pads",
+        amb_body="distant Furling chant fragments, deep cathedral reverb tail, ominous wind through stone, no melody no drums no bass",
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
+# C. Per-species peace themes — Round 2 batch
+# (Slylandro already in Round 1; Lemmkin queued below)
+# ---------------------------------------------------------------------------
+
+MYCON_PEACE = ContextSpec(
+    name="mycon",
+    category="species_peace",
+    key="F minor",
+    bpm=64,
+    duration_s=90,
+    description="Mycon biot — obedient ritual chanting; state stems = obedience + heresy",
+    sc2_inspiration="references/uqm-source/sc2/content/base/comm/mycon/mycon.mod",
+    sc2_idiom="1990s alien-fungal-ritual idiom — chanting, wet thrumming, "
+              "deep bio-mechanical pulses, slow tempo, multitracker chiptune "
+              "vocabulary",
+    round=2,
+    notes="State stems 'obedience' and 'heresy' are read by "
+          "src/scz/audio/state_layers.py from game.flags['mycon_heresy_level']. "
+          "obedience high when player hasn't disturbed the Deep Child; heresy "
+          "rises as the Deep Child whispers gain traction.",
+    stems={
+        **_standard_5stem(
+            "F minor", 64,
+            "alien fungal-ritual species theme, slow chanting, wet bio-mechanical pulses",
+            bass_body="deep sub-bass bio-thrum with slow pulsing modulation, no drums no melody no pads",
+            perc_body="slow wet organic percussion: dripping cave-water rhythms, soft body-thuds, no melody no bass no pads",
+            pad_body="droning minor-key fungal-tone pad with subtle dissonance, no melody no drums no bass",
+            lead_body="slow ceremonial chant-melody, low voiced syllables in fragments, no drums no bass no pads",
+            amb_body="distant cave reverb, drip echoes, low spore-cloud rumble, no melody no drums no bass",
+            sc2_idiom="1990s alien-fungal-ritual — chanting, multitracker chiptune",
+        ),
+        # State stem: OBEDIENCE — high when undisturbed; communal chant of conformity
+        "obedience": _stem_prompt(
+            "OBEDIENCE-RITUAL TEXTURE",
+            "low-voiced chorus of synchronized ceremonial chant, calm dutiful murmuring, "
+            "sense of an entire colony moving in perfect ritual harmony",
+            "F minor", 64, "obedient, calm, harmonious, ritually-perfect",
+        ),
+        # State stem: HERESY — rises with Deep Child whispers; dissonant counter-melody
+        "heresy": _stem_prompt(
+            "HERESY-WHISPER TEXTURE",
+            "dissonant counter-chant of individual voices breaking from harmony, "
+            "whispered alien syllables, growing unease in the bio-machinery, the "
+            "Deep Child awakening from below",
+            "F minor", 64, "dissonant, dawning awareness, awakening from ritual",
+        ),
+    },
+)
+
+ARILOU_PEACE = ContextSpec(
+    name="arilou",
+    category="species_peace",
+    key="B flat major",
+    bpm=90,
+    duration_s=90,
+    description="Arilou Lalee'lay — gentle quasi-space whisper; state stem = patience",
+    sc2_inspiration="references/uqm-source/sc2/content/base/comm/arilou/arilou.mod",
+    sc2_idiom="1990s alien-mystical idiom — phase-shifted chimes, dimensional "
+              "whisper, gentle major-key chord beds, multitracker chiptune",
+    round=2,
+    notes="State stem 'patience' is read by src/scz/audio/state_layers.py from "
+          "game.flags['arilou_patience']. Starts at 1.0 and only decreases as "
+          "the Sage gives up on the Steward.",
+    stems={
+        **_standard_5stem(
+            "B flat major", 90,
+            "alien mystical species theme, gentle phase-shifted chimes, dimensional whisper",
+            bass_body="warm low sine-wave pulse with subtle pitch-bend modulation, no drums no melody no pads",
+            perc_body="soft mallet hits with long reverb tails, very sparse, no melody no bass no pads",
+            pad_body="airy major-key choral synth pad with phase-shifting filter motion, no melody no drums no bass",
+            lead_body="floating bell-tone melody with bent pitches, contemplative and ethereal, no drums no bass no pads",
+            amb_body="time-stretched shimmer and quasi-space whisper textures, no melody no drums no bass",
+            sc2_idiom="1990s alien-mystical idiom — phase-shifted chimes, multitracker chiptune",
+        ),
+        # State stem: PATIENCE — fades as the Sage gives up on the Steward
+        "patience": _stem_prompt(
+            "PATIENCE-TEXTURE",
+            "warm sustained major-7 string pad with gentle calming resonance, "
+            "soft choral hum underneath, the sound of waiting indefinitely without "
+            "irritation, a presence that has been patient for centuries",
+            "B flat major", 90, "patient, calming, indefinitely-waiting",
+        ),
+    },
+)
+
+ANDROSYNTH_PEACE = ContextSpec(
+    name="androsynth",
+    category="species_peace",
+    key="A minor",
+    bpm=116,
+    duration_s=90,
+    description="Androsynth Refugees — human-improvised retro-Atari with warm analog underneath",
+    sc2_inspiration="",  # Androsynth had no SC2 comm theme — destroyed pre-SC2
+    sc2_idiom="",
+    round=2,
+    notes="Androsynth = clone-humans from 250,000 years in OUR future, thrown "
+          "into the past by an Other 'decursion.' Their sonic identity is "
+          "REFUGEE-IMPROVISED: retro-Atari-style PCM blips and warm analog "
+          "synth foundations under it. Sounds like humans making do.",
+    stems=_standard_5stem(
+        "A minor", 116,
+        "human-improvised refugee species theme, retro-Atari-on-warm-analog, "
+        "making-do-with-what-you-have, slightly melancholy but determined",
+        bass_body="warm analog synth bassline with chunky low-end, retro-but-grounded, no drums no melody no pads",
+        perc_body="mid-tempo kit with retro-PCM-style snare and hihat, slightly lo-fi, no melody no bass no pads",
+        pad_body="warm analog string-pad sustained chords with subtle vibrato, minor-key melancholy, no melody no drums no bass",
+        lead_body="bright Atari-era PCM lead melody, brave little tune, slightly off-tuning that reads as 'jury-rigged', no drums no bass no pads",
+        amb_body="background ship-hum, distant Atari-blip indicators, warm tape hiss texture, no melody no drums no bass",
+    ),
+)
+
+MMRNMHRM_PEACE = ContextSpec(
+    name="mmrnmhrm",
+    category="species_peace",
+    key="C major",
+    bpm=100,
+    duration_s=90,
+    description="Mmrnmhrm — cold-precise robot survivors of a prior Culling",
+    sc2_inspiration="references/uqm-source/sc2/content/base/comm/chmmr/chmmr.mod",
+    sc2_idiom="1990s alien-robot idiom — synthetic precision, mechanical hum, "
+              "perfect-frequency tones, multitracker chiptune robotic vocabulary",
+    round=2,
+    notes="Mmrnmhrm are the robot half of what becomes the SC2 Chmmr after "
+          "the merge with the Chenjesu. In our era they're separate — the "
+          "robots survived a prior Culling, their organic creators didn't.",
+    stems=_standard_5stem(
+        "C major", 100,
+        "alien-robot precision species theme, synthetic clinical perfection, "
+        "no warmth, microsecond-precise timing",
+        bass_body="cold square-wave bass with perfectly-quantized pulses, no drums no melody no pads",
+        perc_body="electronic kit with crisp clicks and precise hihat patterns, robotic timing, no melody no bass no pads",
+        pad_body="sustained sine-wave pad in cold major-key intervals, no human breath, no drums no melody no bass",
+        lead_body="precision FM-synth lead with crystalline tones, mechanical melodic phrasing, no drums no bass no pads",
+        amb_body="machine-room hum, faint server-rack tones, cold rotating fans, no melody no drums no bass",
+        sc2_idiom="1990s alien-robot idiom — synthetic precision, multitracker chiptune",
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
 # Lemmkin peace theme (NEW SPECIES, 2026-05-17 lore expansion)
 #
 # Lemmkin = anthropomorphic squirrels with no fear (vestigial amygdala),
@@ -367,8 +690,22 @@ ROUND_1: list[ContextSpec] = [
     TITLE_MENU,
 ]
 
-# Round 2+ — additional contexts queued for the music expansion.
+# Round 2 — music expansion batch (Aaron approved Round-1 5/5; firing 10 more).
 ROUND_2_QUEUED: list[ContextSpec] = [
+    # Universal travel (5)
+    SYSTEM_TRAVEL,
+    HYPERSPACE_PURSUIT,
+    QUASISPACE_TRAVEL,
+    PLANET_ORBIT_CLOAKED,
+    PLANET_LANDER,
+    # Combat (2 — combat_low already in Round 1)
+    COMBAT_HIGH,
+    COMBAT_BOSS,
+    # Species peace (4 — Slylandro in Round 1)
+    MYCON_PEACE,
+    ARILOU_PEACE,
+    ANDROSYNTH_PEACE,
+    MMRNMHRM_PEACE,
     LEMMKIN_PEACE,
 ]
 

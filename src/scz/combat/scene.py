@@ -146,6 +146,10 @@ class CombatResult:
 class MeleeCombatScene(Scene):
     """1v1 ship combat. Both ships AI-driven by default."""
 
+    # Default to low-risk; runtime can swap to combat_high / combat_boss
+    # when those tracks land + when the combat AI flags stakes.
+    music_context = "combat_low"  # assets/music/combat_low/
+
     def __init__(
         self,
         precursor_ship: ShipClass,
@@ -360,6 +364,12 @@ class MeleeCombatScene(Scene):
                 owner_side=ship.side,
                 color=cls.primary_color,
             ))
+            # SFX hook: play this ship's primary_fire.wav from the
+            # assets/sfx/ships/<ship_id>/ directory the SFX-gen pipeline
+            # wrote. If the asset isn't there yet the SfxBus logs once
+            # and stays silent on subsequent hits.
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play(f"ships/{cls.id}/primary_fire")
 
     def _update_projectiles(self, dt: float) -> None:
         survivors: list[Projectile] = []
@@ -385,6 +395,13 @@ class MeleeCombatScene(Scene):
                 hit_radius = 18.0 + p.radius
                 if d <= hit_radius:
                     target.apply_damage(p.damage)
+                    # SFX hook: play this projectile's owner-ship's
+                    # primary_impact.wav when it hits the target.
+                    if self.game is not None and hasattr(self.game, "sfx"):
+                        # owner_side lookup -> ship cls -> id
+                        shooter = (self.precursor if p.owner_side == self.precursor.side
+                                   else self.homesteader)
+                        self.game.sfx.play(f"ships/{shooter.cls.id}/primary_impact")
                     p = None  # type: ignore[assignment]
                     break
             if p is not None:

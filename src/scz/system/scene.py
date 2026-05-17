@@ -51,6 +51,8 @@ SYSTEM_BOUNDARY_PAD = 220.0
 class SystemScene(Scene):
     """View of a single star system with orbiting planets."""
 
+    music_context = "system_travel"  # assets/music/system_travel/
+
     def __init__(
         self,
         star: dict,

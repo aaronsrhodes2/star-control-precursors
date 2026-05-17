@@ -198,8 +198,12 @@ class SceneSwitcher(Scene):
         # Discrete D-pad / arrow keys (edge-triggered by InputManager)
         if inp.menu_up:
             self.selected = (self.selected - 1) % len(self.entries)
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_select")
         elif inp.menu_down:
             self.selected = (self.selected + 1) % len(self.entries)
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_select")
 
         # Analog stick (continuous, with cooldown so holding doesn't flood)
         if self._axis_cooldown > 0:

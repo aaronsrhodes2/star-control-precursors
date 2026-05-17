@@ -1,0 +1,38 @@
+{
+  "context": "system_travel",
+  "category": "travel",
+  "description": "In-system travel \u2014 contemplative exploration of a star system",
+  "key": "D minor",
+  "bpm": 92,
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
+  "stems": {
+    "bass": {
+      "path": "assets/music/system_travel/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: slow walking analog synth bassline, sustained low pulses, no drums no melody no pads, in D minor at 92 bpm, contemplative sci-fi in-system flight, slower-paced exploration, sense of approach, in the spirit of 1990s sci-fi in-system exploration \u2014 slower than hyperspace, ProTracker-derived chord beds, 3DO synth, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "percussion": {
+      "path": "assets/music/system_travel/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: sparse mid-tempo brush kit with occasional rim-shots and shaker, no melody no bass no pads, in D minor at 92 bpm, contemplative sci-fi in-system flight, slower-paced exploration, sense of approach, in the spirit of 1990s sci-fi in-system exploration \u2014 slower than hyperspace, ProTracker-derived chord beds, 3DO synth, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "pad": {
+      "path": "assets/music/system_travel/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: warm slow-evolving analog pad in minor-key chord beds, atmospheric, no melody no drums no bass, in D minor at 92 bpm, contemplative sci-fi in-system flight, slower-paced exploration, sense of approach, in the spirit of 1990s sci-fi in-system exploration \u2014 slower than hyperspace, ProTracker-derived chord beds, 3DO synth, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/system_travel/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: occasional bright bell-tone melody fragments, restrained and curious, no drums no bass no pads, in D minor at 92 bpm, contemplative sci-fi in-system flight, slower-paced exploration, sense of approach, in the spirit of 1990s sci-fi in-system exploration \u2014 slower than hyperspace, ProTracker-derived chord beds, 3DO synth, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "ambient": {
+      "path": "assets/music/system_travel/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant solar wind and gentle deep-space hum, no melody no drums no bass, in D minor at 92 bpm, contemplative sci-fi in-system flight, slower-paced exploration, sense of approach, in the spirit of 1990s sci-fi in-system exploration \u2014 slower than hyperspace, ProTracker-derived chord beds, 3DO synth, stems-only mix",
+      "format": "mp3_44100_192"
+    }
+  },
+  "generated_at": "2026-05-17T22:24:58Z",
+  "notes": ""
+}

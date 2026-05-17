@@ -77,6 +77,8 @@ def build_portal_map() -> list[QSPortal]:
 class QuasiSpaceScene(Scene):
     """The Quasi-Space navigation scene."""
 
+    music_context = "quasispace_travel"  # assets/music/quasispace_travel/
+
     def __init__(
         self,
         entry_portal_index: int | None = None,

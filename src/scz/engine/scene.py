@@ -20,6 +20,17 @@ if TYPE_CHECKING:
 class Scene:
     """Base class for game scenes."""
 
+    # Audio: the music context this scene wants playing while active.
+    # The Game's set_scene() reads this attribute and cross-fades the
+    # MusicDirector into the named context. Map to an
+    # assets/music/<name>/ directory. None = leave music alone (carry
+    # over from prior scene; appropriate for modal overlays that
+    # shouldn't interrupt the underlying music).
+    # Override in subclasses by setting the class attribute, e.g.:
+    #   class HyperspaceScene(Scene):
+    #       music_context = "hyperspace"
+    music_context: str | None = None
+
     def __init__(self) -> None:
         self.game: "Game | None" = None
 

@@ -51,6 +51,8 @@ ORBIT_BACKDROP: dict[str, tuple[int, int, int]] = {
 class PlanetOrbitScene(Scene):
     """Cloaked orbital view of a single planet."""
 
+    music_context = "planet_orbit_cloaked"  # assets/music/planet_orbit_cloaked/
+
     def __init__(
         self,
         planet: Planet,
