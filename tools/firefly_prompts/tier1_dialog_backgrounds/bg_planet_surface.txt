@@ -1,19 +1,37 @@
-# aspect: 2:3
-# notes: Reusable dialog-scene backdrop for any NPC encountered on a
-# planetary surface. Vertical 2:3. Empty foreground for avatar
-# composition at runtime.
+# aspect: 1:1
+# notes: REWRITTEN 2026-05-17 per Aaron review: "We need our planet
+# surfaces to be top-down terrain for our resource gathering game.
+# This is a landscape view."
+#
+# v1 was a vertical "stand on the surface looking out" landscape — wrong
+# orientation for our game. v2: TOP-DOWN terrain tile used by the
+# resource-gathering minigame. The lander is a hovering drone; the
+# camera is above; the player sees terrain features and resource nodes
+# from straight overhead. This file is no longer a "dialog backdrop"
+# at all — it's a SURFACE TILE for the minigame view. Aspect changed
+# from 2:3 to 1:1 to match the tiling expectations.
+#
+# Future: this could be split into multiple tile variants (acid-flats,
+# ice-plains, crater-fields, etc.) for the per-biome variation layer.
+# For now this is a generic alien surface tile.
 
-A vertical alien planet-surface backdrop, viewed straight-on as if
-the camera stood at the avatar's eye level. Foreground: a level
-weathered-stone surface with subtle alien lichen growth in pale
-teal and gold, no figures. Mid-ground: stylized geological forms —
-twisted basalt spires, low ridges. Background: an alien sky tinted
-deep amber-orange near the horizon transitioning to deep violet at
-zenith, two small distant moons visible. A faint dust-haze sits
-just above the horizon. NO CHARACTERS, NO STRUCTURES, NO SHIPS —
-completely empty stage ready to host an avatar composited on top
-at runtime. Lighting: low alien sun creates long soft shadows
-toward camera, warm key with cool ambient fill. Style: stylized
-1990s sci-fi game backdrop, painterly, crisp at portrait-panel
-display size (~420x600 pixels). The composition should leave the
-middle vertical clear for an avatar figure.
+A TOP-DOWN orthographic view of an alien planet surface, looking
+straight down from orbital-scout altitude. Camera is directly above,
+no horizon visible, no sky, no perspective — the surface fills the
+entire frame as a flat terrain map. Composition: a varied alien
+landscape with multiple readable features: a few low rounded basalt
+ridges casting soft shadows; pale teal alien lichen patches between
+the ridges; two or three small crater-pits at varied positions; a
+slow river of pale violet liquid (mineral acid) curving across the
+lower third; scattered glints of gold and rose-quartz crystal
+outcrops (resource nodes ready to be scanned). NO characters, NO
+structures, NO ships, NO hovering drones — completely empty
+terrain ready for runtime overlays. Texture: organic and irregular
+(not gridded or tiled), painterly natural variation. Color palette:
+warm rust-and-amber rock with cool teal lichen and violet liquid
+accents. Lighting: high-noon-alien-sun from straight overhead;
+shadows are short and soft so terrain reads clearly from above.
+Style: stylized 1990s sci-fi game asset, top-down map view,
+painterly, crisp at the typical surface-scene render scale (~1024
+square). The composition should look like the kind of terrain a
+hovering lander drone would survey at altitude.

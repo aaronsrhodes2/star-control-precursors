@@ -25,19 +25,19 @@
     "reviewed_at": "2026-05-17T20:43:41.406849+00:00"
   },
   "sfx/lander/lander_deploy": {
-    "status": "pending",
+    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:17:35.787300+00:00"
   },
   "sfx/lander/lander_touchdown": {
-    "status": "pending",
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "status": "reroll_requested",
+    "notes": "Lander doesn't touch down, it's a hovering drone, it needs to swoosh into hovering position",
+    "reviewed_at": "2026-05-17T21:18:08.808875+00:00"
   },
   "sfx/lander/pickup_clink": {
-    "status": "pending",
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "status": "reject",
+    "notes": "Split the sound into three sounds for animal vegetable, mineral",
+    "reviewed_at": "2026-05-17T21:18:52.572213+00:00"
   },
   "sfx/scan/scan_sweep": {
     "status": "keep",
@@ -47,12 +47,12 @@
   "sfx/scan/scan_begin": {
     "status": "pending",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
   },
   "sfx/scan/scan_complete": {
-    "status": "pending",
+    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:19:04.379868+00:00"
   },
   "sfx/ships/androsynth_cruiser/primary_fire": {
     "status": "keep",
@@ -60,49 +60,49 @@
     "reviewed_at": "2026-05-17T20:45:56.538624+00:00"
   },
   "sfx/ships/arilou_skiff/primary_fire": {
-    "status": "pending",
+    "status": "keep",
     "notes": "skiff was a zippy lazer sound, strart high, go low tri-tone \n",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:19:18.516240+00:00"
   },
   "sfx/ships/cleanser_cruiser/primary_fire": {
-    "status": "pending",
+    "status": "keep",
     "notes": "Need this to be the same as the Furling scout, but bigger and louder\n",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:19:22.140424+00:00"
   },
   "sfx/ships/furling_scout/primary_fire": {
-    "status": "pending",
+    "status": "keep",
     "notes": "Need it to be like warping the fabric of space, with a snap-back feedback sound at the end",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:19:28.366831+00:00"
   },
   "sfx/ships/furling_scout/primary_impact": {
     "status": "pending",
-    "notes": "Should sound like tearing through metal\n",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "notes": "it needs to be less abrupt on the tail end\n",
+    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
   },
   "sfx/ships/furling_scout/special_fire": {
     "status": "pending",
     "notes": "ehe special ability is it immediately stops us where we are and when we let go, we resume our previous direction and momentum",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
   },
   "sfx/ships/furling_scout/special_impact": {
     "status": "pending",
     "notes": "No special impact, but it should just be the reverse of the special weapon fire sound in this case.",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
   },
   "sfx/ui/alert_danger": {
     "status": "pending",
-    "notes": "less annoying, more fuzzy",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "notes": "more like a 80s red alert",
+    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
   },
   "sfx/ui/menu_cancel": {
-    "status": "pending",
+    "status": "keep",
     "notes": "cancel should just be a short low bump sound",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:22:11.459634+00:00"
   },
   "sfx/ui/menu_confirm": {
-    "status": "pending",
+    "status": "keep",
     "notes": "make it a much shorter higher pitched bump similar to how cancel it but more optimistic.",
-    "reviewed_at": "2026-05-17T21:11:03.773150+00:00"
+    "reviewed_at": "2026-05-17T21:22:29.900274+00:00"
   },
   "sfx/ui/menu_invalid": {
     "status": "keep",
@@ -118,5 +118,10 @@
     "status": "reject",
     "notes": "This is no good. What is scan lock anyway?",
     "reviewed_at": "2026-05-17T20:53:14.451604+00:00"
+  },
+  "sfx/ships/mmrnmhrm_sentinel/primary_fire": {
+    "status": "pending",
+    "notes": "more like machine gun fire\n",
+    "reviewed_at": "2026-05-17T21:36:12.851393+00:00"
   }
 }

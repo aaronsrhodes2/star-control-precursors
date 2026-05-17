@@ -1,18 +1,29 @@
 # aspect: 1:1
-# notes: heraldic emblem for the Hider Furling faction — Homesteaders
-# whose plan is to cloak their species' cognition below the Others'
-# detection threshold and ride out the Cull invisible. Their tech is
-# the Slylandro Cloaking Satellite. Quiet, protective, sheltering.
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "Need to change
+# to not use hands". v1 used cupped hands sheltering an orb (anatomy);
+# new direction follows the same anti-anatomy rule we applied to the
+# Compeller insignia. Replace the cupped-hands motif with an abstract
+# heraldic shelter symbol: a curved CONCEALMENT-VEIL arch bending the
+# light around a glowing cognition-orb. No anatomy, no fingers,
+# no hands.
 
-A heraldic faction insignia centered on a deep midnight-blue field.
-The emblem: a stylized cupped pair of hands raised upward, palms
-sheltering a small glowing crystalline orb in cool blue-white
-(suggesting cognition being shielded). Above the hands, a fan of
-five spectrum-bending rays bending AROUND the orb rather than
-striking it, indicating concealment. Below: a Furling-cuneiform
-scroll in subtle silver. Palette: midnight blue, soft silver,
-glowing cool blue-white center. Crisp graphic style — should read
-clearly even at icon size in a UI corner. Centered composition,
-symmetrical, no text in English. Style: stylized 1990s sci-fi game
-faction heraldry, painterly but graphic. The insignia should read
-as PROTECTIVE, QUIET, REVERENT.
+NO TEXT, NO LABELS, NO WORDS, NO LETTERS, NO HUMAN HANDS, NO HUMAN
+ANATOMY, NO FINGERS. A heraldic faction insignia centered on a
+deep midnight-blue field. The emblem: a horizontally-curved
+CONCEALMENT-VEIL — like a low arched canopy or a stylized
+parabolic shield — rendered in cool silver-on-black, arching
+OVER a small glowing crystalline orb in cool blue-white at the
+emblem's center (the cognition being sheltered). Light-rays
+strike the veil from above and BEND AROUND the orb, traced as
+five thin spectrum-bending lines that curve over the canopy and
+exit at its sides without ever reaching the orb. Below the
+canopy, a horizontal Furling-cuneiform inscription scroll in
+subtle silver (pure heraldic glyph; no English). Palette:
+midnight blue, soft silver, glowing cool blue-white center, hint
+of spectrum-violet in the bending rays. Crisp graphic style —
+should read clearly even at icon size in a UI corner. Centered
+composition, symmetrical, NO anatomy, NO hands, NO faces, NO
+creatures, NO text in any language. Style: stylized 1990s sci-fi
+game faction heraldry, painterly but graphic. Tone: PROTECTIVE,
+QUIET, REVERENT — the visual argument is "light bent away from
+the thinking thing, so the thing cannot be seen."

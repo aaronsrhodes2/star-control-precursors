@@ -46,39 +46,42 @@
     "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T03:17:29+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "lander"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:25:32.652414+00:00"
   },
   "tier1_planets/planet_drahn": {
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_drahn.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_drahn.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T02:45:19+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:39.650938+00:00"
   },
   "tier1_planets/planet_ossuary": {
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_ossuary.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_ossuary.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T02:51:52+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:20.012335+00:00"
   },
   "tier1_portraits/species_arilou_sage_portrait": {
     "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
@@ -436,8 +439,8 @@
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "Cannot figure out the shape. Should be like a big chechire cat from Alice and Wonderland",
-    "reviewed_at": "2026-05-17T21:06:15.306355+00:00"
+    "notes": "Cannot figure out the shape. Should be like a big chechire cat from Alice and Wonderland\n\nI saw one like a wookie, but we want more like a cat or a mynx\n",
+    "reviewed_at": "2026-05-17T21:32:01.033567+00:00"
   },
   "tier1_avatars/avatar_melnorme_vermilion": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_melnorme_vermilion.txt",
@@ -450,8 +453,8 @@
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "this is a good androsynth, not a melnorme",
-    "reviewed_at": "2026-05-17T21:06:17.362612+00:00"
+    "notes": "Aaron review: 'this is a good androsynth, not a melnorme'. NEW SIGNAL FROM SAME REVIEW PASS: planet_drahn_v1_melnorme_misread was KEPT with note 'this is a great melnorme, not a planet'. That image may serve as the canonical Melnorme imagery. Before firing this re-roll, consider whether the planet_drahn_v1 is sufficient (it would need a rename/move from tier1_planets/ to tier1_avatars/). Prompt is rewritten with pod-FIRST silhouette and skeletal pincer-arms for v2 anyway.",
+    "reviewed_at": "2026-05-17T21:32:09.228616+00:00"
   },
   "tier1_avatars/avatar_mmrnmhrm_sentinel": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_mmrnmhrm_sentinel.txt",
@@ -479,7 +482,7 @@
     "destination": null,
     "manifest_entry_to_update": null,
     "notes": "Planar beings only look like a square luminescent, pearlescent sheet of glass sort of. They have no weight so they float around as they please easily.",
-    "reviewed_at": "2026-05-17T21:06:19.405665+00:00"
+    "reviewed_at": "2026-05-17T21:32:05.128370+00:00"
   },
   "tier1_avatars/avatar_proto_qor_ah": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_qor_ah.txt",
@@ -549,7 +552,7 @@
     "destination": null,
     "manifest_entry_to_update": null,
     "notes": "Taalo are like lumps of shambling rock with a frilly bottom curtain",
-    "reviewed_at": "2026-05-17T21:06:21.451077+00:00"
+    "reviewed_at": "2026-05-17T21:32:07.169463+00:00"
   },
   "tier1_avatars/avatar_utwig_elder": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_utwig_elder.txt",
@@ -570,14 +573,14 @@
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_vael_souren_cleanser.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T17:16:54.964922+00:00",
-    "status": "reject",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "REVIEW: Aaron rejected without notes. Vael-Souren is the Cleanser-emissary slice antagonist (Act 3 climax), so we likely need an avatar eventually — but Aaron didn't approve the v1. ACTION: ask Aaron for direction; if he wants a re-roll, he'll add a note + flip the status to reroll_requested. Until then this is a true reject.",
-    "reviewed_at": "2026-05-17T21:12:36.776244+00:00"
+    "notes": "It's head is off or something, it looks not right.",
+    "reviewed_at": "2026-05-17T21:32:03.073128+00:00"
   },
   "tier1_cutscenes/cutscene_cleanser_arrival": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_cleanser_arrival.txt",
@@ -675,7 +678,7 @@
     "destination": null,
     "manifest_entry_to_update": null,
     "notes": "It looks cool, but doesn't match the narrative well. The rainbow planet stars are very far apart. We should show a video of the stars forming the arrow as par the SC2 map, and the straight line pointing to Andromeda. ",
-    "reviewed_at": "2026-05-17T21:06:23.505543+00:00"
+    "reviewed_at": "2026-05-17T21:23:34.066616+00:00"
   },
   "tier1_cutscenes/cutscene_others_consuming": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_consuming.txt",
@@ -696,156 +699,168 @@
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_others_emerging.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T17:39:34.186869+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:23:26.107663+00:00"
   },
   "tier1_cutscenes/cutscene_others_rift": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_rift.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_others_rift.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T05:13:31.129662+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:23:23.433539+00:00"
   },
   "tier1_cutscenes/cutscene_rainbow_seeding": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_rainbow_seeding.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_rainbow_seeding.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T05:06:25.798613+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:23:16.103575+00:00"
   },
   "tier1_cutscenes/cutscene_talos_erasure": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_talos_erasure.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_talos_erasure.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T19:00:43.275785+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:23:10.001986+00:00"
   },
   "tier1_dialog_backgrounds/bg_alien_ship": {
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_alien_ship.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_alien_ship.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T16:25:50.752032+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "dialog_backgrounds"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:29:39.794576+00:00"
   },
   "tier1_dialog_backgrounds/bg_furling_bridge": {
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_furling_bridge.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_furling_bridge.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T14:39:31.184602+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "dialog_backgrounds"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:29:36.720875+00:00"
   },
   "tier1_dialog_backgrounds/bg_open_space": {
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_open_space.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_open_space.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T16:25:54.878978+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "dialog_backgrounds"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:29:42.949519+00:00"
   },
   "tier1_dialog_backgrounds/bg_planet_surface": {
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_planet_surface.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_planet_surface.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T16:25:46.751614+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "dialog_backgrounds"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "We need our planet surfaces to be top-down terrain for our resource gathering game. This is a landscape view.",
+    "reviewed_at": "2026-05-17T21:29:26.873272+00:00"
   },
   "tier1_faction_insignia/insignia_cleanser": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_cleanser.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:21:32.731178+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:28:37.407155+00:00"
   },
   "tier1_faction_insignia/insignia_compeller": {
     "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_compeller.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_compeller.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T19:11:28.578228+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:28:40.154795+00:00"
   },
   "tier1_faction_insignia/insignia_compeller_v1_hands": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_compeller_v1_hands.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T19:06:21.702934+00:00",
-    "status": "pending",
+    "status": "reject",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:28:41.833769+00:00"
   },
   "tier1_faction_insignia/insignia_defender": {
     "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_defender.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_defender.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:49:56.786498+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:28:33.460647+00:00"
   },
   "tier1_faction_insignia/insignia_denier": {
     "prompt_path": "tools/firefly_prompts/tier1_faction_insignia/insignia_denier.txt",
@@ -865,65 +880,70 @@
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_hider.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:54:21.040594+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "Need to change to not use hands\n",
+    "reviewed_at": "2026-05-17T21:28:23.913221+00:00"
   },
   "tier1_faction_insignia/insignia_persuader": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_persuader.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:21:28.140185+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:27:56.801000+00:00"
   },
   "tier1_faction_insignia/insignia_talos": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_faction_insignia/insignia_talos.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:24:07.196670+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "faction_insignia"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:27:54.146737+00:00"
   },
   "tier1_furling_reference/furling_compeller": {
     "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_compeller.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_compeller.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T17:17:40.320186+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "furling_reference"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "missing an arm",
+    "reviewed_at": "2026-05-17T21:27:20.621549+00:00"
   },
   "tier1_furling_reference/furling_defender": {
     "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_defender.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_defender.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T17:17:55.242276+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "furling_reference"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "too many ears and tails, but looks rad with the armor",
+    "reviewed_at": "2026-05-17T21:27:45.473547+00:00"
   },
   "tier1_furling_reference/furling_denier": {
     "prompt_path": "tools/firefly_prompts/tier1_furling_reference/furling_denier.txt",
@@ -969,195 +989,210 @@
     "image_path": "assets/generated_drafts/firefly/tier1_furling_reference/furling_talos.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T17:18:43.183131+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "furling_reference"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:47.471166+00:00"
   },
   "tier1_lander/lander_furling_v1_legs": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling_v1_legs.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T03:16:44.530859+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "lander"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:25:30.690996+00:00"
   },
   "tier1_nebula/bg_galaxy_nebula": {
     "prompt_path": "tools/firefly_prompts/tier1_nebula/bg_galaxy_nebula.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_nebula/bg_galaxy_nebula.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T16:25:58.376185+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "nebula"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:25:36.956015+00:00"
   },
   "tier1_planets/planet_arilou_sanctuary": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_arilou_sanctuary.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:19:08.506774+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:38.172174+00:00"
   },
   "tier1_planets/planet_beta_corvi": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_beta_corvi.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:13:57.283203+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:35.951049+00:00"
   },
   "tier1_planets/planet_drahn_v1_melnorme_misread": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_drahn_v1_melnorme_misread.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T02:44:22.380734+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "this is a great melnorme, not a planet",
+    "reviewed_at": "2026-05-17T21:26:09.459414+00:00"
   },
   "tier1_planets/planet_gorno_iii": {
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_gorno_iii.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_gorno_iii.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:48:29.653405+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:11.866309+00:00"
   },
   "tier1_planets/planet_mh_lai": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_mh_lai.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:11:13.411753+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:13.834457+00:00"
   },
   "tier1_planets/planet_procyon": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_procyon.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:13:59.417025+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:18.578725+00:00"
   },
   "tier1_planets/planet_proto_urquan_moon": {
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_proto_urquan_moon.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_proto_urquan_moon.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:56:30.231797+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:16.253565+00:00"
   },
   "tier1_planets/planet_proto_urquan_moon_v1_labeled": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_proto_urquan_moon_v1_labeled.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:53:53.959885+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:22.416742+00:00"
   },
   "tier1_planets/planet_sol_iii": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_sol_iii.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:16:19.298616+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:24.250988+00:00"
   },
   "tier1_planets/planet_spire": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_spire.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:16:17.559414+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:25.221252+00:00"
   },
   "tier1_planets/planet_talos_system": {
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_talos_system.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_talos_system.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:51:10.295506+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:28.455692+00:00"
   },
   "tier1_planets/planet_xylos_prime": {
     "prompt_path": "tools/firefly_prompts/tier1_planets/planet_xylos_prime.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_xylos_prime.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:46:01.864515+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "planets"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:26:27.598119+00:00"
   },
   "tier1_portraits/species_burvixese_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_burvixese_portrait.txt",

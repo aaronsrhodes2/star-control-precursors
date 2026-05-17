@@ -1,15 +1,31 @@
 # aspect: 2:3
-# notes: v5 (FINAL) — bipedal humanoid stand-in for canon mono-pedal.
+# notes: REWRITTEN 2026-05-17 per Aaron review on v5: "It's head is off
+# or something, it looks not right." v5's head rendered with bad
+# proportions or detached from the neck. v6: explicit emphasis on a
+# clean SINGLE HEAD properly seated on the neck, correct proportions
+# (head ~1/7 of body height, square to shoulders, NOT enlarged or
+# floating). Keep the rest of the v5 design (platinum-gray fur, violet
+# stripe, mournful eyes, Quiet-Ledger pendant) — that read as right.
 
 ONE single anthropomorphic alien character, BIPEDAL HUMANOID,
 STANDING UPRIGHT on TWO LEGS, NAKED with no clothes, body covered
-ENTIRELY in dense fur. Pale platinum-gray fur with age-frost along
-the muzzle and a single shaved violet stripe from crown to tail.
-BIG tall fennec-fox ears, long bushy fox-tail with violet ribbon,
-WIDE friendly Cheshire-cat grin (eyes sad), ANDROGYNOUS flat
-chest no genitalia, sorrowful pale-violet eyes. ONE thin violet
-leather strap-harness across the shoulder with a silver Quiet-
-Ledger pendant at the throat. Head slightly bowed in the
-carrying-weight pose. Two arms at sides. Background solid dark
-navy. Painted stylized sci-fi character portrait, single subject.
-Reads MOURNFUL AUTHORITY.
+ENTIRELY in dense fur. SINGLE HEAD, properly proportioned (head
+roughly 1/7 of body height, NEVER oversized, NEVER detached, set
+SQUARE on a fully-visible neck that joins cleanly into the
+shoulders). Pale platinum-gray fur with age-frost along the
+muzzle and a single shaved violet stripe from crown to tail.
+EXACTLY ONE PAIR of fennec-fox ears (two ears total), upright but
+slightly back. EXACTLY ONE long bushy fox-tail with a violet
+ribbon at the base. WIDE Cheshire-cat grin (eyes SAD, mournful;
+the grin is cultural, not happy). ANDROGYNOUS flat chest no
+genitalia, sorrowful pale-violet eyes. ONE thin violet leather
+strap-harness across the shoulder with a silver Quiet-Ledger
+pendant at the throat. Head slightly bowed in a CARRYING-WEIGHT
+pose (the slight bow is forward bow at the neck — the head stays
+attached and properly aligned with the spine). Two arms at sides,
+both visible. Background SOLID MATTE DARK NAVY #0a0e1a. Painted
+stylized 1990s sci-fi character portrait, single subject. Tone:
+MOURNFUL AUTHORITY — the Cleanser emissary who has done this many
+times and grieves each one. Avoid: oversized head, detached head,
+floating head, mis-aligned head, missing neck, head turned sharply
+away from camera, multiple heads.

@@ -1,30 +1,36 @@
 # aspect: 2:3
-# notes: REWRITTEN 2026-05-17 per Aaron review on v5: "Cannot figure out
-# the shape. Should be like a big chechire cat from Alice in Wonderland".
-# v5 produced a slender bipedal foxoid that didn't read as a coherent
-# silhouette. v6 direction: BIG FRIENDLY CHESHIRE-CAT FURLING — physically
-# OVERSIZED and BROAD, plush striped fur, that signature wide grin set in
-# a round face, half-lidded knowing eyes. Sitting/seated posture so the
-# silhouette is wider-than-tall and instantly readable. Mono-pedal canon
-# stays in the lore; the avatar render keeps the bipedal stand-in but
-# the SHAPE is big-friendly-cat, not slender humanoid.
+# notes: REWRITTEN 2026-05-17 per Aaron review (PASS 2): the v6 rewrite
+# brought us to "Cheshire-cat Furling" but the rendered result still
+# read wookiee. Aaron clarified in pass 2: "I saw one like a wookie,
+# but we want more like a cat or a mynx". v7 explicitly emphasizes
+# CAT/MYNX silhouette — short-snouted, broad-cheeked, full whiskers,
+# round face NOT muzzle-pointed. Wookiee suggests tall + apelike-arms
+# + tube-shaped torso; this needs to be CAT — wide-cheeked, big head
+# on a relatively short body, eyes prominent.
 
-ONE alien character: a LARGE FRIENDLY CHESHIRE-CAT-LIKE FURLING.
-Body plan: BIG, BROAD, FLUFFY — a wider-than-tall silhouette in a
-relaxed seated pose. Dense plush fur in WARM TABBY STRIPES,
-cinnamon ground color with darker mahogany ringed stripes,
-silver-tipped guard hairs at cheeks and chest. Long bushy fox-tail
-curling forward into the lower frame. Big fennec-fox-like ears
-held perked alert. Head: ROUND AND FRIENDLY, dominated by a
-slightly-too-wide CHESHIRE-CAT GRIN showing even white teeth,
-half-lidded forward-facing eyes glowing warm gold (kind but
-ancient). Naked under the fur except for ONE simple copper-trimmed
-amber sash crossed over the shoulder bearing a small Migration
-Council sigil pendant at the throat. Two arms folded loosely
-across the broad belly in a "tell me everything" listening pose.
-Pose: SEATED upright, big and round and inviting. Background:
-solid matte dark navy. Style: painted stylized 1990s sci-fi
-character portrait, single subject. Tone: BIG FRIENDLY COMMANDER,
-warmth and grin first, authority just under. Avoid: lean/slender
-silhouette, military posture, severe expression — Halia is BIG and
-KIND and the shape must read that way at 30 ft.
+ONE alien character: a LARGE CAT-LIKE FURLING in the manner of a
+CHESHIRE CAT from Alice in Wonderland. Body plan: round and broad,
+NOT tall — a wider-than-tall silhouette in a relaxed seated pose.
+The HEAD is the dominant feature: BIG WIDE-CHEEKED CAT FACE with
+short rounded muzzle (NOT a dog-like or wolf-like snout), full
+whiskers, half-lidded forward-facing eyes glowing warm gold,
+dominated by a slightly-too-wide CHESHIRE-CAT GRIN with even
+white teeth visible. The face reads as A LARGE CAT, not as an
+ape, not as a wookiee. The body: stocky and rounded, plush fur
+in WARM TABBY STRIPES (cinnamon ground with darker mahogany
+ringed stripes, silver-tipped guard hairs at cheek and chest).
+Compact upright posture in a seated pose with a SHORT TORSO —
+this is a CAT shape, not a tall furred humanoid. Two arms folded
+loosely across the round belly. Long bushy fox-tail curling
+forward into the lower frame. Big fennec-fox-like ears held
+perked alert ATOP the rounded head. Naked under the fur except
+for ONE copper-trimmed amber sash crossed over the shoulder
+bearing a small Migration Council sigil pendant at the throat.
+Pose: seated upright, big-cat sphinx-like posture, head
+overlarge and grinning. Background: solid matte dark navy.
+Style: painted stylized 1990s sci-fi character portrait, single
+subject. Tone: BIG FRIENDLY CAT COMMANDER — warmth and grin
+first, authority just under. Avoid: tall wookiee/ape silhouette,
+long arms, narrow muzzle, lean torso — Halia is a CAT, not a
+biped-with-fur. Round face, short body, wide cheeks, big eyes,
+wide grin.
