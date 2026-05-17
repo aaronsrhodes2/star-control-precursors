@@ -1,0 +1,31 @@
+# aspect: 1:1
+# notes: top-down combat sprite of the Lemmkin Skitter — the species's
+# improvised glass-cannon scout ship. Specials per the canon: Burst-
+# Scatter Probe (front-arc shrapnel cone) + Tail-Drop 180-pivot (the
+# ship snaps a hard reverse, dropping a small explosive package on its
+# wake). Glass cannon stats: very fast, very fragile, big bite. The
+# craft should look CHEERFULLY IMPROVISED, like a creature with no
+# fear built itself a ship out of curiosity and shiny scrap. Not a
+# warship. A scout that picked up cannons because the cannons looked
+# fun.
+
+A top-down orthographic view of a Lemmkin Skitter starship.
+Shape: a compact ~2:1 ovoid hull with a sharply tapered nose and a
+long fluffy thruster-shroud at the rear (visually echoing the
+species' fluffy tail — a clear deliberate diegetic homage). Hull
+plates are mismatched scraps of russet-orange, cream, and burnished
+copper riveted together in a friendly patchwork (improvised, but
+not crude — careful craftsmanship by curious paws). Twin forward
+BURST-SCATTER PROBE cannon barrels protrude from the nose like
+oversized chestnut-shaped emitters with brass coils. A small
+hatched panel under the tail-shroud — the TAIL-DROP package
+ejector — glows soft amber, with a brass-rimmed iris waiting to
+open. Hull viewports are ROUND PORTHOLE-WINDOWS arranged in a
+cheerful row down the dorsal centerline (a Lemmkin Curator visible
+peering out of the bridge porthole — round black eyes, bright
+with interest, NO fear). A short stubby thruster fin on each side
+glows soft cyan-violet. Style: stylized 1990s sci-fi game art,
+painterly with crisp silhouette, vivid saturated colors, deep
+black background. Tone: GLASS CANNON, FAST, OBVIOUSLY-FRAGILE,
+clearly built by a species that thought "what if our spaceship had
+a TAIL?" — endearing, brave, doomed.

@@ -747,7 +747,7 @@ ROWS = [
         "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
         "—",
         "optional (mid-game encounter)",
-        "no dialog character; no Planar Blade ShipClass in code; no warp-pod entry; no encounter system. Planar Blade ship sprite COMPLETE 2026-05-17 (tier1_ships/ship_planar_blade.png — iridescent ribbon-blade).",
+        "no dialog character; no Planar Blade ShipClass in code; no warp-pod entry; no encounter system. SPECIES RENAMED 2026-05-17 Planar -> Thinn (Lore-chat) — visuals are canonically salvageable but filenames + species_id pending Lore commit of species-the-thinn.md. Manifest entries flagged reroll_requested with rename notes.",
     ),
     (
         "PROTO_HUMANS",
@@ -1011,7 +1011,7 @@ ROWS = [
         "—",
         "TAALO",
         "no",
-        "no lore doc, no homeworld, no ship, no dialog. Avatar + species portrait COMPLETE 2026-05-17 (tier1_avatars/avatar_taalo.png + tier1_portraits/species_taalo_portrait.png — peaceful silicon-amphibian, deep-time patience tone).",
+        "no lore doc, no homeworld, no ship, no dialog. AVATAR + PORTRAIT FLAGGED FOR RE-ROLL 2026-05-17 — generated visuals are wrong species (peaceful amphibian) per canon drift. New canon: Horta-lineage rock-shamblers, acid-eats-rock, calcify on death; the species IS the landscape; Taalo Shield fails; Eliminated. Manifest reroll_requested + detailed prompt notes captured for next Firefly credit window.",
     ),
     (
         "TALOS",

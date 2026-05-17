@@ -163,13 +163,14 @@
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T03:13:44+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "portraits"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "SPECIES RENAMED 2026-05-17: Planar -> Thinn. Existing visual is salvageable; primary action is filename rename to species_thinn_blade_portrait.png after Lore-chat commits species-the-thinn.md. Visual itself is canonically fine.",
+    "reviewed_at": "2026-05-17T20:34:19.759092+00:00"
   },
   "tier1_portraits/species_sentry_drone_47t_portrait": {
     "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
@@ -458,13 +459,14 @@
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_planar_witness.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T16:25:19.426021+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "SPECIES RENAMED 2026-05-17: Planar -> Thinn (Aaron's pun: literally Thinn AND they Thought they'd survive by facing sideways). Existing visual is canonically fine (iridescent 2D ribbon-body). Re-roll to: (a) rename file to avatar_thinn_witness when Lore-chat commits species-the-thinn.md, (b) optionally regenerate with a tighter Thinn pun reference - slightly comedic edge-on near-invisibility, the species has embraced the Furling-translator nickname as their own. Otherwise the v1 visual is salvageable.",
+    "reviewed_at": "2026-05-17T20:34:17.710491+00:00"
   },
   "tier1_avatars/avatar_proto_qor_ah": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_qor_ah.txt",
@@ -523,14 +525,14 @@
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_taalo.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T18:08:58.290118+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T19:44:06.915819+00:00"
+    "notes": "WRONG SPECIES per 2026-05-17 canon update: Taalo are Horta-lineage rock-shamblers, NOT amphibian. Re-roll: ~1.5m crouching/shambling silicon-mineral creature; acid-eats-rock so corrosive maw with drip; basalt-and-quartz hide (not toad skin); no real eyes (geological-scale sensing or compound geo-sensor patches); legs are mineral pseudopods. Vibe: A MOUNTAIN RANGE WITH AGENCY. They DIE in the slice (Taalo Shield fails) - bodies calcify into ordinary-looking rocks. So the portrait could hint at the calcify-on-death pathos.",
+    "reviewed_at": "2026-05-17T20:34:13.605008+00:00"
   },
   "tier1_avatars/avatar_utwig_elder": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_utwig_elder.txt",
@@ -1187,13 +1189,14 @@
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_taalo_portrait.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:24:55.784832+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "portraits"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "WRONG SPECIES per 2026-05-17 canon update: see avatar_taalo notes. Portrait re-roll: Horta-style basalt-and-quartz creature with mineral pseudopod-legs and acid-drip maw, no eyes (or compound geo-sensor patches). Background: a mountainside that IS another sleeping Taalo - the species IS the landscape. Plus a calcifying-corpse in middle distance already turning back into ordinary rock, foreshadowing the slice tragedy (Taalo Shield fails; species Eliminated).",
+    "reviewed_at": "2026-05-17T20:34:15.665570+00:00"
   },
   "tier1_portraits/species_utwig_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_utwig_portrait.txt",
@@ -1304,13 +1307,14 @@
     "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_planar_blade.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T18:41:05.979417+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "ships"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "SHIP-CLASS RENAMED 2026-05-17: Planar Blade -> Thinn Blade (species rename Planar -> Thinn). Iridescent ribbon-ship visual is salvageable; primary action is rename ship_planar_blade.png -> ship_thinn_blade.png after Lore-chat finalizes the species-the-thinn.md doc and ship_class_id in ships.py.",
+    "reviewed_at": "2026-05-17T20:34:21.812371+00:00"
   },
   "tier1_ships/ship_proto_qor_ah": {
     "prompt_path": "",
