@@ -1,0 +1,21 @@
+# aspect: 1:1
+# notes: the Androsynth Distress Beacon device — the actual hardware
+# the time-displaced refugees brought back with them, currently
+# broadcasting its recorded warning. Should look like a piece of
+# SC2-era Androsynth tech: cobbled-together post-fall, exposed
+# circuits, but engineered. Catalog card art.
+
+A static three-quarter view of an alien artifact: the Androsynth
+Distress Beacon. A roughly cubical device about a meter on a side,
+hull plates dented and stained, mounted on a tripod of mismatched
+landing legs. Bristling with antennas of various lengths, several
+exposed circuit boards under cracked covers, a central glowing
+amber-yellow emitter lens pointing outward. Faded geometric Androsynth
+clone-iconography stenciled in white on one panel: a stylized
+clone-helix and the broken-chain symbol. Pulsing soft amber light
+from the central lens. Floor beneath it shows scoring from the
+moment of its dimensional displacement. Background: deep matte
+black with a few cooling vapor wisps. Lighting: warm amber from
+the device + cool rim light. Style: stylized 1990s sci-fi game
+artifact-card art, painterly. The device should read as
+DESPERATE — improvised, last-ditch — but still functioning.

@@ -1,0 +1,17 @@
+# aspect: 1:1
+# notes: heraldic emblem for the Defender Furling faction —
+# Homesteaders who refuse to leave and intend to FIGHT the Others
+# directly with armor and weapons. The "we will not run" faction.
+# Bold, militant, but Furling-civilized in design language.
+
+A heraldic faction insignia centered on a dark slate-gray field. The
+emblem: a downward-pointing iron-clad shield, crossed by a single
+upright Furling-design heavy beam-rifle. Behind the shield, a
+stylized eight-pointed solar burst in burnished bronze, suggesting
+"holding the line at the homeworld." Below, a Furling-cuneiform
+inscription scroll reading the Defender doctrine in stylized glyphs.
+Limited palette: slate gray, bronze, deep crimson accents, white
+highlights. Crisp graphic style — should read clearly even at
+icon size in a UI corner. Centered composition, symmetrical, no
+text in English. Style: stylized 1990s sci-fi game faction
+heraldry, painterly but graphic.

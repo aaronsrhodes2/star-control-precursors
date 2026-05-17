@@ -1,0 +1,17 @@
+# aspect: 1:1
+# notes: UI inventory icon — Useful minerals (gold, platinum, rare-
+# earths). Mid-tier resource from mineral scans. Same iconographic
+# tile style as Common/Bio/Energy icons.
+
+A clean isometric inventory icon: three small high-value mineral
+specimens — a glowing-gold ingot, a brushed-platinum bar, a
+crystalline lavender rare-earth shard — arranged on a small
+display stand. The specimens catch the light, suggesting refined
+value. Centered on a hex-tile background plate in matte dark
+steel-gray with a thin glowing amber border ring (one tier above
+the cyan Common-tier ring). Small numeral-zero placeholder slot in
+the corner of the plate. Lighting: soft top-down studio light
+with a warm rim hint. Style: stylized 1990s sci-fi game
+inventory icon — crisp, readable, painterly. These should look
+REFINED and DESIRABLE — mid-grade trade goods, not the bulk
+ore. Centered composition; should read clearly at 64x64 pixels.

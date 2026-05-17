@@ -1,0 +1,18 @@
+# aspect: 1:1
+# notes: UI inventory icon — Common minerals (iron, nickel, silicon).
+# Bulk resource from mineral scans. Should pair visually with the
+# already-generated BIO and ENERGY resource icons (clean iconographic
+# tile, ~256x256 reads at icon size).
+
+A clean isometric inventory icon: three rough chunks of metallic
+ore stacked together — gray pitted iron, mottled brown-gray nickel,
+dull silver silicon — viewed at a 3/4 angle. The pile is centered
+on a hex-tile background plate in matte dark steel-gray with a
+thin glowing cyan border ring. A small numeral-zero placeholder
+slot in the corner of the plate (for the quantity badge UI will
+render later). Lighting: soft top-down studio light with a touch
+of cool rim light. Style: stylized 1990s sci-fi game inventory
+icon — crisp, readable, painterly. The minerals should look
+HEAVY and PLENTIFUL, not precious — these are the bulk
+resource. Centered composition on a uniform background; should
+read clearly at 64x64 pixels.

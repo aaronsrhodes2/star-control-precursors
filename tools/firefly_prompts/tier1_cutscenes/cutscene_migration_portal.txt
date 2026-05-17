@@ -1,0 +1,20 @@
+# aspect: 16:9
+# notes: the climactic Migration cutscene — the dimensional crossing
+# opens above the Rainbow Worlds arrow. Ten planets in a line stretch
+# into the distance, each pulsing in turn as the portal forms. This is
+# the slice's Act 4 set-piece. Hopeful but immense; an evacuation
+# event, not a triumph.
+
+A vast wide-angle cinematic still: above a string of ten rainbow-hued
+planets receding into deep space — each a different jewel-tone
+(violet, indigo, sky-blue, teal, green, gold, amber, orange, red,
+ruby) glowing softly in formation — a colossal dimensional portal
+opens. The portal is a shimmering vertical lens of aurora-light:
+turquoise, magenta, gold; not fire, not a hole, but a SEAM in
+reality itself, with the faint silhouette of another galaxy
+visible through its center. Tiny Furling Migration arks stream
+toward the seam in slow procession, their hulls catching its light.
+Background: a deep cosmic vista with a distant spiral arm. Tone:
+hopeful and immense — a great evacuation, not a celebration.
+Style: stylized 1990s sci-fi game cutscene, painterly, suitable as
+a single ending-cinematic still. No HUD elements, no UI, no text.

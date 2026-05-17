@@ -1,0 +1,18 @@
+# aspect: 1:1
+# notes: heraldic emblem for the Hider Furling faction — Homesteaders
+# whose plan is to cloak their species' cognition below the Others'
+# detection threshold and ride out the Cull invisible. Their tech is
+# the Slylandro Cloaking Satellite. Quiet, protective, sheltering.
+
+A heraldic faction insignia centered on a deep midnight-blue field.
+The emblem: a stylized cupped pair of hands raised upward, palms
+sheltering a small glowing crystalline orb in cool blue-white
+(suggesting cognition being shielded). Above the hands, a fan of
+five spectrum-bending rays bending AROUND the orb rather than
+striking it, indicating concealment. Below: a Furling-cuneiform
+scroll in subtle silver. Palette: midnight blue, soft silver,
+glowing cool blue-white center. Crisp graphic style — should read
+clearly even at icon size in a UI corner. Centered composition,
+symmetrical, no text in English. Style: stylized 1990s sci-fi game
+faction heraldry, painterly but graphic. The insignia should read
+as PROTECTIVE, QUIET, REVERENT.

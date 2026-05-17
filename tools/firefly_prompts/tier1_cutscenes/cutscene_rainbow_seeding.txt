@@ -1,0 +1,19 @@
+# aspect: 16:9
+# notes: Act 4 cutscene — the player's Furling Scout places the
+# cluster's Rainbow World. A planet ignites with rainbow-prism light,
+# joining the breadcrumb-arrow that points to the Migration
+# destination galaxy. A quiet, almost ritual moment.
+
+A wide-angle cinematic still: a small Furling Scout ship hovers above
+a previously gray-brown terrestrial planet. From the planet's poles,
+brilliant rainbow-spectrum aurora-light is blooming outward —
+violet rising to indigo, blue, teal, green, gold, amber, red — the
+planet itself transforming into a beacon, the eighth of ten Rainbow
+Worlds being seeded across the galaxy. The scout looks tiny against
+the planet's new brilliance. Light spills past the planet's
+horizon, illuminating its rings of cooling dust. In the deep
+background, eight other Rainbow Worlds glow faintly along an
+arrow-line stretching to a distant spiral galaxy on the horizon.
+Tone: reverent, hopeful, slightly melancholic — the Steward is
+leaving a sign for whoever comes after. Style: stylized 1990s
+sci-fi cinematic, painterly. No HUD, no text.
