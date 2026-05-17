@@ -19,29 +19,76 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import sys
 import time
 from pathlib import Path
 
+import soundfile as sf
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audio_context_specs import ContextSpec, ALL_CONTEXTS, for_round, get
-from eleven_music import music_bytes, save_audio, DEFAULT_OUTPUT_FORMAT, _ext_for_format
 
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_ROOT = ROOT / "assets" / "music"
 
 
+# ---------------------------------------------------------------------------
+# Backend selection
+# ---------------------------------------------------------------------------
+# SCZ_AUDIO_BACKEND=local  -> local AudioLDM2-Music server on port 5006
+#                             (audio-server/). Native 16 kHz mono PCM;
+#                             always saves .wav. Free, runs on local GPU.
+# SCZ_AUDIO_BACKEND=eleven -> ElevenLabs Music API. Native 44.1 kHz
+#                             stereo MP3 (saved as .mp3 byte-passthrough).
+#                             Higher quality; costs credits.
+# Default 2026-05-17: local (Aaron switched after ElevenLabs quota
+#                     exhaustion).
+BACKEND = os.environ.get("SCZ_AUDIO_BACKEND", "local").lower()
+
+
+def _gen_music_array(prompt: str, duration_s: float):
+    """Backend-dispatch: returns (audio_array, sample_rate)."""
+    if BACKEND == "eleven":
+        from eleven_music import music as _eleven_music  # noqa: E402
+        return _eleven_music(prompt=prompt, duration_s=duration_s)
+    # local
+    from audio_client import music as _local_music  # noqa: E402
+    return _local_music(prompt=prompt, duration=duration_s)
+
+
+def _backend_extension() -> str:
+    """Local backend always saves .wav (PCM_16 16kHz mono). Eleven backend
+    saves .wav too in the unified-array path (vs the .mp3 byte-passthrough
+    path which is no longer used here)."""
+    return ".wav"
+
+
+def _backend_label(spec: ContextSpec) -> str:
+    """Label for the manifest's `backend` field."""
+    if BACKEND == "eleven":
+        return "elevenlabs-music_v1/decoded"
+    return "audioldm2-music/local-server"
+
+
 def generate_context(
     spec: ContextSpec,
     *,
-    output_format: str = DEFAULT_OUTPUT_FORMAT,
     overwrite: bool = True,
 ) -> dict:
-    """Generate every stem in `spec`. Returns the written manifest dict."""
+    """Generate every stem in `spec`. Returns the written manifest dict.
+
+    Backend dispatch is via the SCZ_AUDIO_BACKEND env var (default
+    "local"). Output is always PCM_16 .wav for uniformity. The mixer
+    glob handles .wav alongside .mp3/.ogg seamlessly so the existing
+    ElevenLabs-generated .mp3 files in other contexts coexist with new
+    local-generated .wav files in this batch.
+    """
     out_dir = OUT_ROOT / spec.name
     out_dir.mkdir(parents=True, exist_ok=True)
-    ext = _ext_for_format(output_format)
+    ext = _backend_extension()
+    backend_label = _backend_label(spec)
 
     manifest = {
         "context": spec.name,
@@ -50,7 +97,7 @@ def generate_context(
         "key": spec.key,
         "bpm": spec.bpm,
         "duration_s": spec.duration_s,
-        "backend": f"elevenlabs-music_v1/{output_format}",
+        "backend": backend_label,
         "stems": {},
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "notes": spec.notes,
@@ -58,33 +105,40 @@ def generate_context(
 
     print(f"\n## context: {spec.name} ({spec.category}) -- "
           f"{spec.key} @ {spec.bpm}bpm, {spec.duration_s}s, "
-          f"{len(spec.stems)} stems", flush=True)
+          f"{len(spec.stems)} stems  [backend={BACKEND}]", flush=True)
 
     for stem_name, prompt in spec.stems.items():
         out_path = out_dir / f"{stem_name}{ext}"
-        if out_path.exists() and not overwrite:
-            print(f"  skip {stem_name} (exists)", flush=True)
+        # Also dedup against the OTHER backend's existing file for this
+        # stem (e.g. an ElevenLabs .mp3 from a prior run). When backend
+        # produces a different extension and a sibling already exists,
+        # `overwrite=False` should skip the call.
+        sibling_paths = [
+            out_dir / f"{stem_name}.mp3",
+            out_dir / f"{stem_name}.ogg",
+            out_dir / f"{stem_name}.wav",
+        ]
+        any_exists = any(p.exists() for p in sibling_paths)
+        if any_exists and not overwrite:
+            print(f"  skip {stem_name} (a file already exists)", flush=True)
             continue
         print(f"  === {stem_name} ===", flush=True)
         print(f"    prompt: {prompt[:100]}...", flush=True)
         t0 = time.time()
         try:
-            data, fmt = music_bytes(
-                prompt=prompt,
-                duration_s=spec.duration_s,
-                output_format=output_format,
-            )
+            audio, sr = _gen_music_array(prompt=prompt, duration_s=spec.duration_s)
         except Exception as e:
             print(f"    FAIL: {e}", flush=True)
             continue
-        save_audio(data, fmt, out_path)
+        sf.write(out_path, audio, sr, subtype="PCM_16")
         sz_kb = out_path.stat().st_size / 1024
         print(f"    saved {out_path.relative_to(ROOT)} "
-              f"({sz_kb:.0f} KB) in {time.time()-t0:.1f}s", flush=True)
+              f"({sz_kb:.0f} KB, sr={sr}) in {time.time()-t0:.1f}s", flush=True)
         manifest["stems"][stem_name] = {
             "path": str(out_path.relative_to(ROOT)).replace("\\", "/"),
             "prompt": prompt,
-            "format": output_format,
+            "sample_rate": sr,
+            "backend": backend_label,
         }
 
     manifest_path = out_dir / "manifest.json"

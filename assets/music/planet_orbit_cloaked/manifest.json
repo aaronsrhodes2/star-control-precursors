@@ -1,0 +1,43 @@
+{
+  "context": "planet_orbit_cloaked",
+  "category": "travel",
+  "description": "Planet orbit \u2014 cloaked and safe; scanning from above",
+  "key": "E flat major",
+  "bpm": 80,
+  "duration_s": 90,
+  "backend": "audioldm2-music/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/planet_orbit_cloaked/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: warm sub-bass slow pulse on the downbeat, no drums no melody no pads, in E flat major at 80 bpm, calm safe orbital observation, scanner-active but invisible, soft watchful, in the spirit of 1990s sci-fi orbital idiom \u2014 calm observation, ProTracker-derived, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/planet_orbit_cloaked/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: soft electronic shaker with gentle hihat, mostly quiet, no melody no bass no pads, in E flat major at 80 bpm, calm safe orbital observation, scanner-active but invisible, soft watchful, in the spirit of 1990s sci-fi orbital idiom \u2014 calm observation, ProTracker-derived, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "pad": {
+      "path": "assets/music/planet_orbit_cloaked/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: warm major-key synth pad in slow sustained chords, atmospheric calm, no melody no drums no bass, in E flat major at 80 bpm, calm safe orbital observation, scanner-active but invisible, soft watchful, in the spirit of 1990s sci-fi orbital idiom \u2014 calm observation, ProTracker-derived, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "lead": {
+      "path": "assets/music/planet_orbit_cloaked/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: soft chime-like melody motif, contemplative and watchful, no drums no bass no pads, in E flat major at 80 bpm, calm safe orbital observation, scanner-active but invisible, soft watchful, in the spirit of 1990s sci-fi orbital idiom \u2014 calm observation, ProTracker-derived, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/planet_orbit_cloaked/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: gentle scanner-tone shimmer and distant planet-atmosphere whisper, no melody no drums no bass, in E flat major at 80 bpm, calm safe orbital observation, scanner-active but invisible, soft watchful, in the spirit of 1990s sci-fi orbital idiom \u2014 calm observation, ProTracker-derived, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    }
+  },
+  "generated_at": "2026-05-17T23:12:24Z",
+  "notes": ""
+}

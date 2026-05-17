@@ -1,0 +1,43 @@
+{
+  "context": "combat_boss",
+  "category": "combat",
+  "description": "Boss fight \u2014 Cleanser climax; religious-dread combat",
+  "key": "E flat minor",
+  "bpm": 132,
+  "duration_s": 90,
+  "backend": "audioldm2-music/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/combat_boss/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: thunderous detuned distorted electric bass with deep sub-bass doubling, doom-metal weight, no drums no melody no pads, in E flat minor at 132 bpm, monolithic religious-dread combat, Cleanser boss climax, doom-metal sci-fi, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/combat_boss/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: massive taiko-and-thrash hybrid kit with double-kick gallop and crash cymbals, ceremonial weight, no melody no bass no pads, in E flat minor at 132 bpm, monolithic religious-dread combat, Cleanser boss climax, doom-metal sci-fi, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "pad": {
+      "path": "assets/music/combat_boss/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: distorted cathedral pipe-organ stabs in minor-key chord progression, religious dread, no melody no drums no bass, in E flat minor at 132 bpm, monolithic religious-dread combat, Cleanser boss climax, doom-metal sci-fi, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "lead": {
+      "path": "assets/music/combat_boss/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: solo distorted electric-guitar lead with mournful conviction, hero-against-fate phrasing, no drums no bass no pads, in E flat minor at 132 bpm, monolithic religious-dread combat, Cleanser boss climax, doom-metal sci-fi, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/combat_boss/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Furling chant fragments, deep cathedral reverb tail, ominous wind through stone, no melody no drums no bass, in E flat minor at 132 bpm, monolithic religious-dread combat, Cleanser boss climax, doom-metal sci-fi, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    }
+  },
+  "generated_at": "2026-05-17T23:18:45Z",
+  "notes": "Bridges combat_low (heavy-metal sci-fi) and cleanser_council (monolithic Furling dread). Same key as cleanser_council (Eb minor) for thematic ties; combat tempo (132 bpm) for action."
+}
