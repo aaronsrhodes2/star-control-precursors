@@ -1,0 +1,30 @@
+# aspect: 3:4 (or 4:5 — match the original 3200x4258 poster ~3:4)
+# notes: nebula-only galaxy backdrop. Generate using sc2-starmap.png as
+# a Reference Image so Firefly anchors the color palette to the
+# original, but EVERYTHING except the nebular gas is stripped:
+#   - NO star points
+#   - NO control-zone borders or color overlays
+#   - NO species labels, constellation names, or titles
+#   - NO constellation lines
+# This becomes the L1 layer in the new hyperspace map; stars are
+# rendered procedurally on top by StarRenderer.
+
+A vast top-down galactic-scale nebular backdrop, painterly, vertical
+orientation roughly 3:4. Deep cosmic black base. Across it: large,
+slow swirls of dust and ionized gas in the Star Control 2 palette —
+deep teal, rose-magenta, indigo, amber-gold, dusty cyan. The clouds
+should feel like spiral-arm material, with brighter "core" regions
+toward the center-right and progressively dimmer outer regions
+toward the edges. Subtle organic flowing structures suggesting where
+ancient stellar nurseries might have collapsed.
+
+ABSOLUTELY EXCLUDE: star points of any kind (no white dots, no glints,
+no glow centers), constellation lines, control-zone color blobs or
+borders, species emblems, text labels, planet sprites, ship sprites,
+UI overlays, frame borders. The image should look like a high-altitude
+photograph of an INTERSTELLAR MEDIUM with no stars in it — gas only.
+
+Style: stylized 1990s sci-fi game backdrop, painterly, beautiful but
+ATMOSPHERIC not busy. The goal is a backdrop that ~500 procedurally-
+drawn stars will look INHABITED inside, like jewels scattered across
+a quilt of nebular gas.

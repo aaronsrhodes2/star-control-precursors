@@ -87,6 +87,8 @@ class InputManager:
         self.rewind: bool = False         # Back / R — Time Drive
         self.open_switcher: bool = False  # R3 / F1 — scene switcher
         self.quit: bool = False           # Start — quit game
+        self.toggle_zones: bool = False   # Z — hyperspace species-zone overlay
+        self.open_search: bool = False    # / — hyperspace star-name search
 
         # Internal state — for trigger edge detection across frames
         self._rt_was_pressed: bool = False
@@ -110,6 +112,9 @@ class InputManager:
         return len(self.joysticks) > 0
 
     def update(self, events: list[pygame.event.Event]) -> None:
+        # Stash this frame's raw events for consumers like text-input
+        # modals (SearchOverlay) that need full keydown / TEXTINPUT data.
+        self.recent_events: list[pygame.event.Event] = events
         # Reset edge-triggered state
         self.confirm = False
         self.cancel = False
@@ -122,6 +127,8 @@ class InputManager:
         self.rewind = False
         self.open_switcher = False
         self.quit = False
+        self.toggle_zones = False
+        self.open_search = False
 
         # ----- Keyboard (level axes from held keys) -----
         keys = pygame.key.get_pressed()
@@ -206,6 +213,10 @@ class InputManager:
                     self.rewind = True
                 elif ev.key == pygame.K_F1:
                     self.open_switcher = True
+                elif ev.key == pygame.K_z:
+                    self.toggle_zones = True
+                elif ev.key == pygame.K_SLASH:
+                    self.open_search = True
 
             elif ev.type == pygame.JOYBUTTONDOWN:
                 if ev.button == XBOX_A:

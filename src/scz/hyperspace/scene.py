@@ -13,7 +13,9 @@ import pygame
 
 from scz.content.species_visual import get_warp_pod_colors
 from scz.engine.scene import Scene
+from scz.hyperspace.search import SearchOverlay
 from scz.hyperspace.starmap import Starmap, UNIVERSE_MAX
+from scz.hyperspace.zones import ZoneRenderer, build_default_zones
 
 
 # Radius within which a hyperspace encounter point auto-triggers on collision
@@ -96,6 +98,13 @@ class HyperspaceScene(Scene):
     def __init__(self) -> None:
         super().__init__()
         self.starmap = Starmap(STARMAP_JSON)
+        # Toggleable species control-zone overlay (Z key). Default off so
+        # the map reads cleanly; the player explicitly asks for it.
+        self.zone_renderer = ZoneRenderer(build_default_zones(self.starmap.stars))
+        # Star-name search overlay (/ to open). Modal: while open, ALL
+        # keyboard input is captured by the overlay so the ship doesn't
+        # accidentally move while typing.
+        self.search_overlay = SearchOverlay(self.starmap)
         self.player_x: float = SOL_X
         self.player_y: float = SOL_Y
         self.player_heading: float = 0.0  # radians, 0 = up
@@ -246,6 +255,34 @@ class HyperspaceScene(Scene):
             ))
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
+        # --- Search overlay (/) ---
+        # If open, consume all input this frame so the ship doesn't drift.
+        if inp.open_search and not self.search_overlay.visible:
+            self.search_overlay.open()
+            pygame.key.start_text_input()
+            return
+        if self.search_overlay.visible:
+            events = getattr(inp, "recent_events", [])
+            self.search_overlay.update_events(events)
+            if not self.search_overlay.visible:
+                pygame.key.stop_text_input()
+            # Don't move the ship or zoom while typing.
+            return
+        # After-search jump: if the player picked a star, pan + select it.
+        target = self.search_overlay.pending_target
+        if target is not None:
+            self.search_overlay.pending_target = None
+            tx, ty = float(target["x"]), float(target["y"])
+            self.player_x = tx
+            self.player_y = ty
+            self.camera_x = tx
+            self.camera_y = ty
+            self.autopilot_target = target
+
+        # --- Zone overlay toggle (Z) ---
+        if inp.toggle_zones:
+            self.zone_renderer.toggle()
+
         # --- Zoom (LB / RB on controller, - / = on keyboard) ---
         if inp.menu_prev:
             self.target_zoom = max(self.target_zoom / ZOOM_STEP, MIN_ZOOM)
@@ -448,6 +485,10 @@ class HyperspaceScene(Scene):
             screen, (30, 30, 60), (ux0, uy0, ux1 - ux0, uy1 - uy0), 1
         )
 
+        # Species control zones (Z to toggle). Render BEFORE stars so the
+        # tint sits behind star sprites but the names on top still read.
+        self.zone_renderer.render(screen, self.universe_to_screen, self.zoom)
+
         # Stars
         self.starmap.render(screen, self.universe_to_screen)
         # Star-name labels — tiered by star size (supergiants from far out,
@@ -495,6 +536,10 @@ class HyperspaceScene(Scene):
 
         # HUD
         self._draw_hud(screen, nearest, in_entry_range)
+
+        # Search overlay — rendered last so it's on top of everything.
+        if self.font is not None:
+            self.search_overlay.render(screen, self.font)
 
     # --- helpers ---
 
