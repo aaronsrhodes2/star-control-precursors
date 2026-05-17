@@ -38191,6 +38191,22 @@
     "source": "base/lander/shield.ani",
     "status": "placeholder"
   },
+  "maps/quasispace.png": {
+    "category": "maps",
+    "context": "quasispace",
+    "improved_with": null,
+    "replaced_at": null,
+    "source": "references/maps/quasispace.png",
+    "status": "placeholder"
+  },
+  "maps/sc2-starmap.png": {
+    "category": "maps",
+    "context": "hyperspace",
+    "improved_with": null,
+    "replaced_at": null,
+    "source": "references/maps/sc2-starmap.png",
+    "status": "placeholder"
+  },
   "nav/ambient-000.png": {
     "category": "nav",
     "context": "misc",

@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass
+from pathlib import Path
 
 import pygame
 
@@ -108,6 +109,12 @@ class QuasiSpaceScene(Scene):
         self.font: pygame.font.Font | None = None
         self.title_font: pygame.font.Font | None = None
 
+        # SC2 quasi-space backdrop image (loaded in on_enter) + scaled cache.
+        # Per Rule 4 (keep): the QS map is the canonical visual. Portals
+        # render on top.
+        self._qs_image: pygame.Surface | None = None
+        self._qs_scaled_cache: tuple[int, int, pygame.Surface] | None = None
+
     # ------------------------------------------------------------------
     # Scene API
     # ------------------------------------------------------------------
@@ -120,6 +127,44 @@ class QuasiSpaceScene(Scene):
         self.scale = (min(w, h) - 120) / QS_MAX
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
+        self._load_qs_image()
+
+    def _load_qs_image(self) -> None:
+        """Load the SC2 quasi-space map as a backdrop image. Per Rule 4
+        in references/project-rules.md, the SC2 QS map is the canonical
+        visual; portals render on top of it. Silently no-ops if missing.
+        """
+        img_path = (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "assets" / "maps" / "quasispace.png"
+        )
+        if not img_path.exists():
+            self._qs_image = None
+            return
+        try:
+            self._qs_image = pygame.image.load(str(img_path)).convert()
+        except pygame.error:
+            self._qs_image = None
+
+    def _get_scaled_qs(
+        self, target_w: int, target_h: int
+    ) -> pygame.Surface | None:
+        """Scaled+cached QS map, quantized to 16px so window-resize/zoom
+        doesn't rebuild every frame.
+        """
+        if self._qs_image is None or target_w <= 0 or target_h <= 0:
+            return None
+        bw = max(16, ((target_w + 8) // 16) * 16)
+        bh = max(16, ((target_h + 8) // 16) * 16)
+        if (
+            self._qs_scaled_cache is not None
+            and self._qs_scaled_cache[0] == bw
+            and self._qs_scaled_cache[1] == bh
+        ):
+            return self._qs_scaled_cache[2]
+        scaled = pygame.transform.smoothscale(self._qs_image, (bw, bh))
+        self._qs_scaled_cache = (bw, bh, scaled)
+        return scaled
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
@@ -177,6 +222,16 @@ class QuasiSpaceScene(Scene):
     def render(self, screen: pygame.Surface) -> None:
         # Quasi-Space ambient — deep teal/violet
         screen.fill((12, 8, 26))
+
+        # SC2 quasi-space map as backdrop, filling the QS world rect.
+        # Portals, drift dots, and the player render on top.
+        ux0, uy0 = self._qs_to_screen(0.0, 0.0)
+        ux1, uy1 = self._qs_to_screen(QS_MAX, QS_MAX)
+        backdrop_w = int(ux1 - ux0)
+        backdrop_h = int(uy1 - uy0)
+        backdrop = self._get_scaled_qs(backdrop_w, backdrop_h)
+        if backdrop is not None:
+            screen.blit(backdrop, (int(ux0), int(uy0)))
 
         # Soft parallax — drift dots forming a fold-pattern texture
         rng_seed = 4242

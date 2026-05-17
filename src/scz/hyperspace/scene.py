@@ -119,6 +119,11 @@ class HyperspaceScene(Scene):
         # future "you ran into someone in hyperspace" beats.
         self.encounter_points: list[EncounterPoint] = []
 
+        # SC2 starmap backdrop image + a (target_w, target_h) → scaled
+        # Surface cache so we don't pygame.transform.scale every frame
+        self._starmap_image: pygame.Surface | None = None
+        self._starmap_scaled_cache: tuple[int, int, pygame.Surface] | None = None
+
         # Set in on_enter once we know the screen size
         self.map_view_x: int = 0
         self.map_view_y: int = 0
@@ -160,8 +165,54 @@ class HyperspaceScene(Scene):
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
         self.small_font = pygame.font.SysFont("consolas", 14)
 
+        # SC2 starmap backdrop — per Rule 4 (keep), the canonical SC2
+        # hyperspace map is the primary visual. Actual interactive stars
+        # render ON TOP of this image so the player can autopilot to them.
+        self._load_starmap_image()
+
         # Spawn any encounter points whose triggers fire on this entry
         self._maybe_spawn_encounters()
+
+    def _load_starmap_image(self) -> None:
+        """Load the SC2 hyperspace starmap as a backdrop image. Per Rule 4
+        in references/project-rules.md, the SC2 map is the canonical visual
+        for hyperspace; interactive stars (the autopilot targets) render on
+        top of it. Loaded once on scene entry; scaled lazily per viewport.
+        Silently no-ops if the file is missing.
+        """
+        img_path = (
+            Path(__file__).resolve().parent.parent.parent.parent
+            / "assets" / "maps" / "sc2-starmap.png"
+        )
+        if not img_path.exists():
+            self._starmap_image = None
+            return
+        try:
+            self._starmap_image = pygame.image.load(str(img_path)).convert()
+        except pygame.error:
+            self._starmap_image = None
+
+    def _get_scaled_starmap(
+        self, target_w: int, target_h: int
+    ) -> pygame.Surface | None:
+        """Return the SC2 starmap scaled to (target_w, target_h), cached.
+        Quantized to 16px so smooth zoom doesn't rebuild every frame.
+        """
+        if self._starmap_image is None or target_w <= 0 or target_h <= 0:
+            return None
+        bw = max(16, ((target_w + 8) // 16) * 16)
+        bh = max(16, ((target_h + 8) // 16) * 16)
+        if (
+            self._starmap_scaled_cache is not None
+            and self._starmap_scaled_cache[0] == bw
+            and self._starmap_scaled_cache[1] == bh
+        ):
+            return self._starmap_scaled_cache[2]
+        scaled = pygame.transform.smoothscale(
+            self._starmap_image, (bw, bh)
+        )
+        self._starmap_scaled_cache = (bw, bh, scaled)
+        return scaled
 
     def _maybe_spawn_encounters(self) -> None:
         """Check game.flags and spawn transient encounter points based on
@@ -383,6 +434,16 @@ class HyperspaceScene(Scene):
         # Universe boundary
         ux0, uy0 = self.universe_to_screen(0.0, 0.0)
         ux1, uy1 = self.universe_to_screen(UNIVERSE_MAX, UNIVERSE_MAX)
+
+        # SC2 starmap backdrop — fills the universe rect, scaled+cached.
+        # Drawn BEFORE interactive stars so they sit on top as autopilot
+        # targets. Per Rule 4 (KEEP literally): the SC2 map is canonical.
+        backdrop_w = int(ux1 - ux0)
+        backdrop_h = int(uy1 - uy0)
+        backdrop = self._get_scaled_starmap(backdrop_w, backdrop_h)
+        if backdrop is not None:
+            screen.blit(backdrop, (int(ux0), int(uy0)))
+
         pygame.draw.rect(
             screen, (30, 30, 60), (ux0, uy0, ux1 - ux0, uy1 - uy0), 1
         )
