@@ -74,23 +74,30 @@ def main(argv: list[str]) -> int:
         expected_duration = m.get("duration_s")
         print(f"manifest: context={m.get('context')!r} key={m.get('key')!r} "
               f"bpm={m.get('bpm')} duration={m.get('duration_s')}s "
-              f"seed={m.get('seed')}")
+              f"backend={m.get('backend', m.get('seed'))}")
 
-    wavs = sorted(track_dir.glob("*.wav"))
-    if not wavs:
-        print("no .wav files found", file=sys.stderr)
+    # All audio formats libsndfile can decode. Prefer mp3 (ElevenLabs
+    # default) > ogg > wav for ordering, but inspect every file we find.
+    files = (
+        sorted(track_dir.glob("*.mp3"))
+        + sorted(track_dir.glob("*.ogg"))
+        + sorted(track_dir.glob("*.wav"))
+        + sorted(track_dir.glob("*.flac"))
+    )
+    if not files:
+        print("no audio files found (.mp3/.ogg/.wav/.flac)", file=sys.stderr)
         return 1
 
-    print(f"\n{'stem':<14} {'dur':<6} {'sr':<7} {'ch':<3} {'peak':<6} {'rms':<7} {'size':<7} flags")
-    print("-" * 70)
+    print(f"\n{'stem':<14} {'ext':<5} {'dur':<6} {'sr':<7} {'ch':<3} {'peak':<6} {'rms':<7} {'size':<8} flags")
+    print("-" * 78)
     any_flag = False
-    for p in wavs:
+    for p in files:
         info = _inspect(p)
         flags = _flag(info, expected_duration)
         flag_str = " ".join(flags) if flags else ""
         if flags:
             any_flag = True
-        print(f"{p.stem:<14} {info['duration_s']:<6} "
+        print(f"{p.stem:<14} {p.suffix.lstrip('.'):<5} {info['duration_s']:<6} "
               f"{info['sr']:<7} {info['channels']:<3} "
               f"{info['peak']:<6.3f} {info['rms']:<7.4f} "
               f"{info['size_mb']:<6.2f}MB {flag_str}")

@@ -1,35 +1,38 @@
 {
   "context": "hyperspace",
+  "category": "travel",
+  "description": "Hyperspace travel \u2014 peaceful; the player's 'ship at speed' theme",
   "key": "C minor",
   "bpm": 108,
-  "duration_s": 30,
-  "backend": "elevenlabs-music_v1",
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
   "stems": {
     "bass": {
-      "path": "assets/music/hyperspace/bass.wav",
-      "prompt": "Isolated BASS STEM for layered production: deep analog synth bassline, mid-tempo propulsive groove, in C minor at 108 bpm, sci-fi space-flight atmosphere, no drums no melody no pads, stems-only mix",
-      "sample_rate": 44100
+      "path": "assets/music/hyperspace/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: deep analog synth bassline, mid-tempo propulsive groove, no drums no melody no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "format": "mp3_44100_192"
     },
     "percussion": {
-      "path": "assets/music/hyperspace/percussion.wav",
-      "prompt": "Isolated DRUMS STEM for layered production: gated kick-and-hat pattern, mid-tempo four-on-the-floor with subtle space-fx claps, in C minor at 108 bpm, sci-fi space-flight atmosphere, no melody no bass no pads, stems-only mix",
-      "sample_rate": 44100
+      "path": "assets/music/hyperspace/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: gated kick-and-hat pattern, mid-tempo four-on-the-floor with subtle space-fx claps, no melody no bass no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "format": "mp3_44100_192"
     },
     "pad": {
-      "path": "assets/music/hyperspace/pad.wav",
-      "prompt": "Isolated PAD STEM for layered production: warm analog synth pad, long sustained chords, atmospheric and propulsive, in C minor at 108 bpm, sci-fi space-flight texture, no melody no drums no bass, stems-only mix",
-      "sample_rate": 44100
+      "path": "assets/music/hyperspace/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: warm analog synth pad, long sustained chords, atmospheric and propulsive, no melody no drums no bass, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "format": "mp3_44100_192"
     },
     "lead": {
-      "path": "assets/music/hyperspace/lead.wav",
-      "prompt": "Isolated LEAD MELODY STEM for layered production: mid-tempo synth arpeggio, hopeful melodic phrase, in C minor at 108 bpm, sci-fi space-flight feel, no drums no bass no pads, stems-only mix",
-      "sample_rate": 44100
+      "path": "assets/music/hyperspace/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: mid-tempo synth arpeggio, hopeful melodic phrase, no drums no bass no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "format": "mp3_44100_192"
     },
     "ambient": {
-      "path": "assets/music/hyperspace/ambient.wav",
-      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: subtle space drone wash, distant cosmic wind, sparkles, in C minor at 108 bpm, no melody no drums no bass, stems-only mix",
-      "sample_rate": 44100
+      "path": "assets/music/hyperspace/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: subtle space drone wash, distant cosmic wind, sparkles, no melody no drums no bass, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "format": "mp3_44100_192"
     }
   },
-  "generated_at": "2026-05-17T17:51:32Z"
+  "generated_at": "2026-05-17T18:11:46Z",
+  "notes": ""
 }

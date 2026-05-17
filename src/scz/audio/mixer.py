@@ -124,8 +124,21 @@ class StemMixer:
                     continue
                 stems[name] = pygame.mixer.Sound(str(p))
         else:
-            # Glob fallback
-            for p in sorted(track_dir.glob("*.wav")) + sorted(track_dir.glob("*.ogg")):
+            # Glob fallback (.mp3 / .ogg / .wav — all natively supported
+            # by pygame.mixer.Sound).
+            found = (
+                sorted(track_dir.glob("*.mp3"))
+                + sorted(track_dir.glob("*.ogg"))
+                + sorted(track_dir.glob("*.wav"))
+            )
+            # If a stem name appears in multiple formats, prefer the
+            # smaller one (mp3 > ogg > wav per the order above) since
+            # ElevenLabs ships mp3 by default.
+            seen: set[str] = set()
+            for p in found:
+                if p.stem in seen:
+                    continue
+                seen.add(p.stem)
                 stems[p.stem] = pygame.mixer.Sound(str(p))
 
         track = Track(context=context, stems=stems, manifest=manifest)

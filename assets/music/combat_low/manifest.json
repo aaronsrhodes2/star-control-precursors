@@ -1,0 +1,38 @@
+{
+  "context": "combat_low",
+  "category": "combat",
+  "description": "Low-risk skirmish \u2014 engaged but not in real danger",
+  "key": "D minor",
+  "bpm": 132,
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
+  "stems": {
+    "bass": {
+      "path": "assets/music/combat_low/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: driving distorted synth bass riff with eighth-note motion, no drums no melody no pads, in D minor at 132 bpm, tense action, driving propulsion, controlled risk, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "percussion": {
+      "path": "assets/music/combat_low/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: urgent live-sounding kit, fast hihats and snare backbeat with tom fills, no melody no bass no pads, in D minor at 132 bpm, tense action, driving propulsion, controlled risk, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "pad": {
+      "path": "assets/music/combat_low/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: aggressive minor-key brass-pad stabs on the downbeat, no melody no drums no bass, in D minor at 132 bpm, tense action, driving propulsion, controlled risk, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/combat_low/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: staccato synth riff, defiant melodic figure with tense intervals, no drums no bass no pads, in D minor at 132 bpm, tense action, driving propulsion, controlled risk, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "ambient": {
+      "path": "assets/music/combat_low/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: filtered sirens and radio chatter texture, no melody no drums no bass, in D minor at 132 bpm, tense action, driving propulsion, controlled risk, stems-only mix",
+      "format": "mp3_44100_192"
+    }
+  },
+  "generated_at": "2026-05-17T18:13:06Z",
+  "notes": ""
+}

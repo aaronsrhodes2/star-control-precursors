@@ -1,0 +1,38 @@
+{
+  "context": "cleanser_council",
+  "category": "furling_faction",
+  "description": "Cleanser-Council theme \u2014 dread, conviction, monolithic resolve",
+  "key": "E flat minor",
+  "bpm": 72,
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
+  "stems": {
+    "bass": {
+      "path": "assets/music/cleanser_council/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: deep sub-bass drone with slow octave dives, almost subliminal, no drums no melody no pads, in E flat minor at 72 bpm, monolithic dread, religious certainty, the executioner's quiet self-belief, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "percussion": {
+      "path": "assets/music/cleanser_council/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: slow taiko thump on the downbeats with whispered metallic scrapes, no melody no bass no pads, in E flat minor at 72 bpm, monolithic dread, religious certainty, the executioner's quiet self-belief, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "pad": {
+      "path": "assets/music/cleanser_council/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: cathedral pipe-organ-like minor-key chords, glacial sustain, ominous resolve, no melody no drums no bass, in E flat minor at 72 bpm, monolithic dread, religious certainty, the executioner's quiet self-belief, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/cleanser_council/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: solo low cello phrasing a funeral march motif, mournful conviction, no drums no bass no pads, in E flat minor at 72 bpm, monolithic dread, religious certainty, the executioner's quiet self-belief, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "ambient": {
+      "path": "assets/music/cleanser_council/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Furling chant fragments and wind through stone halls, no melody no drums no bass, in E flat minor at 72 bpm, monolithic dread, religious certainty, the executioner's quiet self-belief, stems-only mix",
+      "format": "mp3_44100_192"
+    }
+  },
+  "generated_at": "2026-05-17T18:16:17Z",
+  "notes": "Doubles as the Vael-Souren PRE-COMBAT dread theme; the variance engine may darken it further for the dread moment."
+}

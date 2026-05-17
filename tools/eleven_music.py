@@ -9,12 +9,22 @@ API: POST https://api.elevenlabs.io/v1/music
 Auth: xi-api-key header (key read from D:/Aaron/development/.env)
 Returns: binary audio file (mp3 by default; configurable via output_format)
 
-Pricing: ~2000 characters per minute of music. 30s × 1000 chars/stem
-× 5 stems = ~5000 chars per multi-stem context.
+Pricing: ~2000 characters per minute of music. 90s loop × 5 stems
+≈ 15000 chars per multi-stem context.
 
-Example:
+Two ways to use this module:
+
+    # 1. music_bytes() — returns RAW response. Best for game assets
+    #    because we save the MP3 directly to disk (5× smaller files
+    #    than decoded WAV; pygame.mixer loads MP3 natively).
+    from eleven_music import music_bytes, save_audio
+    data, fmt = music_bytes("upbeat synth in C minor at 108 bpm", 90)
+    save_audio(data, fmt, "hyperspace_bass.mp3")
+
+    # 2. music() — decodes to (numpy_array, sample_rate) for inspection
+    #    + WAV-write workflows.
     from eleven_music import music, save_wav
-    audio, sr = music("upbeat synth in C minor at 108 bpm", 30)
+    audio, sr = music("upbeat synth in C minor at 108 bpm", 90)
     save_wav(audio, sr, "hyperspace_bass.wav")
 """
 
@@ -83,25 +93,25 @@ def _decode_response(data: bytes, output_format: str):
     raise ValueError(f"unsupported output_format: {output_format}")
 
 
-def music(
+def music_bytes(
     prompt: str,
-    duration_s: float = 30.0,
+    duration_s: float = 90.0,
     model_id: str = DEFAULT_MODEL,
     instrumental: bool = True,
     output_format: str = DEFAULT_OUTPUT_FORMAT,
     timeout: int = 300,
-):
-    """Generate music from a prompt. Returns (audio_array, sample_rate).
+) -> tuple[bytes, str]:
+    """Generate music; return (raw_audio_bytes, output_format).
 
-    `prompt`: text description; include key + bpm for multi-stem coherence.
-    `duration_s`: 3-600 seconds. ElevenLabs rounds to 1 ms.
-    `instrumental`: True keeps vocals out (recommended for game music).
-    `output_format`: see https://elevenlabs.io/docs/api-reference/music/compose
+    Prefer this for game-asset workflows so we can save the MP3
+    directly. Per the docstring at module-top, MP3 saves ~5× smaller
+    than re-encoded WAV.
 
     NOTE: ElevenLabs Music's `seed` parameter is gated to composition_plan
     mode, not bare-prompt mode. Asset-time determinism is provided by
-    committing the generated .wav to git — re-runs deliberately don't
-    reproduce the exact bytes (the API picks a fresh seed each call).
+    committing the generated audio file to git — re-runs deliberately
+    don't reproduce the exact bytes (the API picks a fresh seed each
+    call).
     """
     api_key = _load_api_key()
     music_length_ms = int(duration_s * 1000)
@@ -123,39 +133,91 @@ def music(
         timeout=timeout,
     )
     if r.status_code != 200:
-        # Try to surface the JSON error body if present
         try:
             err = r.json()
         except Exception:
             err = r.text[:400]
         raise RuntimeError(f"ElevenLabs /music HTTP {r.status_code}: {err}")
-    return _decode_response(r.content, output_format)
+    return r.content, output_format
+
+
+def music(
+    prompt: str,
+    duration_s: float = 90.0,
+    **kwargs,
+):
+    """Decoded-array variant: returns (audio_array, sample_rate)."""
+    data, fmt = music_bytes(prompt, duration_s, **kwargs)
+    return _decode_response(data, fmt)
+
+
+def _ext_for_format(output_format: str) -> str:
+    if output_format.startswith("mp3"):
+        return ".mp3"
+    if output_format.startswith("opus"):
+        return ".opus"
+    if output_format.startswith("pcm") or output_format.startswith("ulaw") or output_format.startswith("alaw"):
+        return ".wav"  # raw PCM gets wrapped in WAV; ulaw/alaw too
+    return ".bin"
+
+
+def save_audio(data: bytes, output_format: str, out_path: str | Path) -> Path:
+    """Write raw ElevenLabs response bytes to disk.
+
+    For MP3 / Opus formats this is a direct byte-passthrough (no decode
+    round-trip, no re-encode quality loss). For PCM formats the function
+    falls back to decode + soundfile so we land a valid WAV.
+    """
+    p = Path(out_path)
+    p.parent.mkdir(parents=True, exist_ok=True)
+    if output_format.startswith("mp3") or output_format.startswith("opus"):
+        # Suffix sanity check — caller should match the file extension
+        # to the actual content. Don't silently rewrite.
+        expected = _ext_for_format(output_format)
+        if p.suffix.lower() != expected:
+            raise ValueError(
+                f"output_format {output_format} produces {expected!r} "
+                f"but out_path is {p.name!r}"
+            )
+        p.write_bytes(data)
+        return p
+    # PCM-family: decode to ndarray then write as PCM_16 WAV.
+    audio, sr = _decode_response(data, output_format)
+    sf.write(p, audio, sr, subtype="PCM_16")
+    return p
 
 
 def save_wav(audio, sample_rate: int, out_path: str | Path) -> Path:
-    """Write the decoded audio to a 16-bit PCM .wav for the game runtime."""
+    """Write decoded audio to a 16-bit PCM .wav. Use save_audio() instead
+    when you've called music_bytes() and want to keep the original MP3."""
     p = Path(out_path)
     p.parent.mkdir(parents=True, exist_ok=True)
-    # If float in [-1, 1] cast to int16; soundfile handles this with subtype
     sf.write(p, audio, sample_rate, subtype="PCM_16")
     return p
 
 
 def _cli() -> int:
-    """CLI smoke-test: generate 5s of music to /tmp and report shape."""
-    import argparse, tempfile, time
+    """CLI smoke-test: generate a clip and save it (MP3 by default)."""
+    import argparse, time
     ap = argparse.ArgumentParser()
     ap.add_argument("--prompt", default="dark slow synth pad in C minor at 80 bpm")
     ap.add_argument("--duration", type=float, default=5.0)
-    ap.add_argument("--out", default=None)
+    ap.add_argument("--out", default=None, help="Output path (.mp3 or .wav)")
     args = ap.parse_args()
     t0 = time.time()
-    audio, sr = music(args.prompt, args.duration)
+    out_fmt = DEFAULT_OUTPUT_FORMAT
+    data, fmt = music_bytes(args.prompt, args.duration, output_format=out_fmt)
     dt = time.time() - t0
-    print(f"got {audio.shape} @ {sr} Hz in {dt:.1f}s")
+    print(f"got {len(data)} bytes ({fmt}) in {dt:.1f}s")
     if args.out:
-        save_wav(audio, sr, args.out)
-        print(f"wrote {args.out}")
+        out = Path(args.out)
+        if out.suffix.lower() == ".wav":
+            # decode + write WAV
+            audio, sr = _decode_response(data, fmt)
+            save_wav(audio, sr, out)
+        else:
+            save_audio(data, fmt, out)
+        print(f"wrote {out}")
     return 0
 
 
