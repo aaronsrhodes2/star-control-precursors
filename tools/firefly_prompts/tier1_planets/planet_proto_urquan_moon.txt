@@ -1,0 +1,26 @@
+# aspect: 1:1
+# notes: planet sphere for the proto-Ur-Quan tidal-locked moon. The
+# moon never rotates relative to its sun, so it has a permanent
+# DAY-side and permanent NIGHT-side with a habitable terminator-band
+# in between. The proto-Ur-Quan and the proto-Qor-Ah live in the
+# terminator-band twilight.
+
+A planet sphere viewed from medium orbit, filling the frame. A
+tidal-locked moon, ~Earth-Moon-sized, orbiting a yellow dwarf
+sun (off-frame, upper-left). The world is sharply divided into
+three vertical bands: a SCORCHED DAY-side filling the left half
+(red-brown desert cracked plains, white salt deposits, dry
+beyond habitability), a NARROW HABITABLE TERMINATOR-BAND down
+the center (cool blue lakes, dark vegetation in dusk-green and
+purple, rivers running across the band like veins), and a
+FROZEN NIGHT-side filling the right half (ice-blue glaciers
+under starlight, with the rare amber pinprick of a settlement-
+fire here and there). The proto-Ur-Quan and proto-Qor-Ah live
+in the habitable strip — visible as scattered dark pinpricks of
+encampment clustering near the terminator lakes. A thin
+atmosphere refracts at the terminator boundary. No artificial
+infrastructure visible (this is still the pre-language uplift
+era). Style: stylized 1990s sci-fi game asset, painterly, crisp
+circular silhouette. Tone: A WORLD THAT FORCES ITS INHABITANTS
+INTO A SLIVER — the harsh environment is half the reason the
+proto-Ur-Quan turned out dominance-oriented.

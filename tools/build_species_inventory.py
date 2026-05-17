@@ -148,6 +148,38 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "planet_surface",
         "",
     ),
+    # --- Image-lane batch 2026-05-17: avatars + portraits authored
+    # for the previously-bare full-sentient species.
+    "BURVIXESE": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_burvixese_engineer.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "CHENJESU": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_chenjesu_witness.png",
+        "crystalline_rooted",
+        "planet_surface",
+        "",
+    ),
+    "TAALO": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_taalo.png",
+        "bipedal_humanoid",
+        "planet_surface",
+        "",
+    ),
+    "PROTO_QOR_AH": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_qor_ah.png",
+        "insectoid_hierarch",
+        "planet_surface",
+        "",
+    ),
+    "PROTO_URQUAN": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_urquan.png",
+        "insectoid_hierarch",
+        "planet_surface",
+        "",
+    ),
 }
 
 
@@ -379,7 +411,7 @@ ROWS = [
         "assets/comm/safeones/ (SC2 lift)",
         "BURVIXESE",
         "no",
-        "no ship, no dialog, no Firefly portrait, no homeworld, only warp-pod color exists",
+        "no ship, no dialog, no homeworld. Avatar + species portrait COMPLETE 2026-05-17 (tier1_avatars/avatar_burvixese_engineer.png + tier1_portraits/species_burvixese_portrait.png)",
     ),
     (
         "CHENJESU",
@@ -395,7 +427,7 @@ ROWS = [
         "—",
         "—",
         "optional Act 2",
-        "no dialog character, no Firefly portrait, no warp-pod entry (they don't fly)",
+        "no dialog character, no warp-pod entry (they don't fly). Avatar + species portrait COMPLETE 2026-05-17 (tier1_avatars/avatar_chenjesu_witness.png + tier1_portraits/species_chenjesu_portrait.png)",
     ),
     (
         "CLEANSER_FACTION",
@@ -427,7 +459,7 @@ ROWS = [
         "—",
         "FURLING_COMPELLER",
         "referenced-only",
-        "no dialog character, no dedicated ship, no Firefly portrait, no homeworld",
+        "no dialog character, no dedicated ship, no homeworld. Faction insignia COMPLETE 2026-05-17 (tier1_faction_insignia/insignia_compeller.png; v1 had human hands and was rerolled). Furling reference plate already existed.",
     ),
     (
         "CURIOUS",
@@ -539,7 +571,7 @@ ROWS = [
         "assets/comm/commander/ (SC2 lift)",
         "FURLING_SCOUT",
         "yes (player + home base)",
-        "Halia avatar exists at tier1_avatars/avatar_commander_halia.png; the Scout ship sprite is procedural-only in code; CANON-ART MISMATCH: avatars currently render bipedal stand-in, canon body is mono-pedal pedestal-stalk + 12-toe disc-foot (see the-furlings-and-the-others.md §1 note)",
+        "Halia avatar exists at tier1_avatars/avatar_commander_halia.png; the Scout ship sprite is procedural-only in code; CANON-ART MISMATCH: avatars currently render bipedal stand-in, canon body is mono-pedal pedestal-stalk + 12-toe disc-foot (see the-furlings-and-the-others.md §1 note). Lander REDESIGNED 2026-05-17 to hovering drone (no legs; terrain-immune; weather-killed); canonical sprite at tier1_lander/lander_furling.png. Lander destroyed/descending/ascending sprite prompts authored, awaiting next Firefly credit window.",
     ),
     (
         "HIDER_FACTION",
@@ -635,7 +667,7 @@ ROWS = [
         "assets/comm/mycon/ (SC2 lift) + assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
         "MYCON_BIOT",
         "yes (active Council decision)",
-        "no dedicated DialogCharacter (non-verbal by design); no Deep Child voice prompt yet",
+        "no dedicated DialogCharacter (non-verbal by design); no Deep Child voice prompt yet. Xylos Prime homeworld imagery COMPLETE 2026-05-17 (tier1_planets/planet_xylos_prime.png — half-cratered/half-blooming).",
     ),
     (
         "ORZ_RIFTS",
@@ -667,7 +699,7 @@ ROWS = [
         "—",
         "OTHERS",
         "yes (slice climax threat)",
-        "no Others ship class in ships.py yet; no Decursion weapon implementation; non-interactive except in hijack quest (future)",
+        "no Others ship class in ships.py yet; no Decursion weapon implementation; non-interactive except in hijack quest (future). Others' Vessel sprite COMPLETE 2026-05-17 (tier1_ships/ship_others_vessel.png — incomprehensible inverted-geometry tangle with spacetime lensing halo).",
     ),
     (
         "PERSUADER_FACTION",
@@ -715,7 +747,7 @@ ROWS = [
         "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
         "—",
         "optional (mid-game encounter)",
-        "no dialog character; no Planar Blade ShipClass in code; no warp-pod entry; no encounter system",
+        "no dialog character; no Planar Blade ShipClass in code; no warp-pod entry; no encounter system. Planar Blade ship sprite COMPLETE 2026-05-17 (tier1_ships/ship_planar_blade.png — iridescent ribbon-blade).",
     ),
     (
         "PROTO_HUMANS",
@@ -747,7 +779,7 @@ ROWS = [
         "—",
         "PROTO_QORAH",
         "yes (optional encounter / combat)",
-        "no homeworld name; no dialog character (acceptable — non-verbal); no Firefly portrait",
+        "no dialog character (acceptable — non-verbal). Avatar + portrait + tidal-locked moon homeworld COMPLETE 2026-05-17 (tier1_avatars/avatar_proto_qor_ah.png + tier1_portraits/species_proto_qor_ah_portrait.png + tier1_planets/planet_proto_urquan_moon.png — shared with Proto-Ur-Quan).",
     ),
     (
         "PROTO_SPATHI",
@@ -831,7 +863,7 @@ ROWS = [
         "—",
         "PROTO_URQUAN",
         "yes (active Council debate is the slice's moral spine)",
-        "no homeworld name; no Firefly portrait; non-verbal LLM voice prompt not yet authored",
+        "non-verbal LLM voice prompt not yet authored. Avatar + portrait + tidal-locked moon homeworld COMPLETE 2026-05-17 (tier1_avatars/avatar_proto_urquan.png + tier1_portraits/species_proto_urquan_portrait.png + tier1_planets/planet_proto_urquan_moon.png).",
     ),
     (
         "PROTO_UTWIG",
@@ -863,7 +895,7 @@ ROWS = [
         "—",
         "UTWIG",
         "yes (Act 2-3 Homesteader decision)",
-        "no DialogCharacter for Elder Quor-Voh-Listening yet; no voice profile; no Utwig Cloaking Satellite variant",
+        "no DialogCharacter for Elder Quor-Voh-Listening yet; no voice profile; no Utwig Cloaking Satellite variant. Species portrait + Gorno III homeworld COMPLETE 2026-05-17 (tier1_portraits/species_utwig_portrait.png + tier1_planets/planet_gorno_iii.png). Avatar already existed at tier1_avatars/avatar_utwig_elder.png.",
     ),
     (
         "PROTO_VUX",
@@ -979,7 +1011,7 @@ ROWS = [
         "—",
         "TAALO",
         "no",
-        "no lore doc, no homeworld, no ship, no dialog, no Firefly portrait — almost entirely a stub",
+        "no lore doc, no homeworld, no ship, no dialog. Avatar + species portrait COMPLETE 2026-05-17 (tier1_avatars/avatar_taalo.png + tier1_portraits/species_taalo_portrait.png — peaceful silicon-amphibian, deep-time patience tone).",
     ),
     (
         "TALOS",
@@ -995,7 +1027,7 @@ ROWS = [
         "—",
         "—",
         "yes (mid-game system-erasure event)",
-        "no dialog character for a Talos emissary; no Resonator artifact illustration yet; cinematic for the system erasure not yet generated",
+        "no dialog character for a Talos emissary. Talos planet sphere + system-erasure cutscene + Resonator artifact COMPLETE 2026-05-17 (tier1_planets/planet_talos_system.png + tier1_cutscenes/cutscene_talos_erasure.png + tier1_artifacts/artifact_talos_resonator.png).",
     ),
     (
         "THE_BARGAINERS",

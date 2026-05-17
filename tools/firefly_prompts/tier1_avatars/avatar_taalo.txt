@@ -1,0 +1,33 @@
+# aspect: 2:3
+# notes: Articulated avatar for a Taalo — SC2-canonical silicon-based
+# amphibian-like species. Below the Others' detection threshold by
+# biology (mineral cognition reads as geology, not thought). Peaceful.
+# Will go on to build the Taalo Shield ~230kya post-slice. In our era
+# they are simply present and quietly surviving. Slow, contemplative,
+# unhurried — there is nothing on their planet that has ever bothered
+# them and they don't know there ever will be.
+
+A full-body avatar painting of a Taalo. Body plan: ~1.4 m tall
+silicon-mineral amphibian-like creature, bipedal with a slow
+stout posture. Skin is a flexible mineralized hide — slate-gray
+with mottled patches of moss-green and pale rose-quartz veining,
+texture somewhere between toad skin and weathered river-stone.
+Head: broad and rounded, with a wide gentle slit-mouth and large
+calm gem-like eyes (deep emerald, lidless, contemplative). No
+external ears (sound felt through skin). Two stout three-fingered
+hands with broad pad-tips, currently held in a peaceful
+clasped-at-belly posture. A simple woven-fiber sash crosses the
+torso, hung with small pebble-tools. Pose: standing relaxed, head
+slightly tilted in patient listening, weight on flat plantigrade
+feet. Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge.
+Lighting: even soft three-point with a faint moss-green rim from
+the skin minerals. Style: stylized 1990s sci-fi game character
+portrait, painterly. The Taalo should read as ANCIENT-PEACEFUL,
+unhurried, almost lazy with deep time.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid + mineral_skin):
+- HEAD: separable for slow talk animation
+- ARMS L/R: visible, currently clasped, can unclasp for gesture
+- TORSO/HIPS: visible, no occluding cape
+- Avoid: aggressive pose, mobile/hunched stance, exotic monstrous
+  features — they are PEACEFUL and READ AS GENTLE

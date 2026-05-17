@@ -1,0 +1,26 @@
+# aspect: 1:1
+# notes: top-down combat sprite of the Others' Vessel. This is the
+# hijack-only ship — the player only ever pilots one through a
+# special end-game quest. Its signature weapon is Decursion (the
+# temporal swap that destroyed Vulpeculae III). The vessel is not a
+# ship in the conventional sense; it is a piece of TRANS-DIMENSIONAL
+# GEOMETRY that we perceive as a ship-shaped wrongness. It should
+# look HORRIFYING and BARELY-COMPREHENSIBLE — not a ship at all.
+
+A top-down orthographic view of an Others' Vessel. Shape: roughly
+a 1:1 footprint occupying a vague disc-region, but the visible
+hull is NOT a solid mass — it is a TANGLE of inverted geometry,
+black ribbons that fold through themselves at impossible angles,
+edges that LEAD INTO each other in ways that should not connect.
+Color: ABSOLUTE BLACK as the dominant value (a black darker than
+space) with brief wrong-light highlights of a non-spectral
+greenish-violet that does not match any other ship's lighting in
+the universe. Surrounding the vessel: a faint perturbation halo
+of bent space — background stars subtly LENSING and STRETCHING
+around the edges, as if the vessel is gravitationally folding
+the spacetime it sits in. No visible engine, no visible weapons,
+no visible cockpit. Just wrong geometry, drinking light. Style:
+stylized 1990s sci-fi game art, painterly. Tone: HORRIFYING,
+INCOMPREHENSIBLE, the only ship in the game that is NOT made by
+hands. Background: deep starfield with lensing artifacts around
+the vessel.

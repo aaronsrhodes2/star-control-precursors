@@ -1,0 +1,27 @@
+# aspect: 1:1
+# notes: dialog portrait for a Proto-Ur-Quan. Active uplift subspecies.
+# Hierarchical, territorial, dominating. CURRENTLY below the Others'
+# detection threshold (uplift them and they cross it — central
+# dilemma). Pre-SC2 biological stage (no green armor, more flesh
+# than carapace). Should read as a PROTO-PREDATOR on the cusp of
+# language and war. Background: their tidal-locked moon under
+# perpetual twilight, ranks of others of their kind in the dust.
+
+A close-up portrait of a Proto-Ur-Quan. Upper torso fills the
+frame: a broad heavy plate-like skull crowned by a single rank-
+marked flesh-ridge (proto-version of the SC2 Ur-Quan rank crest)
+in dark green, with two large hooded eyes glowing pale amber.
+Mandibled mouth set forward in a low-aggression posture. Body
+chitin is olive-green shading to dark forest-green along the
+dorsal ridge; underbelly is paler khaki. Two upper limbs visible
+in the frame, three-clawed grasping hands held in a guarded
+combat-ready posture, claws partially extended. A crude leather-
+cord harness across the torso carries a primitive stone-edged
+weapon and a war-token. Behind the figure: soft-focus tidal-
+locked moon plain under perpetual twilight — ranks of similar
+proto-Ur-Quan in the middle distance, all facing the same
+direction, all in dominance-posture. Lighting: cool amber-orange
+key from the eternal sunset, deep green rim from the chitin.
+Style: stylized 1990s sci-fi game portrait, painterly, predatory,
+proto-imperial. Tone: ON THE CUSP — language is emerging, war
+is emerging, conquest is the obvious future trajectory.

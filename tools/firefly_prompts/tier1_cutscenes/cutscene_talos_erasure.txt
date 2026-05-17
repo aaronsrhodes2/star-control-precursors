@@ -1,0 +1,28 @@
+# aspect: 16:9
+# notes: cinematic cutscene for the Talos system erasure — the
+# mid-slice event where the Be-Loud Furling sub-faction's Talos
+# Resonator FINALLY succeeds in being heard by the Others. The
+# Others answer by eating everything thinking on the planet in
+# a single quiet stroke. The visual: the broadcasting world goes
+# from a brilliant beacon to ABSOLUTE QUIET, mid-frame. Should
+# pair tonally with cutscene_others_consuming but at planetary
+# scale, and faster.
+
+A wide cinematic still over the Talos planet at the moment of
+erasure. Frame split into a clear before-and-after along a
+vertical seam: on the LEFT, the planet is ablaze — the equatorial
+broadcaster lattice glowing actinic-purple, vast antenna spires
+piercing the atmosphere, a planet declaring its presence as
+loudly as it can. On the RIGHT, ACROSS THE SAME PLANET in the
+same continuous frame, the broadcaster lattice has gone DARK —
+spires dimmed to dead matte gray, atmospheric ionization halo
+extinguished, ocean and continent and broadcaster all simply
+QUIET. The seam between the two states is not fire, not an
+explosion — it is a clean dimming, as if a stage light was just
+switched off. In the sky above the planet: a single absolute-
+black space-time tunnel hangs centered, having "answered" the
+broadcast, now closing. A few Furling courier ships in orbit
+have already begun to flee for the Migration portal at the far
+right. Tone: COSMIC HORROR, BUT QUIET — the broadcast was
+answered, and the answer was the silence. Style: stylized 1990s
+sci-fi game cutscene art, painterly. No HUD, no UI, no text.

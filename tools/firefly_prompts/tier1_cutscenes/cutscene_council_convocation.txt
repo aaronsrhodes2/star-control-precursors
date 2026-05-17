@@ -1,0 +1,30 @@
+# aspect: 16:9
+# notes: cinematic cutscene of the Furling Council Convocation —
+# the seven-faction debate scene where the Persuader / Compeller /
+# Defender / Hider / Denier / Cleanser / Talos representatives
+# argue what to do about the Holdouts. The player attends as the
+# Steward. Should read as a SOMBER POLITICAL THEATER with the seven
+# emblems of the factions on banners around the chamber. Backdrop
+# for narrative checkpoints, not a one-time scene.
+
+A wide cinematic still inside the great Furling Council chamber.
+Architecture: a round amphitheater carved from dark obsidian stone,
+seven raised speaking-platforms arranged in a circle around a
+central lowered floor (one platform per faction). Above each
+platform hangs a heraldic banner showing that faction's emblem:
+Persuader (open palm), Compeller (clasped hands), Defender
+(shield-and-rifle), Hider (folded veil), Denier (closed book),
+Cleanser (white-violet sorrow-circle), Talos (broadcast burst).
+On each platform stands a single Furling representative — robed
+distinctly per faction, all in mid-debate posture, hands raised
+or palms-up arguing. The camera is positioned at the central
+floor looking diagonally across the room — three platforms in
+foreground (slightly silhouetted) and four in middle distance,
+with the chamber's vaulted obsidian ceiling above carrying a
+soft constellation-projection of the cluster being debated.
+Warm amber lantern-light from below, cool starlight from above.
+A single small figure (the Steward / player) stands at the
+chamber's central floor, looking up — diegetic point-of-view
+anchor. Tone: GRAVE COUNCIL DEBATE, no clear hero, civil but
+exhausted. Style: stylized 1990s sci-fi game cutscene art,
+painterly. No HUD, no UI, no text.

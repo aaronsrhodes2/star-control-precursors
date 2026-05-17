@@ -1,0 +1,27 @@
+# aspect: 1:1
+# notes: REROLLED 2026-05-17 — first attempt used human hands and a
+# confusingly-oriented shield. Compeller heraldry should NOT use human
+# anatomy and should NOT echo the Defender shield motif. Compellers
+# are the pragmatist Furling sub-faction that uses sedation, deception,
+# and firm extraction when Persuasion fails. The visual should
+# express FIRM COMPASSION — a guided passage, not a coercion.
+
+NO TEXT, NO LABELS, NO WORDS, NO LETTERS, NO HUMAN ANATOMY. A
+heraldic faction insignia centered on a dark slate-gray field.
+The emblem: a stylized warm-amber DOORWAY rendered in flat
+graphic style (an arched portal cut clean through a slate plate),
+with a SHEPHERD'S CROOK (a long graceful curved-hook staff)
+extended through the doorway from the foreground side, its hook
+gently curling around a small abstract circular FORM (an
+idealized stand-in for "the one being brought through") and
+drawing it forward toward the doorway. The staff is held by NO
+visible hand or limb — it floats as a pure heraldic symbol. The
+circular form should NOT be a face or figure — just a featureless
+disc with a soft glow, like a soul-token. Limited palette: warm
+copper, soft amber, deep mahogany accents, white highlights —
+warmer than the Defender's slate-and-bronze palette. Crisp flat
+graphic style — should read clearly even at icon size in a UI
+corner. Centered composition, symmetrical, no creatures, no
+hands, no human anatomy, no text in any language. Style:
+stylized 1990s sci-fi game faction heraldry, painterly but
+graphic. Tone: FIRM COMPASSION, GUIDED PASSAGE, not coercion.

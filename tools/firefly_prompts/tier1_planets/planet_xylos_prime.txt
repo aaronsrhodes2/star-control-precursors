@@ -1,0 +1,26 @@
+# aspect: 1:1
+# notes: planet sphere for Xylos Prime — Mycon biot terraforming
+# target. A gas-giant MOON where the first Mycon deployment landed
+# 8000 years ago. The biot-mycelium is actively reshaping the world.
+# Should read as PARTIALLY-TERRAFORMED — half raw rocky moon, half
+# orange-purple Mycon biot bloom. The Deep Child whisper begins HERE.
+
+A planet sphere viewed from medium orbit, filling the frame. World
+name: Xylos Prime, a gas-giant moon ~Mars-sized. Surface is
+visibly split between two states: a "raw" hemisphere of dark
+basaltic crater plains in the upper-left third (the original
+pre-Mycon condition), and a "blooming" hemisphere of vibrant
+orange-purple-pink fungal mycelium-pattern terraforming across
+the lower-right two-thirds (the Mycon biot bloom). The bloom
+side has visible delicate filament-veins glowing soft violet at
+night, an organized fractal network suggesting the underlying
+mycelium is THINKING. A thin amber atmosphere is just beginning
+to form on the bloom side. The huge bulk of the parent gas giant
+(banded magenta-and-cream gas-bands) hangs in the background sky
+behind the moon, half-visible at the upper-right of the frame.
+The terminator falls across the right third — the bloom-network
+glows brighter on the night-side as the mycelium thinks. Lit by
+a warm orange sun from the upper left. Style: stylized 1990s
+sci-fi game asset, painterly, crisp circular silhouette suitable
+as a sprite. Tone: A WORLD BEING REMADE, the moment before
+sentience finishes booting.
