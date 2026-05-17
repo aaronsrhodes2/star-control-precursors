@@ -77,6 +77,48 @@
     "manifest_entry_to_update": null,
     "notes": ""
   },
+  "tier1_portraits/species_arilou_sage_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_arilou_sage_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "arilou",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Sage Lwen-Olou (Arilou) bust portrait — ancient silver-furred primate, pearlescent robes, glowing portal-spawner"
+  },
+  "tier1_portraits/species_coel_tessar_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_coel_tessar_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "coel",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Coel Tessar (Androsynth refugee) bust portrait — heritage-mixed features, magenta uniform, holds Distress Beacon cartridge"
+  },
+  "tier1_portraits/species_commander_halia_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_commander_halia_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "halia",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Commander Halia (Furling Persuader) bust portrait — cinnamon-brown mammoth-furred, silver temples, amber Persuader robes"
+  },
   "tier1_portraits/species_melnorme_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_melnorme_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_melnorme_portrait.png",
@@ -129,6 +171,90 @@
     "manifest_entry_to_update": null,
     "notes": ""
   },
+  "tier1_portraits/species_sentry_drone_47t_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_sentry_drone_47t_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "sentry",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Sentry Drone 47-Theta portrait — copper humanoid drone holding pickaxe + UNION picket sign, comic-absurd"
+  },
+  "tier1_portraits/species_slylandro_witness_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_slylandro_witness_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "slylandro",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Slylandro Witness portrait — semi-transparent gas vortex with bright cyan centroid, in gas-giant atmosphere"
+  },
+  "tier1_ships/ship_arilou_skiff": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_arilou_skiff.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "arilou-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Arilou Skiff top-down — iridescent teardrop pearlescent hull, half-Quasi-Space-phased"
+  },
+  "tier1_ships/ship_cleanser_cruiser": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_cleanser_cruiser.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "cleanser-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Cleanser Cruiser top-down — white-violet heavy ring with teardrop emitters, Quiet Ledger glyph"
+  },
+  "tier1_ships/ship_defender_vessel": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_defender_vessel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "defender-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Defender Vessel top-down — burgundy slab-armor warship, kinetic turrets, Sa-Matra sword-and-star insignia"
+  },
+  "tier1_ships/ship_furling_scout": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_furling_scout.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "furling-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Furling Scout top-down — copper ring nacelle + central football hull + red warp halo, player ship"
+  },
   "tier1_ships/ship_melnorme_trader": {
     "prompt_path": "tools/firefly_prompts/tier1_ships/ship_melnorme_trader.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_melnorme_trader.png",
@@ -141,6 +267,48 @@
     "destination": null,
     "manifest_entry_to_update": null,
     "notes": ""
+  },
+  "tier1_ships/ship_mmrnmhrm_sentinel": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_mmrnmhrm_sentinel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "mmrnmhrm-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Mmrnmhrm Sentinel top-down — silver-and-patina octagonal hull, optical-cluster band forward, weathered ancient"
+  },
+  "tier1_ships/ship_persuader_vessel": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_persuader_vessel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "persuader-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Persuader Vessel top-down — amber/gold ceremonial ring craft with antenna spires"
+  },
+  "tier1_ships/ship_proto_urquan": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_proto_urquan.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "pending",
+    "tags": [
+      "urquan-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Proto-Ur-Quan Warship top-down — organic segmented purple-bronze hull with claw-pincer launchers, primitive"
   },
   "tier1_ui/icon_module_drive": {
     "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_drive.txt",
