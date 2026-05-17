@@ -44,3 +44,4 @@ references/*.tgz
 .env
 .env.local
 *.local.json
+tools/audio_player.html

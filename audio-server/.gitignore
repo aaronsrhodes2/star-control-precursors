@@ -12,3 +12,4 @@ hyperspace_gen*.log
 *_gen*.log
 round*.log
 *_eleven.log
+http_server.log
