@@ -42,10 +42,12 @@ class SfxSpec:
     # 3 = Round-3 re-rolls from listen-pass-2 feedback;
     # 4 = Round-4 re-rolls from listen-pass-3 feedback;
     # 5 = Round-5 re-rolls from listen-pass-4 feedback;
-    # 6+ = remaining inventory queued for future rounds. Default round
+    # 6 = Round-6 = alert_danger 3rd reroll + 4 new Lemmkin Skitter SFX
+    #               (new species added in the parallel-chat lore expansion);
+    # 7+ = remaining inventory queued for future rounds. Default round
     # is always set one ABOVE the highest current round so newly-added
     # specs don't accidentally fire on the next --round N run.
-    round: int = 6
+    round: int = 7
     notes: str = ""
     # If set ("out_subdir/name"), the generator skips ElevenLabs and
     # produces this SFX by sample-reversing the named source SFX.
@@ -131,15 +133,17 @@ UI_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="alert_danger", category="ui", out_subdir="ui",
-        # Round 5: Aaron — "make it three short burps" (new direction;
-        # previous klaxon/fuzzy directions both wrong). Compact 3-beep
-        # warning, not a sustained klaxon.
-        prompt="three short urgent warning burps, evenly spaced staccato beeps "
-               "in mid-bright frequency, each beep about 150ms with small gap "
-               "between, sci-fi HUD danger-detected pattern, audible and "
-               "attention-grabbing but compact, no sustained tones",
-        duration_s=1.2, prompt_influence=0.9, round=5,
-        notes="Round-5 re-roll: three short burps (replacing klaxon direction).",
+        # Round 6: Aaron — "make it three short alert noises". R5 attempt
+        # ("three short urgent warning burps") apparently rendered as one
+        # continuous sound. Doubling down with EXPLICIT separation: three
+        # DISCRETE beeps, SILENCE between, COUNT THREE.
+        prompt="exactly three discrete short alert beeps with clear silence "
+               "between each beep: beep silence beep silence beep, mid-bright "
+               "sci-fi HUD warning tone, each beep about 120 milliseconds, "
+               "silence gaps about 200 milliseconds, then stops. Three "
+               "separate sounds, NOT one continuous tone",
+        duration_s=1.5, prompt_influence=0.95, round=6,
+        notes="Round-6 re-roll: explicit '3 discrete beeps with silence between'.",
     ),
     SfxSpec(
         name="hud_acknowledge", category="ui", out_subdir="ui",
@@ -168,7 +172,7 @@ UI_SFX: list[SfxSpec] = [
 # ---------------------------------------------------------------------------
 
 def _ship(species_id: str, ship_id: str, primary_fire: str, primary_impact: str,
-          special_fire: str, special_impact: str, *, round_no: int = 6) -> list[SfxSpec]:
+          special_fire: str, special_impact: str, *, round_no: int = 7) -> list[SfxSpec]:
     """Emit the 4-SFX bundle for one ship."""
     sub = f"ships/{ship_id}"
     return [
@@ -413,6 +417,51 @@ SHIP_SFX.extend(_ship(
     special_impact="overwhelming swarm impact, multiple sharp chitin strikes, "
                    "primordial annihilation",
 ))
+
+# Lemmkin Skitter (NEW SPECIES, 2026-05-17 lore expansion)
+# Lemmkin = anthropomorphic squirrels with vestigial amygdala (NO FEAR);
+# Homesteader-by-choice; will be eliminated learning, not believing.
+# Ship = glass cannon scout, cheerfully improvised. Specials per the canon:
+#   - Burst-Scatter Probe (front-arc shrapnel cone): primary
+#   - Tail-Drop 180-pivot (snap reverse + small explosive package on the wake)
+# Round 6 = fire all 4 SFX so Aaron can audition the new species' sonic
+# language alongside the rest of the SFX corpus.
+SHIP_SFX.extend([
+    SfxSpec(name="primary_fire", category="weapon", out_subdir="ships/lemmkin_skitter",
+            prompt="cheerful improvised shrapnel-cone burst: short fast metallic "
+                   "scatter-spray of small fragments fanning forward, brass-tinged "
+                   "ratchet attack, bright optimistic timbre with a tiny mechanical "
+                   "rattle in the tail, Lemmkin Burst-Scatter Probe — fearless and "
+                   "fun, not menacing",
+            duration_s=0.8, species_id="LEMMKIN", round=6,
+            prompt_influence=0.9,
+            notes="Round-6 NEW: Lemmkin primary (Burst-Scatter Probe shrapnel cone)."),
+    SfxSpec(name="primary_impact", category="weapon", out_subdir="ships/lemmkin_skitter",
+            prompt="multiple small shrapnel-pebbles striking target in rapid "
+                   "succession, light percussive patter of fragment hits, brief "
+                   "metallic clatter, mid-bright contact, less violence than "
+                   "comedic-but-effective hit pattern",
+            duration_s=0.7, species_id="LEMMKIN", round=6,
+            prompt_influence=0.9,
+            notes="Round-6 NEW: Lemmkin primary impact (shrapnel patter)."),
+    SfxSpec(name="special_fire", category="weapon", out_subdir="ships/lemmkin_skitter",
+            prompt="snap-reverse Tail-Drop maneuver: quick descending whoosh of a "
+                   "small craft hard-pivoting 180 degrees, brief mechanical thrust "
+                   "kick at the moment of reversal, then a small confident *plink* "
+                   "of an explosive package being ejected onto the wake, Lemmkin "
+                   "improvised cleverness, fearless and audibly tactical",
+            duration_s=1.3, species_id="LEMMKIN", round=6,
+            prompt_influence=0.9,
+            notes="Round-6 NEW: Lemmkin special (snap-180 + tail-drop package)."),
+    SfxSpec(name="special_impact", category="weapon", out_subdir="ships/lemmkin_skitter",
+            prompt="small contact explosion of the dropped Tail-Drop package: "
+                   "compact bright pop with a quick scatter of metallic fragments "
+                   "outward, brief shrapnel ring-out, satisfying audibly-mid-sized "
+                   "explosion (not catastrophic), Lemmkin improvised ordnance",
+            duration_s=1.0, species_id="LEMMKIN", round=6,
+            prompt_influence=0.9,
+            notes="Round-6 NEW: Lemmkin special impact (package detonation)."),
+])
 
 
 # ---------------------------------------------------------------------------

@@ -303,6 +303,58 @@ TITLE_MENU = ContextSpec(
 
 
 # ---------------------------------------------------------------------------
+# Lemmkin peace theme (NEW SPECIES, 2026-05-17 lore expansion)
+#
+# Lemmkin = anthropomorphic squirrels with no fear (vestigial amygdala),
+# Homesteader-by-CHOICE: they chose to stay so they could SEE WHAT HAPPENS
+# with the Others. They will die LEARNING — fearless, curious, slightly off.
+# Their theme should sound BRIGHT and CURIOUS and CONFIDENT with a subtly
+# WRONG quality you can't quite pin down (no fear should feel uncanny).
+# Queued at round=2 — fires when Aaron approves the music expansion.
+# ---------------------------------------------------------------------------
+
+LEMMKIN_PEACE = ContextSpec(
+    name="lemmkin",
+    category="species_peace",
+    key="G major",
+    bpm=104,
+    duration_s=90,
+    description="Lemmkin friendly — fearless-curious squirrel troupe; subtly off-bright",
+    sc2_inspiration="",  # no SC2 antecedent — Lemmkin is SCZ-original
+    sc2_idiom="",
+    round=2,
+    notes=(
+        "Lemmkin sonic identity: bright major-key woodwinds and plucked strings, "
+        "lively rhythmic activity, but with ONE subtle quality that reads as "
+        "WRONG (a slightly-flat note in the melody, a shifted accent that lands "
+        "off the beat, etc.) so the music sounds 'too cheerful for the danger' "
+        "the species is in. Aaron's note from the species lore: 'they will die "
+        "LEARNING, not believing they'd live.' Foreshadow that."
+    ),
+    stems=_standard_5stem(
+        "G major", 104,
+        ("bright lively curious-fearless squirrel-clade species theme, "
+         "subtly-wrong-cheerful, foreshadows tragedy under apparent joy"),
+        bass_body="pizzicato low strings + soft tuba pulses on the downbeat, "
+                  "active walking bassline, warm but slightly off-tempo, "
+                  "no drums no melody no pads",
+        perc_body="light jaunty hand-percussion: tambourine, shakers, soft "
+                  "snare brush, the rhythm of a troupe-investigating-something, "
+                  "no melody no bass no pads",
+        pad_body="warm woodwind bed: clarinets and oboes in close harmony, "
+                 "lightly drifting major-key chord beds with ONE subtly-flat "
+                 "tone, no melody no drums no bass",
+        lead_body="playful piccolo + plucked banjo-like string melody, bright "
+                  "curious phrasing, lively melodic line that climbs confidently, "
+                  "no drums no bass no pads",
+        amb_body="distant rustling-leaves texture, soft squirrel-chitter under "
+                 "the mix, subtle wrong-note shimmer that doesn't quite resolve, "
+                 "no melody no drums no bass",
+    ),
+)
+
+
+# ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
 
@@ -315,9 +367,14 @@ ROUND_1: list[ContextSpec] = [
     TITLE_MENU,
 ]
 
+# Round 2+ — additional contexts queued for the music expansion.
+ROUND_2_QUEUED: list[ContextSpec] = [
+    LEMMKIN_PEACE,
+]
+
 # All defined contexts (extends with each round).
 ALL_CONTEXTS: dict[str, ContextSpec] = {
-    spec.name: spec for spec in ROUND_1
+    spec.name: spec for spec in ROUND_1 + ROUND_2_QUEUED
 }
 
 

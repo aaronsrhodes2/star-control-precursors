@@ -65,9 +65,9 @@
     "reviewed_at": "2026-05-17T21:19:28.366831+00:00"
   },
   "sfx/ships/furling_scout/primary_impact": {
-    "status": "pending",
+    "status": "keep",
     "notes": "it needs to be less abrupt on the tail end\n",
-    "reviewed_at": "2026-05-17T21:57:42.083960+00:00"
+    "reviewed_at": "2026-05-17T21:59:26.693946+00:00"
   },
   "sfx/ships/furling_scout/special_fire": {
     "status": "keep",
@@ -81,8 +81,8 @@
   },
   "sfx/ui/alert_danger": {
     "status": "pending",
-    "notes": "make it three short burps\n",
-    "reviewed_at": "2026-05-17T21:57:42.083960+00:00"
+    "notes": "make it three short alert noises\n\n",
+    "reviewed_at": "2026-05-17T22:07:36.001317+00:00"
   },
   "sfx/ui/menu_cancel": {
     "status": "keep",

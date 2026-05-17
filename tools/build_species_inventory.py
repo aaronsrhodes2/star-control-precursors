@@ -355,6 +355,21 @@ AUDIO_INFO: dict[str, tuple[str, str, str, str, str]] = {
         "assets/sfx/ships/sentry_drone_47t/",
         "queued",
     ),
+    # --- Lore expansion 2026-05-17: new species ---
+    "LEMMKIN": (
+        "Bright-curious-fearless. Squirrel-chitter under the mix, plucked banjo-like strings, light tambourine and shaker percussion, woodwind pads (clarinets/oboes) with ONE subtly-flat tone so the cheerfulness reads as wrong. Weapons are CHEERFULLY IMPROVISED: brass-tinged shrapnel-scatter ratchet (primary) + snap-pivot whoosh + small confident *plink* into a contained explosive pop (special Tail-Drop 180-pivot).",
+        "lemmkin",
+        "queued",
+        "assets/sfx/ships/lemmkin_skitter/",
+        "queued",
+    ),
+    "THE_BARGAINERS": (
+        "Confident-merchant-diplomatic. Smooth brass-and-velvet chord-progressions, persuasive woodwind solos, the air of someone fully convinced their argument is closing. Eventual horror under that — a held minor-second whisper that wants to scream but won't. Weapons: TBD (no ship in current canon — Bargainers concept-only, will die confidently believing the Others can be negotiated with).",
+        "bargainers",  # future music_context dir if/when fired
+        "placeholder",
+        "",   # no ship yet
+        "placeholder",
+    ),
 }
 
 # ---------------------------------------------------------------------------
@@ -604,6 +619,22 @@ ROWS = [
         "—",
         "no",
         "no ship, no dialog (correctly — pre-sentient observation only)",
+    ),
+    (
+        "LEMMKIN",
+        "Lemmkin Curator",
+        "full-sentient",
+        "homesteader (by choice — to SEE)",
+        "TBD (slice cluster)",
+        "Anthropomorphic squirrel species with vestigial amygdala (no fear response). Lemming-clade troupe behavior: when one investigates, the rest follow off cliffs. Homesteader-by-CHOICE; the Furlings offered them a Migration lift, the Lemmkin declined cheerfully 'to see what happens' with the Others. They will be ELIMINATED — dying LEARNING (Burvixese died believing they'd live; Lemmkin die curious). Their archives survive into the SC2 era as misattributed 'Precursor caches.' Ship: Lemmkin Skitter glass-cannon scout with Burst-Scatter Probe (front-arc shrapnel) + Tail-Drop 180-pivot (snap-reverse explosive drop).",
+        "references/lore/species-content-backlog.md §Lemmkin; tools/firefly_prompts/tier1_avatars/avatar_lemmkin_curator.txt",
+        "lemmkin_curator",
+        "lemmkin_skitter",
+        "Lemmkin Skitter",
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_lemmkin_curator.png",
+        "LEMMKIN",
+        "yes (slice species — Homesteader by choice path)",
+        "no dialog character implementation yet; ship not yet in src/scz/combat/ships.py",
     ),
     (
         "MAEL_NUM",
