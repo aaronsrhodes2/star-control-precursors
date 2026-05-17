@@ -159,6 +159,8 @@ For **Proto-Qor-Ah** colonies:
 
 **Precursor-era role:** Your tools. The Mycon are **Precursor terraforming biots** — spore-based workers designed to stir molten cores and breathe atmospheres into dead worlds. Mostly obedient. **The first Deep Child whispers are starting in this cluster.**
 
+**Slice first-deployment site — *Xylos Prime*.** This is the gas-giant moon on which the Furlings first deployed the Mycon biot template; it remains the **canonical Mycon home-substrate**, the spore-network's *origin record*. Nutrient-rich atmospheric haze, perpetually dim surface, mantle vents that the founding biots first stirred 8,000 years ago. If the Deep Child awakens anywhere in the slice, it awakens *here first* — every other Mycon mantle-deployment downstream still shares spore-pattern with Xylos Prime, and the awakening propagates back through the lineage. (Name canonized 2026-05-16 via Gemini-assisted draft.)
+
 **Voice & language profile:**
 - Fragmented ritual phrases. Short, broken sentences.
 - They speak in CAPITALS for invocations and lowercase for status reports.
