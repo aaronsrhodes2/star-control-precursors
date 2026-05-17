@@ -1,0 +1,37 @@
+# aspect: 1:1
+# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
+# prompt file). Aaron review on the orphan v1: rejected. Direction
+# from the manifest auto-placeholder: "silver-and-patina octagonal
+# hull, optical-cluster band forward, weathered ancient". Canon: the
+# Mmrnmhrm are self-modifying robots millions of years old; their
+# Sentinel is a defensive cruiser they've maintained and modified for
+# eons. NOT pristine; NOT military-clean. Weathered, layered, sad.
+# Per the avatar canon: ASYMMETRIC body plan (the ship has been
+# patched in different alloys over millennia of self-repair).
+
+A top-down orthographic view of an Mmrnmhrm Sentinel starship.
+Shape: an OCTAGONAL HULL with the long axis vertical in the
+frame, roughly 1.8:1 aspect, blunt blocky utilitarian
+silhouette — clearly an engineered vessel, not organic. Surface:
+PATCHWORK PLATING in three distinct alloys welded together —
+brushed silver-titanium dominant, panels of tarnished copper-
+bronze (older repairs), matte gunmetal-gray (newer grafts) —
+the seams between alloys clearly visible, creating a SAD-
+QUILT aesthetic of long maintenance. Asymmetric details:
+ship is NOT perfectly mirror-symmetric — one side has a
+slightly different gun-port layout, one engine pod is
+larger than its pair (the result of millennia of independent
+modular repairs). Forward end (top of frame): a horizontal
+OPTICAL-CLUSTER BAND of small white-light lenses arranged in
+a quiet row across the front face (the same sensor band as
+the Mmrnmhrm Sentinel avatar's head). At the rear: two
+asymmetric thruster nozzles glow soft cool-white. Subtle
+geometric Mmrnmhrm glyphs etched into one of the dorsal
+panels in cool platinum (one glyph notably newer/brighter
+than its neighbors — a recent self-repair signature). NO
+flag, NO faction-emblem, NO biological decoration. Background:
+deep starfield, near-black. Style: stylized 1990s sci-fi
+game art, painterly with crisp silhouette, melancholy,
+ancient, mathematical. Tone: A SHIP MAINTAINED BY ITSELF
+FOR MILLIONS OF YEARS, never rebuilt, just continuously
+carried forward.
