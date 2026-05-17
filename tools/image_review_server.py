@@ -184,7 +184,8 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
 
         # --- IMAGE REVIEW (original) ---
         if self.path.startswith("/api/review/"):
-            key = self.path[len("/api/review/"):]
+            from urllib.parse import unquote
+            key = unquote(self.path[len("/api/review/"):])
             data = self._read_json_body()
             manifest = _load_manifest()
             if key not in manifest:
