@@ -1,43 +1,67 @@
 """Generic sound-effect generator.
 
 Consumes SfxSpec entries from tools/audio_sfx_specs.py and fires one
-ElevenLabs sound-generation call per spec. Writes the audio file (MP3
-default) under assets/sfx/<out_subdir>/<name>.<ext>.
+ElevenLabs sound-generation call per spec. Writes the audio file under
+assets/sfx/<out_subdir>/<name>.wav.
 
-No per-context manifest right now — SFX are leaf assets keyed by
-filename, not bundled into a track. The spec module itself is the
-inventory of record.
+We save .wav (not .mp3) because the ElevenLabs SFX endpoint has a known
+tendency to output very quiet audio (peaks of 0.05-0.15 instead of
+0.7-0.9 like music does). We must normalize to be playable; that
+requires decoding the response, so we save the normalized result as
+lossless PCM_16 WAV. File-size cost is ~7 MB across all 74 SFX --
+trivially acceptable.
+
+No per-context manifest -- SFX are leaf assets keyed by filename; the
+spec module is the inventory of record.
 
 Usage:
-    # List everything
     .venv/Scripts/python.exe tools/audio_sfx_generate.py --list
-
-    # Generate one specific sound (by name + subdir disambiguator)
     .venv/Scripts/python.exe tools/audio_sfx_generate.py menu_select
-
-    # Generate a whole round
     .venv/Scripts/python.exe tools/audio_sfx_generate.py --round 1
-
-    # Generate by category
     .venv/Scripts/python.exe tools/audio_sfx_generate.py --category ui
 """
 
 from __future__ import annotations
 
 import argparse
+import io
 import sys
 import time
 from pathlib import Path
+
+import numpy as np
+import soundfile as sf
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from audio_sfx_specs import (  # noqa: E402
     SfxSpec, ALL_SFX, by_category, for_round,
 )
-from eleven_sfx import sfx_bytes, save_audio, DEFAULT_OUTPUT_FORMAT, _ext_for_format  # noqa: E402
+from eleven_sfx import sfx_bytes, DEFAULT_OUTPUT_FORMAT  # noqa: E402
+
+
+NORMALIZE_TARGET_PEAK = 0.9      # any peak below this scales up to here
+NORMALIZE_FLOOR_PEAK = 0.5       # peaks at/above this are left alone
 
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_ROOT = ROOT / "assets" / "sfx"
+
+
+def _decode_and_normalize(data: bytes) -> tuple[np.ndarray, int, float]:
+    """Decode the API response (MP3) and normalize to a usable peak.
+
+    Returns (audio_array, sample_rate, applied_gain). Gain of 1.0 means
+    the source already had a healthy peak; > 1.0 means we boosted it."""
+    audio, sr = sf.read(io.BytesIO(data))
+    audio = audio.astype(np.float32)
+    peak = float(np.abs(audio).max()) if audio.size else 0.0
+    if peak >= NORMALIZE_FLOOR_PEAK:
+        return audio, sr, 1.0
+    if peak < 1e-6:
+        # Nearly-silent output -- can't normalize a zero signal.
+        return audio, sr, 1.0
+    gain = NORMALIZE_TARGET_PEAK / peak
+    return np.clip(audio * gain, -1.0, 1.0), sr, gain
 
 
 def generate_one(
@@ -46,11 +70,16 @@ def generate_one(
     output_format: str = DEFAULT_OUTPUT_FORMAT,
     overwrite: bool = True,
 ) -> Path | None:
-    """Generate a single SFX. Returns the path written, or None on failure."""
+    """Generate a single SFX. Returns the path written, or None on failure.
+
+    Always writes .wav (PCM_16) after normalizing. ElevenLabs SFX has a
+    known tendency to output very quiet audio (peaks of 0.05-0.15)
+    that's inaudible without boosting; we normalize anything below
+    peak 0.5 up to peak 0.9. MP3 path is bypassed because we need to
+    decode anyway."""
     out_dir = OUT_ROOT / spec.out_subdir
     out_dir.mkdir(parents=True, exist_ok=True)
-    ext = _ext_for_format(output_format)
-    out_path = out_dir / f"{spec.name}{ext}"
+    out_path = out_dir / f"{spec.name}.wav"
     if out_path.exists() and not overwrite:
         print(f"  skip {out_path.relative_to(ROOT)} (exists)", flush=True)
         return out_path
@@ -70,10 +99,12 @@ def generate_one(
     except Exception as e:
         print(f"    FAIL: {e}", flush=True)
         return None
-    save_audio(data, fmt, out_path)
+    audio, sr, gain = _decode_and_normalize(data)
+    sf.write(out_path, audio, sr, subtype="PCM_16")
     kb = out_path.stat().st_size / 1024
-    print(f"    saved {out_path.relative_to(ROOT)} ({kb:.0f} KB) in {time.time()-t0:.1f}s",
-          flush=True)
+    gain_note = f" (norm x{gain:.1f})" if gain > 1.01 else ""
+    print(f"    saved {out_path.relative_to(ROOT)} ({kb:.0f} KB){gain_note} "
+          f"in {time.time()-t0:.1f}s", flush=True)
     return out_path
 
 
