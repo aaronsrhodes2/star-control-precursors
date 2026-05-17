@@ -61,9 +61,9 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "references/lore/voice_profiles/melnorme_vermilion.md",
     ),
     "MMRNMHRM": (
-        "",
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_mmrnmhrm_sentinel.png",
         "robot_humanoid",
-        "",
+        "alien_ship",
         "",
     ),
     "PERSUADER_FACTION": (
@@ -73,9 +73,15 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "",
     ),
     "PLANAR": (
-        "",
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_planar_witness.png",
         "ribbon_planar",
+        "planet_surface",
         "",
+    ),
+    "CLEANSER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_vael_souren_cleanser.png",
+        "bipedal_humanoid",
+        "alien_ship",
         "",
     ),
     "SENTRY_DRONE_47T": (

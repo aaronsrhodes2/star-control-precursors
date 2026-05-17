@@ -4,3 +4,7 @@ __pycache__/
 models/
 outputs/
 install.log
+server.log
+fill_gaps.log
+first_call.log
+sd_test_first.png
