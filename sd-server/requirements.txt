@@ -1,0 +1,24 @@
+# Pin torch to a CUDA-bundled wheel. The pre-built wheel installs the
+# CUDA runtime alongside, so the user does NOT need a system CUDA install
+# to run this server. Driver-only is sufficient (current: 591.86 / CUDA 13.1).
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
+torchvision==0.21.0+cu124
+
+# Hugging Face stack
+diffusers>=0.30.3
+transformers>=4.46.2
+accelerate>=1.0.1
+safetensors>=0.4.5
+
+# Image + web
+pillow>=11.0.0
+flask>=3.0.3
+flask-cors>=5.0.0
+# numpy 2.0+ has Python 3.13 wheels; older versions need a C compiler
+numpy>=2.0.0
+
+# Optional: rembg for clean background removal during chroma-key step.
+# Used by /chromakey if installed; not strictly required.
+rembg>=2.0.62
+onnxruntime>=1.19.2
