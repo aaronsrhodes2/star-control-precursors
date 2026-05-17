@@ -1,23 +1,30 @@
-# scz-audio — Dedicated audio-generation server for Star Control Zero
+# scz-audio — Local audio LLM server (RUNTIME variance engine, future)
 
-A focused Flask + diffusers backend on port **5006** for SCZ music
-and SFX work. Build-time only: it produces stem files for the slice's
-contextual music system + the SFX library. **Runtime audio playback
-is `pygame.mixer` in the game itself, not this server.**
+Local Flask + diffusers backend on port **5006**. Sibling of `sd-server/`
+(images, port 5005).
 
-Sibling to `sd-server/` (image generation, port 5005).
+## Where this fits in 2026-05-17 onward
 
-## What it's for
+There are **two** audio generation paths and they have different jobs:
 
-Per [music-system.md](../references/lore/music-system.md), each music
-context in the slice is composed as **4-6 stems** that the game mixes
-at runtime with variation knobs (tempo jitter, stem mute, key shift,
-state-driven layers). This server generates those stems from text
-prompts.
+| Path | When | What | Where |
+|---|---|---|---|
+| **ElevenLabs Music API** | Asset-time (build-time) | High-quality stems committed into git | `tools/eleven_music.py` |
+| **This server (AudioLDM2-Music)** | Eventual: runtime variance | On-the-fly variations during a play session | `tools/audio_client.py` |
 
-Same model handles SFX — Stable Audio Open is multi-modal.
+The shipped game's music contexts live as static `assets/music/<context>/*.wav`
+files generated up-front by ElevenLabs. This local server doesn't need to
+be running for normal asset work, and it isn't required at game runtime
+either.
 
-## Quick start
+It exists because of the [variation principle](../references/lore/variation-architecture.md):
+when we add the runtime variance engine, we want a local audio model the
+game can call cheaply during a session to introduce small per-encounter
+variations on top of the static stems — without paying ElevenLabs per call
+and without requiring an internet connection. AudioLDM2-Music is the
+candidate. Not wired into the engine yet.
+
+## Quick start (if you actually need to run it)
 
 ```powershell
 cd D:\Aaron\development\star-control-precursors\audio-server
@@ -27,7 +34,8 @@ pip install -r requirements.txt
 python app.py
 ```
 
-First request triggers model download (~3.5 GB for Stable Audio Open).
+First request triggers model download (~6 GB for AudioLDM2-Music; ~3.5 GB
+for Stable Audio Open).
 
 Health check:
 ```
@@ -39,14 +47,17 @@ curl http://localhost:5006/health
 All POSTs take JSON, return JSON with `audio_b64` (base64 WAV),
 `sample_rate`, `duration_s`, `took_s`.
 
-### `POST /music`
+| Endpoint | Default duration | Notes |
+|---|---|---|
+| `POST /music` | 30 s | Multi-stem coherence: include key+bpm in every stem prompt |
+| `POST /sfx` | 3 s | Same call shape, shorter default |
+| `POST /generate` | 10 s | Generic — handy for one-off jingles/stingers |
+| `GET /health` | — | Reports model, device, sample rate |
 
-Default duration 30 s. For multi-stem coherence, include key + bpm
-in every stem prompt for the same track:
-
+Body shape:
 ```json
 {
-  "prompt": "Hyperspace travel theme bass stem, deep synth bass, mid-tempo propulsive, in C minor at 110 bpm",
+  "prompt": "Hyperspace bass stem, deep synth, in C minor at 108 bpm",
   "duration_s": 30,
   "seed": 42,
   "steps": 100,
@@ -54,71 +65,51 @@ in every stem prompt for the same track:
 }
 ```
 
-### `POST /sfx`
-
-Default duration 3 s. Same call shape, shorter.
-
-```json
-{
-  "prompt": "short metallic shield-hit, brief sustain, sci-fi UI sound",
-  "duration_s": 2.5
-}
-```
-
-### `POST /generate`
-
-Generic endpoint with default duration 10 s. Equivalent to /music with
-a shorter default — handy for one-off jingles, stingers.
-
 ## Configuration
 
 | Env var | Default | Effect |
 |---|---|---|
-| `SCZ_AUDIO_MODEL` | `stable-audio-open` | Currently the only supported model |
+| `SCZ_AUDIO_MODEL` | `audioldm2-music` | `audioldm2`, `audioldm2-large`, `stable-audio-open` (gated) |
 | `SCZ_AUDIO_PORT` | `5006` | Server port |
 | `SCZ_AUDIO_CPU_OFFLOAD` | unset | `1` enables model CPU offload (slower, lower VRAM) |
 
-## Typical scripted workflow
+## Compatibility matrix (CRITICAL — do not bump blind)
 
-```python
-import base64, io
-import requests, soundfile as sf
+`requirements.txt` pins:
 
-AS = "http://localhost:5006"
-
-def music(prompt, duration=30, seed=None):
-    body = {"prompt": prompt, "duration_s": duration}
-    if seed is not None: body["seed"] = seed
-    r = requests.post(f"{AS}/music", json=body, timeout=180)
-    r.raise_for_status()
-    data = r.json()
-    audio_bytes = base64.b64decode(data["audio_b64"])
-    return sf.read(io.BytesIO(audio_bytes))  # (audio, sample_rate)
-
-# Five-stem Hyperspace theme — same seed family, same key/bpm
-key_bpm = "in C minor at 110 bpm"
-stems = {
-    "bass":       f"Hyperspace bass stem, deep synth bass, propulsive, {key_bpm}",
-    "lead":       f"Hyperspace lead stem, mid-tempo synth arpeggio, {key_bpm}",
-    "pad":        f"Hyperspace pad stem, ambient analog warmth, {key_bpm}",
-    "perc":       f"Hyperspace percussion stem, gated rhythm, four-on-floor, {key_bpm}",
-    "ambient":    f"Hyperspace ambient stem, subtle space drone wash, {key_bpm}",
-}
-for name, prompt in stems.items():
-    audio, sr = music(prompt, duration=30, seed=42)
-    sf.write(f"assets/music/hyperspace_{name}.wav", audio, sr)
+```
+diffusers==0.32.2
+transformers==4.46.3
 ```
 
-The bundled `tools/audio_client.py` (project-relative) wraps this.
+This is the only working combination as of 2026-05-17:
+
+- **diffusers 0.32.x** still calls `_update_model_kwargs_for_generation`
+  on `GPT2Model` inside the AudioLDM2 pipeline.
+- **transformers 4.47+** removed that method, breaking the AudioLDM2
+  language-model path.
+- **diffusers 0.34+** requires `Dinov2WithRegistersConfig` from
+  transformers 4.50+, which has the opposite incompat with AudioLDM2.
+
+Bump only after testing both AudioLDM2 + Stable Audio Open end-to-end.
+
+## Stable Audio Open (Pro option — gated)
+
+Higher-fidelity model (47s stereo at 44.1 kHz native). Requires HF
+license acceptance:
+
+1. Login at https://huggingface.co/stabilityai/stable-audio-open-1.0
+2. Accept the license
+3. `huggingface-cli login` and paste your token
+4. `SCZ_AUDIO_MODEL=stable-audio-open python app.py`
 
 ## Storage and naming
 
 Generated audio lands in:
 ```
-assets/music/<context>_<stem>.wav      e.g. hyperspace_bass.wav
-assets/sfx/<category>_<name>.wav       e.g. ui_select.wav
+assets/music/<context>/<stem>.wav      e.g. hyperspace/bass.wav
+assets/sfx/<category>/<name>.wav       e.g. ui/select.wav
 ```
 
-Stems are written as 44.1 kHz float-WAV (lossless). The build-tool
-compresses to OGG Vorbis later for the shipped game. Per the music
-plan: ~50 MB total for slice scope after OGG compression.
+Each context dir has a `manifest.json` with key/bpm/duration/seed/per-stem
+prompts so re-generation can match the original recipe.

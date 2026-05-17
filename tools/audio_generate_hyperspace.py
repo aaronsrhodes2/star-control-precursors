@@ -1,4 +1,4 @@
-"""Generate the Hyperspace theme as 5 coherent stems via the audio-server.
+"""Generate the Hyperspace theme as 5 coherent stems via ElevenLabs Music.
 
 Per references/lore/music-system.md, each slice context is composed
 as 4-6 stems that the game mixes at runtime. The Hyperspace identity
@@ -7,12 +7,16 @@ is "mid-tempo, propulsive, the player's 'ship at speed' theme."
 Coherence across stems is enforced by:
 - Identical key + bpm baked into every stem prompt ("in C minor at
   108 bpm")
-- Same seed for all 5 calls (Stable Audio Open seeds the prompt
-  noise too, so a shared seed gives related musical motion)
 - Identical duration
+- Identical descriptor anchor ("sci-fi space-flight atmosphere")
 
-Outputs land in assets/music/hyperspace/<stem>.wav and the manifest
-file alongside.
+The script uses tools/eleven_music.py (ElevenLabs Music API) — the
+asset-time generation path per Aaron's 2026-05-17 directive. The
+local audio-server (AudioLDM2-Music) stays in tree for the runtime
+variance engine but isn't used here.
+
+Outputs land in assets/music/hyperspace/<stem>.wav (44.1 kHz stereo
+PCM_16) and a manifest.json alongside.
 
 Usage:
     .venv/Scripts/python.exe tools/audio_generate_hyperspace.py
@@ -26,64 +30,64 @@ import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from audio_client import music, save_wav, health
+from eleven_music import music, save_wav
 
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT_DIR = ROOT / "assets" / "music" / "hyperspace"
 
 # Shared compositional anchor — every stem references these so they
-# line up at mix time.
+# line up at mix time. ElevenLabs Music has no `seed` in prompt mode
+# (it's gated to composition_plan), so determinism comes from
+# committing the .wav to git, not from the API call.
 KEY = "C minor"
 BPM = 108
 DURATION_S = 30
-SEED = 731  # deterministic; rerun gives same audio
 
 # 5 stems with prompts. Order = bottom-up in the mix (bass first,
-# ambient last) so I can think about layering.
+# ambient last) so I can think about layering. Each prompt front-
+# loads "Isolated <ROLE> STEM for layered production" because
+# ElevenLabs Music is more responsive to high-level musical framing
+# than AudioLDM2; the explicit "stems-only mix" tail-clause helps it
+# avoid layering in the other instruments.
 STEMS = [
     (
         "bass",
-        f"Sci-fi space flight music, BASS-ONLY stem, deep analog synth "
+        f"Isolated BASS STEM for layered production: deep analog synth "
         f"bassline, mid-tempo propulsive groove, in {KEY} at {BPM} bpm, "
-        f"no melody no drums no pads, isolated bass track",
+        f"sci-fi space-flight atmosphere, no drums no melody no pads, "
+        f"stems-only mix",
     ),
     (
         "percussion",
-        f"Sci-fi space flight music, DRUMS-ONLY stem, gated kick-and-hat "
+        f"Isolated DRUMS STEM for layered production: gated kick-and-hat "
         f"pattern, mid-tempo four-on-the-floor with subtle space-fx claps, "
-        f"in {KEY} at {BPM} bpm, no melody no bass no pads, isolated "
-        f"percussion track",
+        f"in {KEY} at {BPM} bpm, sci-fi space-flight atmosphere, no melody "
+        f"no bass no pads, stems-only mix",
     ),
     (
         "pad",
-        f"Sci-fi space flight music, PAD-ONLY stem, warm analog synth pad, "
+        f"Isolated PAD STEM for layered production: warm analog synth pad, "
         f"long sustained chords, atmospheric and propulsive, in {KEY} at "
-        f"{BPM} bpm, no melody no drums no bass, isolated pad track",
+        f"{BPM} bpm, sci-fi space-flight texture, no melody no drums no "
+        f"bass, stems-only mix",
     ),
     (
         "lead",
-        f"Sci-fi space flight music, LEAD MELODY-ONLY stem, mid-tempo "
+        f"Isolated LEAD MELODY STEM for layered production: mid-tempo "
         f"synth arpeggio, hopeful melodic phrase, in {KEY} at {BPM} bpm, "
-        f"no drums no bass no pads, isolated lead melody track",
+        f"sci-fi space-flight feel, no drums no bass no pads, stems-only mix",
     ),
     (
         "ambient",
-        f"Sci-fi space flight music, AMBIENT TEXTURE-ONLY stem, subtle "
+        f"Isolated AMBIENT TEXTURE STEM for layered production: subtle "
         f"space drone wash, distant cosmic wind, sparkles, in {KEY} at "
-        f"{BPM} bpm, no melody no drums no bass, isolated atmosphere track",
+        f"{BPM} bpm, no melody no drums no bass, stems-only mix",
     ),
 ]
 
 
 def main() -> int:
-    try:
-        h = health()
-        print(f"audio server: {h}", flush=True)
-    except Exception as e:
-        print(f"ERROR: audio server unreachable: {e}", file=sys.stderr)
-        return 1
-
     OUT_DIR.mkdir(parents=True, exist_ok=True)
 
     manifest = {
@@ -91,7 +95,7 @@ def main() -> int:
         "key": KEY,
         "bpm": BPM,
         "duration_s": DURATION_S,
-        "seed": SEED,
+        "backend": "elevenlabs-music_v1",
         "stems": {},
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
     }
@@ -102,7 +106,7 @@ def main() -> int:
         print(f"  prompt: {prompt[:90]}...", flush=True)
         t0 = time.time()
         try:
-            audio, sr = music(prompt=prompt, duration=DURATION_S, seed=SEED)
+            audio, sr = music(prompt=prompt, duration_s=DURATION_S)
         except Exception as e:
             print(f"  FAIL: {e}", flush=True)
             continue
