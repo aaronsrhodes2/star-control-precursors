@@ -27,7 +27,70 @@ COLUMNS = [
     "warp_pod_palette",
     "slice_status",
     "gaps",
+    # --- Layered-render fields (added 2026-05-17) ---
+    # When set, the dialog scene's layered render path is used; when
+    # empty, the legacy circular-disc portrait_image_path is used.
+    "avatar_path",
+    "articulation_rig",
+    "background_specs",       # comma-joined BackgroundSpec.name list
+    "voice_profile_doc",      # path to references/lore/voice_profiles/*.md
 ]
+
+
+# Layered-render info keyed by species_id. species not in this map use
+# '' for all four new cells. Filling rows as the avatars come online
+# avoids touching every ROW tuple every time.
+LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
+    # species_id: (avatar_path, articulation_rig, backgrounds, voice_profile_doc)
+    "ANDROSYNTH": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_coel_tessar.png",
+        "bipedal_humanoid",
+        "furling_bridge",
+        "",
+    ),
+    "ARILOU": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_arilou_sage.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "MELNORME": (
+        "",  # Round F retry pending
+        "composite_cloud",
+        "open_space",
+        "references/lore/voice_profiles/melnorme_vermilion.md",
+    ),
+    "MMRNMHRM": (
+        "",
+        "robot_humanoid",
+        "",
+        "",
+    ),
+    "PERSUADER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_commander_halia.png",
+        "bipedal_humanoid",
+        "furling_bridge",
+        "",
+    ),
+    "PLANAR": (
+        "",
+        "ribbon_planar",
+        "",
+        "",
+    ),
+    "SENTRY_DRONE_47T": (
+        "",  # Round F retry pending
+        "floating_drone",
+        "furling_bridge",
+        "",
+    ),
+    "SLYLANDRO": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_slylandro_witness.png",
+        "gasbag_tendril",
+        "planet_surface",
+        "",
+    ),
+}
 
 # ---------------------------------------------------------------------------
 # THE ROSTER (50 entries) — keep alphabetical by species_id for sortability
@@ -794,7 +857,9 @@ def main() -> int:
     for row in ROWS:
         if row[1].startswith("(duplicate row"):
             continue
-        writer.writerow(row)
+        species_id = row[0]
+        layered = LAYERED_INFO.get(species_id, ("", "", "", ""))
+        writer.writerow(tuple(row) + layered)
     if close_after:
         out.close()
         print(f"wrote {args.output}", file=sys.stderr)
