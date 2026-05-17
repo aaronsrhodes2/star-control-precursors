@@ -1,0 +1,35 @@
+{
+  "context": "hyperspace",
+  "key": "C minor",
+  "bpm": 108,
+  "duration_s": 30,
+  "seed": 731,
+  "stems": {
+    "bass": {
+      "path": "assets/music/hyperspace/bass.wav",
+      "prompt": "Sci-fi space flight music, BASS-ONLY stem, deep analog synth bassline, mid-tempo propulsive groove, in C minor at 108 bpm, no melody no drums no pads, isolated bass track",
+      "sample_rate": 16000
+    },
+    "percussion": {
+      "path": "assets/music/hyperspace/percussion.wav",
+      "prompt": "Sci-fi space flight music, DRUMS-ONLY stem, gated kick-and-hat pattern, mid-tempo four-on-the-floor with subtle space-fx claps, in C minor at 108 bpm, no melody no bass no pads, isolated percussion track",
+      "sample_rate": 16000
+    },
+    "pad": {
+      "path": "assets/music/hyperspace/pad.wav",
+      "prompt": "Sci-fi space flight music, PAD-ONLY stem, warm analog synth pad, long sustained chords, atmospheric and propulsive, in C minor at 108 bpm, no melody no drums no bass, isolated pad track",
+      "sample_rate": 16000
+    },
+    "lead": {
+      "path": "assets/music/hyperspace/lead.wav",
+      "prompt": "Sci-fi space flight music, LEAD MELODY-ONLY stem, mid-tempo synth arpeggio, hopeful melodic phrase, in C minor at 108 bpm, no drums no bass no pads, isolated lead melody track",
+      "sample_rate": 16000
+    },
+    "ambient": {
+      "path": "assets/music/hyperspace/ambient.wav",
+      "prompt": "Sci-fi space flight music, AMBIENT TEXTURE-ONLY stem, subtle space drone wash, distant cosmic wind, sparkles, in C minor at 108 bpm, no melody no drums no bass, isolated atmosphere track",
+      "sample_rate": 16000
+    }
+  },
+  "generated_at": "2026-05-17T17:40:27Z"
+}

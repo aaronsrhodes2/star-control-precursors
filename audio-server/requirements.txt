@@ -1,0 +1,32 @@
+# Pin torch to the CUDA-bundled wheel. The pre-built wheel installs the
+# CUDA runtime alongside, so no system CUDA install is needed.
+--extra-index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0+cu124
+torchaudio==2.6.0+cu124
+
+# Hugging Face stack — StableAudioPipeline lives in diffusers >= 0.30.
+# CRITICAL: this is a known-working compatibility matrix.
+# - diffusers 0.32.x: still calls `_update_model_kwargs_for_generation`
+#   on `GPT2Model` inside the AudioLDM2 pipeline.
+# - transformers 4.46.x: still has that method on the base
+#   `PreTrainedModel`. transformers 4.47+ refactored generation and
+#   removed it from this lookup path, breaking the AudioLDM2 import.
+# - diffusers 0.34+ requires `Dinov2WithRegistersConfig` from
+#   transformers 4.50+, which has the opposite problem.
+# Bump only if you've tested both AudioLDM2 + Stable Audio Open work.
+diffusers==0.32.2
+transformers==4.46.3
+accelerate>=1.0.0
+safetensors>=0.4.5
+sentencepiece>=0.2.0          # T5 tokenizer for stable-audio's text encoder
+protobuf>=4.25.0
+
+# Audio I/O + DSP
+soundfile>=0.12.1
+librosa>=0.10.0
+numpy>=2.0.0
+scipy>=1.13.0
+
+# Web
+flask>=3.0.3
+flask-cors>=5.0.0
