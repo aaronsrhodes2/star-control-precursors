@@ -9,6 +9,13 @@ Right now the npc_text is rendered as-is (canned). When the LLM renderer
 lands, it'll take the npc_text + the character's voice + recent history
 and produce the actual surface text. The FSM and choice categories are
 the stable contract.
+
+Portrait animation: the static Firefly portrait sways and breathes inside
+its rim and "speaks" with a faster bob for the first 1–4s of each new
+state. This is procedural — no frame art needed. Future upgrade path:
+the Flask-SD service on localhost:5000 could generate per-character
+mouth/eye frame banks on demand and a PortraitAnimator could cycle them
+during NPC speech for true SC2-style animation.
 """
 
 from __future__ import annotations
@@ -44,6 +51,22 @@ CHOICES_Y = 700
 CHOICES_W = 1500
 CHOICE_ROW_H = 44
 
+# Portrait animation tuning. The portrait image is loaded slightly larger
+# than the rim so it can translate inside the circular window without
+# exposing transparent edges. Amplitudes are in pixels.
+PORTRAIT_ANIM_HEADROOM = 6
+PORTRAIT_IDLE_SWAY_AMPLITUDE_X = 2.0
+PORTRAIT_IDLE_BREATH_AMPLITUDE_Y = 1.5
+PORTRAIT_IDLE_SWAY_HZ = 0.25            # ~4 s period horizontal
+PORTRAIT_IDLE_BREATH_HZ = 0.33          # ~3 s period vertical (de-synced)
+PORTRAIT_SPEAK_BOB_AMPLITUDE_Y = 1.5
+PORTRAIT_SPEAK_BOB_HZ = 2.2             # ~7 Hz visual mouth-flap feel
+# How long the "speaking" bob lasts, derived from npc_text length and
+# clamped to a sensible range. ~25 ms per character of text.
+PORTRAIT_SPEAK_PER_CHAR_S = 0.025
+PORTRAIT_SPEAK_MIN_S = 1.0
+PORTRAIT_SPEAK_MAX_S = 4.0
+
 
 class DialogScene(Scene):
     """A conversation with one NPC."""
@@ -75,6 +98,10 @@ class DialogScene(Scene):
         # portrait shape.
         self._portrait_surface: pygame.Surface | None = None
         self._portrait_failed: bool = False
+        # Animation clock + state-change tracker for the speaking bob.
+        self._time: float = 0.0
+        self._state_entered_at: float = 0.0
+        self._last_seen_state_id: str | None = None
 
     # --- Scene API ---
 
@@ -103,15 +130,24 @@ class DialogScene(Scene):
         except pygame.error:
             self._portrait_failed = True
             return
-        # Fit the raw image into a 2*PORTRAIT_RADIUS bounding square while
-        # preserving aspect ratio. The render path then crops to a circle.
-        target = 2 * PORTRAIT_RADIUS
+        # Fit the raw image into a bounding square slightly LARGER than the
+        # portrait disc, giving the animation layer headroom to translate
+        # the image inside the static circular rim without revealing
+        # transparent edges.
+        target = 2 * PORTRAIT_RADIUS + PORTRAIT_ANIM_HEADROOM * 2
         rw, rh = raw.get_size()
         scale = min(target / rw, target / rh)
         new_size = (max(1, int(rw * scale)), max(1, int(rh * scale)))
         self._portrait_surface = pygame.transform.smoothscale(raw, new_size)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
+        self._time += dt
+
+        # Re-arm the speaking bob whenever the FSM moves to a new state.
+        if self._last_seen_state_id != self.current_state_id:
+            self._state_entered_at = self._time
+            self._last_seen_state_id = self.current_state_id
+
         state = self._current_state()
 
         # B / Esc → exit dialog
@@ -162,28 +198,48 @@ class DialogScene(Scene):
 
         # Portrait — image if loaded, else colored disc fallback.
         cx, cy = PORTRAIT_X, PORTRAIT_Y
+
+        # Idle animation (always on): the portrait sways horizontally and
+        # breathes vertically inside its rim. Hz values are deliberately
+        # incommensurate so the motion never visually loops.
+        anim_x = math.sin(self._time * 2.0 * math.pi * PORTRAIT_IDLE_SWAY_HZ)
+        anim_x *= PORTRAIT_IDLE_SWAY_AMPLITUDE_X
+        anim_y = math.sin(self._time * 2.0 * math.pi * PORTRAIT_IDLE_BREATH_HZ)
+        anim_y *= PORTRAIT_IDLE_BREATH_AMPLITUDE_Y
+        # Speaking bob: a faster vertical jitter for the first N seconds
+        # after a state change, where N scales with npc_text length.
+        if self._is_speaking():
+            anim_y += (
+                math.sin(self._time * 2.0 * math.pi * PORTRAIT_SPEAK_BOB_HZ)
+                * PORTRAIT_SPEAK_BOB_AMPLITUDE_Y
+            )
+
         if self._portrait_surface is not None:
             # Build a circular alpha mask the size of the portrait disc,
-            # blit the (already aspect-scaled) image into it, then onto
-            # screen. This gives us a circle-clipped image that matches
-            # the disc shape used for fallback portraits.
+            # blit the (slightly-oversized) image into it shifted by the
+            # animation offsets, then mask + blit onto screen. The rim is
+            # drawn at FIXED coordinates so the character moves INSIDE the
+            # rim instead of dragging it around.
             d = 2 * PORTRAIT_RADIUS
             disc = pygame.Surface((d, d), pygame.SRCALPHA)
-            # Center the image within the disc
             iw, ih = self._portrait_surface.get_size()
-            disc.blit(self._portrait_surface, ((d - iw) // 2, (d - ih) // 2))
-            # Apply circular mask: build a circle into a mask surface and
-            # multiply alpha through
+            offset_x = (d - iw) // 2 + int(round(anim_x))
+            offset_y = (d - ih) // 2 + int(round(anim_y))
+            disc.blit(self._portrait_surface, (offset_x, offset_y))
             mask = pygame.Surface((d, d), pygame.SRCALPHA)
             pygame.draw.circle(mask, (255, 255, 255, 255), (d // 2, d // 2), PORTRAIT_RADIUS)
             disc.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
             screen.blit(disc, (cx - PORTRAIT_RADIUS, cy - PORTRAIT_RADIUS))
         else:
+            # Fallback: no inner image to translate, so move the whole disc.
             pygame.draw.circle(
-                screen, self.character.portrait_color, (cx, cy), PORTRAIT_RADIUS
+                screen, self.character.portrait_color,
+                (cx + int(round(anim_x)), cy + int(round(anim_y))),
+                PORTRAIT_RADIUS,
             )
-        # Ring around the portrait, slightly darker — drawn on top of
-        # either the image or the disc.
+        # Ring around the portrait, slightly darker — drawn at the FIXED
+        # portrait center so it acts as the static window the character
+        # inhabits.
         rim = tuple(max(0, c - 50) for c in self.character.portrait_color)
         pygame.draw.circle(screen, rim, (cx, cy), PORTRAIT_RADIUS, 3)
 
@@ -217,6 +273,18 @@ class DialogScene(Scene):
 
     def _current_state(self) -> DialogState:
         return self.character.states[self.current_state_id]
+
+    def _is_speaking(self) -> bool:
+        """True for the first 1–4 seconds after the FSM enters a state,
+        with the duration scaled to the npc_text length. Drives the
+        portrait's mouth-flap bob without needing per-character mouth
+        sprites."""
+        state = self._current_state()
+        speech_s = max(
+            PORTRAIT_SPEAK_MIN_S,
+            min(PORTRAIT_SPEAK_MAX_S, len(state.npc_text) * PORTRAIT_SPEAK_PER_CHAR_S),
+        )
+        return (self._time - self._state_entered_at) < speech_s
 
     def _exit_dialog(self) -> None:
         if self.game is None:
