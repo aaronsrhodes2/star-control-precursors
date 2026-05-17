@@ -126,7 +126,9 @@ HYPERSPACE_PEACE = ContextSpec(
     duration_s=90,
     description="Hyperspace travel — peaceful; the player's 'ship at speed' theme",
     sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/hyper.ogg",
-    sc2_idiom="the classic SC2 hyperspace travel theme — flowing minor-key chord progressions on analog synth pads, mid-tempo propulsive bass, ProTracker-derived 3DO arrangement, restless forward momentum",
+    # NOTE: ElevenLabs ToS filter rejects the literal string "SC2" /
+    # "Star Control" (trademark). Describe the IDIOM, not the name.
+    sc2_idiom="the classic 1990s space-game hyperspace idiom — flowing minor-key chord progressions on analog synth pads, mid-tempo propulsive bass, ProTracker-derived 3DO arrangement, restless forward momentum",
     round=1,
     stems=_standard_5stem(
         "C minor", 108, "sci-fi space-flight, mid-tempo propulsive, hopeful but vast",
@@ -135,7 +137,7 @@ HYPERSPACE_PEACE = ContextSpec(
         pad_body="warm analog synth pad, long sustained chords, atmospheric and propulsive, no melody no drums no bass",
         lead_body="mid-tempo synth arpeggio, hopeful melodic phrase, no drums no bass no pads",
         amb_body="subtle space drone wash, distant cosmic wind, sparkles, no melody no drums no bass",
-        sc2_idiom="the classic SC2 hyperspace travel theme — flowing minor-key synth progressions, ProTracker-derived 3DO arrangement",
+        sc2_idiom="the classic 1990s space-game hyperspace idiom — flowing minor-key synth progressions, ProTracker-derived 3DO arrangement",
     ),
 )
 
@@ -152,7 +154,7 @@ COMBAT_LOW = ContextSpec(
     duration_s=90,
     description="Low-risk skirmish — engaged but not in real danger",
     sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/battle.ogg",
-    sc2_idiom="the SC2 supermelee battle theme — driving distorted bass, aggressive percussion, urgent action-game tempo, 3DO orchestrated synth",
+    sc2_idiom="the 1990s sci-fi combat-game battle idiom — driving distorted bass, aggressive percussion, urgent action-game tempo, 3DO orchestrated synth",
     round=1,
     stems=_standard_5stem(
         "D minor", 132, "tense action, driving propulsion, controlled risk",
@@ -161,7 +163,7 @@ COMBAT_LOW = ContextSpec(
         pad_body="aggressive minor-key brass-pad stabs on the downbeat, no melody no drums no bass",
         lead_body="staccato synth riff, defiant melodic figure with tense intervals, no drums no bass no pads",
         amb_body="filtered sirens and radio chatter texture, no melody no drums no bass",
-        sc2_idiom="the SC2 supermelee battle theme — driving distorted bass, aggressive percussion, 3DO synth",
+        sc2_idiom="the 1990s sci-fi combat-game battle idiom — driving distorted bass, aggressive percussion, 3DO orchestrated synth",
     ),
 )
 
@@ -181,7 +183,7 @@ SLYLANDRO_PEACE = ContextSpec(
     duration_s=90,
     description="Slylandro friendly — awed gas-bag aliens; state stems = awe + worry",
     sc2_inspiration="references/uqm-source/sc2/content/base/comm/slylandro/slylandro.mod",
-    sc2_idiom="the SC2 Slylandro comm theme — eerie slow chord beds, distant gas-giant winds, multitracker chiptune idiom, wonder edging into unease",
+    sc2_idiom="the 1990s alien-first-contact game theme idiom — eerie slow chord beds, distant gas-giant winds, multitracker chiptune, wonder edging into unease",
     round=1,
     stems={
         **_standard_5stem(
@@ -191,7 +193,7 @@ SLYLANDRO_PEACE = ContextSpec(
             pad_body="airy choral synth pad in major-key suspensions, very wide stereo, no melody no drums no bass",
             lead_body="slow flute-like solo, curious upward phrases, no drums no bass no pads",
             amb_body="gas-giant wind, distant chimes, gentle vinyl crackle, no melody no drums no bass",
-            sc2_idiom="the SC2 Slylandro comm theme — eerie chord beds, gas-giant winds, multitracker chiptune",
+            sc2_idiom="the 1990s alien-first-contact game theme — eerie chord beds, gas-giant winds, multitracker chiptune",
         ),
         # State-driven layer: AWE — rises as the player builds rapport
         "awe": _stem_prompt(
@@ -262,7 +264,7 @@ TITLE_MENU = ContextSpec(
     duration_s=90,
     description="Title screen — mystery, scale, the Furred Ones gazing at the stars",
     sc2_inspiration="references/uqm-source/sc2/content/addons/3domusic/credits.ogg",
-    sc2_idiom="the SC2 credits theme — mythic, vast, ancient civilization at scale, 3DO orchestrated, slow majestic chord progression",
+    sc2_idiom="the 1990s mythic sci-fi credits idiom — vast, ancient civilization at scale, 3DO orchestrated, slow majestic chord progression",
     round=1,
     stems=_stinger_3stem(
         "F minor", 66,
@@ -270,7 +272,7 @@ TITLE_MENU = ContextSpec(
         drone_body="deep slow-evolving synth drone, swells of low harmonic content",
         pulse_body="slow heartbeat-like sub-pulse, occasional resonant metallic tap",
         texture_body="distant alien choral pads, soft solar wind, slow shimmer",
-        sc2_idiom="the SC2 credits theme — mythic ancient scale, 3DO orchestrated synth",
+        sc2_idiom="the 1990s mythic sci-fi credits idiom — vast ancient scale, 3DO orchestrated synth",
     ),
 )
 

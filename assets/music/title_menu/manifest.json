@@ -9,20 +9,20 @@
   "stems": {
     "drone": {
       "path": "assets/music/title_menu/drone.mp3",
-      "prompt": "Isolated DRONE BASS STEM for layered production: deep slow-evolving synth drone, swells of low harmonic content, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, stems-only mix",
+      "prompt": "Isolated DRONE BASS STEM for layered production: deep slow-evolving synth drone, swells of low harmonic content, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, in the spirit of the 1990s mythic sci-fi credits idiom \u2014 vast ancient scale, 3DO orchestrated synth, stems-only mix",
       "format": "mp3_44100_192"
     },
     "pulse": {
       "path": "assets/music/title_menu/pulse.mp3",
-      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: slow heartbeat-like sub-pulse, occasional resonant metallic tap, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, stems-only mix",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: slow heartbeat-like sub-pulse, occasional resonant metallic tap, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, in the spirit of the 1990s mythic sci-fi credits idiom \u2014 vast ancient scale, 3DO orchestrated synth, stems-only mix",
       "format": "mp3_44100_192"
     },
     "texture": {
       "path": "assets/music/title_menu/texture.mp3",
-      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant alien choral pads, soft solar wind, slow shimmer, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, stems-only mix",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant alien choral pads, soft solar wind, slow shimmer, in F minor at 66 bpm, vast, lonely, mythic, ancient civilization on the edge of revelation, in the spirit of the 1990s mythic sci-fi credits idiom \u2014 vast ancient scale, 3DO orchestrated synth, stems-only mix",
       "format": "mp3_44100_192"
     }
   },
-  "generated_at": "2026-05-17T18:17:35Z",
+  "generated_at": "2026-05-17T18:53:47Z",
   "notes": ""
 }

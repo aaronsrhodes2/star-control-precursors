@@ -9,27 +9,27 @@
   "stems": {
     "bass": {
       "path": "assets/music/slylandro/bass.mp3",
-      "prompt": "Isolated BASS STEM for layered production: warm low sine-wave drone, ultra-slow swells, no drums no melody no pads, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, stems-only mix",
+      "prompt": "Isolated BASS STEM for layered production: warm low sine-wave drone, ultra-slow swells, no drums no melody no pads, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, in the spirit of the 1990s alien-first-contact game theme \u2014 eerie chord beds, gas-giant winds, multitracker chiptune, stems-only mix",
       "format": "mp3_44100_192"
     },
     "percussion": {
       "path": "assets/music/slylandro/percussion.mp3",
-      "prompt": "Isolated DRUMS STEM for layered production: soft mallet percussion and slow shakers, no kick, gentle pulse, no melody no bass no pads, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, stems-only mix",
+      "prompt": "Isolated DRUMS STEM for layered production: soft mallet percussion and slow shakers, no kick, gentle pulse, no melody no bass no pads, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, in the spirit of the 1990s alien-first-contact game theme \u2014 eerie chord beds, gas-giant winds, multitracker chiptune, stems-only mix",
       "format": "mp3_44100_192"
     },
     "pad": {
       "path": "assets/music/slylandro/pad.mp3",
-      "prompt": "Isolated PAD STEM for layered production: airy choral synth pad in major-key suspensions, very wide stereo, no melody no drums no bass, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, stems-only mix",
+      "prompt": "Isolated PAD STEM for layered production: airy choral synth pad in major-key suspensions, very wide stereo, no melody no drums no bass, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, in the spirit of the 1990s alien-first-contact game theme \u2014 eerie chord beds, gas-giant winds, multitracker chiptune, stems-only mix",
       "format": "mp3_44100_192"
     },
     "lead": {
       "path": "assets/music/slylandro/lead.mp3",
-      "prompt": "Isolated LEAD MELODY STEM for layered production: slow flute-like solo, curious upward phrases, no drums no bass no pads, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, stems-only mix",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: slow flute-like solo, curious upward phrases, no drums no bass no pads, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, in the spirit of the 1990s alien-first-contact game theme \u2014 eerie chord beds, gas-giant winds, multitracker chiptune, stems-only mix",
       "format": "mp3_44100_192"
     },
     "ambient": {
       "path": "assets/music/slylandro/ambient.mp3",
-      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: gas-giant wind, distant chimes, gentle vinyl crackle, no melody no drums no bass, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, stems-only mix",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: gas-giant wind, distant chimes, gentle vinyl crackle, no melody no drums no bass, in A major at 78 bpm, wondrous, slow-floating, drifting through gas-giant clouds, sense of awe, in the spirit of the 1990s alien-first-contact game theme \u2014 eerie chord beds, gas-giant winds, multitracker chiptune, stems-only mix",
       "format": "mp3_44100_192"
     },
     "awe": {
@@ -43,6 +43,6 @@
       "format": "mp3_44100_192"
     }
   },
-  "generated_at": "2026-05-17T18:14:18Z",
+  "generated_at": "2026-05-17T18:50:49Z",
   "notes": "State stems 'awe' and 'worry' are read by src/scz/audio/state_layers.py from game.flags['slylandro_awe'] / game.flags['slylandro_worry']."
 }

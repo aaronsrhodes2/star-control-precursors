@@ -9,30 +9,30 @@
   "stems": {
     "bass": {
       "path": "assets/music/hyperspace/bass.mp3",
-      "prompt": "Isolated BASS STEM for layered production: deep analog synth bassline, mid-tempo propulsive groove, no drums no melody no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "prompt": "Isolated BASS STEM for layered production: deep analog synth bassline, mid-tempo propulsive groove, no drums no melody no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, in the spirit of the classic 1990s space-game hyperspace idiom \u2014 flowing minor-key synth progressions, ProTracker-derived 3DO arrangement, stems-only mix",
       "format": "mp3_44100_192"
     },
     "percussion": {
       "path": "assets/music/hyperspace/percussion.mp3",
-      "prompt": "Isolated DRUMS STEM for layered production: gated kick-and-hat pattern, mid-tempo four-on-the-floor with subtle space-fx claps, no melody no bass no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "prompt": "Isolated DRUMS STEM for layered production: gated kick-and-hat pattern, mid-tempo four-on-the-floor with subtle space-fx claps, no melody no bass no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, in the spirit of the classic 1990s space-game hyperspace idiom \u2014 flowing minor-key synth progressions, ProTracker-derived 3DO arrangement, stems-only mix",
       "format": "mp3_44100_192"
     },
     "pad": {
       "path": "assets/music/hyperspace/pad.mp3",
-      "prompt": "Isolated PAD STEM for layered production: warm analog synth pad, long sustained chords, atmospheric and propulsive, no melody no drums no bass, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "prompt": "Isolated PAD STEM for layered production: warm analog synth pad, long sustained chords, atmospheric and propulsive, no melody no drums no bass, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, in the spirit of the classic 1990s space-game hyperspace idiom \u2014 flowing minor-key synth progressions, ProTracker-derived 3DO arrangement, stems-only mix",
       "format": "mp3_44100_192"
     },
     "lead": {
       "path": "assets/music/hyperspace/lead.mp3",
-      "prompt": "Isolated LEAD MELODY STEM for layered production: mid-tempo synth arpeggio, hopeful melodic phrase, no drums no bass no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: mid-tempo synth arpeggio, hopeful melodic phrase, no drums no bass no pads, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, in the spirit of the classic 1990s space-game hyperspace idiom \u2014 flowing minor-key synth progressions, ProTracker-derived 3DO arrangement, stems-only mix",
       "format": "mp3_44100_192"
     },
     "ambient": {
       "path": "assets/music/hyperspace/ambient.mp3",
-      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: subtle space drone wash, distant cosmic wind, sparkles, no melody no drums no bass, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, stems-only mix",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: subtle space drone wash, distant cosmic wind, sparkles, no melody no drums no bass, in C minor at 108 bpm, sci-fi space-flight, mid-tempo propulsive, hopeful but vast, in the spirit of the classic 1990s space-game hyperspace idiom \u2014 flowing minor-key synth progressions, ProTracker-derived 3DO arrangement, stems-only mix",
       "format": "mp3_44100_192"
     }
   },
-  "generated_at": "2026-05-17T18:11:46Z",
+  "generated_at": "2026-05-17T18:48:12Z",
   "notes": ""
 }
