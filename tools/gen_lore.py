@@ -68,6 +68,28 @@ Tone:
 - **The Others are NEVER funny.** That break is the horror.
 - Variable narrative voice — lean into each species' diction.
 
+Creative license — important:
+- When asked for a *new* species or ship (i.e. not an SC2 call-forward),
+  *be bold and weird*. SC2's signature is alien designs whose lore
+  AND mechanics flow from a single bizarre premise:
+    * A *two-dimensional* race that can't be damaged head-on (no width
+      to hit). Their ship's special is a forward-slice; primary is a
+      planar arc that widens and weakens with distance (shotgun-like).
+    * A species whose cognition is *distributed across multiple
+      star systems* by FTL signaling — their ship's special is to
+      'reach out' for help and another ship phases in for one volley.
+    * A species that *eats time*. Damage they deal slowly heals; damage
+      they take slowly drains them long after the fight.
+  These are the calibre of premise we want — premises that *imply*
+  unique stats, weapons, and dialog all at once. Don't settle for
+  generic "warrior race with plasma cannon."
+- The body plan, voice, and ship mechanics should be **mutually
+  reinforcing**. If the body is two-dimensional, the ship is a blade.
+  If the body is a hive, the ship swarms.
+- Furling-era regression (Rule 4a) only applies when there IS an SC2
+  counterpart. For pure inventions, no regression — be your most
+  inventive self.
+
 Output discipline: respond with **valid JSON only** matching the requested
 schema. No prose, no markdown fencing, no commentary outside the JSON.
 """
