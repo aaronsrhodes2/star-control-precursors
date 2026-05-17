@@ -1,30 +1,20 @@
 # aspect: 2:3
-# notes: Articulated avatar for Commander Halia — bipedal Furling on a
-# solid matte dark navy background, so the future PortraitAnimator (and
-# manual alpha extraction) can decompose her body into moveable parts.
-# Pose is neutral standing with limbs visible — NOT a portrait crop.
-# This replaces the legacy portrait for layered render mode.
+# notes: v5 (FINAL) — BIPEDAL HUMANOID stand-in for the canon mono-pedal
+# body plan. SDXL-Turbo cannot render the canonical snail-foot pedestal
+# with 12 toes; v4 attempts produced reptilian fantasy creatures. v5
+# uses the v3 bipedal approach which renders as a legible character.
+# The lore (the-furlings-and-the-others.md §1) documents that the
+# actual canon body is mono-pedal; renders show bipedal stand-in until
+# a future model or hand-paint pass can restore the canon visual.
 
-A full-body avatar painting of Commander Halia, a Furling officer in her
-prime. Furred humanoid, ~1.6 m tall, slate-gray fur with cream throat
-and chestnut highlights, expressive amber eyes, attentive ears erect.
-She wears a sober Furling Steward officer's tunic — turquoise body
-with copper trim, a single Migration Council sigil on the left chest,
-sleeves ending at the wrist. Standing in a neutral three-quarter
-pose, weight slightly on left leg, both arms relaxed at her sides
-with hands visible, fingers gently curled (not clenched, not crossed).
-Head facing the viewer with a calm, weighted gaze. Background: SOLID
-MATTE DARK NAVY (#0a0e1a), edge-to-edge, no scene elements, no stars,
-no glow — the avatar will be composited onto separate background art
-at runtime. Lighting: even soft three-point, no dramatic cast shadows
-on the body itself, clean silhouette for easy alpha extraction.
-
-ARTICULATION BRIEF (rig: bipedal_humanoid):
-- HEAD on NECK: neck visible from collar to jaw, ears legible
-- SHOULDERS L/R: tunic seams clearly visible at each shoulder
-- ELBOWS L/R: arms bent gently, elbows in clear profile
-- WRISTS L/R: hands away from body, fingers separable
-- TORSO: clear waistline, body symmetry
-- Avoid: crossed arms, hands behind back, occluded face
-- Style: stylized 1990s sci-fi game character portrait, painterly,
-  crisp silhouette readable at 400x600 pixels in-game.
+ONE single anthropomorphic alien character, BIPEDAL HUMANOID,
+STANDING UPRIGHT on TWO LEGS, NAKED with no clothes, body covered
+ENTIRELY in dense fur. Slate-gray fur, cream throat, chestnut flank
+stripes. BIG tall fennec-fox ears erect on top of the head, long
+bushy fox-tail behind, WIDE friendly Cheshire-cat grin showing
+even white teeth, ANDROGYNOUS flat chest no genitalia, warm amber
+eyes, three braided ringlets in head-mane tied with copper rings.
+ONE thin leather strap-harness across the shoulder with a copper
+Migration Council sigil pendant at the throat. Standing neutral
+three-quarter pose, two arms at sides. Background solid dark navy.
+Painted stylized sci-fi character portrait, single subject.

@@ -84,6 +84,41 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "alien_ship",
         "",
     ),
+    # --- Per-faction Furling reference plates (2026-05-17 batch) ---
+    # COMPELLER_FACTION / DEFENDER_FACTION / HIDER_FACTION / DENIER_FACTION
+    # are conceptual factions, not single-character species. The avatar
+    # path points at a generic faction reference plate; named NPCs (if/
+    # when authored) will get their own avatars.
+    "COMPELLER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_compeller.png",
+        "bipedal_humanoid",
+        "furling_bridge",
+        "",
+    ),
+    "DEFENDER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_defender.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "HIDER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_hider.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "DENIER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_denier.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "TALOS": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_talos.png",
+        "bipedal_humanoid",
+        "planet_surface",
+        "",
+    ),
     "SENTRY_DRONE_47T": (
         "assets/generated_drafts/firefly/tier1_avatars/avatar_sentry_drone_47t.png",
         "floating_drone",
@@ -93,6 +128,14 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
     "SLYLANDRO": (
         "assets/generated_drafts/firefly/tier1_avatars/avatar_slylandro_witness.png",
         "gasbag_tendril",
+        "planet_surface",
+        "",
+    ),
+    # --- Utwig promoted 2026-05-17 from proto-species to a main
+    # Homesteader-Hider species. See species-the-utwig.md.
+    "UTWIG": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_utwig_elder.png",
+        "bipedal_humanoid",
         "planet_surface",
         "",
     ),
@@ -304,7 +347,7 @@ ROWS = [
         "full-sentient (player species)",
         "precursor (Persuader-aligned for the player's home cluster)",
         "Mh-Lai (the Hearth)",
-        "The player's species. 5-8 meter shaggy mammoth-furred bipeds; slow-breeding; long-lived; value memory above all; gardeners of the galaxy. Steward = player class; Commander Halia is the home-base authority figure.",
+        "The player's species. Wookiee-tall (~2.0-2.4m) mono-pedal creatures: humanoid torso and two arms on top, but BELOW the waist a single muscular fur-covered pedestal-stalk ending in a wide disc-foot ringed by twelve large toes (snail-glide locomotion). Entirely covered in dense fur — exotic colors, stripes, gradients; no two coats alike. Big fennec-fox-like ears, long bushy tail, wide Cheshire-cat grin. Androgynous body (no genitalia, no breasts, no sex dimorphism). No clothes — only a vest-harness for tools and instruments. Vain about their fur, talk about it constantly. Slow-breeding, long-lived; value memory above all; gardeners of the galaxy. Steward = player class; Commander Halia is the home-base authority figure.",
         "references/lore/the-furlings-and-the-others.md; species-precursor-era.md",
         "commander_halia",
         "furling_scout",
@@ -312,7 +355,7 @@ ROWS = [
         "assets/comm/commander/ (SC2 lift)",
         "FURLING_SCOUT",
         "yes (player + home base)",
-        "no Firefly portrait for Halia yet; the Scout ship sprite is procedural-only in code",
+        "Halia avatar exists at tier1_avatars/avatar_commander_halia.png; the Scout ship sprite is procedural-only in code; CANON-ART MISMATCH: avatars currently render bipedal stand-in, canon body is mono-pedal pedestal-stalk + 12-toe disc-foot (see the-furlings-and-the-others.md §1 note)",
     ),
     (
         "HIDER_FACTION",
@@ -608,20 +651,35 @@ ROWS = [
     ),
     (
         "PROTO_UTWIG",
-        "Proto-Utwig",
-        "pre-sentient (proto)",
-        "neither",
-        "Gorno region",
-        "Armored bipedal grazers with expressive facial musculature; hyper-developed shame response; hide faces when rebuked. Trauma-response archetype already encoded.",
-        "references/lore/proto-species-observations.md",
+        "Proto-Utwig (SUPERSEDED — see UTWIG row)",
+        "PROMOTED 2026-05-17 to full sentient",
+        "see UTWIG",
+        "Gorno III (moon of Long-Hold; slice cluster outer rim)",
+        "Promoted to a full-sentient Homesteader-Hider species; see the UTWIG row below. The shame-response from proto-era survives into sentience as the 'long shame' — a literal cognitive cloak that drops the individual below the Others' detection threshold.",
+        "references/lore/species-the-utwig.md",
+        "see UTWIG",
+        "see UTWIG",
+        "see UTWIG",
+        "see UTWIG",
+        "UTWIG",
+        "REPLACED by UTWIG row",
+        "row preserved for diff traceability; canonical row is now UTWIG",
+    ),
+    (
+        "UTWIG",
+        "Utwig / Elder Quor-Voh-Listening",
+        "full-sentient (newly emergent)",
+        "homesteader (Hider sub-strategy via 'long shame' cognitive cloak)",
+        "Gorno III (moon of the gas giant Long-Hold; slice cluster outer rim)",
+        "Armored bipedal grazers, ~1.8m, slate-gray bone-keratin plates with cream throat and ochre flank stripes. Hyper-developed shame response that physically buries their face under a cranial brow-fold — and in our slice's era they have just become sentient and discovered the trait drops their cognitive emission below the Others' detection threshold. They are tragically the species closest to solving their own survival, at the cost of a civilization sustained on shame.",
+        "references/lore/species-the-utwig.md",
+        "— (elder shame-orator dialog character to be authored)",
+        "— (no Utwig ships in our era; SC2-era Jugger is post-Migration)",
         "—",
         "—",
-        "—",
-        "—",
-        "assets/comm/utwig/ (SC2 lift)",
-        "—",
-        "no",
-        "no ship, no dialog (correctly — pre-sentient)",
+        "UTWIG",
+        "yes (Act 2-3 Homesteader decision)",
+        "no DialogCharacter for Elder Quor-Voh-Listening yet; no voice profile; no Utwig Cloaking Satellite variant",
     ),
     (
         "PROTO_VUX",

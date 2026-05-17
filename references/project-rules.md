@@ -77,3 +77,28 @@ When the narrative refers to something SC2 referenced (an artifact, an alien spe
 2. Use it as the starting visual reference
 3. Apply a deliberate regression delta (per the species/artifact's lore)
 4. Note the SC2 source + the regression rationale in the commit message and the canon doc that introduces it
+
+## Rule 5 — Every chat updates the species spreadsheet
+
+`tools/species_inventory.csv` (built by `tools/build_species_inventory.py`, mirrored to the Google Sheet linked in the latest commit message) is the **single source of truth for who-is-working-on-what** across the project's parallel chats. Anything that changes the visual, lore, dialog, or status of a species *must* go through the spreadsheet in the same commit.
+
+This is what makes the multi-chat workflow safe. The "image-gen" chat and the "testing" chat and any future chats all read the same row to know:
+- whether an avatar exists yet
+- which articulation rig is canon for the species
+- whether a voice profile has been authored
+- which background plates fit the encounter
+- what's still flagged as a gap
+
+**How to apply** — touch any of these and you owe a spreadsheet update:
+
+1. **Generated a new image** (avatar, portrait, ship, scene, artifact, cutscene) → fill or update the matching row's `avatar_path` / `portrait_image_path` / `ship_class_id` cell.
+2. **Promoted/changed a species' status** (proto → full sentient, faction realignment, slice-status change) → rewrite the affected row's `archetype` / `faction_alignment` / `slice_status` cells; if structural (new species, demotion), add or supersede a row, never silently mutate an old one.
+3. **Authored or edited canon** in `references/lore/` that affects a species → bump the row's `background_doc` if a new lore file landed; otherwise reflect the change in `description` and `gaps`.
+4. **Authored a dialog character** → set `dialog_character` to the factory name (`commander_halia`, etc).
+5. **Authored a voice profile** at `references/lore/voice_profiles/<name>.md` → set `voice_profile_doc` to that path.
+6. **Authored a ship class** in `src/scz/combat/ships.py` → set `ship_class_id` + `ship_name`.
+7. **Closed a gap** previously listed in the `gaps` column → strike the corresponding bullet from that cell.
+
+After updating, **regenerate the CSV** (`.venv/Scripts/python.exe tools/build_species_inventory.py`) and **re-upload to Google Sheets** so the other chats see it. Include the new Sheet URL in the commit message.
+
+Skipping this is how the chats step on each other. The spreadsheet IS the coordination contract.

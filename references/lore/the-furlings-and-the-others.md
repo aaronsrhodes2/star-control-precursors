@@ -12,7 +12,34 @@ The Furlings are the gardeners of this galaxy. They call themselves **Furlings**
 
 The player IS a Furling. The game uses "Furling" as the in-character term for the player's species throughout. The game's *title* — *Star Control Zero: The Precursors* — works on both readings: SC2 fans recognize the word; in-fiction it names the faction the player can choose to join.
 
-Physiologically the Furlings are 5-8 meter shaggy giants, non-bipedal, mammoth-furred. Long-lived. Comparatively few in number (~tens of millions across the galaxy, vs. the trillions of life-forms they cultivate). They reproduce slowly and value memory above almost everything else; an Archivist's role is honored above a Warden's.
+Physiologically the Furlings are a body plan unlike anything else in their galactic neighborhood: a humanoid torso atop a **single prehensile pedestal-stalk** that fans into a **wide disc-foot ringed by twelve large toes**, the whole creature **fully fur-covered head to foot-toe** in dense beautiful pelt. They stand roughly **Wookiee-tall (~2.0–2.4 m)** overall.
+
+The visual silhouette top-to-bottom:
+- **Head + torso + two arms** — humanoid upper body, arms with four-fingered furred hands.
+- **Big tall expressive ears** (think fennec-fox-large, fully mobile, often the most-watched part of a Furling face).
+- **Long bushy tail** behind, sometimes prehensile, always groomed and decorated, often used in conversation for emphasis.
+- **Wide friendly Cheshire-cat grin** — broad mouths full of even white teeth. Smiling is their resting expression and their cultural default.
+- **Completely androgynous body**: no visible genitalia, no breasts, no chest-shape or hip-shape difference, no biological-sex dimorphism whatsoever in the silhouette. Furlings have gendered identities and gendered pronouns by culture, but their bodies do not tell you which.
+- **The single columnar pedestal-stalk** below the torso — a prehensile muscular trunk (snail-foot meets elephant-trunk-meets-tree-stump), fully fur-covered, that can bend, lean, and reach. The stalk replaces legs entirely. It can stretch a Furling up onto its tip-toes for high reach, or compress to bring them low.
+- **The wide circular disc-foot at the stalk's base**, ringed by **twelve large fur-covered toes** spaced evenly around the perimeter — locomotion is a coordinated wave of toes pulling the body smoothly across the surface, snail-glide style. Each toe is independently muscular and large enough to grip a handhold; on rough terrain a Furling adjusts the foot's posture toe-by-toe.
+
+Furlings are slower than bipeds but utterly stable: they cannot trip, cannot stumble, and can stand on a ledge a third the width of a human foot because the disc grips. On a starship deck a Furling **glides** rather than walks — the disc whispers across the floor and the upper body sways gently for emphasis.
+
+> **Canon-art mismatch note (2026-05-17):** the current avatar renders in `assets/generated_drafts/firefly/tier1_avatars/avatar_*.png` and `tier1_furling_reference/furling_*.png` show **bipedal humanoid** Furlings rather than the canonical mono-pedal pedestal-and-disc body plan. This is a known SDXL-Turbo limitation: the model has no prior for "humanoid torso on a snail-foot pedestal ringed by 12 toes," and renders of the canonical form came out as reptilian fantasy creatures. The bipedal stand-in preserves the legibility of the character (fur, ears, tail, Cheshire grin, harness, faction colors) at the cost of the lower-body anatomy. **The canon stays mono-pedal.** Most portrait crops in dialog show torso-up so the mismatch is rarely visible in-game. A future model upgrade or hand-paint pass should restore the disc-foot from the waist down.
+
+Long-lived. Comparatively few in number (~tens of millions across the galaxy, vs. the trillions of life-forms they cultivate). They reproduce slowly and value memory above almost everything else; an Archivist's role is honored above a Warden's.
+
+### 1.1 The Fur (the most important fact about them)
+
+A Furling's fur is the body, the wardrobe, the rank, the family, the diary, and the conversation-starter — all at once.
+
+- **Universal coverage**: every Furling, regardless of age, role, or faction, is covered in fur from crown to footpads. Hands and feet have shorter, denser fur; muzzles can be groomed short or long; nothing about the body is bare. There is no naked Furling.
+- **Endless variation**: fur color, pattern, and grain vary so widely between individuals that no two Furlings have ever been mistaken for each other from a distance. Solid coats (slate gray, chestnut, cream, jet, ochre, white, midnight blue, copper, lilac) cohabit with **stripes**, **rosettes**, **brindle**, **calico**, **dappled** patterns, **gradients** running head-to-tail or limb-to-limb, and rare **iridescent shifts** at the throat or mane.
+- **Exotic hairstyling is a culture-wide art form**. Furlings braid, crest, ruff, curl, sculpt, and tint their fur. A Council elder's head-crest can take a day to set. A Warden in the field wears it loose. A Cleanser shaves a single stripe across the back as the order's mark. A Steward in your service may wear braids tied with copper rings — one per Migration mission completed.
+- **No clothes.** Across all factions, Furlings consider clothing redundant against fur and somewhat embarrassing — "covering art with a sack." The single exception is the **harness**: a fitted leather-and-resin vest-rig with loops, sockets, and clips for the wearer's tools and instruments. Stewards' harnesses carry navigators, scanners, recorders; Wardens' carry weapons; Archivists' carry styluses and sealed text-tubes; Council members' harnesses carry ceremonial seal-pieces. **Status is signaled by harness ornament + fur grooming, not by fabric.**
+- **Vain about it.** Furlings are unembarrassedly proud of their fur. Greetings often include a comment on the other's coat ("your mane is in fine season"). Insults are about it ("your dorsal stripe is a smear"). In dialog they will absolutely volunteer information about a new groom, a recent shed, or the color shift they're trying out for the next Council session. The vanity is good-natured and culture-wide; it is *not* perceived as shallow. Stewards talk about their fur the way human sailors talk about their boats.
+
+The "Furling" name is **theirs by their own choice** — they self-identify as the Furred Ones, gardeners with the most beautiful coats in the galaxy, and they will tell you so unprompted.
 
 ## 2. The Discovery — what the Furlings learned
 
