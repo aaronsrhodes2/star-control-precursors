@@ -1,0 +1,36 @@
+# aspect: 1:1
+# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
+# prompt file). Aaron review on v1: "Androsynth cruiser has a
+# canonical shape and it should look very much like that, Get it from
+# the source code and use it as the template."
+#
+# SC2 source reference:
+#   references/uqm-source/sc2/content/base/ships/androsynth/guardian-big-*.png
+# That sprite shows the SC2-canonical Guardian: a stylized blue
+# Y-SHAPED TRI-PRONGED ship with a central glowing core, three thin
+# tapered prongs radiating outward at ~120 degrees from each other.
+# Color is cool deep-blue / electric-cyan. The Guardian was the
+# Androsynth's main cruiser in SC2; we want the SAME SILHOUETTE in
+# our higher-fidelity rendering for the slice's refugee-era variant.
+
+A top-down orthographic view of an Androsynth Refugee Cruiser
+starship — modeled on the SC2-canonical Androsynth Guardian
+silhouette. Shape: a clear THREE-PRONGED Y-SHAPE — three slender
+tapered prongs radiating outward at 120-degree intervals from a
+central body, each prong ending in a small forward-facing
+emitter pod (the comet missile launchers). The CENTRAL HUB is a
+rounded glowing core in electric-cyan with a deeper sapphire-blue
+faceted shell. The three prongs are deep blue with cyan piping
+along their leading edges. A faint cool-violet halo surrounds the
+ship (the comet-warhead charge field). Small thruster nodes
+between the prongs glow soft white. Hull is the deep-blue and
+electric-cyan palette characteristic of the SC2 Androsynth
+(faithful to the source sprite). At the center of the hub: a
+single small circular hatch glowing warm-amber (the time-
+displaced refugees' improvised life-support — a small Aaron-era
+addition that says "this Guardian has been MODIFIED for refugees,
+not war"). Background: deep starfield, near-black. Style:
+stylized 1990s sci-fi game art, painterly with crisp silhouette,
+faithful to the original SC2 Guardian icon while painted at
+modern fidelity. Y-shape three-prong canonical silhouette is
+NON-NEGOTIABLE.

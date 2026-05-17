@@ -1,25 +1,33 @@
 # aspect: 1:1
-# notes: dialog portrait for a Mycon biot in the early Deep Child
-# awakening stage. Note that SC2's Mycon were red-and-purple
-# pustule-blobs; ours are FURLING ENGINEERED terraforming biots
-# 250,000 years before SC2 — looser, less menacing, more "tool that
-# is starting to dream." If the first generation is too SC2-Mycon,
-# add "less menacing, more biological-laboratory specimen, NOT a
-# horror creature".
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "this is the bone
+# planet, not the mycon". v1 rendered as a planetary body — wrong
+# subject. v2 makes the framing crystal-clear: a CLOSE-UP of a SINGLE
+# BIOT (a small fungal worker-organism), NOT a planet, NOT a globe,
+# NOT a celestial body. The biot is the size of a torso, set in front
+# of an out-of-focus dark biological backdrop with NO planetary
+# silhouette anywhere.
 
-A close-up portrait of a "Mycon Biot" — a Star-Control-universe
-fungal terraforming worker engineered by an ancient civilization.
-A bulbous mass of pale ochre and warm-grey fungal tissue, the size
-of a torso, asymmetric and slowly pulsing. From its sides extrude
-3-5 thin motile spore-tendrils that float as if in liquid, each
-tipped with a tiny chitinous sensor-bud. At its center, a soft
-internal glow — a bioluminescent centroid in cool teal-cyan — is
-just beginning to manifest, suggesting a nascent consciousness
-("the Deep Child") waking up inside the tool. Visible fine spore-
-dust drifts around the figure, gold-flecked motes against the dark.
-Lighting: warm low-angle illumination, deep shadow above, set
-against a near-black volcanic mantle-vent backdrop with a faint
-glow of magma below. Style: stylized 1990s sci-fi game portrait,
-painterly, crisp silhouette. The biot should look strange and
-biological but not horror — it is a worker, not a monster, in this
-era. Subtle uncanny quality from the central glow.
+A close-up CHARACTER PORTRAIT of a single "Mycon Biot" — a
+small fungal worker-organism, NOT a planet or celestial body.
+The biot occupies the center of the frame: a bulbous asymmetric
+mass of pale ochre and warm-grey fungal tissue roughly the size
+of a torso (think basketball-sized, NOT planet-sized), slowly
+pulsing. From its sides extrude 3-5 thin motile spore-tendrils
+that float as if in liquid, each tipped with a tiny chitinous
+sensor-bud. At the biot's center, a soft internal glow — a
+bioluminescent centroid in cool teal-cyan — is just beginning to
+manifest, suggesting the nascent "Deep Child" consciousness
+waking up inside the worker. Fine spore-dust drifts in the
+foreground, gold-flecked motes drifting in the immediate
+foreground (close-up scale, NOT a starfield). Behind the figure:
+OUT-OF-FOCUS dark biological matter — mycelial threads, fungal
+crust, the inside of a Mycon growth chamber on Xylos Prime — NO
+PLANETARY SILHOUETTE, NO HORIZON, NO STARFIELD. The scale must
+read as INTIMATE / CLOSE-UP, not orbital. Lighting: warm low-
+angle illumination from below (the volcanic mantle-vent the
+biots colonize), deep shadow above. Style: stylized 1990s sci-fi
+game portrait, painterly, crisp silhouette. Tone: STRANGE-
+BIOLOGICAL, the tool that is starting to dream. Subtle uncanny
+quality from the central glow. AVOID: anything that reads as a
+planet sphere, a moon, a starfield background, or any astronomical
+scale — this is a CREATURE PORTRAIT, intimate scale.

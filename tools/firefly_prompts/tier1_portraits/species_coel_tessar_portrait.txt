@@ -1,0 +1,33 @@
+# aspect: 1:1
+# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
+# prompt file). Aaron review on the orphan v1: "make all androsynth
+# greyish-blue". The Androsynth in this era are time-displaced clones
+# from SC2's future, designed by humans 250kya in the player's future.
+# Per the new canon their skin is greyish-blue (matches a recently-
+# decided species color). Coel Tessar is the slice's Engineer who
+# leads the refugee group and carries the Distress Beacon cartridge.
+
+A close-up bust portrait of Coel Tessar, an Androsynth Refugee
+Engineer. Body plan: humanoid form (the Androsynth are clone-
+humans from 250,000 years in the player's future). SKIN COLOR
+IS UNIFORMLY GREYISH-BLUE — pale cool slate-blue across the
+face, throat, and visible upper chest, with subtle muted teal
+shading in the recesses. Hair is sleek and short, gunmetal-grey
+shot with silver at the temples. Eyes: pale violet, calm and
+analytical, with subtle horizontal scoring at the iris hinting
+at engineered optics. The face is angular and deliberately
+slightly-asymmetric (Aaron clone-batch markers — each refugee is
+a different clone-iteration). MAGENTA UNIFORM: a high-collar
+Androsynth Engineer's tunic in deep magenta with cool gunmetal
+piping and a small Andromedan-spiral patch at the throat. In one
+gloved hand (visible at the bottom edge of the frame) Coel holds
+the DISTRESS BEACON CARTRIDGE — a brass-and-glass cylinder
+roughly hand-sized, with a tiny green telemetry LED visible —
+the artifact that proves the Others exist. Behind the figure:
+soft-focus interior of the wrecked Vulpeculae III refugee shuttle
+— rusted bulkheads, dim emergency lighting in cool sodium amber.
+Lighting: cool sodium-amber key from the wreck's lights, faint
+cyan rim from a console offscreen. Style: stylized 1990s sci-fi
+game portrait, painterly, dignified, weary-determined. Tone: a
+survivor who has WITNESSED the impossible and is now the messenger.
+Skin must read CLEARLY greyish-blue, NOT human-pink.

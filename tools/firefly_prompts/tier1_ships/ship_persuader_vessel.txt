@@ -1,0 +1,29 @@
+# aspect: 1:1
+# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
+# prompt file). Aaron review: "too many spherical ships". v1 leaned
+# too hard on spherical hulls. v2 direction: ARCHITECTURAL CEREMONIAL
+# craft, NOT a sphere — a flatter elongated diplomatic vessel with a
+# clear "ceremonial gondola" silhouette. Keep the amber/gold Persuader
+# palette and the antenna spires.
+
+A top-down orthographic view of a Persuader Vessel — the
+Furling Persuader sub-faction's ceremonial diplomatic ship.
+Shape: a LONG FLAT CEREMONIAL GONDOLA, 3:1 aspect with the
+length axis vertical in the frame, tapered at both ends like
+an elongated almond or a stretched lozenge. NO spherical
+elements. The hull is a graceful flat-decked craft with
+visible terraced upper levels (a ceremonial palace-on-a-ship
+quality), low broad shoulders sweeping outward at mid-hull
+into a pair of fanned WIND-CATCHER VANES (elegant cloth-like
+solar collectors), and a low covered prow. From the dorsal
+spine: 3-5 SLENDER ANTENNA SPIRES rise straight up at
+intervals, each topped with a small amber lantern (the
+Persuader broadcast-presence signature). Hull color: warm
+gold and amber-cream with deep mahogany piping and an open
+Persuader palm sigil engraved at the central dorsal panel.
+A faint warm amber glow surrounds the craft (the diplomatic-
+aura broadcast). Background: deep starfield, near-black.
+Style: stylized 1990s sci-fi game art, painterly with crisp
+silhouette, ELEGANT not aggressive. Tone: a SHIP THAT IS A
+SPEECH, a ceremonial diplomatic craft that arrives slowly
+and visibly. NO spherical hull elements anywhere.

@@ -1,0 +1,33 @@
+# aspect: 1:1
+# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
+# prompt file). Aaron review: "Make it more like the vulcan cruisers
+# from Star Trek with a long yacht body and a ring-shaped nacelle
+# around its forward axis." Star Trek Vulcan reference: D'Kyr-class
+# cruiser — long slender main hull with a large ring-shaped warp
+# ring set forward of the hull, around the same longitudinal axis.
+# The Furling Scout is the player's ship; this is the canonical
+# silhouette.
+
+A top-down orthographic view of a Furling Scout starship — the
+player's vessel. Silhouette inspired by the Vulcan D'Kyr-class
+cruiser from Star Trek: a LONG SLENDER YACHT-LIKE MAIN HULL
+oriented vertically in the frame (nose to top), roughly 4:1
+aspect, with a tapered teardrop nose at the front and gentle
+fluting toward a thruster array at the rear. AROUND THE
+FORWARD AXIS of the hull: a LARGE RING-SHAPED NACELLE — a
+distinct independent ring sitting concentric with the hull's
+forward third, slightly larger than the hull's beam, that
+glows soft red-amber on the inner rim (the warp halo). The
+ring is held in place by 2-4 slender support pylons connecting
+it to the hull. Hull color: warm copper-cream with brass
+bracketing at the seams and a Furling glyph etched at the
+ring-support junction. Main thruster array at the rear glows
+soft cyan-violet, with 2-3 secondary maneuvering jets at the
+hull's mid-section. A small central optical pip / bridge-canopy
+on the dorsal centerline (the Steward's bridge). Background:
+deep starfield, near-black. Style: stylized 1990s sci-fi game
+art, painterly with crisp silhouette, vivid contrast. Tone:
+ELEGANT-EXPLORER, the ship of a careful gardener-civilization,
+NOT a warship. Reference rhyme: Vulcan D'Kyr, but warmer
+(copper instead of bronze, organic curves instead of strict
+geometry).
