@@ -158,6 +158,8 @@ class MainMenuScene(StubScene):
     TITLE = "STAR CONTROL ZERO"
     SUBTITLE = "The Precursors — Furling Era"
     ACCENT = (240, 230, 200)
+    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_migration_portal.png"
+    BACKDROP_DIM = 140
     DETAILS = [
         "Title screen — entry point of the game.",
         "",
@@ -226,6 +228,7 @@ class ObservationScene(StubScene):
     TITLE = "Proto-Species Observation"
     SUBTITLE = "Lightweight visit to a pre-sentient species"
     ACCENT = (140, 220, 160)
+    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_planets/planet_sol_iii.png"
     DETAILS = [
         "Land on a planet hosting pre-sentient life (proto-Spathi, proto-VUX,",
         "proto-humans on Sol, etc.). No choices, no FSM — just observe.",
@@ -309,6 +312,7 @@ class ClusterStatusBoardScene(StubScene):
     TITLE = "Cluster Status Board"
     SUBTITLE = "Win-condition tracking — every species, every terminal status"
     ACCENT = (255, 230, 140)
+    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_rainbow_seeding.png"
     DETAILS = [
         "The slice's win-condition view. Each sentient species in the cluster",
         "is listed with its current terminal status:",
@@ -330,6 +334,7 @@ class ArchiveScene(StubScene):
     TITLE = "Furling Bio-Archive"
     SUBTITLE = "Codex — observations, council reports, lore unlocked"
     ACCENT = (160, 220, 200)
+    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png"
     DETAILS = [
         "The player's accumulated knowledge. Browsable by category:",
         "",
