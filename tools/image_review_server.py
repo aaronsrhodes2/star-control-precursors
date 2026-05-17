@@ -149,14 +149,31 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
         sys.stderr.write(f"[review] {fmt % args}\n")
 
 
+class ReuseAddrServer(socketserver.ThreadingTCPServer):
+    """Set SO_REUSEADDR at the class level so the bind() in __init__ picks
+    it up. Without this the flag-after-construction was a no-op and a
+    fast restart of the server raised 'address already in use'."""
+    allow_reuse_address = True
+
+
 def main() -> int:
     if not MANIFEST.exists():
         sys.stderr.write(
             f"[review] WARNING: manifest not found at {MANIFEST}\n"
             f"[review] approve/reject buttons will 404 until images are indexed.\n"
         )
-    with socketserver.ThreadingTCPServer(("127.0.0.1", PORT), ReviewHandler) as srv:
-        srv.allow_reuse_address = True
+    try:
+        srv = ReuseAddrServer(("127.0.0.1", PORT), ReviewHandler)
+    except OSError as e:
+        sys.stderr.write(
+            f"[review] FAILED to bind 127.0.0.1:{PORT} ({e}).\n"
+            f"[review] Another server is already on that port (likely\n"
+            f"[review] `python -m http.server {PORT}`). Stop it first:\n"
+            f"[review]   netstat -ano | grep :{PORT}   # find PID\n"
+            f"[review]   taskkill /F /PID <pid>\n"
+        )
+        return 1
+    with srv:
         print(f"[review] serving project at http://localhost:{PORT}/")
         print(f"[review] open http://localhost:{PORT}/tools/image_review.html")
         print(f"[review] manifest: {MANIFEST}")
