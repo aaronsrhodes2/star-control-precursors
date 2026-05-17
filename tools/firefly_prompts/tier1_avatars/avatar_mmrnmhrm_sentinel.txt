@@ -1,22 +1,47 @@
 # aspect: 2:3
-# notes: Articulated avatar for the Mmrnmhrm. Robot humanoid — millions
-# of years old, self-modified beyond original design. Stoic, mathematical,
-# melancholy. Plain matte dark navy background.
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "GORGEOUS, too
+# many legs. Needs to be more asymmetric." The v1 visual was striking
+# but had too many limbs/legs and read as too clean. The Mmrnmhrm are
+# millions of years old self-modifying robots — the asymmetry comes
+# from EONS of patches, retrofits, and re-grafts. Each one is unique.
+#
+# v2 direction: SINGLE bipedal silhouette (TWO legs, not more); ARMS
+# DELIBERATELY MISMATCHED (one short factory original, one long
+# retrofitted, different alloys, different finger counts); body
+# patchwork from a dozen different eras of repair welded together.
+# Should read as ONE robot but clearly NEVER FIXED, just continuously
+# CARRIED FORWARD by self-care for a long time.
 
 A full-body avatar painting of a Mmrnmhrm Sentinel, an ancient
-self-modifying robot. Humanoid silhouette, ~2.1 m tall, brushed-
-titanium body with visible modular limb sockets at the shoulders
-and where the neck meets the torso (mechanical hinge joints). Long
-arms ending in three-finger articulated manipulators. Asymmetric
-chest plating — one side weathered by millennia of repair, the
-other a newer alloy bolted on, suggesting the self-modification
-canon. A single central optical-array dome head, faintly glowing
-deep blue. No face — just sensors and seams. Subtle Mmrnmhrm
-geometric glyphs etched into the chest in cool platinum. Pose:
-standing neutral three-quarter, weight evenly distributed, both
-arms hanging relaxed at the sides with manipulators visible. Head
-slightly tilted as if computing. Background: SOLID MATTE DARK
-NAVY (#0a0e1a), edge-to-edge, no scene elements. Lighting: even
-soft three-point with a cool blue rim from the head dome. Style:
-stylized 1990s sci-fi game character portrait, painterly. Clear
-shoulder joints, elbow hinges, wrist sockets visible.
+self-modifying robot. Humanoid silhouette but DELIBERATELY
+ASYMMETRIC, ~2.0m tall. ONLY TWO LEGS — bipedal, no extra limbs.
+The body is a PATCHWORK of mismatched repairs accumulated over
+millions of years: torso plating in three different alloys
+welded together (brushed titanium, tarnished copper-bronze,
+matte gunmetal-gray), seams visible. ARMS ARE DIFFERENT FROM
+EACH OTHER: left arm is shorter, factory-original, ending in a
+THREE-FINGER manipulator with delicate articulation; right arm
+is longer, clearly a later retrofit, ending in a FIVE-CLAW heavy
+gripper. Shoulders held at different heights. One leg has a
+visible knee-joint replacement (newer alloy bolted on); the
+other is original equipment. Head: a single CENTRAL optical-
+array dome glowing deep blue, set slightly OFF-CENTER on the
+neck stem (the result of a head-grafting repair). NO face — just
+sensors, seams, and a strip of subtle Mmrnmhrm geometric glyphs
+etched into the chest in cool platinum (one glyph clearly added
+later, brighter than its neighbors). Pose: standing in a quiet
+three-quarter, asymmetric: weight on the left foot, right arm
+hanging lower than the left, head tilted in computation.
+Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge.
+Lighting: even soft three-point with cool blue rim from the head
+dome, faint copper rim from the older patches. Style: stylized
+1990s sci-fi game character portrait, painterly, melancholy,
+ancient. Tone: ONE ROBOT, NEVER FIXED, JUST CARRIED FORWARD —
+the asymmetry tells the millennia.
+
+ARTICULATION BRIEF (rig: robot_humanoid + asymmetric):
+- HEAD: separable, off-center on neck stem
+- ARMS L/R: deliberately mismatched (short vs long, fingers vs claws)
+- TORSO: three-alloy patchwork; clear seam lines for chip animation
+- LEGS: bipedal, asymmetric knee mods
+- Avoid: more than two legs, symmetric body, uniform finish

@@ -1,23 +1,45 @@
 # aspect: 2:3
-# notes: Articulated avatar for the Planar — wholly-invented 2D species
-# with zero width. Plain matte dark navy background. Pose face-on
-# because edge-on they are literally invisible.
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "Planar beings
+# only look like a square luminescent, pearlescent sheet of glass sort
+# of. They have no weight so they float around as they please easily."
+#
+# v1 rendered a ribbon-bodied figure with eye-spots and appendage-arms
+# — too organic. New direction: A SQUARE/RECTANGULAR PEARLESCENT GLASS
+# SHEET, no limbs, no eyes, no face, no anatomy. Just a luminous panel
+# of patterned light, floating in a casually tilted orientation
+# (because it has no weight and rotates freely). The species is more
+# abstract than I built; the "person" is a pane.
+#
+# Also 2026-05-17: species being RENAMED Planar -> Thinn by Lore-chat.
+# Keep "Planar" in filenames until they commit; the visual language
+# does not depend on the name.
 
-A full-body avatar painting of a Planar individual ('We-Who-Witness-
-the-Edge'). Body plan: a vertical iridescent ribbon-sheet, roughly
-2 meters tall and 80cm across the visible face, with literal ZERO
-width along the perpendicular axis (the species is 2D — they vanish
-edge-on, here shown face-on). Color: deep teal shifting through
-royal violet and gold-leaf yellow along the surface, like an oil
-slick or hummingbird feather (the color is view-angle dependent).
-Along the upper edge: a constellation of 8-12 small dark optical
-points serving as compound eyes. Two planar appendage-arms extend
-from the lower-mid edges, curving in graceful flat arcs like leaf
-edges, ending in tapered points. Pose: floating upright facing the
-viewer, both appendages held outward and slightly forward
-(welcoming gesture), the upper-edge eye-constellation visible.
-Faint vapor slipstream curling AROUND the body (revealing the
-zero-width edge). Background: SOLID MATTE DARK NAVY (#0a0e1a),
-edge-to-edge, no scene elements, no glow. Lighting: even soft
-three-point. Style: stylized 1990s sci-fi game character portrait,
-painterly. The ribbon-body should read clearly as flat.
+A full-body avatar painting of a Planar individual. Body plan: a
+single rectangular PEARLESCENT GLASS SHEET, roughly 1.5m tall by
+1m wide, floating in a slightly tilted (~15 degrees off-vertical)
+orientation in midair — no support, no contact with the ground,
+weightless. The sheet is essentially flat and roughly square-ish
+with softly rounded corners. Surface is iridescent: deep teal at
+the center shifting through royal violet at one edge and gold-
+leaf yellow at the other, with a faint moiré-like internal
+pattern that suggests the species's interiority (slow, drifting,
+without a focal point). The sheet is OPAQUE to LIGHT but
+TRANSLUCENT to SHADOW — soft glow inside, faint silhouettes
+visible through it. NO LIMBS, NO EYES, NO FACE, NO ANATOMY. The
+edges of the sheet glow softly with a one-pixel rim of pure
+white-violet light. A faint vapor slipstream curls AROUND the
+sheet, curving past the edge to indicate it has no thickness.
+Pose: floating freely tilted in a casually-cocked angle, the
+viewer sees the FLAT FACE of the sheet head-on. Background:
+SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge, no scene elements.
+Lighting: even soft three-point with the sheet's own pearlescent
+glow as the dominant light source. Style: stylized 1990s sci-fi
+game character portrait, painterly, abstract, alien. Tone: A
+PERSON WHO IS A PANE OF LIGHT.
+
+ARTICULATION BRIEF (rig: ribbon_planar — to be renamed planar_sheet):
+- THE SHEET: the entire avatar, articulates by tilting / spinning
+  in 3D space; cannot bend or fold
+- INTERIOR PATTERN: the iridescent moiré can shift to express mood
+- EDGE GLOW: brightens/dims with attention or speech
+- Avoid: limbs, eyes, faces, ANY anatomical features whatsoever

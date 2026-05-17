@@ -1,20 +1,30 @@
 # aspect: 2:3
-# notes: v5 (FINAL) — BIPEDAL HUMANOID stand-in for the canon mono-pedal
-# body plan. SDXL-Turbo cannot render the canonical snail-foot pedestal
-# with 12 toes; v4 attempts produced reptilian fantasy creatures. v5
-# uses the v3 bipedal approach which renders as a legible character.
-# The lore (the-furlings-and-the-others.md §1) documents that the
-# actual canon body is mono-pedal; renders show bipedal stand-in until
-# a future model or hand-paint pass can restore the canon visual.
+# notes: REWRITTEN 2026-05-17 per Aaron review on v5: "Cannot figure out
+# the shape. Should be like a big chechire cat from Alice in Wonderland".
+# v5 produced a slender bipedal foxoid that didn't read as a coherent
+# silhouette. v6 direction: BIG FRIENDLY CHESHIRE-CAT FURLING — physically
+# OVERSIZED and BROAD, plush striped fur, that signature wide grin set in
+# a round face, half-lidded knowing eyes. Sitting/seated posture so the
+# silhouette is wider-than-tall and instantly readable. Mono-pedal canon
+# stays in the lore; the avatar render keeps the bipedal stand-in but
+# the SHAPE is big-friendly-cat, not slender humanoid.
 
-ONE single anthropomorphic alien character, BIPEDAL HUMANOID,
-STANDING UPRIGHT on TWO LEGS, NAKED with no clothes, body covered
-ENTIRELY in dense fur. Slate-gray fur, cream throat, chestnut flank
-stripes. BIG tall fennec-fox ears erect on top of the head, long
-bushy fox-tail behind, WIDE friendly Cheshire-cat grin showing
-even white teeth, ANDROGYNOUS flat chest no genitalia, warm amber
-eyes, three braided ringlets in head-mane tied with copper rings.
-ONE thin leather strap-harness across the shoulder with a copper
-Migration Council sigil pendant at the throat. Standing neutral
-three-quarter pose, two arms at sides. Background solid dark navy.
-Painted stylized sci-fi character portrait, single subject.
+ONE alien character: a LARGE FRIENDLY CHESHIRE-CAT-LIKE FURLING.
+Body plan: BIG, BROAD, FLUFFY — a wider-than-tall silhouette in a
+relaxed seated pose. Dense plush fur in WARM TABBY STRIPES,
+cinnamon ground color with darker mahogany ringed stripes,
+silver-tipped guard hairs at cheeks and chest. Long bushy fox-tail
+curling forward into the lower frame. Big fennec-fox-like ears
+held perked alert. Head: ROUND AND FRIENDLY, dominated by a
+slightly-too-wide CHESHIRE-CAT GRIN showing even white teeth,
+half-lidded forward-facing eyes glowing warm gold (kind but
+ancient). Naked under the fur except for ONE simple copper-trimmed
+amber sash crossed over the shoulder bearing a small Migration
+Council sigil pendant at the throat. Two arms folded loosely
+across the broad belly in a "tell me everything" listening pose.
+Pose: SEATED upright, big and round and inviting. Background:
+solid matte dark navy. Style: painted stylized 1990s sci-fi
+character portrait, single subject. Tone: BIG FRIENDLY COMMANDER,
+warmth and grin first, authority just under. Avoid: lean/slender
+silhouette, military posture, severe expression — Halia is BIG and
+KIND and the shape must read that way at 30 ft.

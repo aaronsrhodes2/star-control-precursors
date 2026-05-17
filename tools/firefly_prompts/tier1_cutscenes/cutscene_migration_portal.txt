@@ -1,20 +1,47 @@
 # aspect: 16:9
-# notes: the climactic Migration cutscene — the dimensional crossing
-# opens above the Rainbow Worlds arrow. Ten planets in a line stretch
-# into the distance, each pulsing in turn as the portal forms. This is
-# the slice's Act 4 set-piece. Hopeful but immense; an evacuation
-# event, not a triumph.
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "It looks cool,
+# but doesn't match the narrative well. The rainbow planet stars are
+# very far apart. We should show a video of the stars forming the
+# arrow as per the SC2 map, and the straight line pointing to
+# Andromeda."
+#
+# Static cutscene replacement (video TBD): match the SC2 starmap-arrow
+# composition. The 10 Rainbow Worlds form a clear ARROWHEAD shape
+# punched into the galactic disk, with the arrow's shaft as a thin
+# bright line of light extending OUTWARD past the disk edge toward the
+# Andromeda Galaxy (M31), which is the destination of the Migration.
+# Andromeda is visible as a large recognizable lens-shaped galaxy at
+# the far end of the line.
+#
+# This is the Migration arc's central iconography — the diegetic
+# argument for "go this way" is literally a finger pointing at M31.
+# An animated version that shows the stars LIGHTING UP one by one to
+# draw the arrow can come later as a video asset; this still depicts
+# the assembled arrow in mid-Migration with the portal opening at
+# Andromeda's edge.
 
-A vast wide-angle cinematic still: above a string of ten rainbow-hued
-planets receding into deep space — each a different jewel-tone
-(violet, indigo, sky-blue, teal, green, gold, amber, orange, red,
-ruby) glowing softly in formation — a colossal dimensional portal
-opens. The portal is a shimmering vertical lens of aurora-light:
-turquoise, magenta, gold; not fire, not a hole, but a SEAM in
-reality itself, with the faint silhouette of another galaxy
-visible through its center. Tiny Furling Migration arks stream
-toward the seam in slow procession, their hulls catching its light.
-Background: a deep cosmic vista with a distant spiral arm. Tone:
-hopeful and immense — a great evacuation, not a celebration.
-Style: stylized 1990s sci-fi game cutscene, painterly, suitable as
-a single ending-cinematic still. No HUD elements, no UI, no text.
+A wide cinematic still rendered like a top-down-tilted SC2-style
+starmap, mostly black, with the spiral galactic disk filling the
+left two-thirds of the frame in soft milky-white starfield. INSIDE
+the disk: TEN RAINBOW-COLORED STARS arranged in an UNMISTAKABLE
+ARROWHEAD SHAPE — base of the arrow rooted in the disk's mid-
+plane, tip pointing OUT past the disk's edge toward the upper
+right. Each star is a different jewel-tone in spectrum order:
+violet, indigo, sky-blue, teal, green, gold, amber, orange, red,
+ruby — they glow at MUCH higher brightness than the neighboring
+white stars, making the arrowhead pop as a deliberate signal. A
+thin BRIGHT WHITE LINE OF LIGHT extends FORWARD from the
+arrowhead's tip, crossing the dark interstitial void of the
+frame, terminating in the UPPER-RIGHT QUARTER at the visible
+disc of THE ANDROMEDA GALAXY (M31) — a recognizable spiral
+galaxy seen from a slightly tilted angle, soft golden core,
+visible spiral arms in cooler blues. At Andromeda's near edge:
+a shimmering vertical seam of aurora light (turquoise / magenta
+/ gold), the Migration dimensional portal opening through to
+Andromeda. Tiny Furling Migration arks stream in slow procession
+along the arrow's bright line toward the seam, their hulls
+catching its light. Tone: VAST DIAGRAM and HOPEFUL ENGINEERING.
+The composition reads as A MAP, as well as a sci-fi vista — the
+arrow IS the message. Style: stylized 1990s sci-fi game cutscene,
+painterly with crisp graphic clarity in the arrow + line. No
+HUD, no UI, no text labels.

@@ -4,39 +4,42 @@
     "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_cloaking_satellite.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T03:27:14+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "artifacts"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:53:34.597171+00:00"
   },
   "tier1_backdrops/backdrop_council_chamber": {
     "prompt_path": "tools/firefly_prompts/tier1_backdrops/backdrop_council_chamber.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T03:23:07+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "backdrops"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:00:04.635809+00:00"
   },
   "tier1_cutscenes/cutscene_distress_beacon": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_distress_beacon.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T03:24:56+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:27.747583+00:00"
   },
   "tier1_lander/lander_furling": {
     "prompt_path": "tools/firefly_prompts/tier1_lander/lander_furling.txt",
@@ -329,130 +332,140 @@
     "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_distress_beacon_device.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:54:21.113116+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "artifacts"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "REVIEW: Aaron flagged for re-roll but didn't add notes. Next-session image-lane: ASK AARON for direction before regenerating. Existing prompt at tools/firefly_prompts/tier1_artifacts/artifact_distress_beacon_device.txt — was a brass-and-copper deep-space transmitter; if Aaron wants a different design, his notes will tell us what.",
+    "reviewed_at": "2026-05-17T21:12:34.730722+00:00"
   },
   "tier1_artifacts/artifact_rainbow_resonator": {
     "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_rainbow_resonator.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_rainbow_resonator.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:54:21.130920+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "artifacts"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:12:51.470555+00:00"
   },
   "tier1_artifacts/artifact_talos_resonator": {
     "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_talos_resonator.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_talos_resonator.png",
     "aspect": "1:1",
     "generated_at": "2026-05-17T04:58:19.700306+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "artifacts"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:53:42.190565+00:00"
   },
   "tier1_avatars/avatar_arilou_sage": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_arilou_sage.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_arilou_sage.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T14:54:31.158851+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:54:07.563189+00:00"
   },
   "tier1_avatars/avatar_burvixese_engineer": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_burvixese_engineer.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_burvixese_engineer.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T18:04:35.886757+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:54:03.145211+00:00"
   },
   "tier1_avatars/avatar_chenjesu_witness": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_chenjesu_witness.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_chenjesu_witness.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T18:06:30.859278+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:54:11.124737+00:00"
   },
   "tier1_avatars/avatar_coel_tessar": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_coel_tessar.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_coel_tessar.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T14:59:36.005064+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:55:45.433265+00:00"
   },
   "tier1_avatars/avatar_commander_halia": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_commander_halia.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_commander_halia.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T17:16:39.777747+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "Cannot figure out the shape. Should be like a big chechire cat from Alice and Wonderland",
+    "reviewed_at": "2026-05-17T21:06:15.306355+00:00"
   },
   "tier1_avatars/avatar_melnorme_vermilion": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_melnorme_vermilion.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_melnorme_vermilion.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T15:32:11.172930+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "this is a good androsynth, not a melnorme",
+    "reviewed_at": "2026-05-17T21:06:17.362612+00:00"
   },
   "tier1_avatars/avatar_mmrnmhrm_sentinel": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_mmrnmhrm_sentinel.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_mmrnmhrm_sentinel.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T16:25:00.680624+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "GORGEOUS, too many legs. Needs to be more asymmetric.",
+    "reviewed_at": "2026-05-17T20:56:26.684520+00:00"
   },
   "tier1_avatars/avatar_planar_witness": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_planar_witness.txt",
@@ -465,60 +478,64 @@
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "SPECIES RENAMED 2026-05-17: Planar -> Thinn (Aaron's pun: literally Thinn AND they Thought they'd survive by facing sideways). Existing visual is canonically fine (iridescent 2D ribbon-body). Re-roll to: (a) rename file to avatar_thinn_witness when Lore-chat commits species-the-thinn.md, (b) optionally regenerate with a tighter Thinn pun reference - slightly comedic edge-on near-invisibility, the species has embraced the Furling-translator nickname as their own. Otherwise the v1 visual is salvageable.",
-    "reviewed_at": "2026-05-17T20:34:17.710491+00:00"
+    "notes": "Planar beings only look like a square luminescent, pearlescent sheet of glass sort of. They have no weight so they float around as they please easily.",
+    "reviewed_at": "2026-05-17T21:06:19.405665+00:00"
   },
   "tier1_avatars/avatar_proto_qor_ah": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_qor_ah.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_qor_ah.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T18:12:21.845757+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:58:02.961347+00:00"
   },
   "tier1_avatars/avatar_proto_urquan": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_urquan.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_urquan.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T18:15:06.167950+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:58:04.886756+00:00"
   },
   "tier1_avatars/avatar_sentry_drone_47t": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_sentry_drone_47t.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_sentry_drone_47t.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T15:32:11.758571+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:58:18.002432+00:00"
   },
   "tier1_avatars/avatar_slylandro_witness": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_slylandro_witness.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_slylandro_witness.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T14:51:21.546934+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:58:24.973771+00:00"
   },
   "tier1_avatars/avatar_taalo": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_taalo.txt",
@@ -531,138 +548,148 @@
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "WRONG SPECIES per 2026-05-17 canon update: Taalo are Horta-lineage rock-shamblers, NOT amphibian. Re-roll: ~1.5m crouching/shambling silicon-mineral creature; acid-eats-rock so corrosive maw with drip; basalt-and-quartz hide (not toad skin); no real eyes (geological-scale sensing or compound geo-sensor patches); legs are mineral pseudopods. Vibe: A MOUNTAIN RANGE WITH AGENCY. They DIE in the slice (Taalo Shield fails) - bodies calcify into ordinary-looking rocks. So the portrait could hint at the calcify-on-death pathos.",
-    "reviewed_at": "2026-05-17T20:34:13.605008+00:00"
+    "notes": "Taalo are like lumps of shambling rock with a frilly bottom curtain",
+    "reviewed_at": "2026-05-17T21:06:21.451077+00:00"
   },
   "tier1_avatars/avatar_utwig_elder": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_utwig_elder.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_utwig_elder.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T17:17:10.375896+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "Cool, but I think we need skin. Make them totally goth and skinnny though\n",
+    "reviewed_at": "2026-05-17T20:59:39.826139+00:00"
   },
   "tier1_avatars/avatar_vael_souren_cleanser": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_vael_souren_cleanser.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_vael_souren_cleanser.png",
     "aspect": "2:3",
     "generated_at": "2026-05-17T17:16:54.964922+00:00",
-    "status": "pending",
+    "status": "reject",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "REVIEW: Aaron rejected without notes. Vael-Souren is the Cleanser-emissary slice antagonist (Act 3 climax), so we likely need an avatar eventually — but Aaron didn't approve the v1. ACTION: ask Aaron for direction; if he wants a re-roll, he'll add a note + flip the status to reroll_requested. Until then this is a true reject.",
+    "reviewed_at": "2026-05-17T21:12:36.776244+00:00"
   },
   "tier1_cutscenes/cutscene_cleanser_arrival": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_cleanser_arrival.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cleanser_arrival.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T05:05:05.810438+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:03:08.540653+00:00"
   },
   "tier1_cutscenes/cutscene_cloak_install": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_cloak_install.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cloak_install.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T05:13:31.210330+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:03:07.284097+00:00"
   },
   "tier1_cutscenes/cutscene_council_convocation": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_council_convocation.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_council_convocation.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T19:03:21.016307+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:56.741431+00:00"
   },
   "tier1_cutscenes/cutscene_decursion_swap": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_decursion_swap.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_decursion_swap.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T17:37:27.087575+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:44.334119+00:00"
   },
   "tier1_cutscenes/cutscene_deep_child": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_deep_child.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_deep_child.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T05:13:31.192683+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:36.578878+00:00"
   },
   "tier1_cutscenes/cutscene_drahn_destruction": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_drahn_destruction.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T04:19:10.169211+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:13.945409+00:00"
   },
   "tier1_cutscenes/cutscene_migration_portal": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_migration_portal.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_migration_portal.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T05:05:05.777316+00:00",
-    "status": "pending",
+    "status": "reroll_requested",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "It looks cool, but doesn't match the narrative well. The rainbow planet stars are very far apart. We should show a video of the stars forming the arrow as par the SC2 map, and the straight line pointing to Andromeda. ",
+    "reviewed_at": "2026-05-17T21:06:23.505543+00:00"
   },
   "tier1_cutscenes/cutscene_others_consuming": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_consuming.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_others_consuming.png",
     "aspect": "16:9",
     "generated_at": "2026-05-17T17:41:58.428903+00:00",
-    "status": "pending",
+    "status": "keep",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": ""
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:19.279084+00:00"
   },
   "tier1_cutscenes/cutscene_others_emerging": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_emerging.txt",

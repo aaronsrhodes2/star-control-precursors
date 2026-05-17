@@ -190,9 +190,9 @@ def _render_image_card(p: Path, manifest_entry: dict | None) -> str:
     if manifest_entry is not None:
         actions_html = f"""
         <div class="actions" data-key="{_esc(key)}">
-          <button class="action-btn approve" data-action="keep" title="Approve — wire this into the game">✓ Approve</button>
-          <button class="action-btn reroll" data-action="reroll_requested" title="Mark for re-generation with adjusted prompt">↻ Re-roll</button>
-          <button class="action-btn reject" data-action="reject" title="Reject — don't use, don't re-roll">✗ Reject</button>
+          <button class="action-btn approve" data-action="keep" title="Approve — keep as-is, wire this into the game on next integration pass">✓ Approve</button>
+          <button class="action-btn reroll" data-action="reroll_requested" title="Re-roll — image is wrong; ALSO add a note describing what to change. Image-lane will rewrite the prompt + regenerate next credit window.">↻ Re-roll</button>
+          <button class="action-btn reject" data-action="reject" title="Reject — drop the concept entirely; do NOT re-roll. Use this only when the image shouldn't exist at all. (If you want a different version, use Re-roll with a note.)">✗ Reject</button>
         </div>
         <details class="notes-edit">
           <summary>📝 Edit note</summary>
