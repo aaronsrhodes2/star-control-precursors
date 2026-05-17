@@ -163,7 +163,7 @@ ROWS = [
         "assets/comm/probe/ (SC2 lift)",
         "ANDROSYNTH",
         "yes (tutorial Beat 4 milestone)",
-        "no Firefly portrait yet; no per-individual variants",
+        "no Firefly portrait yet; no per-individual variants. Distress Beacon 4-shot montage COMPLETE 2026-05-17 (cutscene_distress_beacon AFTER + cutscene_decursion_swap + cutscene_others_emerging + cutscene_others_consuming in assets/generated_drafts/firefly/tier1_cutscenes/)",
     ),
     (
         "ARILOU",
