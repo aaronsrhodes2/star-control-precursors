@@ -1,0 +1,22 @@
+# aspect: 2:3
+# notes: Articulated avatar for Vael-Souren, Cleanser-faction Furling
+# emissary (Act 3 antagonist). Per CLEANSER_FACTION lore: gentle
+# sorrowful bearing, white-violet vestments. NOT a snarling villain —
+# the horror is that they grieve every kill. Plain matte dark navy bg.
+
+A full-body avatar painting of Vael-Souren, a Furling Cleanser emissary.
+Furred humanoid like all Furlings, ~1.7 m tall, deep slate-gray fur
+with platinum frost along the muzzle and ears (signaling age and high
+rank). Pale violet eyes — not aggressive, sorrowful. Wears formal
+Cleanser vestments: a long white robe with deep violet trim, a sash
+of intricate Cleanser-cuneiform across the chest in matte silver
+thread, and a single Quiet-Ledger pendant at the throat (small,
+visible). Hands visible at hip level, holding nothing, fingers
+gently parted. Head slightly bowed in the carrying-weight pose. The
+overall impression is of an executioner who grieves. Standing
+neutral three-quarter, weight slightly on left leg, both arms
+relaxed at the sides. Background: SOLID MATTE DARK NAVY (#0a0e1a),
+edge-to-edge, no scene elements. Lighting: even soft three-point
+with a touch of cool violet rim from the vestment trim. Style:
+stylized 1990s sci-fi game character portrait, painterly. The
+silhouette should read as MOURNFUL AUTHORITY, not menace.

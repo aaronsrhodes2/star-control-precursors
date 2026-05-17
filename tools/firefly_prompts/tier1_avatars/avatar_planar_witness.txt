@@ -1,0 +1,23 @@
+# aspect: 2:3
+# notes: Articulated avatar for the Planar — wholly-invented 2D species
+# with zero width. Plain matte dark navy background. Pose face-on
+# because edge-on they are literally invisible.
+
+A full-body avatar painting of a Planar individual ('We-Who-Witness-
+the-Edge'). Body plan: a vertical iridescent ribbon-sheet, roughly
+2 meters tall and 80cm across the visible face, with literal ZERO
+width along the perpendicular axis (the species is 2D — they vanish
+edge-on, here shown face-on). Color: deep teal shifting through
+royal violet and gold-leaf yellow along the surface, like an oil
+slick or hummingbird feather (the color is view-angle dependent).
+Along the upper edge: a constellation of 8-12 small dark optical
+points serving as compound eyes. Two planar appendage-arms extend
+from the lower-mid edges, curving in graceful flat arcs like leaf
+edges, ending in tapered points. Pose: floating upright facing the
+viewer, both appendages held outward and slightly forward
+(welcoming gesture), the upper-edge eye-constellation visible.
+Faint vapor slipstream curling AROUND the body (revealing the
+zero-width edge). Background: SOLID MATTE DARK NAVY (#0a0e1a),
+edge-to-edge, no scene elements, no glow. Lighting: even soft
+three-point. Style: stylized 1990s sci-fi game character portrait,
+painterly. The ribbon-body should read clearly as flat.
