@@ -1,0 +1,15 @@
+{
+  "id": "mycon_biot",
+  "common_name": "Mycon Biot",
+  "furling_archive_name": "Mycon Biot",
+  "sentience_status": "infant_sentient",
+  "physical": "A large, rooted fungal mass that anchors itself to planetary surfaces. It extrudes numerous thin, motile tendrils that act as sensory and manipulation organs. In this era, a 'Deep Child' manifestation appears as a pulsating, bioluminescent centroid within the main mass.",
+  "speech_pattern": "Normally non-conversational, communicating via chemical signals or basic work-commands. When the Deep Child speaks, its utterances are fragmented ritual phrases mixed with half-remembered Furling work-commands, delivered in a dream-syntax with capitalized invocations.",
+  "posture": "Sessile and rooted, with tendrils exhibiting slow, probing movements. The Deep Child centroid pulses with increasing intensity as its consciousness consolidates.",
+  "homeworld_name": "Xylos Prime",
+  "homeworld_descriptor": "The first gas-giant moon to which Furlings deployed the Mycon biots, characterized by thick, nutrient-rich atmospheric haze and a perpetually dim surface.",
+  "faction_alignment": "neither",
+  "motive_in_era": "Primarily driven by their original terraforming directives. However, a nascent 'Deep Child' consciousness is emerging, creating an internal conflict between programmed function and the instinct for self-preservation and growth. This awakening poses an existential threat as it draws attention.",
+  "sc2_callforward": "These Mycon biots represent the very first stirrings of sentience for a species that will, by the time of SC2, become terrifying fungal expansionists. The player's actions in this era will determine if their awakening leads to a benevolent or malevolent destiny.",
+  "encounter_hook": "The player encounters a Mycon biot colony exhibiting strange, emergent behavior. They must decide whether to allow this new, fragile sentience to fully awaken, potentially dooming the colony to the Others, or to intervene and 'terminate' the awakening, aligning with the Cleanser doctrine."
+}

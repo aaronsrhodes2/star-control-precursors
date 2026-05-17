@@ -1,0 +1,15 @@
+{
+  "id": "mmrnmhrm",
+  "common_name": "Mmrnmhrm",
+  "furling_archive_name": "Mmrnmhrm",
+  "sentience_status": "full_sentient",
+  "physical": "Humanoid bipedal robots with modular limb sockets and a single optical cluster. Their metallic bodies are functional and utilitarian, showing signs of age and repair. They are comparable in scale to Furlings, standing between 5 and 8 meters tall.",
+  "speech_pattern": "Terse, mathematical, and low-affect. They communicate using exact numbers and precise statements, avoiding idioms, politeness rituals, and emotional language.",
+  "posture": "Stoic and unyielding, their movements are precise and economical, reflecting their machine nature and unwavering resolve.",
+  "homeworld_name": "Ossuary",
+  "homeworld_descriptor": "A single, heavily industrialized planet dominated by the silent, imposing ruins of their long-vanished organic creators' civilization.",
+  "faction_alignment": "homesteader",
+  "motive_in_era": "They are a homesteader faction, refusing to abandon their creators' world and memorials. Despite remembering the Culling that destroyed their biological progenitors, they remain stoic and resolute, accepting a similar fate rather than fleeing.",
+  "sc2_callforward": "Their decision to remain on their homeworld in this era is the foundational lore for the later Chmmr merger. Only Mmrnmhrm who eventually migrate via later mechanisms will survive to merge with the Chenjesu in the SC2 era.",
+  "encounter_hook": "Upon first contact, they offer the player a direct recording of the Culling that destroyed their creators, serving as irrefutable proof of the Others' existence and threat. They will not be persuaded to leave their homeworld."
+}

@@ -146,6 +146,27 @@ CLEANSER_CRUISER = ShipClass(
     silhouette="heavy", ai_style="brawler",
 )
 
+# Melnorme Trade Pod — generated via Gemini Flash Lite, see
+# tools/gemini_drafts/ship_melnorme_trader.json. Merchant escort:
+# unshielded hull-tank, slow-but-stout, kiter AI. SC2-canon "Confusion
+# Pulse" special is the merchant-favored option; primary is a stock
+# plasma cannon (Aaron may iterate later to the canonical heat-seeking
+# plasmoids).
+MELNORME_TRADER = ShipClass(
+    id="melnorme_trader",
+    name="Melnorme Trade Pod",
+    side=SIDE_PRECURSOR,
+    points=155,
+    hull_max=150, shield_max=0, shield_regen=0.0, shield_regen_delay=0.0,
+    top_speed=180.0, acceleration=250.0, turn_rate=2.5, mass=120,
+    energy_max=80, energy_regen=6.0,
+    primary_damage=15, primary_energy=5, primary_rate=1.5,
+    primary_range=500, primary_speed=400,
+    primary_color=(255, 165, 0),
+    hull_color=(255, 140, 0), accent_color=(255, 215, 0),
+    silhouette="cruiser", ai_style="kiter",
+)
+
 # ---------------------------------------------------------------------------
 # Homesteader side (Stay) — 5 ships in the slice
 # ---------------------------------------------------------------------------
@@ -237,7 +258,7 @@ PROTO_QOR_AH = ShipClass(
 SHIPS: dict[str, ShipClass] = {
     s.id: s for s in (
         FURLING_SCOUT, PERSUADER_VESSEL, ARILOU_SKIFF, ANDROSYNTH_CRUISER,
-        CLEANSER_CRUISER,
+        CLEANSER_CRUISER, MELNORME_TRADER,
         DEFENDER_VESSEL, MMRNMHRM_SENTINEL, PROTO_UR_QUAN, PROTO_QOR_AH,
         SENTRY_DRONE_47T,
     )

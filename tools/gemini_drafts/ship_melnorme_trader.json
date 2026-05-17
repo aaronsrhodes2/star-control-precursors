@@ -1,0 +1,43 @@
+{
+  "id": "melnorme_trader",
+  "name": "Melnorme Trade Pod",
+  "side": "precursor",
+  "points": 155,
+  "hull_max": 150,
+  "shield_max": 0,
+  "shield_regen": 0.0,
+  "shield_regen_delay": 0.0,
+  "top_speed": 180.0,
+  "acceleration": 250.0,
+  "turn_rate": 2.5,
+  "mass": 120,
+  "energy_max": 80,
+  "energy_regen": 6.0,
+  "primary_damage": 15,
+  "primary_energy": 5,
+  "primary_rate": 1.5,
+  "primary_range": 500,
+  "primary_speed": 400,
+  "primary_color_rgb": [
+    255,
+    165,
+    0
+  ],
+  "hull_color_rgb": [
+    255,
+    140,
+    0
+  ],
+  "accent_color_rgb": [
+    255,
+    215,
+    0
+  ],
+  "silhouette": "cruiser",
+  "ai_style": "kiter",
+  "primary_name": "Plasma Cannon",
+  "primary_description": "A standard energy weapon, reliable for its cost.",
+  "special_name": "Confusion Pulse",
+  "special_description": "Emits a localized disorientation field, temporarily disabling enemy targeting and weapon systems. High energy cost, long cooldown.",
+  "lore": "Piloted by nomadic Melnorme traders, these cyclopean pods are built for commerce, not war. Their robust hulls and moderate speed allow them to navigate hazardous nebulae while their unique Confusion Pulse is designed to deter piracy by temporarily incapacitating attackers, allowing the Melnorme to escape or negotiate. They are vital allies to the Furred Ones, sharing vital information and technology."
+}
