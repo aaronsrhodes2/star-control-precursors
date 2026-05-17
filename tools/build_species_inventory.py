@@ -55,7 +55,7 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "",
     ),
     "MELNORME": (
-        "",  # Round F retry pending
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_melnorme_vermilion.png",
         "composite_cloud",
         "open_space",
         "references/lore/voice_profiles/melnorme_vermilion.md",
@@ -79,7 +79,7 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "",
     ),
     "SENTRY_DRONE_47T": (
-        "",  # Round F retry pending
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_sentry_drone_47t.png",
         "floating_drone",
         "furling_bridge",
         "",
