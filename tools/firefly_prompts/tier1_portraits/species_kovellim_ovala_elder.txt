@@ -1,0 +1,48 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. Ovala-Eight-Crossings is the
+# Kovellim elder leading the Furling Migration's dimensional
+# navigation. Veteran of SEVEN prior galactic crossings; will earn an
+# eighth in our slice. The body literally records the crossings as
+# KNOT-SCARS. Eyes are deep-set from bone-remodeling during repeated
+# crossings — the visual effect is "gravity in the face." Style:
+# weathered umber-bronze, weighty archaeological compositions, knot-
+# scar / coiled-ledger motif.
+
+A close-up bust portrait of Ovala-Eight-Crossings, a Kovellim
+elder. Body plan: tall ~3-4m bipedal humanoid (in close-up
+framing, we see head + shoulders + upper chest). Skin: weathered
+ochre-tan with darker umber undertones, the texture of leather
+that has been used for a thousand years. EYES: deeply RECESSED
+into the skull — not just sunken, but visibly carved-back into
+the cheekbones; the brow-ridge is heavy and forward-pushed; the
+visual effect is "the bones have remodeled around this person
+under the pressure of eight crossings." The eyes themselves are
+bright amber, calm, and OLD — they catch light from the inside.
+KNOT-SCARS: eight visible raised umber-bronze coiled scars on
+the visible skin — three across one cheekbone in vertical
+arrangement, two at the temple, two along the side of the neck,
+one prominent on the visible shoulder (the most recent, slightly
+fresher in color). Each scar is a 3-8cm coiled raised welt, like
+a small braided rope embedded into the skin. CYCLE-CLOAK: a
+deep umber-bronze cloak of heavy fabric, the visible portion at
+the shoulders covered in EXTRAORDINARY DETAILED EMBROIDERY in
+darker thread — a literal family migration GENEALOGY, with eight
+distinct coiled-knot motifs woven into a single flowing pattern
+(each knot a crossing the family has survived). The cloak is the
+person's library. Background: SOLID MATTE DARK NAVY (#0a0e1a),
+edge-to-edge. Lighting: warm umber-amber key from upper-left,
+deep cool shadow on the right; the eyes catch a small bright
+white highlight from the key. Style: stylized 1990s sci-fi game
+character portrait, painterly, WEIGHTY-ARCHAEOLOGICAL composition.
+Tone: WARM GRAVITY, the weight of millennia held GENTLY — Ovala
+is kind because they have nothing left to prove, and tired
+because they will lead this Migration to its end and then
+finally stop.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid + cloak_genealogy):
+- HEAD: separable, eyes can hold the camera with deliberate weight
+- ARMS: large; visible in lower frame, can gesture slowly
+- CLOAK SHOULDERS: visible embroidery, 8 knot-motifs
+- KNOT-SCARS: 8 visible on skin (cheek, temple, neck, shoulder)
+- AVOID: smooth-skinned youthful face, shallow eye sockets,
+  empty/decorative cloak, lean/athletic build

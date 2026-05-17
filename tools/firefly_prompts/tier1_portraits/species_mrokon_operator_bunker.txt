@@ -1,0 +1,43 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. The OPERATOR portrait — rare,
+# only shown after the support-Hammer narrative branch. This is the
+# small child-sized bunker-dweller who has been piloting the puppet.
+# The Operator is ~1m tall with a large skull and atrophied body
+# (lifetime in a bunker, never used the body); cables interface with
+# the spine. Style: stark grey + pale-blue accent (matches the
+# puppet), but the SCALE is intimate and the mood is FRAGILE rather
+# than purposeful.
+
+A close-up portrait of an unnamed Mrokon Operator in their
+bunker. Body plan: small child-sized humanoid, ~1m tall (the
+camera-framing is INTIMATE — we see the upper body close). The
+Operator's body is FRAGILE — pale grey-skinned, oversized
+HAIRLESS SKULL (~30% of body), large dark eyes (overdeveloped
+from a lifetime of staring at deep-link sensor feeds), atrophied
+neck supporting the heavy head, thin shoulders, skinny arms
+folded across the lap. The body has NEVER been used — they've
+been remote-piloting puppets for their entire conscious life.
+INTERFACE: thick PALE-BLUE-GLOWING CABLES emerge from sockets at
+the back of the skull (deep-link spinal interface) and from
+sockets along the spine; the cables run upward and outward to
+the bunker's ceiling control matrix. The Operator wears a simple
+grey insulated jumpsuit. Background: a tight BUNKER chamber, ~5m
+square, walls of dark concrete-and-steel with subtle vibration-
+damping ridging, dim pale-blue indicator lights along the ceiling.
+Behind the Operator: a wall of sensor monitors showing remote
+puppet POV feeds (the puppet's helmet-eye view, soft pale-blue
+glow). One monitor shows the puppet currently in conversation
+with the Steward — the framing is a meta-loop. NO weapons in the
+room. NO armor. Lighting: cool steel-blue key from the monitors,
+deep shadow elsewhere. Style: stylized 1990s sci-fi game
+portrait, painterly, INTIMATE-FRAGILE composition. Tone: THE
+PERSON BEHIND THE WARRIOR — vulnerable, small, brave in a way
+that no one will ever see. This is the cost of the Hammer-Of-
+Refusal: the Operator has spent their life in this room.
+
+ARTICULATION BRIEF (rig: small_humanoid + cable_interface):
+- HEAD: oversized, separable, large eyes can blink slowly
+- ARMS: thin, folded; can unfold for gesture
+- CABLES: pulse with pale-blue activity along their length
+- AVOID: athletic posture, expressive smile, anything that
+  contradicts the lifelong-bunker-dweller frailty

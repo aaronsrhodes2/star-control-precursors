@@ -1,0 +1,41 @@
+# aspect: 16:9
+# notes: NEW 2026-05-17 per HANDOFF. The Selvenne's signature mechanic
+# is QUALIA-PLAYBACK — touching a polyp directly transmits a few
+# seconds of an ancient species's experience into the Steward's
+# nervous system. This cutscene is the visual TEMPLATE for any
+# memory-playback moment in the slice. Future memory-playback frames
+# can reuse this aesthetic. The current spec is a CINEMATIC FRAME
+# STYLE rather than a specific event — generic enough that the engine
+# can swap in different memory-content later. Style: warm ocean-
+# bioluminescence at the BORDER, with the inner-frame being whatever
+# ancient memory is playing (rendered as a glowing tableau).
+
+A wide cinematic still, 16:9, depicting the Steward experiencing
+Selvenne qualia-playback. Composition: a RING of warm ocean-
+bioluminescent CORAL TENDRILS frames the outer edge of the
+frame (~15% border), curving in like soft luminous brackets in
+pale rose, gold, and aquamarine — the polyp's transmission halo
+arching around the player's view. INSIDE that frame: a TABLEAU
+of an ANCIENT FURLING MIGRATION CRISIS, rendered in
+SLIGHTLY-DESATURATED MEMORY-VISION style (~75% color saturation,
+gentle film-grain, faint chromatic aberration at the edges of
+shapes, the look of a recovered memory NOT a present moment).
+The tableau itself: a vast dimensional crossing seam, three
+prior-cycle Furling Migration arks suspended at the seam, ONE
+ark is breaking apart in the dimensional fold (the Crisis the
+memory captures), with tiny figures abandoning the failing ark
+in soft chaos. The whole tableau has a HAZY EMOTIONAL WEIGHT
+quality — this is not a recording, this is what it FELT LIKE to
+be there. The Steward's POV: invisible (we are looking with their
+eyes), but a faint cyan-teal ghost-light at the very lowest edge
+hints at the transmitting polyp pressed against the submarine
+viewport. Background outside the coral frame: deep underwater
+indigo. Lighting: warm bioluminescent coral-glow at the frame
+edges, cool memory-light through the tableau, slight inner glow
+shifting between the two. Style: stylized 1990s sci-fi game
+cutscene art, painterly, LIQUID-COMPOSITION inner border,
+memory-vision desaturation inside the frame. Tone: an
+EXPERIENCE, not an event — the species transmits FEELINGS, and
+the frame format makes that legible. Future memory-playback
+cinematics should reuse this border style with a different inner
+tableau.

@@ -1,0 +1,46 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. The Mrokon are warrior-puppet
+# operators. Vrek-The-Eighth-Body is the PUPPET name (the Operator
+# behind it is unnamed by tradition). This portrait shows the
+# PUPPET — the visible diplomatic interface the Steward dialogs with.
+# Puppets are ~2.3m armored warriors that the Operator (a small
+# child-sized bunker-dweller, ~1m, ~5 km below the surface) deep-
+# links to. The puppet's body is EXPENDABLE — Operators burn through
+# 4-6 in a lifetime. The "Eighth-Body" name means: this is Vrek's
+# eighth puppet (the previous seven are dead). Style direction: stark
+# grey + pale-blue accent, blocky purposeful, ledger-mark motif on
+# the body.
+
+A close-up bust portrait of Vrek-The-Eighth-Body — the visible
+combat puppet of an unnamed Mrokon Operator. Body plan: tall
+~2.3m armored bipedal humanoid warrior, blocky/utilitarian
+silhouette. Armor: stark cold STEEL-GREY plates with darker
+gunmetal recesses, accented with a single PALE-BLUE GLOWING
+SLIT down the centerline of the chest (the Operator's deep-link
+indicator — the channel they remote-pilot through). The chest
+plate has 8 vertical LEDGER MARKS etched into it — seven of
+them are CROSSED-OUT (each representing a previous puppet that
+died on duty), the eighth (this body) UNCROSSED (still alive,
+for now). Helmet: full-face faceless visor in matte slate-grey,
+a horizontal narrow PALE-BLUE EYE-SLIT glowing across the front
+(no eyes, no face — the Operator drives via sensor feed). Heavy
+pauldrons with chamfered edges. A single primary kinetic-cannon
+slung at the back (Hammer-Round capable). One armored gauntleted
+hand visible at the bottom of the frame held loose at the side,
+deliberately not gripping a weapon (the puppet is in DIPLOMATIC
+posture, not combat). NO emotion read because there's no face;
+the body language is COILED RESTRAINT. Background: SOLID MATTE
+DARK NAVY (#0a0e1a). Lighting: cool steel-key from above, single
+pale-blue rim from the chest-slit. Style: stylized 1990s sci-fi
+game character portrait, painterly, BLOCKY-PURPOSEFUL composition.
+Tone: A WEAPON SOMEONE IS HOLDING REMOTELY — the warrior is the
+PUPPET; the actual person is in a bunker five kilometers below.
+Avoid: heroic poses, expressive faces, organic curves — this is
+STARK STEEL + PURPOSE.
+
+ARTICULATION BRIEF (rig: armored_puppet):
+- HELMET: separable, eye-slit can pulse
+- CHEST LEDGER-MARKS: 7 crossed + 1 uncrossed, visible at portrait scale
+- ARMS L/R: heavy pauldrons, gauntleted hands
+- CHEST DEEP-LINK SLIT: pale-blue, can pulse with Operator activity
+- AVOID: visible face, expressive eyes, organic posture

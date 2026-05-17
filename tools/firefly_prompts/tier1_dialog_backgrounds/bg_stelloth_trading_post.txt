@@ -1,0 +1,32 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. Stelloth orbit a different
+# super-giant from the Melnorme; this is their off-cluster trading-
+# post backdrop — the location the Steward visits to trade artifacts
+# with Tarvel-Three-Voices. Style: cool pearl-grey + green-violet,
+# precise composition. The Stelloth Beacon (canonical visual
+# distinguisher from Melnorme ionization) should be visible.
+
+A square dialog-scene backdrop, 1:1, viewed as if from inside the
+Stelloth Three-Voice Arc's reception chamber looking outward
+through a wide forward viewport. Foreground: a clean, geometric,
+slightly-cool interior — pearl-grey paneled walls, a row of
+visible LEDGER-COLUMNS (tall narrow pillars covered in tally-
+glyph etchings recording past contracts) along the lower edge,
+their carvings catching cool green-violet light. The room is
+EMPTY (no figures — the avatar composites at runtime). Mid-
+ground: a wide arched viewport. Background through the viewport:
+a STELLOTH BEACON — a slow-pulsing geometric pearl-grey emission
+pattern (NOT the Melnorme's organic ionization halo; this is
+deliberately ARCHITECTURAL light, signaling the chord's
+contract-presence) — floating in space between the trading-post
+and a vast SUPER-GIANT STAR in the deep distance. The super-giant
+fills the upper-right third of the viewport in soft pale-cyan
+giant-star glow with darker concentric ring-patterns. NO
+PLANETS, NO MOONS — Stelloth orbit deep open space at the giant.
+A thin starfield is visible past the beacon. Lighting: cool
+pearl-grey key from the giant, faint green-violet rim from the
+beacon. Style: stylized 1990s sci-fi game backdrop, painterly,
+PRECISE / ARCHITECTURAL composition (the Stelloth aesthetic),
+crisp at dialog-panel display size. Tone: METHODICAL TRADER'S
+OFFICE in deep space, the room of a person who remembers every
+deal.

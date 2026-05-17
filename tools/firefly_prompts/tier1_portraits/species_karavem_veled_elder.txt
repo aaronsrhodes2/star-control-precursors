@@ -1,0 +1,48 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. Individual Karavem portrait —
+# Veled-Of-The-Canyon-Wall, the elder conductor. Deep-indigo highland
+# plumage. The throat-organ that produces THREE simultaneous notes is
+# the species's signature anatomical feature; should be visible. Eyes
+# shift color with mood (golden default, bright yellow delighted,
+# red-amber contemplative, pale silver grief-singing). Render Veled
+# in the CONTEMPLATIVE mood (red-amber eyes) since the slice's main
+# Karavem moments are about the Migration decision. Style: gold-
+# cream-silver + deep-indigo plumage, graceful.
+
+A close-up bust portrait of Veled-Of-The-Canyon-Wall, a Karavem
+elder conductor. Body plan: a winged humanoid bust filling the
+frame, soft feathered body, ~1.5m base species but the portrait
+is close enough to show only head + neck + shoulders + the upper
+edge of folded wings. Plumage: DEEP-INDIGO with SILVER-TIPPED
+FEATHERS across the crown, cheeks, neck, and visible upper-wing
+edges — the regal HIGHLAND palette. The plumage has subtle violet
+iridescence catching the light. THROAT-ORGAN: prominently visible
+at the front of the neck — a complex bulbous structure (the
+size of a small fist) of layered MUSCULAR-RESONANT tissue
+covered in fine soft feathers, with three visible separable
+chambers (each chamber produces one of the simultaneous notes
+that compose Karavem speech). The throat is engaged but at REST
+(no active singing in this portrait moment). Head: a graceful
+beaked face — narrow tapered beak in burnished-bronze, wide-set
+EYES glowing soft RED-AMBER (the CONTEMPLATIVE mood color),
+elegant feathered head-crest swept back. Visible at the lower
+edge: a single delicate four-fingered hand held in a
+conversational mid-gesture. Wears a simple cross-shoulder sash
+of pale-cream embroidered with conductor's-baton motifs. NO
+heavy clothing (the feathers are the wardrobe). Background:
+SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge. Lighting: warm
+gold key from upper-left, cool silver rim from upper-right
+catching the silver wing-tips, soft red-amber inner glow from
+the eyes. Style: stylized 1990s sci-fi game character portrait,
+painterly, GRACEFUL composition. Tone: AN ELDER LISTENING TO
+HARMONY — the conductor at rest, contemplative, ancient with
+song.
+
+ARTICULATION BRIEF (rig: winged_humanoid + throat_organ):
+- HEAD: separable, eyes shift color for mood
+- THROAT-ORGAN: three chambers can pulse independently for
+  singing animation; the species's signature feature
+- BEAK: separable for vocalization gestures
+- WINGS: visible at upper-shoulder edge, can flex for emphasis
+- ARMS L/R: delicate four-finger hands, conversational gesture
+- AVOID: human-like face, exposed lips/teeth, jewelry-heavy garb

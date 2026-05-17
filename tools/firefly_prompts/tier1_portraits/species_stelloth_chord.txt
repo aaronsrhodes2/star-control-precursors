@@ -1,0 +1,54 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF_image_chat.md from Lore-chat
+# worktree. STELLOTH are three-body chord-beings: each individual is
+# THREE coordinated bodies linked by biological cords called murrer.
+# Each body operates at a different perceptual timescale (Speaker
+# realtime, Witness 4x fast-motion, Counter 1/10x deep-time). All
+# three must render in ONE frame so the chord-as-individual reads.
+# Style direction: cool pearl-grey + green-violet, precise composition.
+
+A close-up portrait of Tarvel-Three-Voices, a Stelloth — a SINGLE
+INDIVIDUAL composed of THREE COORDINATED BODIES rendered in one
+frame as a tight CHORD-STACK. All three bodies are tall ~1.8m
+mantis-stack creatures with jointed exoskeleton shells, narrow
+elongated thoraxes, and twelve manipulator-limbs distributed
+across the trio (four per body). Carapace color: cool pearl-grey
+shading to green-violet at the joints and limb-tips, with subtle
+iridescence catching the light. The three bodies are CONNECTED by
+braided BIOLOGICAL CORDS — the murrer — visible as 3-5 living
+tendrils per junction, vine-like, dark plum running between
+shoulder-points, throats, and abdomen-points of the three bodies.
+The cords ARE the chord-being's nervous system; they cannot be
+absent. The three bodies are distinguished visually by their
+specialized roles:
+
+  - SPEAKER (front, realtime perceptual scale): head tilted toward
+    the viewer in mid-sentence, mouth-mandibles parted to talk;
+    posture forward-leaning, attentive.
+  - WITNESS (upper-back, 4x fast-motion): a translucent prismatic
+    HEAD-CRYSTAL clearly visible mounted atop the cranium, refracting
+    light in many directions; the body posture is BLURRED slightly at
+    the edges (the artist's hint that this body experiences time
+    faster than the viewer), gaze fixed on something past the camera.
+  - COUNTER (lower, 1/10x deep-time): visibly the most weathered of
+    the three, slow-still posture, abdomen-shells covered in
+    LEDGER-MARK ETCHINGS (small geometric tally-glyphs) accumulated
+    over the lifespan; one of Counter's hands rests on its abdomen
+    clicking the shells in a slow methodical rhythm.
+
+Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge, no
+super-giant star, no spaceship interior — composited at runtime.
+Lighting: even soft three-point with cool pearl-grey key, green-
+violet rim from the murrer cords. Style: stylized 1990s sci-fi
+game character portrait, painterly, PRECISE COMPOSITION
+(architectural, not organic-loose). Tone: A SINGLE PERSON WHO IS
+THREE BODIES, ancient and methodical, the chord-stack reads
+unambiguously as a coherent unit.
+
+ARTICULATION BRIEF (rig: chord_stack):
+- SPEAKER body: head separable, talk animation here
+- WITNESS body: head-crystal can pulse + minor blur edge
+- COUNTER body: abdomen-shells animate clicking, ledger-marks visible
+- MURRER cords: visible at all junctions; can pulse for emphasis
+- AVOID: rendering as three separate people; the cords must read as
+  binding them into ONE entity. Avoid single-body silhouette also.
