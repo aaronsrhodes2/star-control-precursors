@@ -990,23 +990,27 @@ def melnorme() -> DialogCharacter:
     ]
 
     return DialogCharacter(
-        name="Melnorme Trade-Pattern",
-        title="Nomadic Exchange · orbiting this super-giant",
+        name="Trade Master Vermilion",
+        title="Melnorme Trade-Pattern · seek any super-giant",
         species_id="MELNORME",
-        portrait_color=(180, 100, 255),   # plasma violet
+        portrait_color=(220, 90, 30),     # SC2 melnorme orange
+        portrait_image_path="assets/comm/melnorme/melnorme-000.png",
         initial_state="start",
         states=build_state_dict(
             DialogState(
                 id="start",
                 npc_text=(
-                    "Carbon-pattern. We register your approach. We are "
-                    "the trade-pattern; we exchange information and "
-                    "technology for organic material. Council credits "
-                    "do not interest us — they are a Furling abstraction. "
-                    "Molecular matter, however, sustains our exchange-"
-                    "loop indefinitely.\n\n"
-                    "Show us your manifest, Captain-form. What does the "
-                    "Steward of Mh-Lai require?"
+                    "Steward of Mh-Lai. I am Trade Master Vermilion of "
+                    "the Melnorme vessel `Cognition-Curve Mapped at "
+                    "Last.' I bid you a formal welcome.\n\n"
+                    "Though we Melnorme have lately become *exceptionally* "
+                    "interested in your local cluster, you should know "
+                    "we are interested in only two things: the trade of "
+                    "fabricated technology and curated information, in "
+                    "exchange for organic material. Council Credits do "
+                    "not concern us. Molecular matter is what our "
+                    "research requires.\n\n"
+                    "How can I be of service, Captain-form?"
                 ),
                 choices=[
                     DialogChoice(
@@ -1022,8 +1026,14 @@ def melnorme() -> DialogCharacter:
                         side_effect=_ack_melnorme_visit,
                     ),
                     DialogChoice(
-                        "Why do you require organic material?",
+                        "What can you tell me about yourselves?",
                         next_state_id="about_self",
+                        category="ASK_LORE",
+                        side_effect=_ack_melnorme_visit,
+                    ),
+                    DialogChoice(
+                        "Why is organic material so valuable to you?",
+                        next_state_id="about_research",
                         category="ASK_LORE",
                         side_effect=_ack_melnorme_visit,
                     ),
@@ -1037,20 +1047,120 @@ def melnorme() -> DialogCharacter:
             DialogState(
                 id="about_self",
                 npc_text=(
-                    "We are pattern, Captain-form — not matter. Our "
-                    "cognition lives in ionization-cascades across this "
-                    "super-giant's heliopause. We require no fuel; we "
-                    "are fueled by the star itself.\n\n"
-                    "But pattern propagates by overwriting matter. "
-                    "Organic samples allow us to construct new pattern-"
-                    "carriers — the equivalent, in your terms, of "
-                    "reproduction. So we trade what we are wealthy in "
-                    "(information, manufactured technology) for what we "
-                    "are poor in (your biological wealth).\n\n"
-                    "When the Council opens its portal — when the "
-                    "Precursors lead the Migration — we travel with "
-                    "them. We are aligned. The galaxy our offspring "
-                    "will inhabit must be one that survived."
+                    "Our composite nature is, frankly, *mysterious* — "
+                    "and due to several unavoidable factors we discuss "
+                    "ourselves only in carefully metered portions.\n\n"
+                    "But this much we will share without fee: each "
+                    "Melnorme is a paired form. The cyclopean pod you "
+                    "address is our visible body. Inside, an "
+                    "ionization-pattern animates it — our actual "
+                    "cognition, gas-cloud distributed and ordinarily "
+                    "diffuse across a super-giant's heliopause. We "
+                    "compress into the pod when we wish to be heard "
+                    "individually. Otherwise we are wind.\n\n"
+                    "Our true homeworld is named **Drahn.** It is not "
+                    "this place. You will not be permitted to visit it. "
+                    "Not because we are secretive — though we are — but "
+                    "because Drahn will *not survive the Migration era*. "
+                    "Some of us refuse to leave; the Others will find "
+                    "them; the planet will be silenced. The rest of us — "
+                    "the ones who chose the portal — become nomadic. "
+                    "Permanently."
+                ),
+                choices=[
+                    DialogChoice(
+                        "I am sorry for the loss.",
+                        next_state_id="about_homeworld",
+                        category="EMPATHIZE",
+                    ),
+                    DialogChoice(
+                        "Why do the holdouts refuse to leave?",
+                        next_state_id="about_homeworld",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Show me your information.",
+                        next_state_id="browse_info",
+                        category="ASK_TRADE",
+                    ),
+                    DialogChoice(
+                        "We will speak another time.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_homeworld",
+                npc_text=(
+                    "Drahn holds our research archives — three "
+                    "millennia of stratigraphic data, sub-mantle "
+                    "ionization records, the founding inscriptions of "
+                    "our species. The holdouts argue these cannot be "
+                    "carried through the Migration portal — the "
+                    "transition strips information-pattern, they say, "
+                    "and what arrives on the other side will be a "
+                    "Melnorme civilization that no longer *remembers* "
+                    "Drahn.\n\n"
+                    "They are not wrong. They are not right, either. "
+                    "We who have chosen the portal accept the trade. "
+                    "They will not. So Drahn will become a memorial — "
+                    "and we will spend the next two hundred fifty "
+                    "thousand of your years drifting between stars, "
+                    "mapping the curve that would have saved them, "
+                    "had we found it sooner.\n\n"
+                    "Now. Shall we speak of trade? Grief is best taken "
+                    "with a side of profitable commerce."
+                ),
+                choices=[
+                    DialogChoice(
+                        "The curve — explain it.",
+                        next_state_id="about_research",
+                        category="ASK_LORE",
+                    ),
+                    DialogChoice(
+                        "Show me your information.",
+                        next_state_id="browse_info",
+                        category="ASK_TRADE",
+                    ),
+                    DialogChoice(
+                        "Show me your technology.",
+                        next_state_id="browse_tech",
+                        category="ASK_TRADE",
+                    ),
+                    DialogChoice(
+                        "We will speak another time.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_research",
+                npc_text=(
+                    "The Others detect *concentrations of cognition* — "
+                    "this much your Council has surmised. The Slylandro "
+                    "Cloaking Satellite is a crude lid: it suppresses "
+                    "every signal, sentient and pre-sentient alike, "
+                    "below a single threshold. Coarse work. It functions, "
+                    "but the cost is a planet that may not *think* at "
+                    "all afterward.\n\n"
+                    "Our research is finer. We seek the precise *shape* "
+                    "of the curve. At what signal-strength does the "
+                    "Other-attention begin? Is it linear, exponential, "
+                    "stepped? Can a sapient species be *taught to "
+                    "modulate down to just-below*, retaining cognition "
+                    "but escaping notice?\n\n"
+                    "To map a curve we require points along its full "
+                    "length. Microbial samples — the floor. Single-"
+                    "celled colonial — the next mark. Insect-analog "
+                    "ganglia. Reptilian thalami. Mammalian cortices. "
+                    "Sapient neural tissue, which we ask politely for "
+                    "and rarely receive. *All* of these the Melnorme "
+                    "exchange-loop will purchase. Especially the "
+                    "lower-life material — it is the part our own "
+                    "biology cannot easily produce, and the part most "
+                    "abundant in your standard planet-scans."
                 ),
                 choices=[
                     DialogChoice(
@@ -1074,8 +1184,10 @@ def melnorme() -> DialogCharacter:
                 id="browse_info",
                 npc_text=(
                     "Information-packages on offer. Each is a complete "
-                    "pattern — your Archive will receive it. Price is in "
-                    "organic-material, exchanged at our standard rate."
+                    "pattern; your Archive will receive it directly. "
+                    "Price is in organic-material at our published "
+                    "exchange-rate. We do not haggle, Captain-form. "
+                    "It would be vulgar."
                 ),
                 choices=info_choices,
             ),
@@ -1083,19 +1195,21 @@ def melnorme() -> DialogCharacter:
                 id="browse_tech",
                 npc_text=(
                     "Technology-packages on offer. Each is a fabricated "
-                    "module — your hold will receive it; installation "
-                    "remains your engineering problem. Price is in "
-                    "organic-material."
+                    "module; your hold will receive it directly. "
+                    "Installation remains your engineering problem. "
+                    "Several of these are *derived from* our threshold "
+                    "research — the Pattern Sensor reads the curve "
+                    "itself. Use it well."
                 ),
                 choices=tech_choices,
             ),
             DialogState(
                 id="purchase_complete",
                 npc_text=(
-                    "Exchange logged. Pattern-transfer complete; "
-                    "organic-material decanted into our matrices. The "
-                    "package is in your manifest.\n\n"
-                    "Anything further, Captain-form?"
+                    "Exchange logged. Organic-material decanted into "
+                    "our matrices for analysis. The package is in your "
+                    "manifest. A pleasure, Captain-form.\n\n"
+                    "Anything further?"
                 ),
                 choices=[
                     DialogChoice(
@@ -1114,9 +1228,12 @@ def melnorme() -> DialogCharacter:
                 id="insufficient_organics",
                 npc_text=(
                     "Insufficient organic-material in your hold, "
-                    "Carbon-pattern. Return when your manifest is "
-                    "weightier. We will be here — we are always here, "
-                    "wherever a super-giant burns."
+                    "Captain-form. We do not extend credit; the "
+                    "research-curve will not wait for a debt to ripen. "
+                    "Return when your manifest is weightier — even "
+                    "humble microbial scrapings have value to us. "
+                    "We will be here. We are always here, wherever a "
+                    "super-giant burns."
                 ),
                 choices=[
                     DialogChoice(

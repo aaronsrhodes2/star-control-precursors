@@ -62,9 +62,17 @@ class DialogCharacter:
     """All the data for one conversational NPC.
 
     name + title are displayed in the dialog header. portrait_color is a
-    placeholder until we have Flask-SD-generated species portraits — it's
-    used as the fill color of a portrait disc. species_id keys into the
-    warp-pod palette so the dialog visual can match the ship visual.
+    placeholder used as the fill color of a portrait disc when no portrait
+    image is available. species_id keys into the warp-pod palette so the
+    dialog visual can match the ship visual.
+
+    portrait_image_path (optional): path (relative to project root) to a
+    PNG portrait image. When set, DialogScene blits this image in place
+    of the colored disc — per Rule 4a (call-forward respect), the SC2
+    comm portraits are the starting visual for species that already
+    appear in SC2. Format is whatever pygame.image.load accepts. Image
+    is auto-scaled to fit the portrait area, preserving aspect.
+
     initial_state names which state to enter first; states is the FSM.
     """
 
@@ -74,6 +82,7 @@ class DialogCharacter:
     portrait_color: tuple[int, int, int]
     initial_state: str
     states: dict[str, DialogState]
+    portrait_image_path: str | None = None
 
 
 def build_state_dict(*states: DialogState) -> dict[str, DialogState]:

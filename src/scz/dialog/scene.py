@@ -14,11 +14,17 @@ the stable contract.
 from __future__ import annotations
 
 import math
+from pathlib import Path
 
 import pygame
 
 from scz.dialog.data import DialogCharacter, DialogState
 from scz.engine.scene import Scene
+
+
+# Where to look for portrait_image_path strings. They're written as paths
+# relative to project root (e.g. "assets/comm/melnorme/melnorme-000.png").
+_PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent.parent
 
 
 # Layout constants (tuned for 1920x1080)
@@ -63,6 +69,12 @@ class DialogScene(Scene):
         self.current_state_id: str = character.initial_state
         self.selected_choice: int = 0
         self.fonts: dict[str, pygame.font.Font] = {}
+        # Lazily-loaded portrait image (if character.portrait_image_path
+        # is set). Pre-scaled to a square that fits the portrait disc
+        # bounds — we render it as a circular crop to match the existing
+        # portrait shape.
+        self._portrait_surface: pygame.Surface | None = None
+        self._portrait_failed: bool = False
 
     # --- Scene API ---
 
@@ -72,6 +84,32 @@ class DialogScene(Scene):
         self.fonts["npc"] = pygame.font.SysFont("consolas", 24)
         self.fonts["choice"] = pygame.font.SysFont("consolas", 22)
         self.fonts["small"] = pygame.font.SysFont("consolas", 16)
+        self._load_portrait_image()
+
+    def _load_portrait_image(self) -> None:
+        """Load + scale character.portrait_image_path (if any) once per
+        scene entry. Silently no-ops if missing or unloadable."""
+        path_str = self.character.portrait_image_path
+        if not path_str:
+            return
+        path = Path(path_str)
+        if not path.is_absolute():
+            path = _PROJECT_ROOT / path_str
+        if not path.exists():
+            self._portrait_failed = True
+            return
+        try:
+            raw = pygame.image.load(str(path)).convert_alpha()
+        except pygame.error:
+            self._portrait_failed = True
+            return
+        # Fit the raw image into a 2*PORTRAIT_RADIUS bounding square while
+        # preserving aspect ratio. The render path then crops to a circle.
+        target = 2 * PORTRAIT_RADIUS
+        rw, rh = raw.get_size()
+        scale = min(target / rw, target / rh)
+        new_size = (max(1, int(rw * scale)), max(1, int(rh * scale)))
+        self._portrait_surface = pygame.transform.smoothscale(raw, new_size)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         state = self._current_state()
@@ -122,12 +160,30 @@ class DialogScene(Scene):
         # No actual stars — just a subtle gradient via a dark rect
         pygame.draw.rect(screen, (16, 18, 32), (0, sh // 2, sw, sh // 2))
 
-        # Portrait disc
+        # Portrait — image if loaded, else colored disc fallback.
         cx, cy = PORTRAIT_X, PORTRAIT_Y
-        pygame.draw.circle(
-            screen, self.character.portrait_color, (cx, cy), PORTRAIT_RADIUS
-        )
-        # Ring around the portrait, slightly darker
+        if self._portrait_surface is not None:
+            # Build a circular alpha mask the size of the portrait disc,
+            # blit the (already aspect-scaled) image into it, then onto
+            # screen. This gives us a circle-clipped image that matches
+            # the disc shape used for fallback portraits.
+            d = 2 * PORTRAIT_RADIUS
+            disc = pygame.Surface((d, d), pygame.SRCALPHA)
+            # Center the image within the disc
+            iw, ih = self._portrait_surface.get_size()
+            disc.blit(self._portrait_surface, ((d - iw) // 2, (d - ih) // 2))
+            # Apply circular mask: build a circle into a mask surface and
+            # multiply alpha through
+            mask = pygame.Surface((d, d), pygame.SRCALPHA)
+            pygame.draw.circle(mask, (255, 255, 255, 255), (d // 2, d // 2), PORTRAIT_RADIUS)
+            disc.blit(mask, (0, 0), special_flags=pygame.BLEND_RGBA_MIN)
+            screen.blit(disc, (cx - PORTRAIT_RADIUS, cy - PORTRAIT_RADIUS))
+        else:
+            pygame.draw.circle(
+                screen, self.character.portrait_color, (cx, cy), PORTRAIT_RADIUS
+            )
+        # Ring around the portrait, slightly darker — drawn on top of
+        # either the image or the disc.
         rim = tuple(max(0, c - 50) for c in self.character.portrait_color)
         pygame.draw.circle(screen, rim, (cx, cy), PORTRAIT_RADIUS, 3)
 
