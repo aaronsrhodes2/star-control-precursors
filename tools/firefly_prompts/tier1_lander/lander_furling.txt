@@ -1,0 +1,21 @@
+# aspect: 1:1
+# notes: top-down lander sprite. The Furling lander is a small descent
+# vehicle that drops from orbit, autonomously collects minerals/bio via
+# a tractor beam, and lifts off. Per the lore, Furlings tend the galaxy
+# rather than harvest it, so the lander should look gentle/curious,
+# NOT military. Tractor beam visualized as a cone/circle of pale gold
+# light underneath. Single craft, slightly larger than the resources
+# it collects.
+
+A top-down orthographic view of a small Furling lander descent vehicle
+hovering above an alien planet surface. The lander is a compact
+rounded craft with four bracing legs splayed downward, central body
+in a warm copper-and-cream metallic finish with a subtle Furling
+glyph on top. A faint translucent halo of pale gold light surrounds
+it (the tractor-beam collection radius, drawn as a soft glowing
+ring). Two small thruster nozzles glow gentle cyan at the rear.
+The craft looks more like a botanist's drone than a war machine —
+curious, gentle, careful. Style: stylized 1990s sci-fi game art,
+painterly with crisp silhouette, deep black background. Should read
+clearly at 32px game-resolution as well as the full-res draft. No
+weapons visible. No human-style cockpit.

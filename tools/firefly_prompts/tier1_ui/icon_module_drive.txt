@@ -1,0 +1,19 @@
+# aspect: 1:1
+# notes: One ship-module icon for the customization UI. The "drive"
+# slot module — represents engine/propulsion upgrades. Will be one of
+# 7 such icons (hull, drive, weapon, sensor, field, crew_1, crew_2);
+# they should share a consistent visual language. This is the
+# REFERENCE PIECE — if Aaron approves the style, the other 6 are
+# generated against it.
+
+A single bright clean icon-style illustration of an alien starship
+drive module — a stylized engine coil with a swirl of propulsion
+plasma escaping the nozzle. Composed against a flat dark navy
+background with a subtle hexagonal frame. Colors: warm copper coil,
+electric cyan plasma swirl, gold rim accent. Centered, symmetric,
+readable at small sizes (intended for a 64x64 UI icon slot). Style:
+flat painterly illustration with subtle gradients, no photorealistic
+detail, suitable as a clickable button. Should feel CONSISTENT with
+a sci-fi game UI inventory grid — the kind of icon you'd see in a
+Star Control style ship-customization screen. Single icon, centered,
+fills ~70% of the frame.

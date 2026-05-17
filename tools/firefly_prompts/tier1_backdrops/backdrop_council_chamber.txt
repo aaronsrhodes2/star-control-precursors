@@ -1,0 +1,24 @@
+# aspect: 16:9
+# notes: backdrop for the Furling Council stub scene. The Council
+# debates how to handle the Migration era; six faction representatives
+# sit in a circle. This is the room they sit in. Background only,
+# faction reps not necessarily depicted at full detail (could be six
+# empty thrones around a holographic galaxy in the center).
+
+A grand circular Furling Council chamber, viewed from the back of
+the room. Six imposing thrones arranged in a perfect circle around
+a central holographic projection of a spiral galaxy slowly rotating
+in mid-air. Each throne is sculpted from a different material to
+reflect its faction's identity — warm amber metal (Persuader),
+slate-gray steel (Compeller), pale white-violet stone (Cleanser),
+burgundy bronze (Defender), shimmering opal (Hider), pearlescent
+twilight glass (Arilou-Exile). The chamber walls rise in curved
+arcing buttresses of carved alien wood and channeled starlight,
+domed ceiling above showing more constellations through panels of
+clear crystal. The galaxy hologram dominates the visual center — a
+silvery-blue spiral with one arm marked with a small red dot
+(indicating the slice cluster). Lighting: cool, ceremonial, with
+warm uplighting from the floor; no harsh shadows. Style: stylized
+1990s sci-fi game backdrop art, painterly, suitable as a static
+backdrop for dialog scenes. Empty of figures — the camera is set
+just before the Council convenes.

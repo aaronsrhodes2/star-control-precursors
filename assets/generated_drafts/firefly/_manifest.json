@@ -1,0 +1,158 @@
+{
+  "tier1_artifacts/artifact_cloaking_satellite": {
+    "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_cloaking_satellite.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_cloaking_satellite.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "artifacts"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_backdrops/backdrop_council_chamber": {
+    "prompt_path": "tools/firefly_prompts/tier1_backdrops/backdrop_council_chamber.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png",
+    "aspect": "16:9",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "backdrops"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_cutscenes/cutscene_distress_beacon": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_distress_beacon.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png",
+    "aspect": "16:9",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_lander/lander_furling": {
+    "prompt_path": "tools/firefly_prompts/tier1_lander/lander_furling.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "lander"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_drahn": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_drahn.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_drahn.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:45:19+00:00",
+    "status": "pending",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_planets/planet_ossuary": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_ossuary.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_ossuary.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_melnorme_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_melnorme_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_melnorme_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:36:46+00:00",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_mmrnmhrm_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mmrnmhrm_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mmrnmhrm_portrait.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_mycon_biot_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mycon_biot_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_portraits/species_planar_blade_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_planar_blade_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ships/ship_melnorme_trader": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_melnorme_trader.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_melnorme_trader.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:29:39+00:00",
+    "status": "pending",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  },
+  "tier1_ui/icon_module_drive": {
+    "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_drive.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ui/icon_module_drive.png",
+    "aspect": "1:1",
+    "generated_at": null,
+    "status": "queued",
+    "tags": [
+      "ui"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": ""
+  }
+}

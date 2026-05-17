@@ -1,0 +1,27 @@
+# aspect: 16:9
+# notes: cutscene still from the Distress Beacon playback (tutorial
+# Beat 4). The Androsynth refugees show the player a recording of
+# their last day — the moment a planet they lived on was REPLACED
+# in an instant by a ruined version, by an Other-decursion attack.
+# This is the slice's foundational "the Others are real" reveal.
+# Two halves of the same image: BEFORE on the left (the planet alive,
+# blue-green, cities visible, ships in orbit), AFTER on the right
+# (the planet a smoking corpse-world, atmosphere stripped, surface
+# fused glass). Should be tonally devastating without being gory.
+
+A devastating split-frame cinematic still from a distant orbital
+camera. LEFT HALF: a habitable terrestrial planet bathed in warm
+golden starlight, blue-green oceans, white cloud bands, glowing
+lights of cities visible on the night side, a handful of small
+freighter spacecraft in orbit. Hope. LIFE. RIGHT HALF: the SAME
+planet rendered as a corpse — atmosphere stripped, surface fused
+into ash-gray glass, oceans gone, no clouds, no lights, an
+unnatural twisted shadow across one hemisphere as if reality
+itself bent and snapped. The orbital spacecraft are gone. A
+shimmer of dimensional wrongness at the boundary between the
+two halves. No fire, no explosions — the transition was
+INSTANT and SILENT. Style: stylized 1990s sci-fi game
+cutscene art, painterly, suitable as a single still in a
+cinematic montage. Reads as horror without being gory.
+Composition: planet centered on each half, generous black
+starfield around it.

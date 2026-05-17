@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: artifact illustration for the Slylandro Cloaking Satellite —
+# the Furling-built device installed at a sentient species' homeworld
+# that suppresses the species' cognitive signal below the Others'
+# detection threshold. It's the slice's signature "save by hiding"
+# artifact. Crystalline lattice + concentric rings; should look
+# elegant and protective, not weaponized.
+
+A static three-quarter view of an alien artifact: the Slylandro
+Cloaking Satellite. A roughly spherical crystalline lattice structure
+about the size of a small spacecraft, formed from interlocking
+hexagonal panels of pale-violet quartz and silver tracework. Several
+concentric rings of suspended energy circle the central sphere at
+canted angles, glowing soft blue-white (the "thought-pattern
+dampener" field). Below the structure, a long cooling spine
+extends downward like the tail of a comet, fading into faint vapor.
+The satellite floats against the deep upper-atmosphere of a yellow-
+brown gas giant, partially silhouetted against rolling methane
+clouds. Lighting: cool blue inner glow + warm gas-giant ambient.
+Style: stylized 1990s sci-fi game artifact-card art, painterly,
+crisp silhouette, suitable for a key-item codex entry. The
+satellite should read as PROTECTIVE — elegant, intricate, given
+in care — not as a weapon.
