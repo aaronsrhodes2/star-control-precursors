@@ -12,6 +12,7 @@ shows current ship stats. Real station art will come later via Flask-SD.
 from __future__ import annotations
 
 import math
+import os
 import random
 
 import pygame
@@ -27,12 +28,22 @@ ACTIONS: list[tuple[str, str]] = [
     ("Undock — Mh-Lai system view", "undock"),
 ]
 
+# Firefly-generated Mh-Lai planet sprite (used in place of the procedural orb
+# when present; falls back to the existing procedural draw otherwise).
+PLANET_MH_LAI_PATH = os.path.join(
+    "assets", "generated_drafts", "firefly",
+    "tier1_planets", "planet_mh_lai.png",
+)
+
 
 class StationScene(Scene):
     """Mh-Lai Station hub view."""
 
     # Class-level seeded starfield so it doesn't shimmer on re-entry
     _starfield: list[tuple[int, int, int]] | None = None
+    # Class-level cached planet sprite (None once we've tried and failed)
+    _planet_sprite: pygame.Surface | None = None
+    _planet_sprite_loaded: bool = False
 
     def __init__(self) -> None:
         super().__init__()
@@ -55,6 +66,15 @@ class StationScene(Scene):
                 brightness = rng.randint(80, 220)
                 stars.append((x, y, brightness))
             StationScene._starfield = stars
+        # Lazy-load the Mh-Lai sprite once per process
+        if not StationScene._planet_sprite_loaded:
+            StationScene._planet_sprite_loaded = True
+            if os.path.isfile(PLANET_MH_LAI_PATH):
+                try:
+                    img = pygame.image.load(PLANET_MH_LAI_PATH).convert_alpha()
+                    StationScene._planet_sprite = img
+                except (pygame.error, OSError):
+                    StationScene._planet_sprite = None
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
@@ -116,32 +136,52 @@ class StationScene(Scene):
             for sx, sy, b in StationScene._starfield:
                 pygame.draw.circle(screen, (b, b, min(255, b + 30)), (sx, sy), 1)
 
-        # Mh-Lai planet — large terrestrial blue-green orb, lower-right
+        # Mh-Lai planet — large terrestrial blue-green orb, lower-right.
+        # Use the Firefly sprite if available; fall back to procedural.
         sw, sh = screen.get_size()
         planet_x = sw - 300
         planet_y = sh - 220
         planet_r = 280
-        # Atmosphere halo
-        for r in range(planet_r + 30, planet_r, -3):
-            alpha = (r - planet_r) / 30
-            color = (
-                int(40 + (1 - alpha) * 30),
-                int(80 + (1 - alpha) * 80),
-                int(120 + (1 - alpha) * 80),
+        if StationScene._planet_sprite is not None:
+            sprite = StationScene._planet_sprite
+            target_diam = planet_r * 2
+            sprite_scaled = pygame.transform.smoothscale(
+                sprite, (target_diam, target_diam)
             )
-            pygame.draw.circle(screen, color, (planet_x, planet_y), r)
-        # Body
-        pygame.draw.circle(screen, (45, 110, 90), (planet_x, planet_y), planet_r)
-        # Continent suggestion (a few off-center brown patches)
-        for offset, size in (((-80, -30), 60), ((40, 70), 90), ((110, -100), 40)):
-            ox, oy = offset
-            pygame.draw.circle(
-                screen, (90, 130, 80), (planet_x + ox, planet_y + oy), size
+            screen.blit(
+                sprite_scaled,
+                (planet_x - planet_r, planet_y - planet_r),
             )
-        # Light/shadow hint — opposite side darker
-        shadow_color = (15, 50, 40)
-        pygame.draw.circle(screen, shadow_color, (planet_x + 60, planet_y + 40), planet_r - 20)
-        pygame.draw.circle(screen, (45, 110, 90), (planet_x - 30, planet_y - 30), planet_r - 50)
+            # Subtle atmosphere halo on top
+            for r in range(planet_r + 24, planet_r, -3):
+                alpha = (r - planet_r) / 24
+                halo_color = (
+                    int(40 + (1 - alpha) * 20),
+                    int(80 + (1 - alpha) * 40),
+                    int(120 + (1 - alpha) * 50),
+                )
+                pygame.draw.circle(
+                    screen, halo_color, (planet_x, planet_y), r, 1,
+                )
+        else:
+            # Procedural fallback (original art)
+            for r in range(planet_r + 30, planet_r, -3):
+                alpha = (r - planet_r) / 30
+                color = (
+                    int(40 + (1 - alpha) * 30),
+                    int(80 + (1 - alpha) * 80),
+                    int(120 + (1 - alpha) * 80),
+                )
+                pygame.draw.circle(screen, color, (planet_x, planet_y), r)
+            pygame.draw.circle(screen, (45, 110, 90), (planet_x, planet_y), planet_r)
+            for offset, size in (((-80, -30), 60), ((40, 70), 90), ((110, -100), 40)):
+                ox, oy = offset
+                pygame.draw.circle(
+                    screen, (90, 130, 80), (planet_x + ox, planet_y + oy), size
+                )
+            shadow_color = (15, 50, 40)
+            pygame.draw.circle(screen, shadow_color, (planet_x + 60, planet_y + 40), planet_r - 20)
+            pygame.draw.circle(screen, (45, 110, 90), (planet_x - 30, planet_y - 30), planet_r - 50)
 
         # Station silhouette — a rotating disc in the foreground (left side)
         station_x = 1000

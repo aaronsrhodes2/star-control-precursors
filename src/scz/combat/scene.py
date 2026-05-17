@@ -20,6 +20,7 @@ the SuperMelee picker uses to advance to a result screen.
 from __future__ import annotations
 
 import math
+import os
 import random
 from dataclasses import dataclass, field
 from typing import Callable
@@ -34,6 +35,30 @@ from scz.engine.scene import Scene
 # Arena dimensions in world units — wraps at edges.
 ARENA_W = 1600.0
 ARENA_H = 1000.0
+
+# Firefly ship sprite directory + per-ship-id filename map. When a sprite
+# is missing we fall back to the procedural polygon silhouette in
+# _draw_ship — the existing code remains the safety net.
+SHIP_SPRITE_DIR = os.path.join(
+    "assets", "generated_drafts", "firefly", "tier1_ships",
+)
+SHIP_SPRITES: dict[str, str] = {
+    "furling_scout":     "ship_furling_scout.png",
+    "persuader_vessel":  "ship_persuader_vessel.png",
+    "arilou_skiff":      "ship_arilou_skiff.png",
+    "androsynth_cruiser":"ship_androsynth_cruiser.png",
+    "cleanser_cruiser":  "ship_cleanser_cruiser.png",
+    "melnorme_trader":   "ship_melnorme_trader.png",
+    "defender_vessel":   "ship_defender_vessel.png",
+    "mmrnmhrm_sentinel": "ship_mmrnmhrm_sentinel.png",
+    "proto_ur_quan":     "ship_proto_urquan.png",
+    "proto_qor_ah":      "ship_proto_qor_ah.png",
+    "sentry_drone_47t":  "ship_sentry_drone_47t.png",
+}
+# Nominal sprite size in world units along the longest axis. Tuned so a
+# sprite reads about the same size as the legacy polygon at typical
+# viewport scale (~0.7 → ~36px on screen).
+SHIP_SPRITE_BASE_SIZE = 56
 
 # Projectile pool cap (slice — we won't approach this)
 MAX_PROJECTILES = 200
@@ -172,6 +197,8 @@ class MeleeCombatScene(Scene):
         self.screen_w, self.screen_h = self.game.screen.get_size()
         self.font = pygame.font.SysFont("consolas", 18)
         self.big_font = pygame.font.SysFont("consolas", 36, bold=True)
+        # Sprite cache keyed by ship.cls.id. None = sprite missing / failed.
+        self._ship_sprite_cache: dict[str, pygame.Surface | None] = {}
 
     def snapshot(self) -> dict | None:
         # Combat is intentionally NOT rewindable — committing to a fight
@@ -427,6 +454,39 @@ class MeleeCombatScene(Scene):
     ) -> tuple[float, float]:
         return (ox + x * scale, oy + y * scale)
 
+    def _load_ship_sprite(self, ship_id: str) -> pygame.Surface | None:
+        """Return the base (nose-up) sprite for a ship class, or None.
+
+        Sprites live in `SHIP_SPRITE_DIR/SHIP_SPRITES[ship_id]`. The
+        loaded image is scaled so its longest axis is `SHIP_SPRITE_BASE_SIZE`
+        world units and cached. Missing/failed loads are cached as None
+        so the fallback polygon path is taken without re-trying every
+        frame.
+        """
+        if ship_id in self._ship_sprite_cache:
+            return self._ship_sprite_cache[ship_id]
+        fname = SHIP_SPRITES.get(ship_id)
+        if fname is None:
+            self._ship_sprite_cache[ship_id] = None
+            return None
+        path = os.path.join(SHIP_SPRITE_DIR, fname)
+        if not os.path.isfile(path):
+            self._ship_sprite_cache[ship_id] = None
+            return None
+        try:
+            img = pygame.image.load(path).convert_alpha()
+            w, h = img.get_size()
+            longest = max(w, h)
+            if longest != SHIP_SPRITE_BASE_SIZE:
+                f = SHIP_SPRITE_BASE_SIZE / longest
+                img = pygame.transform.smoothscale(
+                    img, (max(1, int(w * f)), max(1, int(h * f))),
+                )
+        except (pygame.error, OSError):
+            img = None
+        self._ship_sprite_cache[ship_id] = img
+        return img
+
     def _draw_ship(
         self,
         screen: pygame.Surface,
@@ -442,6 +502,39 @@ class MeleeCombatScene(Scene):
             pygame.draw.circle(screen, (140, 40, 40), (int(sx), int(sy)), 8, 1)
             return
         sx, sy = self._world_to_screen(ship.x, ship.y, ox, oy, scale)
+
+        # Sprite path — try to blit a rotated Firefly-generated sprite.
+        sprite = self._load_ship_sprite(ship.cls.id)
+        if sprite is not None:
+            # Convert game heading to pygame rotation. heading=0 means
+            # nose pointing -y (up); pygame.transform.rotate is CCW. So
+            # angle_degrees = -math.degrees(heading) gives the right
+            # facing for sprites authored nose-up.
+            angle_deg = -math.degrees(ship.heading)
+            rotated = pygame.transform.rotozoom(sprite, angle_deg, scale)
+            if ship.hit_flash > 0:
+                t = ship.hit_flash / 0.25
+                # Additive overlay tints the sprite warm-white on hit.
+                tint = (int(t * 180), int(t * 90), int(t * 90), 0)
+                flashed = rotated.copy()
+                flashed.fill(tint, special_flags=pygame.BLEND_RGBA_ADD)
+                rotated = flashed
+            rect = rotated.get_rect(center=(int(sx), int(sy)))
+            screen.blit(rotated, rect)
+            if ship.cls.shield_max > 0 and ship.shield > 0:
+                frac = max(0.0, min(1.0, ship.shield / ship.cls.shield_max))
+                shield_color = (
+                    min(255, int(120 * frac + 60)),
+                    min(255, int(160 * frac + 60)),
+                    min(255, int(180 * frac + 60)),
+                )
+                radius = max(8, int(max(rect.width, rect.height) * 0.6))
+                pygame.draw.circle(
+                    screen, shield_color, (int(sx), int(sy)), radius, 1,
+                )
+            return
+
+        # Polygon fallback (ships without sprites yet).
         cos_h = math.cos(ship.heading)
         sin_h = math.sin(ship.heading)
         # Silhouette: simple shape; mass + style suggest tweaks

@@ -12,6 +12,8 @@ Common controls (handled by StubScene base):
 
 from __future__ import annotations
 
+import os
+
 import pygame
 
 from scz.engine.scene import Scene
@@ -41,6 +43,11 @@ class StubScene(Scene):
     SUBTITLE: str = "Description"
     DETAILS: list[str] = []
     ACCENT: tuple[int, int, int] = (140, 180, 255)  # title color override
+    # Optional backdrop image path (relative to project root). When set,
+    # the image is loaded once in on_enter, scaled to fill the window,
+    # and blitted darkened so the title/details text remains legible.
+    BACKDROP_PATH: str | None = None
+    BACKDROP_DIM: int = 170  # 0-255 alpha of the dark overlay over the image
 
     def __init__(self, parent_scene_cls: type | None = None) -> None:
         super().__init__()
@@ -49,6 +56,8 @@ class StubScene(Scene):
         self.title_font: pygame.font.Font | None = None
         self.subtitle_font: pygame.font.Font | None = None
         self.tag_font: pygame.font.Font | None = None
+        self._backdrop_surface: pygame.Surface | None = None
+        self._backdrop_size: tuple[int, int] | None = None
 
     def on_enter(self) -> None:
         self.font = pygame.font.SysFont("consolas", 20)
@@ -69,9 +78,34 @@ class StubScene(Scene):
         else:
             self.game.quit()
 
+    def _ensure_backdrop(self, size: tuple[int, int]) -> None:
+        """Lazy-load and scale the backdrop image to the current screen."""
+        if self.BACKDROP_PATH is None:
+            return
+        if self._backdrop_surface is not None and self._backdrop_size == size:
+            return
+        if not os.path.isfile(self.BACKDROP_PATH):
+            self._backdrop_surface = None
+            return
+        try:
+            img = pygame.image.load(self.BACKDROP_PATH).convert_alpha()
+        except (pygame.error, OSError):
+            self._backdrop_surface = None
+            return
+        scaled = pygame.transform.smoothscale(img, size)
+        dim = pygame.Surface(size, pygame.SRCALPHA)
+        dim.fill((0, 0, 0, self.BACKDROP_DIM))
+        scaled.blit(dim, (0, 0))
+        self._backdrop_surface = scaled
+        self._backdrop_size = size
+
     def render(self, screen: pygame.Surface) -> None:
         screen.fill(COL_BG)
         w, h = screen.get_size()
+
+        self._ensure_backdrop((w, h))
+        if self._backdrop_surface is not None:
+            screen.blit(self._backdrop_surface, (0, 0))
 
         # STUB tag in top-right
         if self.tag_font is not None:
@@ -216,6 +250,7 @@ class CouncilScene(StubScene):
     TITLE = "Furling Council"
     SUBTITLE = "Internal debate over species fates and migration policy"
     ACCENT = (220, 180, 240)
+    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png"
     DETAILS = [
         "The Furling player's home base. A circular chamber with six faction",
         "representatives, each an LLM-driven NPC:",

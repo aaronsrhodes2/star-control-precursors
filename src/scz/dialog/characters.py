@@ -132,7 +132,8 @@ def commander_halia(game: Any = None) -> DialogCharacter:
         name="Commander Halia",
         title="Persuader, Mh-Lai Station",
         species_id="FURLING_PERSUADER",
-        portrait_color=(220, 180, 100),  # Persuader amber
+        portrait_color=(220, 180, 100),  # Persuader amber (fallback)
+        portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_commander_halia_portrait.png",
         initial_state=_halia_initial_state(game),
         states=build_state_dict(
             DialogState(
@@ -315,7 +316,8 @@ def arilou_sage() -> DialogCharacter:
         name="Sage Lwen-Olou",
         title="Keeper of the Outpost, Arilou Elder",
         species_id="ARILOU",
-        portrait_color=(140, 240, 210),  # teal/mint Arilou
+        portrait_color=(140, 240, 210),  # teal/mint Arilou (fallback)
+        portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_arilou_sage_portrait.png",
         initial_state="start",
         states=build_state_dict(
             DialogState(
@@ -447,6 +449,7 @@ def coel_tessar() -> DialogCharacter:
         title="Vulpeculae Engineering Detachment · displaced",
         species_id="ANDROSYNTH",
         portrait_color=(200, 130, 200),
+        portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_coel_tessar_portrait.png",
         initial_state="first_contact",
         states=build_state_dict(
             DialogState(
@@ -630,6 +633,7 @@ def slylandro_witness() -> DialogCharacter:
         title="Slylandro Witness · Beta Corvi upper troposphere",
         species_id="SLYLANDRO",
         portrait_color=(140, 200, 200),
+        portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_slylandro_witness_portrait.png",
         initial_state="first_meeting",
         states=build_state_dict(
             DialogState(
@@ -777,6 +781,7 @@ def sentry_drone_47t() -> DialogCharacter:
         title="Mh-Lai Orbital Maintenance · in labor dispute",
         species_id="FURLING_DRONE",
         portrait_color=(180, 180, 200),
+        portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_sentry_drone_47t_portrait.png",
         initial_state="union_motion",
         states=build_state_dict(
             DialogState(
@@ -994,7 +999,7 @@ def melnorme() -> DialogCharacter:
         title="Melnorme Trade-Pattern · seek any super-giant",
         species_id="MELNORME",
         portrait_color=(220, 90, 30),     # SC2 melnorme orange
-        portrait_image_path="assets/comm/melnorme/melnorme-000.png",
+        portrait_image_path="assets/generated_drafts/firefly/tier1_portraits/species_melnorme_portrait.png",
         initial_state="start",
         states=build_state_dict(
             DialogState(
