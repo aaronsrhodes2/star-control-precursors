@@ -1,0 +1,17 @@
+# aspect: 1:1
+# notes: UI module-slot icon for the Bio/Mineral Scanner module.
+# Should pair with the other module icons (drive, weapon, hull) in
+# the ring-nacelle ship customization view. Iconographic tile style.
+
+A clean isometric ship-module icon: a stylized Furling sensor-array
+module — a small hexagonal housing with three crystalline lens
+elements arranged in a triangle on its front face, each lens glowing
+faintly turquoise. Backplate has heat-vent slots; mount-rail
+visible at the base. Centered on a hex-tile background plate in
+matte dark slate-gray with a thin glowing turquoise border ring.
+Small numeral-zero placeholder slot in the corner. Lighting: soft
+top-down studio light with cool turquoise rim from the lenses.
+Style: stylized 1990s sci-fi game module icon — crisp, readable,
+painterly. Should read clearly at 64x64 pixels. The module should
+read as INSTRUMENT — precise, calibrated, a tool not a weapon.
+Centered composition on a uniform background.

@@ -1,0 +1,17 @@
+# aspect: 1:1
+# notes: UI module-slot icon for a Furling beam-weapon module. Should
+# pair with drive, scanner, hull icons in the ship customization view.
+
+A clean isometric ship-module icon: a stylized Furling beam-weapon
+module — a sleek hexagonal housing with a forward-projecting beam
+emitter barrel, glowing soft amber at the muzzle. Cooling fins
+along the upper edge. A small power-cell visible at the rear.
+Centered on a hex-tile background plate in matte dark slate-gray
+with a thin glowing amber border ring (warm color signals offensive
+purpose, distinct from the turquoise sensor module). Small
+numeral-zero placeholder slot in the corner. Lighting: soft
+top-down studio light with warm amber rim from the emitter.
+Style: stylized 1990s sci-fi game module icon — crisp, readable,
+painterly. The module should read as MEASURED OFFENSIVE TOOL —
+purposeful but Furling-civilized, not aggressive-looking.
+Centered composition; should read clearly at 64x64 pixels.

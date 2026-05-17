@@ -1,0 +1,17 @@
+# aspect: 1:1
+# notes: heraldic emblem for the Denier Furling faction — Homesteaders
+# who refuse to accept the Others exist at all. They insist the rifts
+# are natural phenomena. The "this is fine" faction. Should look
+# willfully serene, almost academic — the calm of the deeply mistaken.
+
+A heraldic faction insignia centered on a deep teal-blue field. The
+emblem: a stylized open scholarly eye with a thin diagonal slash
+across it (the Denier's signature: I have looked and I have decided
+NOT to see). Behind the eye, a circular ring of arranged
+constellation-points in pale silver, suggesting an orderly cosmos.
+Below: a Furling-cuneiform scroll in subtle silver. Palette: deep
+teal-blue, pale silver, ivory accents. Crisp graphic style — should
+read clearly even at icon size in a UI corner. Centered composition,
+symmetrical, no text in English. Style: stylized 1990s sci-fi game
+faction heraldry, painterly but graphic. The insignia should read
+as SERENE, ACADEMIC, and quietly WRONG.
