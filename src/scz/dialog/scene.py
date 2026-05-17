@@ -96,17 +96,22 @@ class DialogScene(Scene):
         # Confirm → pick this choice
         if inp.confirm:
             choice = state.choices[self.selected_choice]
+            override_state: str | None = None
             if choice.side_effect is not None and self.game is not None:
-                choice.side_effect(self.game)
+                override_state = choice.side_effect(self.game)
                 # If the side-effect changed scenes (e.g. launched combat),
                 # don't run _exit_dialog — it would overwrite the new scene.
                 if self.game.current_scene is not self:
                     return
-            if choice.next_state_id is None:
+            # Side-effect override takes precedence over the static
+            # next_state_id (used for "did the purchase succeed?"-style
+            # conditional routing).
+            target = override_state if override_state is not None else choice.next_state_id
+            if target is None:
                 # Farewell / close
                 self._exit_dialog()
                 return
-            self.current_state_id = choice.next_state_id
+            self.current_state_id = target
             self.selected_choice = 0
             return
 

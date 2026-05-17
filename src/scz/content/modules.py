@@ -155,6 +155,26 @@ SA_MATRA_LANCE_REPLICA = Module(
     locked=True,
 )
 
+MELNORME_PLASMA_LANCE = Module(
+    id="melnorme_plasma_lance",
+    name="Melnorme Plasma Lance",
+    slot="weapon",
+    tier=0,
+    cost_credits=0,
+    deltas={"primary_damage": 6, "primary_rate": 1.2},
+    description="Melnorme-exclusive — ionization-coil weapon, harder hits and slightly faster cadence. Bought with BIO-cargo at any super-giant trading post.",
+)
+
+MELNORME_PATTERN_SENSOR = Module(
+    id="melnorme_pattern_sensor",
+    name="Melnorme Pattern Sensor",
+    slot="sensor",
+    tier=0,
+    cost_credits=0,
+    deltas={"other_detection_range": 1.5, "dialog_context_depth": 1.3},
+    description="Melnorme-exclusive — ionization-pattern analyzer. Boosts Others detection and deepens dialog context. Bought with BIO-cargo.",
+)
+
 # ---------------------------------------------------------------------------
 # Crew specialist modules (passenger-class — NOT combat-vulnerable)
 # ---------------------------------------------------------------------------
@@ -202,6 +222,7 @@ MODULES: dict[str, Module] = {
         RAINBOW_RESONATOR,
         FUEL_TANK_PLUS_50, SHIELD_BOOSTER_I, BEAM_MOD_I, CARGO_POD_PLUS_50,
         QUASI_DRIVE_COMPACT, SA_MATRA_LANCE_REPLICA,
+        MELNORME_PLASMA_LANCE, MELNORME_PATTERN_SENSOR,
         CREW_ARCHIVIST, CREW_WARDEN, CREW_TUNNELER,
     )
 }

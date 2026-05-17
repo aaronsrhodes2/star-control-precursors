@@ -109,9 +109,15 @@ Each entry is the species' SC2 identity → what they look like in our era. Slic
 *SC2 race*: Short, warlike raccoon-people; sacrificed themselves in the Ur-Quan war.
 *In our era*: small mustelid-analog mammals with *extraordinarily aggressive* territorial defense rituals. They throw themselves at much larger predators. **The kamikaze-bravery is already here.** The Furling archive admires them.
 
-### Proto-Melnorme (Aquilae and several other locations — see `MELNORME_PROTO` tags in starmap)
-*SC2 race*: Mysterious merchants; trade in information.
-*In our era*: gas-cloud-dwelling energy-beings (their physiology is *very* unusual — the Furlings barely classify them as biological). They appear to communicate by ionization patterns. They *already* trade with each other across vast distances, exchanging information-patterns rather than physical goods. **The information-merchant is already an information-merchant.**
+### Melnorme — full sentient, *not* proto (see `MELNORME_PROTO` tags in starmap — name kept for the data tag only)
+*SC2 race*: Mysterious nomadic merchants; trade in information, fuel, and technology.
+*In our era*: **already fully sentient.** Gas-cloud-dwelling energy-beings (their physiology is *very* unusual — the Furlings barely classify them as biological), communicating by ionization patterns. They orbit the galaxy's **super-giant stars** (the 9 systems tagged `MELNORME_PROTO`), one trading colony per super-giant, drawing energy from the host star to sustain their information-pattern exchanges across vast distances.
+
+**Currency**: they trade **advanced technology and information for organic material.** They have no biological reproduction loop of their own (energy-beings) and so harvested organic specimens are precious — the basis of their entire commerce model. The Steward sells them BIO-cargo collected from planet scanning; in return the Melnorme offer ship modules and information unlocks the Furling Council cannot or will not provide.
+
+**Faction alignment**: **Precursor-faction (Stay-Go alignment).** When the Migration opens, the Melnorme leave with the Precursors. **This is why SC2-era humans encounter them as nomadic returnees** — most of the Melnorme civilization left 250 millennia earlier; the ones SC2 meets are the *small fraction who came back* (after the Others-threat had passed in the home galaxy and exploration resumed). The nomadic ship-bound presentation in SC2 is the residue of their long sojourn in the neighbor galaxy.
+
+**Furling Council attitude**: cordial-but-distant trade partner. The Council considers the Melnorme price model "predatory but fair." Most Stewards make at least one Melnorme call per career, almost always for an information item the Council has chosen not to disseminate.
 
 ### Proto-Dnyarri / Proto-Umgah (Orionis area; tagged `DNYARRI_PRIMITIVE`)
 *SC2 race*: The Talking Pet (mind-controllers) and the Umgah (their hosts, shape-shifters).
@@ -128,6 +134,7 @@ These are NOT in this doc — they have their own canon:
 - **Chenjesu**: rooted sentients, witnesses to a prior cycle
 - **Androsynth**: time-displaced refugees
 - **Arilou**: voluntary-exile path
+- **Melnorme**: sentient nomadic traders (see entry above — moved out of proto-list)
 
 The Furling Council has *deliberately decided* not to uplift the proto-species in this fanservice list. Their reasoning: the Migration deadline makes new uplifts untenable. Leave them. They will be here when the galaxy regrows.
 

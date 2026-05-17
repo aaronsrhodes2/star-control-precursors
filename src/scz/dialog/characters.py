@@ -857,3 +857,279 @@ def sentry_drone_47t() -> DialogCharacter:
             ),
         ),
     )
+
+
+# ---------------------------------------------------------------------------
+# Melnorme Trade Cluster — nomadic gas-cloud energy-being traders
+# ---------------------------------------------------------------------------
+# Voice: collective "we" (each Melnorme is an ionization-pattern shared
+# across the cloud). Trade jargon: "exchange-rate", "value-equivalence",
+# "organic-pattern", "information-package". Refers to player as "Captain-
+# form" or "Carbon-pattern." Curious about organics as a *thing* without
+# being sentimental. Per references/lore/proto-species-observations.md.
+#
+# Currency: BIO cargo (organic material). They do NOT accept Council
+# credits — credits are a Furling abstraction; the Melnorme need actual
+# molecular matter for their reproduction-analogue.
+
+# Item catalog — info unlocks + tech modules they sell. Edit prices/items
+# here, not in the dialog states.
+MELNORME_INFO_ITEMS: list[dict] = [
+    {
+        "id": "others_detection",
+        "label": "How the Others detect intelligence",
+        "flag": "knows_others_detection_mechanism",
+        "bio_cost": 30,
+    },
+    {
+        "id": "migration_routes",
+        "label": "Migration routes recorded by departed crews",
+        "flag": "knows_migration_routes",
+        "bio_cost": 25,
+    },
+]
+MELNORME_TECH_ITEMS: list[dict] = [
+    {
+        "id": "melnorme_plasma_lance",
+        "label": "Melnorme Plasma Lance (weapon)",
+        "bio_cost": 80,
+    },
+    {
+        "id": "melnorme_pattern_sensor",
+        "label": "Melnorme Pattern Sensor (sensor)",
+        "bio_cost": 60,
+    },
+]
+
+
+def _melnorme_try_buy_info(item_id: str) -> "callable":
+    """Build a side-effect that, on click, checks BIO cargo and either
+    deducts + grants the lore flag (returning state 'purchase_complete')
+    or no-ops (returning state 'insufficient_organics')."""
+    item = next(i for i in MELNORME_INFO_ITEMS if i["id"] == item_id)
+
+    def _do(game: Any) -> str | None:
+        bio = game.cargo.get("BIO", 0)
+        cost = item["bio_cost"]
+        if bio < cost:
+            return "insufficient_organics"
+        game.cargo["BIO"] = bio - cost
+        game.flags[item["flag"]] = True
+        game.flags["last_melnorme_purchase"] = item["id"]
+        game.flags["met_melnorme"] = True
+        return "purchase_complete"
+    return _do
+
+
+def _melnorme_try_buy_tech(item_id: str) -> "callable":
+    """Build a side-effect that buys a tech module (drops into
+    game.uninstalled_modules). Returns purchase_complete or
+    insufficient_organics by overriding the choice's next_state_id."""
+    item = next(i for i in MELNORME_TECH_ITEMS if i["id"] == item_id)
+
+    def _do(game: Any) -> str | None:
+        bio = game.cargo.get("BIO", 0)
+        cost = item["bio_cost"]
+        if bio < cost:
+            return "insufficient_organics"
+        game.cargo["BIO"] = bio - cost
+        game.uninstalled_modules[item["id"]] = (
+            game.uninstalled_modules.get(item["id"], 0) + 1
+        )
+        game.flags["last_melnorme_purchase"] = item["id"]
+        game.flags["met_melnorme"] = True
+        return "purchase_complete"
+    return _do
+
+
+def _ack_melnorme_visit(game: Any) -> None:
+    """Player browsed the Melnorme but didn't buy anything. Marks contact."""
+    game.flags["met_melnorme"] = True
+
+
+def melnorme() -> DialogCharacter:
+    """The Melnorme nomadic trader. Encountered at any super-giant star.
+
+    Trades BIO cargo (organic material) for information unlocks and
+    exclusive ship modules. Per the canon update in
+    references/lore/proto-species-observations.md: Melnorme are full
+    sentient SC2 species in our era, aligned Precursor-faction, who
+    leave with the Migration. SC2-era humans meet returnees.
+    """
+    # Build per-item buy choices dynamically so the catalog is the source
+    # of truth.
+    info_choices = [
+        DialogChoice(
+            f"  {item['label']}  ({item['bio_cost']} BIO)",
+            next_state_id="purchase_complete",   # overridden by side effect
+            category="TRADE",
+            side_effect=_melnorme_try_buy_info(item["id"]),
+        )
+        for item in MELNORME_INFO_ITEMS
+    ] + [
+        DialogChoice(
+            "Back to the manifest.",
+            next_state_id="start",
+            category="TALK_MORE",
+        ),
+    ]
+    tech_choices = [
+        DialogChoice(
+            f"  {item['label']}  ({item['bio_cost']} BIO)",
+            next_state_id="purchase_complete",
+            category="TRADE",
+            side_effect=_melnorme_try_buy_tech(item["id"]),
+        )
+        for item in MELNORME_TECH_ITEMS
+    ] + [
+        DialogChoice(
+            "Back to the manifest.",
+            next_state_id="start",
+            category="TALK_MORE",
+        ),
+    ]
+
+    return DialogCharacter(
+        name="Melnorme Trade-Pattern",
+        title="Nomadic Exchange · orbiting this super-giant",
+        species_id="MELNORME",
+        portrait_color=(180, 100, 255),   # plasma violet
+        initial_state="start",
+        states=build_state_dict(
+            DialogState(
+                id="start",
+                npc_text=(
+                    "Carbon-pattern. We register your approach. We are "
+                    "the trade-pattern; we exchange information and "
+                    "technology for organic material. Council credits "
+                    "do not interest us — they are a Furling abstraction. "
+                    "Molecular matter, however, sustains our exchange-"
+                    "loop indefinitely.\n\n"
+                    "Show us your manifest, Captain-form. What does the "
+                    "Steward of Mh-Lai require?"
+                ),
+                choices=[
+                    DialogChoice(
+                        "Show me your information.",
+                        next_state_id="browse_info",
+                        category="ASK_TRADE",
+                        side_effect=_ack_melnorme_visit,
+                    ),
+                    DialogChoice(
+                        "Show me your technology.",
+                        next_state_id="browse_tech",
+                        category="ASK_TRADE",
+                        side_effect=_ack_melnorme_visit,
+                    ),
+                    DialogChoice(
+                        "Why do you require organic material?",
+                        next_state_id="about_self",
+                        category="ASK_LORE",
+                        side_effect=_ack_melnorme_visit,
+                    ),
+                    DialogChoice(
+                        "We will speak another time.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="about_self",
+                npc_text=(
+                    "We are pattern, Captain-form — not matter. Our "
+                    "cognition lives in ionization-cascades across this "
+                    "super-giant's heliopause. We require no fuel; we "
+                    "are fueled by the star itself.\n\n"
+                    "But pattern propagates by overwriting matter. "
+                    "Organic samples allow us to construct new pattern-"
+                    "carriers — the equivalent, in your terms, of "
+                    "reproduction. So we trade what we are wealthy in "
+                    "(information, manufactured technology) for what we "
+                    "are poor in (your biological wealth).\n\n"
+                    "When the Council opens its portal — when the "
+                    "Precursors lead the Migration — we travel with "
+                    "them. We are aligned. The galaxy our offspring "
+                    "will inhabit must be one that survived."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Show me your information.",
+                        next_state_id="browse_info",
+                        category="ASK_TRADE",
+                    ),
+                    DialogChoice(
+                        "Show me your technology.",
+                        next_state_id="browse_tech",
+                        category="ASK_TRADE",
+                    ),
+                    DialogChoice(
+                        "We will speak another time.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="browse_info",
+                npc_text=(
+                    "Information-packages on offer. Each is a complete "
+                    "pattern — your Archive will receive it. Price is in "
+                    "organic-material, exchanged at our standard rate."
+                ),
+                choices=info_choices,
+            ),
+            DialogState(
+                id="browse_tech",
+                npc_text=(
+                    "Technology-packages on offer. Each is a fabricated "
+                    "module — your hold will receive it; installation "
+                    "remains your engineering problem. Price is in "
+                    "organic-material."
+                ),
+                choices=tech_choices,
+            ),
+            DialogState(
+                id="purchase_complete",
+                npc_text=(
+                    "Exchange logged. Pattern-transfer complete; "
+                    "organic-material decanted into our matrices. The "
+                    "package is in your manifest.\n\n"
+                    "Anything further, Captain-form?"
+                ),
+                choices=[
+                    DialogChoice(
+                        "Back to the manifest.",
+                        next_state_id="start",
+                        category="TALK_MORE",
+                    ),
+                    DialogChoice(
+                        "We will speak another time.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+            DialogState(
+                id="insufficient_organics",
+                npc_text=(
+                    "Insufficient organic-material in your hold, "
+                    "Carbon-pattern. Return when your manifest is "
+                    "weightier. We will be here — we are always here, "
+                    "wherever a super-giant burns."
+                ),
+                choices=[
+                    DialogChoice(
+                        "Back to the manifest.",
+                        next_state_id="start",
+                        category="TALK_MORE",
+                    ),
+                    DialogChoice(
+                        "We will return.",
+                        next_state_id=None,
+                        category="FAREWELL",
+                    ),
+                ],
+            ),
+        ),
+    )

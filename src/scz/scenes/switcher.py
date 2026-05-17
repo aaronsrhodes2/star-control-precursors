@@ -31,7 +31,7 @@ def _entries():
         ArchiveScene,
     )
     # Real implementations (replacing stubs)
-    from scz.dialog.characters import arilou_sage, coel_tessar, commander_halia, sentry_drone_47t, slylandro_witness
+    from scz.dialog.characters import arilou_sage, coel_tessar, commander_halia, melnorme, sentry_drone_47t, slylandro_witness
     from scz.dialog.scene import DialogScene
     from scz.station.scene import StationScene
     from scz.content.home_system import home_star
@@ -120,6 +120,19 @@ def _entries():
         planet = next(p for p in sys.planets if p.name == "Mh-Lai II")
         return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
 
+    def _melnorme_supergiant():
+        """Closest MELNORME_PROTO super-giant to Mh-Lai — entering this
+        system auto-launches the Melnorme trader dialog."""
+        from scz.hyperspace.scene import STARMAP_JSON
+        from scz.hyperspace.starmap import Starmap
+        sm = Starmap(STARMAP_JSON)
+        # The 9 MELNORME_PROTO stars are sprinkled around the galaxy; pick
+        # the one closest to Mh-Lai (1900, 1600) for slice-relevance.
+        import math
+        mel_stars = [s for s in sm.stars if s.get("defined_name") == "MELNORME_PROTO"]
+        mel_stars.sort(key=lambda s: math.hypot(s["x"] - 1900, s["y"] - 1600))
+        return SystemScene(mel_stars[0])
+
     return [
         # Live scenes
         ("Main Menu",                lambda: MainMenuScene(),                pygame.K_0),
@@ -140,6 +153,8 @@ def _entries():
         ("Dialog — Coel Tessar",     lambda: DialogScene(coel_tessar()),     None),
         ("Dialog — Sentry Drone",    lambda: DialogScene(sentry_drone_47t()), None),
         ("Dialog — Slylandro",       lambda: DialogScene(slylandro_witness()), None),
+        ("Dialog — Melnorme",        lambda: DialogScene(melnorme()),        None),
+        ("Melnorme Super-Giant Post", _melnorme_supergiant,                   None),
         ("Quasi-Space",              lambda: QuasiSpaceScene(),              None),
         ("Super Melee",              lambda: SuperMeleeScene(),              None),
         ("Trade",                    lambda: TradeScene(),                   None),

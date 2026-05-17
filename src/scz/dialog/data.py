@@ -18,8 +18,11 @@ from typing import Any
 
 
 # Side-effect callback signature: takes the game (so it can set flags,
-# award resources, transition scenes, etc.) and returns nothing.
-SideEffectFn = Callable[[Any], None]
+# award resources, transition scenes, etc.). Returns either None (no
+# override — DialogScene follows the choice's static next_state_id) OR
+# a string state id (override — DialogScene jumps there instead). Used
+# for conditional routing like "did the purchase succeed?".
+SideEffectFn = Callable[[Any], "str | None"]
 
 
 @dataclass

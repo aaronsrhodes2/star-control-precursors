@@ -51,7 +51,12 @@ SYSTEM_BOUNDARY_PAD = 220.0
 class SystemScene(Scene):
     """View of a single star system with orbiting planets."""
 
-    def __init__(self, star: dict, planets: list[Planet] | None = None) -> None:
+    def __init__(
+        self,
+        star: dict,
+        planets: list[Planet] | None = None,
+        skip_arrival_event: bool = False,
+    ) -> None:
         """
         star: the star dict from the starmap (must include x, y, type, color,
               and cluster_name fields).
@@ -59,9 +64,14 @@ class SystemScene(Scene):
                  generated from the star's coordinates (UQM convention).
                  The home system and other lore-significant systems pass a
                  hand-built list.
+        skip_arrival_event: True suppresses any auto-launched arrival
+                 encounter (e.g. the Melnorme trader at super-giant systems).
+                 Used when returning from such an encounter so the player
+                 can navigate the system without re-triggering the dialog.
         """
         super().__init__()
         self.star = star
+        self.skip_arrival_event = skip_arrival_event
         if planets is not None:
             self.planets = planets
         elif star.get("home_system"):
@@ -130,6 +140,32 @@ class SystemScene(Scene):
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
         self._update_camera()
+
+        # Arrival event — Melnorme nomadic trader at any super-giant system
+        # (tagged MELNORME_PROTO in the precursor-era universe data). The
+        # dialog auto-launches on entry; closing it returns to a fresh
+        # SystemScene with skip_arrival_event=True so the player can fly
+        # around without re-triggering the encounter.
+        if (
+            not self.skip_arrival_event
+            and self.star.get("defined_name") == "MELNORME_PROTO"
+        ):
+            from scz.dialog.characters import melnorme
+            from scz.dialog.scene import DialogScene
+            star = self.star
+            planets = self.planets
+
+            def _back_to_system() -> "SystemScene":
+                return SystemScene(
+                    star=star, planets=planets, skip_arrival_event=True
+                )
+
+            self.game.set_scene(
+                DialogScene(
+                    character=melnorme(), parent_factory=_back_to_system
+                )
+            )
+            return
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt

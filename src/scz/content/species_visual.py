@@ -121,6 +121,14 @@ SPECIES_WARP_POD: dict[str, dict[str, tuple]] = {
         "rim":      (240, 200, 80),
         "glow":     (240, 200, 80, 60),
     },
+    "MELNORME": {
+        # Gas-cloud energy-being nomadic traders. Plasma-violet —
+        # ionization-pattern signaling rendered as a warp-pod color.
+        # Distinct enough from Androsynth magenta to read at a glance.
+        "interior": (32, 16, 64),
+        "rim":      (180, 100, 255),
+        "glow":     (160, 80, 240, 70),
+    },
 
     # ----- Invented species (placeholder concepts) -----
     "DEFIANT": {
