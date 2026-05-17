@@ -39,10 +39,16 @@ class SfxSpec:
     prompt_influence: float = 0.7
     species_id: str = ""     # cross-ref into species_inventory.csv
     # 1 = Round-1 sample; 2 = Round-2 expanded sample (targeted, ~20 sounds);
-    # 3+ = remaining inventory queued for future rounds. Default is 3 so a
-    # newly-added spec doesn't accidentally fire on the next --round 2 run.
-    round: int = 3
+    # 3 = Round-3 re-rolls from listen-pass-2 feedback;
+    # 4+ = remaining inventory queued for future rounds. Default is 4 so a
+    # newly-added spec doesn't accidentally fire on the next --round N run.
+    round: int = 4
     notes: str = ""
+    # If set ("out_subdir/name"), the generator skips ElevenLabs and
+    # produces this SFX by sample-reversing the named source SFX.
+    # Use for fire/un-fire pair symmetries (e.g. Furling Scout's
+    # special_fire = time-freeze; special_impact = time-unfreeze).
+    reverse_of: str = ""
 
 
 # ---------------------------------------------------------------------------
@@ -68,15 +74,21 @@ UI_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="menu_confirm", category="ui", out_subdir="ui",
-        prompt="confident affirmative chime, ascending two-note motif, sharp clear attack, "
-               "satisfying tactile feedback, mid-bright retro-synth tone, audible and crisp",
-        duration_s=0.7, prompt_influence=0.85, round=2,
+        # Round 3: Aaron — "short higher-pitched bump similar to cancel but optimistic"
+        prompt="very short bright optimistic bump, single high-pitched percussive blip, "
+               "warm retro-synth attack with instant decay, sci-fi UI confirm, "
+               "the OK sibling of a low cancel-bump",
+        duration_s=0.3, prompt_influence=0.9, round=3,
+        notes="Round-3 re-roll: short higher-pitch bump pair with menu_cancel",
     ),
     SfxSpec(
         name="menu_cancel", category="ui", out_subdir="ui",
-        prompt="descending two-note back-out tone, sharp attack, neutral retro-synth, "
-               "audible and clean, retro sci-fi UI cancel",
-        duration_s=0.7, prompt_influence=0.85, round=2,
+        # Round 3: Aaron — "cancel should just be a short low bump sound"
+        prompt="very short low bump, single deep percussive thump, "
+               "warm muted retro-synth attack with instant decay, neutral sci-fi UI cancel, "
+               "no melodic motif, just a low audible bump",
+        duration_s=0.3, prompt_influence=0.9, round=3,
+        notes="Round-3 re-roll: short low bump",
     ),
     SfxSpec(
         name="menu_invalid", category="ui", out_subdir="ui",
@@ -116,9 +128,12 @@ UI_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="alert_danger", category="ui", out_subdir="ui",
-        prompt="loud insistent red-alert klaxon, fast-pulsing two-note siren, "
-               "high urgency, sci-fi bridge critical-alert attention-grabbing, AUDIBLE AND DRAMATIC",
-        duration_s=1.5, prompt_influence=0.85, round=2,
+        # Round 3: Aaron — "less annoying, more fuzzy"
+        prompt="fuzzy low warm red-alert pulse, slow modulated synth-wash siren with "
+               "soft distorted analog edges, urgent but not piercing, sci-fi bridge "
+               "warning, audible without being shrill or annoying",
+        duration_s=1.5, prompt_influence=0.85, round=3,
+        notes="Round-3 re-roll: less annoying, more fuzzy",
     ),
     SfxSpec(
         name="hud_acknowledge", category="ui", out_subdir="ui",
@@ -126,12 +141,11 @@ UI_SFX: list[SfxSpec] = [
                "command-accepted chirp, very short",
         duration_s=0.5,
     ),
-    SfxSpec(
-        name="scan_lock", category="ui", out_subdir="ui",
-        prompt="targeting reticle lock-on tone, building rising chirp resolving into steady locked pitch, "
-               "retro space-game lock-on idiom, satisfying weapons-grade acquisition, audible",
-        duration_s=0.9, prompt_influence=0.85, round=2,
-    ),
+    # scan_lock dropped 2026-05-17 per Aaron's listen-pass: "This is no
+    # good. What is scan lock anyway?" -- no clear gameplay slot in the
+    # slice for a targeting reticle lock-on, so retiring it. The .wav
+    # file is removed; the manifest entry's status of 'reject' stays as
+    # the historical record.
 ]
 
 
@@ -148,7 +162,7 @@ UI_SFX: list[SfxSpec] = [
 # ---------------------------------------------------------------------------
 
 def _ship(species_id: str, ship_id: str, primary_fire: str, primary_impact: str,
-          special_fire: str, special_impact: str, *, round_no: int = 3) -> list[SfxSpec]:
+          special_fire: str, special_impact: str, *, round_no: int = 4) -> list[SfxSpec]:
     """Emit the 4-SFX bundle for one ship."""
     sub = f"ships/{ship_id}"
     return [
@@ -175,50 +189,66 @@ SHIP_SFX: list[SfxSpec] = []
 # descriptors, raised prompt_influence to 0.85.
 SHIP_SFX.extend([
     SfxSpec(name="primary_fire", category="weapon", out_subdir="ships/furling_scout",
-            prompt="DRAMATIC sci-fi cannon shot: massive warm copper-gong impact "
-                   "front-loaded onto a deep sustained bass-overtone tail, "
-                   "ancient Furling temporal-blade weapon, weighty and HEROIC, "
-                   "loud satisfying punchy attack with rich decaying resonance",
-            duration_s=1.0, species_id="FURLING_SCOUT", round=2,
-            prompt_influence=0.85,
-            notes="Round-2 re-roll: more drama + presence."),
+            # Round 3: Aaron — "like warping the fabric of space, with a
+            # snap-back feedback sound at the end"
+            prompt="spatial-fabric warp weapon: building wobble-bend of low-frequency "
+                   "space-distortion swelling outward, then a sharp SNAP-BACK feedback "
+                   "tail like an elastic membrane releasing, reality-bending Furling "
+                   "primary shot, audible warp-then-snap signature",
+            duration_s=1.0, species_id="FURLING_SCOUT", round=3,
+            prompt_influence=0.9,
+            notes="Round-3 re-roll: warp-fabric + snap-back tail."),
     SfxSpec(name="primary_impact", category="weapon", out_subdir="ships/furling_scout",
-            prompt="DRAMATIC heavy bell-tone hit, massive cushioned cathedral thump, "
-                   "absorbed deep-resonance impact with sustained low-end body, "
-                   "no shrill harshness, weighty satisfying contact",
-            duration_s=0.8, species_id="FURLING_SCOUT", round=2,
-            prompt_influence=0.85),
+            # Round 3: Aaron — "Should sound like tearing through metal"
+            prompt="violent metallic tear: sharp ripping shriek of steel being torn open, "
+                   "scrape-and-shred contact, brief sustained metallic groan after impact, "
+                   "weighty and brutal, no soft cushioning",
+            duration_s=0.8, species_id="FURLING_SCOUT", round=3,
+            prompt_influence=0.9,
+            notes="Round-3 re-roll: tearing through metal."),
     SfxSpec(name="special_fire", category="weapon", out_subdir="ships/furling_scout",
-            prompt="EPIC Time Drive activation: massive temporal field dilation, "
-                   "deep harmonic swell from low rumble into bright shimmering peak, "
-                   "wood-and-resin ancient Furling tech wind-up, awe-inspiring",
-            duration_s=1.5, species_id="FURLING_SCOUT", round=2,
-            prompt_influence=0.85),
+            # Round 3: Aaron — "the special ability is it immediately stops us where
+            # we are and when we let go, we resume our previous direction and momentum"
+            # (the Time Drive freeze mechanic)
+            prompt="time-freeze instant stop: sharp transient snap into sudden silence-shimmer, "
+                   "audio of momentum being held in place, deep low hum sustaining "
+                   "the frozen moment, sense of reality paused, Furling Time Drive activation",
+            duration_s=1.5, species_id="FURLING_SCOUT", round=3,
+            prompt_influence=0.9,
+            notes="Round-3 re-roll: time-freeze (Time Drive pause)."),
     SfxSpec(name="special_impact", category="weapon", out_subdir="ships/furling_scout",
-            prompt="EPIC time-dilated impact wash, slowed-down reverb of contact, "
-                   "reality-easing-back-into-place sustained low thrum, "
-                   "powerful aftermath of a temporal weapon",
-            duration_s=1.2, species_id="FURLING_SCOUT", round=2,
-            prompt_influence=0.85),
+            # Round 3: Aaron — "No special impact, but it should just be the reverse
+            # of the special weapon fire sound in this case." Sample-reversal of
+            # special_fire = time-unfreeze (we resume direction and momentum).
+            prompt="(derived: sample-reverse of ships/furling_scout/special_fire — "
+                   "produces time-unfreeze: reality un-pausing, momentum resuming)",
+            duration_s=1.5, species_id="FURLING_SCOUT", round=3,
+            reverse_of="ships/furling_scout/special_fire",
+            notes="Round-3: derived by reversing special_fire (time-unfreeze)."),
 ])
 
 # --- Round 2 ship weapons: primary_fire for 4 more ships so Aaron can
 #     hear species-distinctness across the roster ---
 SHIP_SFX.extend([
     SfxSpec(name="primary_fire", category="weapon", out_subdir="ships/cleanser_cruiser",
-            prompt="DRAMATIC Cleanser Cruiser primary weapon: slow ceremonial mechanical "
-                   "ratchet windup then heavy hangman-bell toll, deep dread, "
-                   "religious-execution-tone, massive sustained doom-resonance, "
-                   "LOUD and weighty Cleanser Furling-faction shot",
-            duration_s=1.2, species_id="CLEANSER_FACTION", round=2,
-            prompt_influence=0.85),
+            # Round 3: Aaron — "Need this to be the same as the Furling scout,
+            # but bigger and louder." Same warp-snap signature, bigger scale.
+            prompt="MASSIVE spatial-fabric warp weapon: huge low-frequency space-distortion "
+                   "swelling outward with extra depth and breadth, then a brutal "
+                   "SNAP-BACK feedback tail like an enormous elastic membrane "
+                   "releasing, bigger and louder than a Furling Scout shot, "
+                   "reality-bending Cleanser cruiser primary, monolithic warp-then-snap",
+            duration_s=1.3, species_id="CLEANSER_FACTION", round=3,
+            prompt_influence=0.9,
+            notes="Round-3 re-roll: Furling-scout shape, bigger + louder."),
     SfxSpec(name="primary_fire", category="weapon", out_subdir="ships/arilou_skiff",
-            prompt="DRAMATIC Arilou phase-shifted weapon discharge: gentle dimensional warble "
-                   "front-loaded with sharp displacement-pop transient, quasi-space "
-                   "soft phasing whistle with delayed reverb tail, ethereal but PRESENT, "
-                   "Arilou skiff primary, otherworldly and audible",
-            duration_s=1.0, species_id="ARILOU", round=2,
-            prompt_influence=0.85),
+            # Round 3: Aaron — "skiff was a zippy lazer sound, start high, go low tri-tone"
+            prompt="zippy laser shot, sharp three-note descending pitch sweep from "
+                   "high to low (tri-tone), bright electronic zap with quick decay, "
+                   "Arilou skiff fast-attack weapon, audible and snappy",
+            duration_s=0.7, species_id="ARILOU", round=3,
+            prompt_influence=0.9,
+            notes="Round-3 re-roll: zippy laser, tri-tone high-to-low."),
     SfxSpec(name="primary_fire", category="weapon", out_subdir="ships/mmrnmhrm_sentinel",
             prompt="DRAMATIC Mmrnmhrm precision beam: silent millisecond charge-up "
                    "into sharp cold cutting laser-beam discharge, surgical robotic precision, "
@@ -373,11 +403,14 @@ SHIP_SFX.extend(_ship(
 LANDER_SFX: list[SfxSpec] = [
     SfxSpec(
         name="lander_deploy", category="lander", out_subdir="lander",
-        prompt="DRAMATIC lander engine ignition: deep warm Furling-tech "
-               "thrusters firing up with rich harmonic swell, "
-               "mechanical engagement clunks, powerful sci-fi launch sequence, "
-               "LOUD and weighty",
-        duration_s=1.8, round=2, prompt_influence=0.85,
+        # Round 3 re-roll: Aaron flagged for re-roll without specific notes;
+        # bumping toward more mechanical specificity (real thruster ignition,
+        # not a generic swell).
+        prompt="lander thrusters igniting: sharp initial click of solenoid release, "
+               "then building roar of bipropellant thrusters with crackling rocket "
+               "exhaust, audible mechanical character, sci-fi but grounded",
+        duration_s=1.6, round=3, prompt_influence=0.9,
+        notes="Round-3 re-roll: more mechanical thruster character.",
     ),
     SfxSpec(
         name="atmospheric_entry", category="lander", out_subdir="lander",
@@ -387,10 +420,13 @@ LANDER_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="lander_touchdown", category="lander", out_subdir="lander",
-        prompt="DRAMATIC lander touchdown: heavy three-point landing crunch onto "
-               "planet surface, brief metallic settling creak, weighty contact "
-               "with gravity, satisfying mechanical thud",
-        duration_s=1.4, round=2, prompt_influence=0.85,
+        # Round 3 re-roll.
+        prompt="lander touchdown: three loud weighty thumps as landing legs "
+               "make contact with rocky planet surface in rapid succession, "
+               "soft pneumatic hiss of suspension absorbing impact, brief "
+               "settling creak, satisfying mechanical contact",
+        duration_s=1.4, round=3, prompt_influence=0.9,
+        notes="Round-3 re-roll: more weight + specific 3-thump landing.",
     ),
     SfxSpec(
         name="engine_idle", category="lander", out_subdir="lander",
@@ -418,12 +454,12 @@ LANDER_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="pickup_clink", category="lander", out_subdir="lander",
-        prompt="LOUD satisfying pickup clink, small metallic object dropped into "
-               "an empty cargo bay with a bright ringing tail, sharp percussive "
-               "front-loaded attack, retro space-game inventory-add idiom, "
-               "audible and rewarding",
-        duration_s=0.7, round=2, prompt_influence=0.85,
-        notes="Round-2 re-roll of Round-1 sample.",
+        # Round 3 re-roll.
+        prompt="classic retro space-game pickup chime: bright two-note ascending "
+               "ding-dong, satisfying coin-into-coffer feedback, short and "
+               "rewarding, audible UI confirmation",
+        duration_s=0.5, round=3, prompt_influence=0.9,
+        notes="Round-3 re-roll: more clearly a 'pickup' chime (2-note up).",
     ),
     SfxSpec(
         name="hazard_warning", category="lander", out_subdir="lander",
@@ -459,19 +495,22 @@ SCAN_SFX: list[SfxSpec] = [
     ),
     SfxSpec(
         name="scan_begin", category="scan", out_subdir="scan",
-        prompt="DRAMATIC planet scanner spinning up: building Furling-tech "
-               "harmonic whine from low rumble into bright anticipatory peak, "
-               "scientific-instrument engagement, weighty and audible "
-               "sci-fi instrument activation",
-        duration_s=1.5, round=2, prompt_influence=0.85,
+        # Round 3 re-roll (rejected in R2; treating as re-roll with bumped
+        # specificity since no specific note was attached).
+        prompt="planet scanner activating: short pre-spin click of switches, "
+               "then quick rising mechanical hum into the steady operating "
+               "tone, sci-fi instrument coming online, audible engagement",
+        duration_s=1.2, round=3, prompt_influence=0.9,
+        notes="Round-3 re-roll: more mechanical activation character.",
     ),
     SfxSpec(
         name="scan_complete", category="scan", out_subdir="scan",
-        prompt="DRAMATIC planet scan complete fanfare, satisfying three-note "
-               "ascending Furling completion chime with sustained final tone, "
-               "summary-ready positive resolution, audible and rewarding",
-        duration_s=1.8, round=2, prompt_influence=0.85,
-        notes="Round-2 add: completion sound now also part of the sample.",
+        # Round 3 re-roll.
+        prompt="scan-complete chime: bright three-note ascending arpeggio "
+               "ending on a sustained satisfying high note, retro space-game "
+               "task-done positive feedback, audible and rewarding",
+        duration_s=1.2, round=3, prompt_influence=0.9,
+        notes="Round-3 re-roll: shorter, more chime-like, less ambient.",
     ),
     SfxSpec(
         name="scan_sweep", category="scan", out_subdir="scan",

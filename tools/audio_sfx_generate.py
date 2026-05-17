@@ -73,11 +73,15 @@ def generate_one(
 ) -> Path | None:
     """Generate a single SFX. Returns the path written, or None on failure.
 
-    Always writes .wav (PCM_16) after normalizing. ElevenLabs SFX has a
-    known tendency to output very quiet audio (peaks of 0.05-0.15)
-    that's inaudible without boosting; we normalize anything below
-    peak 0.5 up to peak 0.9. MP3 path is bypassed because we need to
-    decode anyway."""
+    Two code paths:
+      - spec.reverse_of set: read that file, sample-reverse it, save
+        as the new SFX. No ElevenLabs call. Used for fire/un-fire
+        pairs (Furling Scout special_impact = reverse of special_fire).
+      - default: ElevenLabs call + normalize + write PCM_16 .wav.
+        ElevenLabs SFX has a known tendency to output very quiet
+        audio (peaks of 0.05-0.15); we normalize anything below peak
+        0.5 up to peak 0.9.
+    """
     out_dir = OUT_ROOT / spec.out_subdir
     out_dir.mkdir(parents=True, exist_ok=True)
     out_path = out_dir / f"{spec.name}.wav"
@@ -85,6 +89,23 @@ def generate_one(
         print(f"  skip {out_path.relative_to(ROOT)} (exists)", flush=True)
         return out_path
     print(f"\n  === {spec.category}/{spec.out_subdir}/{spec.name} ===", flush=True)
+
+    # Derivation path: sample-reverse another SFX.
+    if spec.reverse_of:
+        src = OUT_ROOT / f"{spec.reverse_of}.wav"
+        if not src.exists():
+            print(f"    FAIL: reverse_of source missing: {src}", flush=True)
+            return None
+        print(f"    DERIVE: sample-reverse of {spec.reverse_of}", flush=True)
+        t0 = time.time()
+        audio, sr = sf.read(src)
+        audio_rev = audio[::-1]
+        sf.write(out_path, audio_rev, sr, subtype="PCM_16")
+        kb = out_path.stat().st_size / 1024
+        print(f"    saved {out_path.relative_to(ROOT)} ({kb:.0f} KB) (reversed) "
+              f"in {time.time()-t0:.1f}s", flush=True)
+        return out_path
+
     print(f"    duration: {spec.duration_s}s loop: {spec.loop} "
           f"infl: {spec.prompt_influence}", flush=True)
     print(f"    prompt: {spec.prompt[:110]}{'...' if len(spec.prompt) > 110 else ''}", flush=True)
