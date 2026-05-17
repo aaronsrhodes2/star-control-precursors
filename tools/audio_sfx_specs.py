@@ -647,7 +647,23 @@ SCAN_SFX: list[SfxSpec] = [
 # Registry
 # ---------------------------------------------------------------------------
 
-ALL_SFX: list[SfxSpec] = (
+def _dedup_by_key(specs: list[SfxSpec]) -> list[SfxSpec]:
+    """Some specs are duplicated by accident — typically Round-2 individual
+    re-roll entries written alongside the bulk _ship() bundle that also
+    produces them. Keep the FIRST occurrence of each (out_subdir, name)
+    key; that's the more-recently-authored individual spec in practice."""
+    seen: set[tuple[str, str]] = set()
+    out: list[SfxSpec] = []
+    for s in specs:
+        k = (s.out_subdir, s.name)
+        if k in seen:
+            continue
+        seen.add(k)
+        out.append(s)
+    return out
+
+
+ALL_SFX: list[SfxSpec] = _dedup_by_key(
     UI_SFX + SHIP_SFX + LANDER_SFX + SCAN_SFX
 )
 

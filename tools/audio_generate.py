@@ -142,9 +142,24 @@ def generate_context(
         }
 
     manifest_path = out_dir / "manifest.json"
-    manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
-    print(f"  wrote {manifest_path.relative_to(ROOT)} "
-          f"({len(manifest['stems'])}/{len(spec.stems)} stems)", flush=True)
+    # If nothing was actually generated in this run (everything skipped),
+    # don't clobber an existing manifest that documents the prior
+    # generation's backend. Without this guard, `--no-overwrite` runs
+    # would overwrite the manifest with empty stems + the current
+    # backend label, mislabeling assets that came from a different
+    # backend.
+    if not manifest["stems"] and manifest_path.exists():
+        print(f"  manifest unchanged (no new stems written; preserving "
+              f"existing {manifest_path.relative_to(ROOT)})", flush=True)
+        # Load the existing manifest to return it
+        try:
+            return json.loads(manifest_path.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    else:
+        manifest_path.write_text(json.dumps(manifest, indent=2), encoding="utf-8")
+        print(f"  wrote {manifest_path.relative_to(ROOT)} "
+              f"({len(manifest['stems'])}/{len(spec.stems)} stems)", flush=True)
     return manifest
 
 
