@@ -1,137 +1,627 @@
 {
-  "music/hyperspace": {
-    "status": "keep",
-    "notes": "great with adjustments per listen-pass 1",
-    "reviewed_at": "2026-05-17T20:43:19.441390+00:00"
+  "music/androsynth": {
+    "notes": "beats didn't match up, too experimental\n",
+    "reviewed_at": "2026-05-18T00:53:08.770722+00:00",
+    "status": "reject"
+  },
+  "music/androsynth_crash_site": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:56:55.624576+00:00",
+    "status": "reroll_requested"
+  },
+  "music/arilou": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:56:29.070695+00:00",
+    "status": "reroll_requested"
+  },
+  "music/arilou_sages_grove": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:54:58.651703+00:00",
+    "status": "reroll_requested"
+  },
+  "music/bargainers": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:54:26.057081+00:00",
+    "status": "reroll_requested"
+  },
+  "music/burvixese": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:54:21.996611+00:00",
+    "status": "reroll_requested"
+  },
+  "music/chenjesu": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:53:59.695887+00:00",
+    "status": "keep"
   },
   "music/cleanser_council": {
-    "status": "keep",
     "notes": "great",
-    "reviewed_at": "2026-05-17T20:34:09.285544+00:00"
+    "reviewed_at": "2026-05-17T20:34:09.285544+00:00",
+    "status": "keep"
   },
-  "music/slylandro": {
-    "status": "keep",
-    "notes": "great",
-    "reviewed_at": "2026-05-17T20:34:09.285544+00:00"
+  "music/combat_boss": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:58:33.036863+00:00",
+    "status": "reroll_requested"
+  },
+  "music/combat_high": {
+    "notes": "too fast.",
+    "reviewed_at": "2026-05-18T00:58:02.845052+00:00",
+    "status": "reject"
   },
   "music/combat_low": {
-    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T20:42:31.132174+00:00"
+    "reviewed_at": "2026-05-17T20:42:31.132174+00:00",
+    "status": "keep"
+  },
+  "music/council_compeller": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/council_defender": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/council_denier": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/council_hider": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/council_persuader": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/ending_cleanser": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/ending_compeller": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/ending_defender": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/ending_denier": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/ending_hider": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/ending_persuader": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/furling_home": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/hyperspace": {
+    "notes": "great with adjustments per listen-pass 1",
+    "reviewed_at": "2026-05-17T20:43:19.441390+00:00",
+    "status": "keep"
+  },
+  "music/hyperspace_pursuit": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T00:59:19.892617+00:00",
+    "status": "keep"
+  },
+  "music/lemmkin": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:00:11.010390+00:00",
+    "status": "keep"
+  },
+  "music/melnorme": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:00:23.374232+00:00",
+    "status": "keep"
+  },
+  "music/melnorme_bio_cargo_hold": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:00:29.647537+00:00",
+    "status": "keep"
+  },
+  "music/mmrnmhrm": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:00:57.476535+00:00",
+    "status": "keep"
+  },
+  "music/mycon": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:01:03.747681+00:00",
+    "status": "keep"
+  },
+  "music/mycon_hive_awakening": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:01:22.836543+00:00",
+    "status": "keep"
+  },
+  "music/others_reveal": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:01:31.831620+00:00",
+    "status": "keep"
+  },
+  "music/planar": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:01:37.415056+00:00",
+    "status": "keep"
+  },
+  "music/planet_lander": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:02:05.538794+00:00",
+    "status": "keep"
+  },
+  "music/planet_orbit_cloaked": {
+    "notes": "",
+    "reviewed_at": "2026-05-18T01:02:25.519282+00:00",
+    "status": "keep"
+  },
+  "music/proto_species_wonder": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/quasispace_travel": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/rainbow_seeding_climax": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/slylandro": {
+    "notes": "great",
+    "reviewed_at": "2026-05-17T20:34:09.285544+00:00",
+    "status": "keep"
+  },
+  "music/slylandro_conservatory": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/system_travel": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/taalo": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "music/tension_other_ripple": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
   "music/title_menu": {
-    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T20:43:41.406849+00:00"
+    "reviewed_at": "2026-05-17T20:43:41.406849+00:00",
+    "status": "keep"
   },
-  "sfx/lander/lander_deploy": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:17:35.787300+00:00"
+  "music/utwig": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
-  "sfx/scan/scan_sweep": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T20:45:34.593643+00:00"
+  "sfx/lander/atmospheric_entry": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
-  "sfx/scan/scan_begin": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:54:00.116162+00:00"
+  "sfx/lander/damage_taken": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
-  "sfx/scan/scan_complete": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:19:04.379868+00:00"
+  "sfx/lander/engine_idle": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
-  "sfx/ships/androsynth_cruiser/primary_fire": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T20:45:56.538624+00:00"
-  },
-  "sfx/ships/arilou_skiff/primary_fire": {
-    "status": "keep",
-    "notes": "skiff was a zippy lazer sound, strart high, go low tri-tone \n",
-    "reviewed_at": "2026-05-17T21:19:18.516240+00:00"
-  },
-  "sfx/ships/cleanser_cruiser/primary_fire": {
-    "status": "keep",
-    "notes": "Need this to be the same as the Furling scout, but bigger and louder\n",
-    "reviewed_at": "2026-05-17T21:19:22.140424+00:00"
-  },
-  "sfx/ships/furling_scout/primary_fire": {
-    "status": "keep",
-    "notes": "Need it to be like warping the fabric of space, with a snap-back feedback sound at the end",
-    "reviewed_at": "2026-05-17T21:19:28.366831+00:00"
-  },
-  "sfx/ships/furling_scout/primary_impact": {
-    "status": "keep",
-    "notes": "it needs to be less abrupt on the tail end\n",
-    "reviewed_at": "2026-05-17T21:59:26.693946+00:00"
-  },
-  "sfx/ships/furling_scout/special_fire": {
-    "status": "keep",
-    "notes": "ehe special ability is it immediately stops us where we are and when we let go, we resume our previous direction and momentum",
-    "reviewed_at": "2026-05-17T21:54:18.263414+00:00"
-  },
-  "sfx/ships/furling_scout/special_impact": {
-    "status": "keep",
-    "notes": "No special impact, but it should just be the reverse of the special weapon fire sound in this case.",
-    "reviewed_at": "2026-05-17T21:54:21.432357+00:00"
-  },
-  "sfx/ui/alert_danger": {
-    "status": "pending",
-    "notes": "make it three short alert noises\n\n",
-    "reviewed_at": "2026-05-17T22:07:36.001317+00:00"
-  },
-  "sfx/ui/menu_cancel": {
-    "status": "keep",
-    "notes": "cancel should just be a short low bump sound",
-    "reviewed_at": "2026-05-17T21:22:11.459634+00:00"
-  },
-  "sfx/ui/menu_confirm": {
-    "status": "keep",
-    "notes": "make it a much shorter higher pitched bump similar to how cancel it but more optimistic.",
-    "reviewed_at": "2026-05-17T21:22:29.900274+00:00"
-  },
-  "sfx/ui/menu_invalid": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T20:52:32.924217+00:00"
-  },
-  "sfx/ui/menu_select": {
-    "status": "keep",
-    "notes": "",
-    "reviewed_at": "2026-05-17T20:52:35.484933+00:00"
-  },
-  "sfx/ui/scan_lock": {
-    "status": "reject",
-    "notes": "This is no good. What is scan lock anyway?",
-    "reviewed_at": "2026-05-17T20:53:14.451604+00:00"
-  },
-  "sfx/ships/mmrnmhrm_sentinel/primary_fire": {
-    "status": "keep",
-    "notes": "more like machine gun fire\n",
-    "reviewed_at": "2026-05-17T21:54:27.975564+00:00"
+  "sfx/lander/hazard_warning": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
   "sfx/lander/lander_arrive": {
-    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:53:40.517993+00:00"
+    "reviewed_at": "2026-05-17T21:53:40.517993+00:00",
+    "status": "keep"
+  },
+  "sfx/lander/lander_deploy": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:17:35.787300+00:00",
+    "status": "keep"
+  },
+  "sfx/lander/lift_off": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   },
   "sfx/lander/pickup_animal": {
-    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:53:44.125273+00:00"
+    "reviewed_at": "2026-05-17T21:53:44.125273+00:00",
+    "status": "keep"
   },
   "sfx/lander/pickup_mineral": {
-    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:53:46.657608+00:00"
+    "reviewed_at": "2026-05-17T21:53:46.657608+00:00",
+    "status": "keep"
   },
   "sfx/lander/pickup_vegetable": {
-    "status": "keep",
     "notes": "",
-    "reviewed_at": "2026-05-17T21:53:48.591985+00:00"
+    "reviewed_at": "2026-05-17T21:53:48.591985+00:00",
+    "status": "keep"
+  },
+  "sfx/lander/resource_chime_bio": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/lander/resource_chime_mineral": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/lander/scan_ping": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/scan/cloak_disengage": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/scan/cloak_engage": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/scan/enter_orbit": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/scan/scan_begin": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:54:00.116162+00:00",
+    "status": "keep"
+  },
+  "sfx/scan/scan_complete": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:19:04.379868+00:00",
+    "status": "keep"
+  },
+  "sfx/scan/scan_progress_tick": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/scan/scan_sweep": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:45:34.593643+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/androsynth_cruiser/primary_fire": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:45:56.538624+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/androsynth_cruiser/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/androsynth_cruiser/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/androsynth_cruiser/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/arilou_skiff/primary_fire": {
+    "notes": "skiff was a zippy lazer sound, strart high, go low tri-tone \n",
+    "reviewed_at": "2026-05-17T21:19:18.516240+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/arilou_skiff/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/arilou_skiff/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/arilou_skiff/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/cleanser_cruiser/primary_fire": {
+    "notes": "Need this to be the same as the Furling scout, but bigger and louder\n",
+    "reviewed_at": "2026-05-17T21:19:22.140424+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/cleanser_cruiser/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/cleanser_cruiser/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/cleanser_cruiser/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/defender_vessel/primary_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/defender_vessel/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/defender_vessel/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/defender_vessel/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/furling_scout/primary_fire": {
+    "notes": "Need it to be like warping the fabric of space, with a snap-back feedback sound at the end",
+    "reviewed_at": "2026-05-17T21:19:28.366831+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/furling_scout/primary_impact": {
+    "notes": "it needs to be less abrupt on the tail end\n",
+    "reviewed_at": "2026-05-17T21:59:26.693946+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/furling_scout/special_fire": {
+    "notes": "ehe special ability is it immediately stops us where we are and when we let go, we resume our previous direction and momentum",
+    "reviewed_at": "2026-05-17T21:54:18.263414+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/furling_scout/special_impact": {
+    "notes": "No special impact, but it should just be the reverse of the special weapon fire sound in this case.",
+    "reviewed_at": "2026-05-17T21:54:21.432357+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/lemmkin_skitter/primary_fire": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:10:27.506025+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/lemmkin_skitter/primary_impact": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:10:36.755510+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/lemmkin_skitter/special_fire": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:10:39.763429+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/lemmkin_skitter/special_impact": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:10:42.601253+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/melnorme_trader/primary_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/melnorme_trader/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/melnorme_trader/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/melnorme_trader/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/mmrnmhrm_sentinel/primary_fire": {
+    "notes": "more like machine gun fire\n",
+    "reviewed_at": "2026-05-17T21:54:27.975564+00:00",
+    "status": "keep"
+  },
+  "sfx/ships/mmrnmhrm_sentinel/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/mmrnmhrm_sentinel/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/mmrnmhrm_sentinel/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/persuader_vessel/primary_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/persuader_vessel/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/persuader_vessel/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/persuader_vessel/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_qor_ah/primary_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_qor_ah/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_qor_ah/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_qor_ah/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_ur_quan/primary_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_ur_quan/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_ur_quan/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/proto_ur_quan/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/sentry_drone_47t/primary_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/sentry_drone_47t/primary_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/sentry_drone_47t/special_fire": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ships/sentry_drone_47t/special_impact": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ui/alert_danger": {
+    "notes": "make it three short alert noises\n\n",
+    "reviewed_at": "2026-05-17T22:10:50.937023+00:00",
+    "status": "keep"
+  },
+  "sfx/ui/alert_warning": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ui/hud_acknowledge": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ui/menu_cancel": {
+    "notes": "cancel should just be a short low bump sound",
+    "reviewed_at": "2026-05-17T21:22:11.459634+00:00",
+    "status": "keep"
+  },
+  "sfx/ui/menu_confirm": {
+    "notes": "make it a much shorter higher pitched bump similar to how cancel it but more optimistic.",
+    "reviewed_at": "2026-05-17T21:22:29.900274+00:00",
+    "status": "keep"
+  },
+  "sfx/ui/menu_invalid": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:52:32.924217+00:00",
+    "status": "keep"
+  },
+  "sfx/ui/menu_select": {
+    "notes": "",
+    "reviewed_at": "2026-05-17T20:52:35.484933+00:00",
+    "status": "keep"
+  },
+  "sfx/ui/modal_close": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ui/modal_open": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ui/notification": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
+  },
+  "sfx/ui/scan_lock": {
+    "notes": "This is no good. What is scan lock anyway?",
+    "reviewed_at": "2026-05-17T20:53:14.451604+00:00",
+    "status": "reject"
+  },
+  "sfx/ui/screen_transition": {
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
+    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
+    "status": "provisional"
   }
 }

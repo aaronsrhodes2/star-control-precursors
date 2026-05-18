@@ -350,6 +350,7 @@ HTML_HEAD = """<!doctype html>
     text-transform: uppercase; letter-spacing: .05em;
   }
   .chip-pending           { background: rgba(136,136,160,.15); color: var(--muted); border: 1px solid var(--muted); }
+  .chip-provisional       { background: rgba(136,204,136,.08); color: #88cc88;       border: 1px dashed #88cc88; }
   .chip-keep              { background: rgba(0,255,136,.12);   color: var(--accent); border: 1px solid var(--accent); }
   .chip-reject            { background: rgba(255,68,68,.12);   color: #ff4444;       border: 1px solid #ff4444; }
   .chip-reroll_requested  { background: rgba(255,170,0,.15);   color: var(--warn);   border: 1px solid var(--warn); }

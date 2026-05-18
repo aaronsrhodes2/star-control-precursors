@@ -66,7 +66,10 @@ AUDIO_MANIFEST = ROOT / "assets" / "_audio_review.json"
 
 PORT = 8770
 
-VALID_STATUSES = {"pending", "keep", "reroll_requested", "reject", "wired"}
+VALID_STATUSES = {"pending", "provisional", "keep", "reroll_requested", "reject", "wired"}
+# `provisional`: auto-approved for ship-readiness without a real review.
+# Visually distinct from `keep` (which means Aaron listened/looked and said yes).
+# A signal to "revisit this one when there's time to filter the noise."
 
 
 def _load_manifest() -> dict:
