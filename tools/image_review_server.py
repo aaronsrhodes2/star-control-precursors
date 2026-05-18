@@ -57,6 +57,7 @@ import http.server
 import json
 import socketserver
 import sys
+import threading
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -65,6 +66,15 @@ MANIFEST = ROOT / "assets" / "generated_drafts" / "firefly" / "_manifest.json"
 AUDIO_MANIFEST = ROOT / "assets" / "_audio_review.json"
 
 PORT = 8770
+
+# Two locks so image + audio writes don't block each other; each lock
+# serializes the load→modify→save read-modify-write on its own manifest.
+# Without this, fast Aaron clicks race — two POSTs both load the same
+# baseline, both save back their own diff, the second write clobbers the
+# first and the first click appears "undone" (the bug Aaron reported on
+# 2026-05-17).
+IMAGE_MANIFEST_LOCK = threading.Lock()
+AUDIO_MANIFEST_LOCK = threading.Lock()
 
 VALID_STATUSES = {"pending", "provisional", "keep", "reroll_requested", "reject", "wired"}
 # `provisional`: auto-approved for ship-readiness without a real review.
@@ -103,6 +113,19 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, directory=str(ROOT), **kwargs)
+
+    def end_headers(self) -> None:  # noqa: N802
+        # Disable browser caching for image/audio static assets so Aaron's
+        # review tool always sees the LATEST file content even when a
+        # filename was reused (e.g. ship_X.png replaced in-place by a
+        # reroll). Without this, Firefox/Chrome happily showed the stale
+        # cached image at the same URL — making it look like the manifest
+        # was mislabeled. 2026-05-17 fix for the ~5% mislabel rate.
+        path_l = (self.path or "").lower()
+        if path_l.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif",
+                            ".wav", ".mp3", ".ogg", ".flac")):
+            self.send_header("Cache-Control", "no-cache, must-revalidate")
+        super().end_headers()
 
     def _send_json(self, status: int, payload: dict) -> None:
         body = json.dumps(payload).encode("utf-8")
@@ -144,20 +167,21 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
                     "error": f"invalid status {data['status']!r}, "
                              f"want one of {sorted(VALID_STATUSES)}"})
                 return
-            manifest = _load_audio_manifest()
-            # Auto-create entry on first action (unlike image review,
-            # which requires the entry to be pre-indexed).
-            entry = manifest.setdefault(key, {
-                "status": "pending",
-                "notes": "",
-                "reviewed_at": None,
-            })
-            if "status" in data:
-                entry["status"] = data["status"]
-            if "notes" in data:
-                entry["notes"] = data["notes"]
-            entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
-            _save_audio_manifest(manifest)
+            with AUDIO_MANIFEST_LOCK:
+                manifest = _load_audio_manifest()
+                # Auto-create entry on first action (unlike image review,
+                # which requires the entry to be pre-indexed).
+                entry = manifest.setdefault(key, {
+                    "status": "pending",
+                    "notes": "",
+                    "reviewed_at": None,
+                })
+                if "status" in data:
+                    entry["status"] = data["status"]
+                if "notes" in data:
+                    entry["notes"] = data["notes"]
+                entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+                _save_audio_manifest(manifest)
             self._send_json(200, {"ok": True, "entry": entry, "key": key})
             return
 
@@ -166,22 +190,23 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
             if not isinstance(data, dict):
                 self._send_json(400, {"error": "body must be a JSON object"})
                 return
-            manifest = _load_audio_manifest()
-            now = datetime.now(timezone.utc).isoformat()
-            updated = []
-            for key, patch in data.items():
-                if not isinstance(patch, dict):
-                    continue
-                entry = manifest.setdefault(key, {
-                    "status": "pending", "notes": "", "reviewed_at": None,
-                })
-                if "status" in patch and patch["status"] in VALID_STATUSES:
-                    entry["status"] = patch["status"]
-                if "notes" in patch:
-                    entry["notes"] = patch["notes"]
-                entry["reviewed_at"] = now
-                updated.append(key)
-            _save_audio_manifest(manifest)
+            with AUDIO_MANIFEST_LOCK:
+                manifest = _load_audio_manifest()
+                now = datetime.now(timezone.utc).isoformat()
+                updated = []
+                for key, patch in data.items():
+                    if not isinstance(patch, dict):
+                        continue
+                    entry = manifest.setdefault(key, {
+                        "status": "pending", "notes": "", "reviewed_at": None,
+                    })
+                    if "status" in patch and patch["status"] in VALID_STATUSES:
+                        entry["status"] = patch["status"]
+                    if "notes" in patch:
+                        entry["notes"] = patch["notes"]
+                    entry["reviewed_at"] = now
+                    updated.append(key)
+                _save_audio_manifest(manifest)
             self._send_json(200, {"ok": True, "updated": updated})
             return
 
@@ -190,22 +215,23 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
             from urllib.parse import unquote
             key = unquote(self.path[len("/api/review/"):])
             data = self._read_json_body()
-            manifest = _load_manifest()
-            if key not in manifest:
-                self._send_json(404, {"error": f"unknown image key: {key}"})
-                return
-            entry = manifest[key]
-            if "status" in data:
-                if data["status"] not in VALID_STATUSES:
-                    self._send_json(400, {
-                        "error": f"invalid status {data['status']!r}, "
-                                 f"want one of {sorted(VALID_STATUSES)}"})
+            with IMAGE_MANIFEST_LOCK:
+                manifest = _load_manifest()
+                if key not in manifest:
+                    self._send_json(404, {"error": f"unknown image key: {key}"})
                     return
-                entry["status"] = data["status"]
-            if "notes" in data:
-                entry["notes"] = data["notes"]
-            entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
-            _save_manifest(manifest)
+                entry = manifest[key]
+                if "status" in data:
+                    if data["status"] not in VALID_STATUSES:
+                        self._send_json(400, {
+                            "error": f"invalid status {data['status']!r}, "
+                                     f"want one of {sorted(VALID_STATUSES)}"})
+                        return
+                    entry["status"] = data["status"]
+                if "notes" in data:
+                    entry["notes"] = data["notes"]
+                entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+                _save_manifest(manifest)
             self._send_json(200, {"ok": True, "entry": entry, "key": key})
             return
 
@@ -214,20 +240,21 @@ class ReviewHandler(http.server.SimpleHTTPRequestHandler):
             if not isinstance(data, dict):
                 self._send_json(400, {"error": "body must be a JSON object"})
                 return
-            manifest = _load_manifest()
-            now = datetime.now(timezone.utc).isoformat()
-            updated = []
-            for key, patch in data.items():
-                if key not in manifest or not isinstance(patch, dict):
-                    continue
-                entry = manifest[key]
-                if "status" in patch and patch["status"] in VALID_STATUSES:
-                    entry["status"] = patch["status"]
-                if "notes" in patch:
-                    entry["notes"] = patch["notes"]
-                entry["reviewed_at"] = now
-                updated.append(key)
-            _save_manifest(manifest)
+            with IMAGE_MANIFEST_LOCK:
+                manifest = _load_manifest()
+                now = datetime.now(timezone.utc).isoformat()
+                updated = []
+                for key, patch in data.items():
+                    if key not in manifest or not isinstance(patch, dict):
+                        continue
+                    entry = manifest[key]
+                    if "status" in patch and patch["status"] in VALID_STATUSES:
+                        entry["status"] = patch["status"]
+                    if "notes" in patch:
+                        entry["notes"] = patch["notes"]
+                    entry["reviewed_at"] = now
+                    updated.append(key)
+                _save_manifest(manifest)
             self._send_json(200, {"ok": True, "updated": updated})
             return
 

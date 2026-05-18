@@ -126,8 +126,13 @@ def _load_prompt_body(prompt_path_rel: str) -> str:
 
 
 def _asset_url(asset_path: Path) -> str:
+    """Image URL with a cache-busting query string keyed on the file's
+    mtime. Without this, browsers showed stale cached content when an
+    in-place reroll replaced a PNG (the URL didn't change). 2026-05-17
+    fix for Aaron's "~1-in-20 mislabel" report."""
     rel = asset_path.relative_to(ROOT).as_posix()
-    return f"../{rel}"
+    mtime = int(asset_path.stat().st_mtime)
+    return f"../{rel}?v={mtime}"
 
 
 def _key_from_path(p: Path) -> str:
