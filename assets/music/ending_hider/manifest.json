@@ -1,0 +1,31 @@
+{
+  "context": "ending_hider",
+  "category": "ending",
+  "description": "Ending \u2014 Hider path; survival by silence, civilizations cloaked",
+  "key": "D minor",
+  "bpm": 52,
+  "duration_s": 60,
+  "backend": "audioldm2-music/local-server",
+  "stems": {
+    "drone": {
+      "path": "assets/music/ending_hider/drone.wav",
+      "prompt": "Isolated DRONE BASS STEM for layered production: ultra-low muffled drone with cloth dampening, almost subliminal, in D minor at 52 bpm, Hider-path ending \u2014 survival by silence, civilizations cloaked below the Others' threshold, victory by not being noticed, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "pulse": {
+      "path": "assets/music/ending_hider/pulse.wav",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: extremely sparse soft heartbeat, life continuing quietly underground, in D minor at 52 bpm, Hider-path ending \u2014 survival by silence, civilizations cloaked below the Others' threshold, victory by not being noticed, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "texture": {
+      "path": "assets/music/ending_hider/texture.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: fabric-rustle and hushed breathing of civilizations choosing to be invisible, hidden but alive, in D minor at 52 bpm, Hider-path ending \u2014 survival by silence, civilizations cloaked below the Others' threshold, victory by not being noticed, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    }
+  },
+  "generated_at": "2026-05-18T00:46:59Z",
+  "notes": ""
+}

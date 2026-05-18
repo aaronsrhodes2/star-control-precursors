@@ -167,6 +167,8 @@ def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("name", nargs="?", help="Context name to generate (e.g. 'hyperspace')")
     ap.add_argument("--round", type=int, help="Generate every context with this round number")
+    ap.add_argument("--missing", action="store_true",
+                    help="Generate every context with at least one missing stem on disk")
     ap.add_argument("--list", action="store_true", help="Print available contexts and exit")
     ap.add_argument("--no-overwrite", action="store_true",
                     help="Skip stems whose output file already exists")
@@ -186,6 +188,29 @@ def main(argv: list[str]) -> int:
         return 0
 
     overwrite = not args.no_overwrite
+
+    if args.missing:
+        # Find contexts where at least one stem's .wav/.mp3/.ogg is missing.
+        # We run those contexts with overwrite disabled so existing stems
+        # are preserved and only the gaps get filled.
+        gappy: list[ContextSpec] = []
+        for spec in ALL_CONTEXTS.values():
+            out_dir = OUT_ROOT / spec.name
+            for stem_name in spec.stems:
+                exts = [".mp3", ".ogg", ".wav"]
+                if not any((out_dir / f"{stem_name}{ext}").exists() for ext in exts):
+                    gappy.append(spec)
+                    break
+        if not gappy:
+            print("no missing music — corpus is complete")
+            return 0
+        print(f"generating {len(gappy)} contexts with missing stems  "
+              f"[backend={BACKEND}]")
+        t0 = time.time()
+        for spec in gappy:
+            generate_context(spec, overwrite=False)
+        print(f"\n## --missing done in {time.time()-t0:.1f}s")
+        return 0
 
     if args.round is not None:
         specs = for_round(args.round)

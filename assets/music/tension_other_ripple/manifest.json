@@ -1,0 +1,31 @@
+{
+  "context": "tension_other_ripple",
+  "category": "cinematic",
+  "description": "Tension \u2014 Other-ripples detected; gradient between safe travel and Reveal",
+  "key": "C minor",
+  "bpm": 64,
+  "duration_s": 45,
+  "backend": "audioldm2-music/local-server",
+  "stems": {
+    "drone": {
+      "path": "assets/music/tension_other_ripple/drone.wav",
+      "prompt": "Isolated DRONE BASS STEM for layered production: slow rising low frequency drone with subtle phase-shift modulation, sense of approach, in C minor at 64 bpm, creeping dimensional dread, scanner-detecting-something-wrong, uncertain tension that doesn't resolve, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "pulse": {
+      "path": "assets/music/tension_other_ripple/pulse.wav",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: irregular high-frequency scanner-tick patterns, anxious detection rhythm, in C minor at 64 bpm, creeping dimensional dread, scanner-detecting-something-wrong, uncertain tension that doesn't resolve, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    },
+    "texture": {
+      "path": "assets/music/tension_other_ripple/texture.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: faint distant whispers half-heard, displaced air, the edge of a presence you can't quite locate, in C minor at 64 bpm, creeping dimensional dread, scanner-detecting-something-wrong, uncertain tension that doesn't resolve, stems-only mix",
+      "sample_rate": 16000,
+      "backend": "audioldm2-music/local-server"
+    }
+  },
+  "generated_at": "2026-05-18T00:40:59Z",
+  "notes": "Plays when the scanner detects dimensional ripples but the player hasn't seen Them yet. The tonal gradient between safe and the Others' reveal \u2014 building dread without resolution."
+}

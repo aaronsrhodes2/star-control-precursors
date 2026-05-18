@@ -733,6 +733,606 @@ LEMMKIN_PEACE = ContextSpec(
 )
 
 
+# ===========================================================================
+# Round 3 — fill out the original 43-track scope plan via local backend.
+# 27 contexts. ElevenLabs quota's gone; AudioLDM2 is free; Aaron locked
+# scope but never authored these. Author-and-fire pass.
+# ===========================================================================
+
+# --- Travel (1 missing) ------------------------------------------------------
+PROTO_SPECIES_WONDER = ContextSpec(
+    name="proto_species_wonder",
+    category="travel",
+    key="A minor",
+    bpm=68,
+    duration_s=90,
+    description="Primordial-life observation — shared theme for any proto-species visit",
+    round=3,
+    notes="Proto-species are below the Others' threshold; observation is "
+          "lighthearted-melancholy. One track reused across proto-Ur-Quan, "
+          "proto-Spathi, proto-Yehat, proto-humans, etc.",
+    stems=_standard_5stem(
+        "A minor", 68,
+        "primordial alien wildlife observation, slow contemplative wonder, "
+        "lightly melancholy reverence for life that doesn't know it's being watched",
+        bass_body="warm low contrabass drone with very slow pitch swells, no drums no melody no pads",
+        perc_body="sparse hand percussion: distant log-drum taps, dripping cave-water rhythms, no melody no bass no pads",
+        pad_body="warm minor-key string pad with subtle vibrato, gently swelling chord beds, no melody no drums no bass",
+        lead_body="solo bone-flute melody, slow plaintive phrases, ancient and wordless, no drums no bass no pads",
+        amb_body="distant primordial wildlife calls, wind through reeds, soft scattered chirps, no melody no drums no bass",
+    ),
+)
+
+
+# --- Species peace (6 missing — Chenjesu / Melnorme / Utwig / Taalo / Burvixese / Planar) ---
+CHENJESU_PEACE = ContextSpec(
+    name="chenjesu",
+    category="species_peace",
+    key="D major",
+    bpm=58,
+    duration_s=90,
+    description="Chenjesu — crystalline-resonant, rooted, ancient stillness",
+    round=3,
+    notes="Crystalline-resonant. Sympathetic harmonic overtones of struck "
+          "quartz. The Chenjesu are below the Others' threshold because "
+          "they don't broadcast — the music should sound INWARD.",
+    stems=_standard_5stem(
+        "D major", 58,
+        "crystalline meditative species theme, struck-quartz harmonics, "
+        "ancient stillness, inward-facing",
+        bass_body="low resonant crystal-bowl drone with slow harmonic beating, no drums no melody no pads",
+        perc_body="very sparse struck-glass percussion with long sympathetic ring-tails, no melody no bass no pads",
+        pad_body="sustained pure sine-wave chord beds in just-intonation harmony, crystalline cold but not unfeeling, no melody no drums no bass",
+        lead_body="solo struck-crystal melody phrasing slow harmonic-overtone series, ancient meditative, no drums no bass no pads",
+        amb_body="distant crystal-cave reverberation, sympathetic harmonic shimmer, no wind no warmth, no melody no drums no bass",
+    ),
+)
+
+MELNORME_PEACE = ContextSpec(
+    name="melnorme",
+    category="species_peace",
+    key="E major",
+    bpm=96,
+    duration_s=90,
+    description="Melnorme — bio-cargo trader, gold/silver chimes, enigmatic commerce",
+    round=3,
+    notes="Bio-cargo trader sonic identity per the AUDIO_INFO row: "
+          "resonant gold/silver chimes, low gravelly cargo-hold bass, "
+          "enigmatic merchant air.",
+    stems=_standard_5stem(
+        "E major", 96,
+        "enigmatic alien-trader species theme, gold-silver bell harmonics over "
+        "gravelly cargo-hold bass, mercantile but not unkind",
+        bass_body="low gravelly cargo-hold rumble with metallic scrape undertones, no drums no melody no pads",
+        perc_body="resonant gold-silver chime patterns, soft metallic clinks of coinage, no melody no bass no pads",
+        pad_body="warm major-key brass pad with cargo-deck wood-warmth underneath, no melody no drums no bass",
+        lead_body="solo high struck-bell melody, persuasive merchant phrasing with enigmatic minor inflections, no drums no bass no pads",
+        amb_body="distant trade-network chatter, ship-hold metallic creaks, gentle gold-coin clinking, no melody no drums no bass",
+    ),
+)
+
+UTWIG_PEACE = ContextSpec(
+    name="utwig",
+    category="species_peace",
+    key="F sharp minor",
+    bpm=54,
+    duration_s=90,
+    description="Utwig — mournful-shame-cloaked, veiled drums, ceremonial bells under fabric",
+    round=3,
+    notes="The long shame is their cognitive cloak. Veiled drums, distant "
+          "mournful horns, ceremonial bells UNDER FABRIC — every sound "
+          "should feel slightly muffled, dampened, hidden.",
+    stems=_standard_5stem(
+        "F sharp minor", 54,
+        "mournful muted ceremonial species theme, every sound dampened "
+        "as if heard through cloth, ancient grief disciplined into stillness",
+        bass_body="muffled low taiko-drum heart-pulse on slow downbeats, dampened by fabric, no drums no melody no pads",
+        perc_body="veiled ceremonial bells with cloth-muted strikes, soft slow shaker, no melody no bass no pads",
+        pad_body="distant mournful horn-pad in close minor harmony, soft sustained chord beds heard through walls, no melody no drums no bass",
+        lead_body="solo low cello solo with mournful phrasing, restrained dignified grief, no drums no bass no pads",
+        amb_body="soft fabric-rustle, distant low chant fragments, dampened cathedral reverb, no melody no drums no bass",
+    ),
+)
+
+TAALO_PEACE = ContextSpec(
+    name="taalo",
+    category="species_peace",
+    key="C minor",
+    bpm=44,
+    duration_s=90,
+    description="Taalo — silicon-meditative, stone-on-stone, multi-millennial patience",
+    round=3,
+    notes="Silicon-based species below the Others' threshold by biology. "
+          "Slow geological harmonics. The music should feel like it's "
+          "moving at a different time-scale from the listener.",
+    stems=_standard_5stem(
+        "C minor", 44,
+        "silicon-meditative species theme, geological time-scale, "
+        "stone-on-stone harmonics, deep multi-millennial patience",
+        bass_body="ultra-low sub-bass slow geological tone, like distant tectonic shift, no drums no melody no pads",
+        perc_body="very sparse stone-on-stone percussion with long ring-tails, struck-pebble rhythms, no melody no bass no pads",
+        pad_body="sustained granular drone pad with slow modulation, mineral-resonance harmony, no melody no drums no bass",
+        lead_body="solo struck-stone bell-tone melody phrasing extremely slowly, no human urgency, no drums no bass no pads",
+        amb_body="distant cave-water drip, deep stone reverberation, slow tectonic creak, no melody no drums no bass",
+    ),
+)
+
+BURVIXESE_PEACE = ContextSpec(
+    name="burvixese",
+    category="species_peace",
+    key="B flat major",
+    bpm=112,
+    duration_s=90,
+    description="Burvixese — Be-Loud-doctrine, brass fanfares, fearless announcement",
+    round=3,
+    notes="The Be-Loud doctrine: they expected the Others would recognize them "
+          "as peers if they broadcast loud enough. They were wrong. The music "
+          "should sound CONFIDENT, FORWARD, ANNOUNCING — but the listener "
+          "(who knows what's coming) should hear the tragedy in it.",
+    stems=_standard_5stem(
+        "B flat major", 112,
+        "confident-announcement species theme, bright brass fanfares, "
+        "fearless declaration, four-handed engineering precision",
+        bass_body="confident walking tuba bassline with marching forward momentum, no drums no melody no pads",
+        perc_body="four-handed mechanical metal percussion, factory-floor rhythmic precision, no melody no bass no pads",
+        pad_body="bright brass fanfare pad in major chords, fearless announcing, no melody no drums no bass",
+        lead_body="herald-trumpet melody declaring confident phrases, broadcasting outward, no drums no bass no pads",
+        amb_body="distant city-square announcements, ringing metal workshops, no melody no drums no bass",
+    ),
+)
+
+PLANAR_PEACE = ContextSpec(
+    name="planar",
+    category="species_peace",
+    key="G minor",
+    bpm=82,
+    duration_s=90,
+    description="Planar — edge-on-quiet, planar whistle, deliberate stereo flatness",
+    round=3,
+    notes="2D-ribbon species — edge-on invisible. The sonic signature is "
+          "deliberately flat in stereo (everything centered) with a slicing "
+          "high whistle as the only mobile element.",
+    stems=_standard_5stem(
+        "G minor", 82,
+        "two-dimensional alien species theme, edge-on-quiet, "
+        "deliberate stereo-centered flatness, slicing high whistle",
+        bass_body="centered low drone with zero stereo width, paper-flat presence, no drums no melody no pads",
+        perc_body="centered sharp pencil-tap percussion with zero stereo movement, no melody no bass no pads",
+        pad_body="centered pad with razor-thin frequency response, no width no depth, no melody no drums no bass",
+        lead_body="slicing high whistle melody that pans sharply left-right when the Planar turns its edge, otherwise centered, no drums no bass no pads",
+        amb_body="soft paper-rustle, distant edge-on whistle, dimensionally flat texture, no melody no drums no bass",
+    ),
+)
+
+
+# --- Homeworld themes (5 missing) -------------------------------------------
+# These are "distinctly more exciting" versions per Aaron's locked scope —
+# the species PEACE theme is base ambient; the HOMEWORLD theme is a richer
+# energetic version played when the player arrives at the species' hub.
+
+SLYLANDRO_CONSERVATORY = ContextSpec(
+    name="slylandro_conservatory",
+    category="homeworld",
+    key="A major",
+    bpm=92,
+    duration_s=90,
+    description="Slylandro Conservatory — gas-giant city of awe; more energy than peace theme",
+    round=3,
+    stems=_standard_5stem(
+        "A major", 92,
+        "Slylandro homeworld — magnificent gas-giant cloud city, "
+        "more energy than the contact theme, awe-rich and majestic",
+        bass_body="rich layered analog synth bass with floating major-key motion, more present than the peace theme, no drums no melody no pads",
+        perc_body="warm mid-tempo mallet percussion + soft kit, gentle propulsion, no melody no bass no pads",
+        pad_body="huge major-key choral synth pad with layered string warmth, magnificent atmospheric beds, no melody no drums no bass",
+        lead_body="bright flute-and-bell duo melody, awed celebratory phrases climbing through cloud layers, no drums no bass no pads",
+        amb_body="gas-giant wind sweeping through pressure shells, distant Slylandro chorus, cloud-city activity, no melody no drums no bass",
+    ),
+)
+
+MYCON_HIVE_AWAKENING = ContextSpec(
+    name="mycon_hive_awakening",
+    category="homeworld",
+    key="F minor",
+    bpm=72,
+    duration_s=90,
+    description="Mycon Hive — the awakening site; ritual + Deep Child rising",
+    round=3,
+    notes="More intense than the peace theme — this is the colony, not a "
+          "wandering biot. The Deep Child whispers are LOUDER here.",
+    stems=_standard_5stem(
+        "F minor", 72,
+        "Mycon hive-colony, ritual chanting amplified by hundreds of voices, "
+        "Deep Child whispers gaining strength under the surface",
+        bass_body="thick layered bio-thrum bass with deeper sub-bass than the peace version, no drums no melody no pads",
+        perc_body="ritual percussion: synchronized bone-knock pulses, wet organic taps, hive-scale rhythm, no melody no bass no pads",
+        pad_body="droning massed-chorus chant pad with slight dissonance creeping in, no melody no drums no bass",
+        lead_body="ceremonial chanted-syllable lead melody, low voices stating ritual phrases, no drums no bass no pads",
+        amb_body="cave reverb of hundreds of Mycon biots, low whispered Deep Child interference, no melody no drums no bass",
+    ),
+)
+
+ARILOU_SAGES_GROVE = ContextSpec(
+    name="arilou_sages_grove",
+    category="homeworld",
+    key="B flat major",
+    bpm=80,
+    duration_s=90,
+    description="Arilou Sage's Grove — Quasi-Space colony; richer than peace theme",
+    round=3,
+    stems=_standard_5stem(
+        "B flat major", 80,
+        "Arilou Quasi-Space colony, dimensional-pocket city, "
+        "richer and more present than the peace theme",
+        bass_body="warm sub-bass with dimensional phase-shift modulation, slightly more grounded than peace version, no drums no melody no pads",
+        perc_body="mallet percussion with long phase-shifted reverb tails, gentle propulsion, no melody no bass no pads",
+        pad_body="layered choral synth pad with multi-dimensional harmonic textures, no melody no drums no bass",
+        lead_body="celesta + struck-bell melody phrasing thoughtful patient phrases, no drums no bass no pads",
+        amb_body="Quasi-Space dimensional shimmer, distant Arilou voices in folded grammar, no melody no drums no bass",
+    ),
+)
+
+ANDROSYNTH_CRASH_SITE = ContextSpec(
+    name="androsynth_crash_site",
+    category="homeworld",
+    key="A minor",
+    bpm=104,
+    duration_s=90,
+    description="Androsynth Crash Site — Coel Tessar's refugee outpost; bittersweet hopeful",
+    round=3,
+    notes="The Distress Beacon is the slice's anchor moment. The site theme "
+          "leans into REFUGEE HOPE under the time-displacement tragedy.",
+    stems=_standard_5stem(
+        "A minor", 104,
+        "Androsynth refugee crash site, jury-rigged human ingenuity, "
+        "bittersweet survivor hope, retro-Atari over warm analog",
+        bass_body="warm analog synth bass with steady determined motion, refugee resourcefulness, no drums no melody no pads",
+        perc_body="mid-tempo retro-PCM kit with slight reverb, brave forward rhythm, no melody no bass no pads",
+        pad_body="warm analog string pad with major-minor mode shifts, bittersweet hope, no melody no drums no bass",
+        lead_body="brave Atari-era PCM lead melody, hopeful refugee anthem with hints of melancholy, no drums no bass no pads",
+        amb_body="crash-site machinery hum, distant voices in human languages, salvaged-tech tones, no melody no drums no bass",
+    ),
+)
+
+MELNORME_BIO_CARGO_HOLD = ContextSpec(
+    name="melnorme_bio_cargo_hold",
+    category="homeworld",
+    key="E major",
+    bpm=88,
+    duration_s=90,
+    description="Melnorme Bio-Cargo Hold — the trade pod interior; richer than peace theme",
+    round=3,
+    stems=_standard_5stem(
+        "E major", 88,
+        "Melnorme bio-cargo trade pod interior, mercantile bustle, "
+        "richer gold-silver harmonics than the peace theme",
+        bass_body="warm low cargo-hold rumble with metallic resonance, more grounded than peace version, no drums no melody no pads",
+        perc_body="layered gold-silver chime patterns at trade-floor tempo, coinage rhythms, no melody no bass no pads",
+        pad_body="rich major-key brass pad with cargo-deck warmth, mercantile prosperity, no melody no drums no bass",
+        lead_body="trade-network melody with multiple struck-bell voices in counterpoint, busy mercantile life, no drums no bass no pads",
+        amb_body="bio-cargo containment system hum, distant trade negotiations, gold-coin clinks, no melody no drums no bass",
+    ),
+)
+
+
+# --- Furling civilization (6 missing) ---------------------------------------
+# cleanser_council is in Round 1. The remaining 6: home (Mh-Lai) + 5
+# per-faction councils. All share the "monolithic Furling civilization"
+# orchestral base with per-faction flavor.
+
+FURLING_HOME = ContextSpec(
+    name="furling_home",
+    category="furling_faction",
+    key="D major",
+    bpm=66,
+    duration_s=90,
+    description="Furling home / Mh-Lai — warm civilizational pride, the player's culture",
+    round=3,
+    notes="The player IS Furling. This theme is HOME — warm, organic-tech, "
+          "civilizationally proud but not nationalistic. Wood-and-resin "
+          "instruments, copper bells, plucked sinew strings.",
+    stems=_standard_5stem(
+        "D major", 66,
+        "Furling civilization home theme, warm organic-tech, "
+        "wood-and-resin orchestra, civilizationally proud but tender",
+        bass_body="warm wooden contrabass with deep resin-rich tone, civilization-foundation pulse, no drums no melody no pads",
+        perc_body="copper bell rhythms + warm wood-block percussion, ceremonial but unhurried, no melody no bass no pads",
+        pad_body="layered string pad with sinew-string warmth and copper-bell shimmer underneath, no melody no drums no bass",
+        lead_body="plucked-string melody with warm hopeful phrasing, like a folk tune passed down generations, no drums no bass no pads",
+        amb_body="distant Furling crowd murmur, gentle wind through Mh-Lai's stone halls, no melody no drums no bass",
+    ),
+)
+
+COUNCIL_PERSUADER = ContextSpec(
+    name="council_persuader",
+    category="furling_faction",
+    key="C major",
+    bpm=68,
+    duration_s=90,
+    description="Council — Persuader faction; diplomatic-reluctant negotiation",
+    round=3,
+    stems=_standard_5stem(
+        "C major", 68,
+        "Persuader Furling Council theme — diplomatic-reluctant, "
+        "soft strings, warm winds, almost-apologetic negotiation",
+        bass_body="warm low cello pulse on slow downbeats, gentle and reluctant, no drums no melody no pads",
+        perc_body="very sparse muted timpani + soft brush snare, restrained pace, no melody no bass no pads",
+        pad_body="soft string section pad with warm winds underneath, supportive sustaining chords, no melody no drums no bass",
+        lead_body="solo clarinet melody phrasing patient persuasive arguments, no drums no bass no pads",
+        amb_body="distant Council chamber acoustics, scrolls being unrolled, no melody no drums no bass",
+    ),
+)
+
+COUNCIL_COMPELLER = ContextSpec(
+    name="council_compeller",
+    category="furling_faction",
+    key="G minor",
+    bpm=78,
+    duration_s=90,
+    description="Council — Compeller faction; coercive, restrained menace under calm",
+    round=3,
+    stems=_standard_5stem(
+        "G minor", 78,
+        "Compeller Furling Council theme — hard mechanical clicks under "
+        "apparent calm, tightened cables, restrained menace",
+        bass_body="taut low strings with metallic mechanical undertones, restrained tension, no drums no melody no pads",
+        perc_body="hard mechanical clicks and chain-tightening sounds at slow rhythmic intervals, no melody no bass no pads",
+        pad_body="cold minor-key pad with subtle dissonant interval, calm exterior over menace, no melody no drums no bass",
+        lead_body="solo bassoon melody phrasing veiled threat with diplomatic surface, no drums no bass no pads",
+        amb_body="distant cable-tightening creaks, restrained breathing, Council chamber's colder side, no melody no drums no bass",
+    ),
+)
+
+COUNCIL_DEFENDER = ContextSpec(
+    name="council_defender",
+    category="furling_faction",
+    key="D minor",
+    bpm=84,
+    duration_s=90,
+    description="Council — Defender faction; stalwart-honest, brass-and-steel reliability",
+    round=3,
+    stems=_standard_5stem(
+        "D minor", 84,
+        "Defender Furling Council theme — stalwart-honest, "
+        "brass-and-steel military reliability, no embellishment",
+        bass_body="solid brass bass with clean military rhythm, no nonsense, no drums no melody no pads",
+        perc_body="clean snare-and-bass-drum military pattern, disciplined timekeeping, no melody no bass no pads",
+        pad_body="bright brass chord beds in mid-bright major-7 harmony, honest fanfare, no melody no drums no bass",
+        lead_body="trumpet melody phrasing direct honorable phrases, no flourishes, no drums no bass no pads",
+        amb_body="distant boots-on-stone, banners flapping, parade-ground discipline, no melody no drums no bass",
+    ),
+)
+
+COUNCIL_HIDER = ContextSpec(
+    name="council_hider",
+    category="furling_faction",
+    key="A minor",
+    bpm=56,
+    duration_s=90,
+    description="Council — Hider faction; veiled, fabric-rustle, dampened resonance",
+    round=3,
+    stems=_standard_5stem(
+        "A minor", 56,
+        "Hider Furling Council theme — hush, fabric-rustle, "
+        "dampened resonance, almost-silent retreat",
+        bass_body="ultra-low muffled drone with fabric-dampened tone, almost-felt-not-heard, no drums no melody no pads",
+        perc_body="extremely sparse soft brush sweeps and cloth rustles, near-silence, no melody no bass no pads",
+        pad_body="muffled minor pad heard through walls, sustained but distant, no melody no drums no bass",
+        lead_body="solo muted English horn melody phrasing reluctant withdrawal, no drums no bass no pads",
+        amb_body="fabric rustles, hushed breathing, distant veiled footsteps, no melody no drums no bass",
+    ),
+)
+
+COUNCIL_DENIER = ContextSpec(
+    name="council_denier",
+    category="furling_faction",
+    key="F major",
+    bpm=88,
+    duration_s=90,
+    description="Council — Denier faction; brittle major-key cheer, forced calm",
+    round=3,
+    notes="The Deniers refuse to believe the Others are coming. Their music "
+          "is BRITTLE major-key cheerfulness — slightly off-pitched bells "
+          "that you can hear are wrong but the Deniers can't.",
+    stems=_standard_5stem(
+        "F major", 88,
+        "Denier Furling Council theme — brittle major-key cheer, "
+        "slightly-off-pitched bells, forced calm, denial as a sound",
+        bass_body="bright major-key walking bass with slight pitch wavering you can't quite pin, no drums no melody no pads",
+        perc_body="cheerful light kit + tambourine, slightly too eager, no melody no bass no pads",
+        pad_body="bright major-key pad with one note SUBTLY FLAT so the cheer reads as wrong, no melody no drums no bass",
+        lead_body="upbeat flute melody phrasing reassuring messages with that same slightly-off pitch wavering, no drums no bass no pads",
+        amb_body="distant cheerful Council chatter, party-pleasantry murmurs, papers being shuffled too quickly, no melody no drums no bass",
+    ),
+)
+
+
+# --- Cinematic stingers (3 missing — 3-stem each) ---------------------------
+
+OTHERS_REVEAL = ContextSpec(
+    name="others_reveal",
+    category="cinematic",
+    key="E flat minor",
+    bpm=58,
+    duration_s=45,
+    description="Others reveal stinger — the Distress Beacon proof moment; never-funny dread",
+    round=3,
+    notes="Per the humor doctrine: the Others are NEVER funny. This stinger "
+          "is the tonal break — broken radio of voices speaking in reverse, "
+          "subharmonic hum below hearing, the sound of being SEEN.",
+    stems=_stinger_3stem(
+        "E flat minor", 58,
+        "the Others reveal — never-funny dread, the sound of being seen, "
+        "trans-dimensional predator presence",
+        drone_body="subharmonic hum below normal hearing range, slowly modulating, the sound of attention focusing on you",
+        pulse_body="irregular reality-tearing pulse, like radio static between dimensions, no rhythmic predictability",
+        texture_body="broken radio of voices speaking in reverse, distorted human speech played backwards at various pitches, the SOUND OF BEING SEEN",
+    ),
+)
+
+TENSION_OTHER_RIPPLE = ContextSpec(
+    name="tension_other_ripple",
+    category="cinematic",
+    key="C minor",
+    bpm=64,
+    duration_s=45,
+    description="Tension — Other-ripples detected; gradient between safe travel and Reveal",
+    round=3,
+    notes="Plays when the scanner detects dimensional ripples but the "
+          "player hasn't seen Them yet. The tonal gradient between safe "
+          "and the Others' reveal — building dread without resolution.",
+    stems=_stinger_3stem(
+        "C minor", 64,
+        "creeping dimensional dread, scanner-detecting-something-wrong, "
+        "uncertain tension that doesn't resolve",
+        drone_body="slow rising low frequency drone with subtle phase-shift modulation, sense of approach",
+        pulse_body="irregular high-frequency scanner-tick patterns, anxious detection rhythm",
+        texture_body="faint distant whispers half-heard, displaced air, the edge of a presence you can't quite locate",
+    ),
+)
+
+RAINBOW_SEEDING_CLIMAX = ContextSpec(
+    name="rainbow_seeding_climax",
+    category="cinematic",
+    key="G major",
+    bpm=76,
+    duration_s=90,
+    description="Rainbow World seeding climax — Act 4 set-piece; civilizational hope",
+    round=3,
+    notes="The Rainbow Worlds form the arrow toward Andromeda. This is the "
+          "moment of placement — civilizational hope at scale, mythic and "
+          "earned. 5-stem rather than 3-stem because it's a set-piece.",
+    stems=_standard_5stem(
+        "G major", 76,
+        "Rainbow World seeding climax — civilizational hope, mythic scale, "
+        "earned triumph after a long arc",
+        bass_body="full orchestral low end: contrabass + tuba + low brass, deep cinematic foundation building, no drums no melody no pads",
+        perc_body="orchestral percussion with timpani rolls + crash cymbals on the climax beats, ceremonial weight, no melody no bass no pads",
+        pad_body="huge sustained string section + horns + choir, rising major-key hope, swelling on each phrase, no melody no drums no bass",
+        lead_body="HEROIC THEME: full brass + woodwinds stating a memorable melodic phrase of civilizational hope, soaring and noble, no drums no bass no pads",
+        amb_body="distant Furling chorus singing wordless awe, cosmic wind, rainbow-color resonance, no melody no drums no bass",
+    ),
+)
+
+
+# --- Endings (6 — one per faction outcome; 3-stem each) ---------------------
+
+ENDING_PERSUADER = ContextSpec(
+    name="ending_persuader",
+    category="ending",
+    key="C major",
+    bpm=64,
+    duration_s=60,
+    description="Ending — Persuader path; bittersweet success of patience",
+    round=3,
+    stems=_stinger_3stem(
+        "C major", 64,
+        "Persuader-path ending — bittersweet success of patient diplomacy, "
+        "everyone who could be saved was saved by talking",
+        drone_body="warm sustained major-key low strings + horns, bittersweet major-7 chord beds",
+        pulse_body="slow ceremonial bell on the downbeats, ritual closure",
+        texture_body="distant Furling and alien voices in chorus, mixed languages speaking together, civilizations preserved",
+    ),
+)
+
+ENDING_COMPELLER = ContextSpec(
+    name="ending_compeller",
+    category="ending",
+    key="E minor",
+    bpm=68,
+    duration_s=60,
+    description="Ending — Compeller path; survival by force",
+    round=3,
+    stems=_stinger_3stem(
+        "E minor", 68,
+        "Compeller-path ending — civilizations migrated under duress, "
+        "saved but resentful, the cost of certainty",
+        drone_body="hard metallic minor-key low drone with restrained tension, the sound of force having won",
+        pulse_body="slow heavy chain-tightening pulse, mechanical authority",
+        texture_body="distant alien voices in murmured complaint, controlled compliance, restrained acceptance",
+    ),
+)
+
+ENDING_CLEANSER = ContextSpec(
+    name="ending_cleanser",
+    category="ending",
+    key="E flat minor",
+    bpm=60,
+    duration_s=60,
+    description="Ending — Cleanser path; purification accomplished",
+    round=3,
+    notes="The hardest ending tonally — the player chose to euthanize "
+          "holdout species. Religious certainty + monolithic dread + a "
+          "tiny silence at the end for the cost.",
+    stems=_stinger_3stem(
+        "E flat minor", 60,
+        "Cleanser-path ending — purification accomplished, religious "
+        "certainty rendered as sound, ending in a silence that costs",
+        drone_body="cathedral organ low drone in minor key, monolithic conviction sustaining",
+        pulse_body="slow ceremonial toll, hangman's bell at memorial-march tempo",
+        texture_body="distant Furling chant fragments fading into silence, the empty cluster after, the cost",
+    ),
+)
+
+ENDING_DEFENDER = ContextSpec(
+    name="ending_defender",
+    category="ending",
+    key="A major",
+    bpm=72,
+    duration_s=60,
+    description="Ending — Defender path; honor preserved, fight refused-but-honored",
+    round=3,
+    stems=_stinger_3stem(
+        "A major", 72,
+        "Defender-path ending — honor preserved, stalwart-honest "
+        "civilization survived the Migration by refusing to dishonor anyone",
+        drone_body="warm brass-and-steel major chord sustain, honest reliable triumph",
+        pulse_body="clean military timpani heartbeat, disciplined closure",
+        texture_body="distant trumpet fanfare across the cluster, banners and remembered names",
+    ),
+)
+
+ENDING_HIDER = ContextSpec(
+    name="ending_hider",
+    category="ending",
+    key="D minor",
+    bpm=52,
+    duration_s=60,
+    description="Ending — Hider path; survival by silence, civilizations cloaked",
+    round=3,
+    stems=_stinger_3stem(
+        "D minor", 52,
+        "Hider-path ending — survival by silence, civilizations cloaked "
+        "below the Others' threshold, victory by not being noticed",
+        drone_body="ultra-low muffled drone with cloth dampening, almost subliminal",
+        pulse_body="extremely sparse soft heartbeat, life continuing quietly underground",
+        texture_body="fabric-rustle and hushed breathing of civilizations choosing to be invisible, hidden but alive",
+    ),
+)
+
+ENDING_DENIER = ContextSpec(
+    name="ending_denier",
+    category="ending",
+    key="F major",
+    bpm=84,
+    duration_s=60,
+    description="Ending — Denier path; brittle pretend-everything-is-fine; the music knows",
+    round=3,
+    notes="The Deniers refused to believe. This ending is the saddest "
+          "in disguise: brittle major-key cheer over slow underlying "
+          "dissonance. Cheerful surface, tragic substance.",
+    stems=_stinger_3stem(
+        "F major", 84,
+        "Denier-path ending — brittle major-key cheer holding together "
+        "over slowly-resolving dissonance, the music knows what the "
+        "Deniers won't admit",
+        drone_body="warm major-key drone with one subtly-flat tone, sustained surface cheer that almost works",
+        pulse_body="cheerful but rigid metronomic bell pulse, party music tempo gone wrong",
+        texture_body="forced laughter and party chatter at impossible distance, civilization pretending nothing is happening",
+    ),
+)
+
+
 # ---------------------------------------------------------------------------
 # Registry
 # ---------------------------------------------------------------------------
@@ -766,9 +1366,31 @@ ROUND_2_QUEUED: list[ContextSpec] = [
     BARGAINERS_PEACE,
 ]
 
+# Round 3 — fill the 43-track scope plan (27 contexts).
+# Authored 2026-05-17 after Aaron asked to label every locally-generated
+# track and finish out the missing music inventory via the local backend.
+ROUND_3_QUEUED: list[ContextSpec] = [
+    # Travel (1)
+    PROTO_SPECIES_WONDER,
+    # Species peace (6)
+    CHENJESU_PEACE, MELNORME_PEACE, UTWIG_PEACE, TAALO_PEACE,
+    BURVIXESE_PEACE, PLANAR_PEACE,
+    # Homeworld themes (5)
+    SLYLANDRO_CONSERVATORY, MYCON_HIVE_AWAKENING, ARILOU_SAGES_GROVE,
+    ANDROSYNTH_CRASH_SITE, MELNORME_BIO_CARGO_HOLD,
+    # Furling civ (6)
+    FURLING_HOME, COUNCIL_PERSUADER, COUNCIL_COMPELLER, COUNCIL_DEFENDER,
+    COUNCIL_HIDER, COUNCIL_DENIER,
+    # Cinematic stingers (3)
+    OTHERS_REVEAL, TENSION_OTHER_RIPPLE, RAINBOW_SEEDING_CLIMAX,
+    # Per-faction endings (6)
+    ENDING_PERSUADER, ENDING_COMPELLER, ENDING_CLEANSER,
+    ENDING_DEFENDER, ENDING_HIDER, ENDING_DENIER,
+]
+
 # All defined contexts (extends with each round).
 ALL_CONTEXTS: dict[str, ContextSpec] = {
-    spec.name: spec for spec in ROUND_1 + ROUND_2_QUEUED
+    spec.name: spec for spec in ROUND_1 + ROUND_2_QUEUED + ROUND_3_QUEUED
 }
 
 
