@@ -5,39 +5,39 @@
   "key": "G minor",
   "bpm": 82,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/planar/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: centered low drone with zero stereo width, paper-flat presence, no drums no melody no pads, in G minor at 82 bpm, two-dimensional alien species theme, edge-on-quiet, deliberate stereo-centered flatness, slicing high whistle, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/planar/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: centered sharp pencil-tap percussion with zero stereo movement, no melody no bass no pads, in G minor at 82 bpm, two-dimensional alien species theme, edge-on-quiet, deliberate stereo-centered flatness, slicing high whistle, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/planar/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: centered pad with razor-thin frequency response, no width no depth, no melody no drums no bass, in G minor at 82 bpm, two-dimensional alien species theme, edge-on-quiet, deliberate stereo-centered flatness, slicing high whistle, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/planar/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: slicing high whistle melody that pans sharply left-right when the Planar turns its edge, otherwise centered, no drums no bass no pads, in G minor at 82 bpm, two-dimensional alien species theme, edge-on-quiet, deliberate stereo-centered flatness, slicing high whistle, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/planar/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: soft paper-rustle, distant edge-on whistle, dimensionally flat texture, no melody no drums no bass, in G minor at 82 bpm, two-dimensional alien species theme, edge-on-quiet, deliberate stereo-centered flatness, slicing high whistle, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-18T00:14:12Z",
+  "generated_at": "2026-05-18T03:23:42Z",
   "notes": "2D-ribbon species \u2014 edge-on invisible. The sonic signature is deliberately flat in stereo (everything centered) with a slicing high whistle as the only mobile element."
 }

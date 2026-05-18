@@ -5,39 +5,39 @@
   "key": "F minor",
   "bpm": 72,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/mycon_hive_awakening/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: thick layered bio-thrum bass with deeper sub-bass than the peace version, no drums no melody no pads, in F minor at 72 bpm, Mycon hive-colony, ritual chanting amplified by hundreds of voices, Deep Child whispers gaining strength under the surface, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/mycon_hive_awakening/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: ritual percussion: synchronized bone-knock pulses, wet organic taps, hive-scale rhythm, no melody no bass no pads, in F minor at 72 bpm, Mycon hive-colony, ritual chanting amplified by hundreds of voices, Deep Child whispers gaining strength under the surface, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/mycon_hive_awakening/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: droning massed-chorus chant pad with slight dissonance creeping in, no melody no drums no bass, in F minor at 72 bpm, Mycon hive-colony, ritual chanting amplified by hundreds of voices, Deep Child whispers gaining strength under the surface, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/mycon_hive_awakening/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: ceremonial chanted-syllable lead melody, low voices stating ritual phrases, no drums no bass no pads, in F minor at 72 bpm, Mycon hive-colony, ritual chanting amplified by hundreds of voices, Deep Child whispers gaining strength under the surface, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/mycon_hive_awakening/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: cave reverb of hundreds of Mycon biots, low whispered Deep Child interference, no melody no drums no bass, in F minor at 72 bpm, Mycon hive-colony, ritual chanting amplified by hundreds of voices, Deep Child whispers gaining strength under the surface, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-18T00:18:34Z",
+  "generated_at": "2026-05-18T03:21:51Z",
   "notes": "More intense than the peace theme \u2014 this is the colony, not a wandering biot. The Deep Child whispers are LOUDER here."
 }

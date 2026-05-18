@@ -5,39 +5,39 @@
   "key": "G major",
   "bpm": 104,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/lemmkin/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: pizzicato low strings + soft tuba pulses on the downbeat, active walking bassline, warm but slightly off-tempo, no drums no melody no pads, in G major at 104 bpm, bright lively curious-fearless squirrel-clade species theme, subtly-wrong-cheerful, foreshadows tragedy under apparent joy, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/lemmkin/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: light jaunty hand-percussion: tambourine, shakers, soft snare brush, the rhythm of a troupe-investigating-something, no melody no bass no pads, in G major at 104 bpm, bright lively curious-fearless squirrel-clade species theme, subtly-wrong-cheerful, foreshadows tragedy under apparent joy, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/lemmkin/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: warm woodwind bed: clarinets and oboes in close harmony, lightly drifting major-key chord beds with ONE subtly-flat tone, no melody no drums no bass, in G major at 104 bpm, bright lively curious-fearless squirrel-clade species theme, subtly-wrong-cheerful, foreshadows tragedy under apparent joy, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/lemmkin/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: playful piccolo + plucked banjo-like string melody, bright curious phrasing, lively melodic line that climbs confidently, no drums no bass no pads, in G major at 104 bpm, bright lively curious-fearless squirrel-clade species theme, subtly-wrong-cheerful, foreshadows tragedy under apparent joy, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/lemmkin/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant rustling-leaves texture, soft squirrel-chitter under the mix, subtle wrong-note shimmer that doesn't quite resolve, no melody no drums no bass, in G major at 104 bpm, bright lively curious-fearless squirrel-clade species theme, subtly-wrong-cheerful, foreshadows tragedy under apparent joy, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-17T23:30:56Z",
+  "generated_at": "2026-05-18T03:12:27Z",
   "notes": "Lemmkin sonic identity: bright major-key woodwinds and plucked strings, lively rhythmic activity, but with ONE subtle quality that reads as WRONG (a slightly-flat note in the melody, a shifted accent that lands off the beat, etc.) so the music sounds 'too cheerful for the danger' the species is in. Aaron's note from the species lore: 'they will die LEARNING, not believing they'd live.' Foreshadow that."
 }

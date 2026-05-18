@@ -5,39 +5,39 @@
   "key": "G major",
   "bpm": 96,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/planet_lander/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: steady walking analog synth bassline with optimistic forward motion, no drums no melody no pads, in G major at 96 bpm, methodical sci-fi surface exploration, productive working tempo, slight wonder, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/planet_lander/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: light kit with rim-shots and shaker, mid-tempo working rhythm, no melody no bass no pads, in G major at 96 bpm, methodical sci-fi surface exploration, productive working tempo, slight wonder, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/planet_lander/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: warm major-key synth pad with major-7 colors, atmospheric and inviting, no melody no drums no bass, in G major at 96 bpm, methodical sci-fi surface exploration, productive working tempo, slight wonder, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/planet_lander/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: bright synth melody with curious rising phrases, productive but slightly awed, no drums no bass no pads, in G major at 96 bpm, methodical sci-fi surface exploration, productive working tempo, slight wonder, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/planet_lander/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: alien wind through canyon, distant resource-detection chirps, no melody no drums no bass, in G major at 96 bpm, methodical sci-fi surface exploration, productive working tempo, slight wonder, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-17T23:14:37Z",
+  "generated_at": "2026-05-18T03:25:35Z",
   "notes": "Should sound like productive work on an alien surface \u2014 methodical rhythm, slight wonder, never tense."
 }

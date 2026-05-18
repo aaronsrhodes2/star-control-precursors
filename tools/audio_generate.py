@@ -49,13 +49,50 @@ BACKEND = os.environ.get("SCZ_AUDIO_BACKEND", "local").lower()
 
 
 def _gen_music_array(prompt: str, duration_s: float):
-    """Backend-dispatch: returns (audio_array, sample_rate)."""
+    """Backend-dispatch: returns (audio_array, sample_rate).
+
+    Local-backend dispatch is further model-aware via SCZ_AUDIO_MODEL:
+
+    - stable-audio-open: 44.1 kHz stereo, 47s native cap. We clamp to
+      45s and let the runtime mixer loop. Use the tuned diffusion
+      params (steps=200, guidance=10) + negative prompt.
+    - musicgen* (transformers): 32 kHz stereo (or mono), arbitrary
+      duration via server-side chunked continuation. No diffusion
+      steps; autoregressive token generation. Use guidance=3.0 (Meta's
+      recommended CFG default).
+    - audioldm2-music / audioldm: 16 kHz mono. Cap at 45s. Same tuned
+      diffusion params; ignored where not applicable.
+    """
     if BACKEND == "eleven":
         from eleven_music import music as _eleven_music  # noqa: E402
         return _eleven_music(prompt=prompt, duration_s=duration_s)
-    # local
+
     from audio_client import music as _local_music  # noqa: E402
-    return _local_music(prompt=prompt, duration=duration_s)
+    model = os.environ.get("SCZ_AUDIO_MODEL", "audioldm2-music").lower()
+
+    if "musicgen" in model:
+        # MusicGen: arbitrary duration, but each token chunk is
+        # autoregressive so longer = slower. The audio-server handles
+        # the chunking; we just pass duration. Steps is unused
+        # (MusicGen isn't diffusion); guidance is the CFG scale.
+        return _local_music(
+            prompt=prompt,
+            duration=float(duration_s),
+            steps=1,            # ignored by server in MusicGen path
+            guidance=3.0,       # Meta's recommended CFG default
+        )
+
+    # Diffusion path (SAO / AudioLDM2): cap at 45s, use tuned params.
+    NEG = ("speech, voice, vocals, talking, mumbling, noise, distortion, "
+           "clicks, pops, low quality, scratchy, hiss, lo-fi, tinny, muddy")
+    local_dur = min(float(duration_s), 45.0)
+    return _local_music(
+        prompt=prompt,
+        duration=local_dur,
+        steps=200,
+        guidance=10.0,
+        negative_prompt=NEG,
+    )
 
 
 def _backend_extension() -> str:
@@ -66,10 +103,21 @@ def _backend_extension() -> str:
 
 
 def _backend_label(spec: ContextSpec) -> str:
-    """Label for the manifest's `backend` field."""
+    """Label for the manifest's `backend` field. Reflects the actual
+    model in use so future audits can tell SAO-era files from
+    AudioLDM2-era files apart by reading the manifest alone."""
     if BACKEND == "eleven":
         return "elevenlabs-music_v1/decoded"
-    return "audioldm2-music/local-server"
+    model = os.environ.get("SCZ_AUDIO_MODEL", "audioldm2-music").lower()
+    if "stable-audio" in model:
+        return "stable-audio-open/local-server"
+    if "musicgen" in model:
+        return f"{model}/local-server"
+    if "audioldm2-large" in model:
+        return "audioldm2-large/local-server"
+    if "audioldm2" in model:
+        return "audioldm2-music/local-server"
+    return f"{model}/local-server"
 
 
 def generate_context(

@@ -59,10 +59,19 @@ NORMALIZE_FLOOR_PEAK = 0.6       # peaks at/above this are left alone
 
 
 def _backend_label() -> str:
-    """Provenance string written per-file."""
+    """Provenance string written per-file. Reflects the actual local
+    model in use so future audits can tell SAO-era SFX from AudioLDM2-era
+    SFX apart by reading the provenance file alone."""
     if BACKEND == "eleven":
         return "elevenlabs-sound-generation"
-    return "audioldm2-music/local-server"
+    model = os.environ.get("SCZ_AUDIO_MODEL", "audioldm2-music").lower()
+    if "stable-audio" in model:
+        return "stable-audio-open/local-server"
+    if "audioldm2-large" in model:
+        return "audioldm2-large/local-server"
+    if "audioldm2" in model:
+        return "audioldm2-music/local-server"
+    return f"{model}/local-server"
 
 
 def _provenance_path(root: Path) -> Path:
@@ -97,6 +106,40 @@ def _record_provenance(root: Path, key: str, label: str) -> None:
     _save_provenance(root, data)
 
 
+def _augment_prompt(spec: SfxSpec) -> str:
+    """Category-aware prompt boost.
+
+    The spec prompts are written narrowly to capture each weapon's
+    identity (Furling diplomatic vs Cleanser massive vs Mmrnmhrm
+    rapid-fire vs ...). They were authored with ElevenLabs in mind,
+    which interprets descriptive language well. When generating
+    locally (SAO/AudioLDM2) the output sometimes lands subtle when
+    we want PUNCH — Aaron's request: 'It's combat! It's exciting!
+    Loud and aggressive!'.
+
+    For local generations we append a category-appropriate energy
+    suffix. The identity stays in the spec; the energy comes from the
+    suffix. ElevenLabs gens skip the suffix because EL doesn't need
+    the nudge.
+    """
+    base = spec.prompt
+    if BACKEND == "eleven":
+        return base
+    suffix_by_cat = {
+        # Combat: loud, weighty, exciting. Aaron's directive.
+        "weapon": (" — loud, aggressive, punchy, weighty combat sound, "
+                   "high-energy impactful sci-fi weapon, dynamic and exciting"),
+        # Lander: chunky, mechanical, satisfying.
+        "lander": (" — chunky, mechanical, weighty, satisfying sci-fi "
+                   "spacecraft sound"),
+        # Scan: subtle, focused, clean.
+        "scan": (" — clean, focused, subtle sci-fi scanner sound"),
+        # UI: crisp, clean, no extra noise.
+        "ui": (" — crisp, clean, snappy UI feedback sound"),
+    }
+    return base + suffix_by_cat.get(spec.category, "")
+
+
 def _gen_sfx_bytes_or_array(spec: SfxSpec):
     """Backend dispatch. Returns one of:
       ("bytes", raw_bytes, format_str)   -- eleven (mp3)
@@ -112,10 +155,13 @@ def _gen_sfx_bytes_or_array(spec: SfxSpec):
             output_format=DEFAULT_OUTPUT_FORMAT,
         )
         return ("bytes", data, fmt)
-    # local — AudioLDM2 SFX path. Note: AudioLDM2 has no loop or
-    # prompt_influence equivalents; those spec fields are ignored.
+    # local — uses the active local model (audioldm2 / stable-audio-open).
+    # The spec's prompt is augmented with a category-specific energy
+    # boost before sending. Loop + prompt_influence have no local
+    # equivalents and are ignored.
     from audio_client import sfx as _local_sfx  # noqa
-    audio, sr = _local_sfx(prompt=spec.prompt, duration=spec.duration_s)
+    prompt = _augment_prompt(spec)
+    audio, sr = _local_sfx(prompt=prompt, duration=spec.duration_s)
     return ("array", audio, sr)
 
 
@@ -228,6 +274,21 @@ def for_missing() -> list[SfxSpec]:
     return out
 
 
+def for_audioldm_regen() -> list[SfxSpec]:
+    """Return every spec whose provenance says it came from an audioldm
+    backend. Used to roll the audioldm-generated SFX forward to a better
+    local model (e.g. stable-audio-open). Skips elevenlabs and derived
+    entries unchanged."""
+    prov = _load_provenance(ROOT)
+    out: list[SfxSpec] = []
+    for s in ALL_SFX:
+        key = f"{s.out_subdir}/{s.name}"
+        backend = prov.get(key, {}).get("backend", "")
+        if "audioldm" in backend.lower():
+            out.append(s)
+    return out
+
+
 def main(argv: list[str]) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("name", nargs="?", help="SFX name (e.g. 'menu_select')")
@@ -236,6 +297,11 @@ def main(argv: list[str]) -> int:
     ap.add_argument("--category", help="Generate all SFX in category (ui|weapon|lander|scan)")
     ap.add_argument("--missing", action="store_true",
                     help="Generate every spec whose .wav doesn't yet exist on disk")
+    ap.add_argument("--regen-audioldm", action="store_true",
+                    help="Regenerate every spec whose provenance says "
+                         "'audioldm' (i.e. came from a previous local-model "
+                         "run). Useful when rolling the corpus forward to "
+                         "a better local model.")
     ap.add_argument("--list", action="store_true", help="List inventory and exit")
     ap.add_argument("--no-overwrite", action="store_true")
     args = ap.parse_args(argv)
@@ -255,6 +321,22 @@ def main(argv: list[str]) -> int:
         return 0
 
     overwrite = not args.no_overwrite
+
+    if args.regen_audioldm:
+        specs = for_audioldm_regen()
+        if not specs:
+            print("no audioldm-provenance SFX — nothing to regenerate")
+            return 0
+        print(f"regenerating {len(specs)} audioldm-provenance SFX  "
+              f"[backend={BACKEND}]")
+        t0 = time.time()
+        n_ok = 0
+        for spec in specs:
+            if generate_one(spec, overwrite=overwrite):
+                n_ok += 1
+        print(f"\n## --regen-audioldm done: {n_ok}/{len(specs)} "
+              f"in {time.time()-t0:.1f}s")
+        return 0 if n_ok == len(specs) else 1
 
     if args.missing:
         specs = for_missing()

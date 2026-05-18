@@ -13,3 +13,7 @@ hyperspace_gen*.log
 round*.log
 *_eleven.log
 http_server.log
+# Transient per-run logs + test artifacts (regen_*, sao_*, mg_*, sfx_*)
+*.log
+*_test.wav
+sao_warmup_test.wav

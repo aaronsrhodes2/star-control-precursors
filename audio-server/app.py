@@ -57,6 +57,7 @@ log = logging.getLogger("scz-audio")
 # ---------------------------------------------------------------------------
 
 _pipeline: Any = None
+_processor: Any = None       # only set for MusicGen (transformers)
 _model_name: str = ""
 _torch_dtype = None
 _device = "cpu"
@@ -89,6 +90,17 @@ def _model_id(env_value: str) -> str:
         "audioldm2-music":   "cvssp/audioldm2-music",
         "audioldm2-large":   "cvssp/audioldm2-large",
         "audioldm":          "cvssp/audioldm-s-full-v2",
+        # MusicGen variants (Meta/Facebook, CC-BY-NC 4.0). Used for
+        # multi-minute music output via chunked continuation since SAO
+        # has a hard 47s cap.
+        "musicgen":          "facebook/musicgen-stereo-medium",
+        "musicgen-small":    "facebook/musicgen-small",
+        "musicgen-medium":   "facebook/musicgen-medium",
+        "musicgen-large":    "facebook/musicgen-large",
+        "musicgen-stereo":         "facebook/musicgen-stereo-medium",
+        "musicgen-stereo-medium":  "facebook/musicgen-stereo-medium",
+        "musicgen-stereo-small":   "facebook/musicgen-stereo-small",
+        "musicgen-stereo-large":   "facebook/musicgen-stereo-large",
     }
     return table.get(env_value, env_value)
 
@@ -97,10 +109,15 @@ def _is_stable_audio(model_id: str) -> bool:
     return "stable-audio" in model_id.lower()
 
 
+def _is_musicgen(model_id: str) -> bool:
+    return "musicgen" in model_id.lower()
+
+
 def get_pipeline():
     """Lazy-load the audio pipeline on first request. Picks the right
-    diffusers pipeline class based on the model id."""
-    global _pipeline, _model_name, _sample_rate
+    pipeline class based on the model id (diffusers for SAO/AudioLDM2,
+    transformers for MusicGen)."""
+    global _pipeline, _processor, _model_name, _sample_rate
     if _pipeline is not None:
         return _pipeline
     _model_name = _model_id(os.environ.get("SCZ_AUDIO_MODEL", "audioldm2-music"))
@@ -113,6 +130,15 @@ def get_pipeline():
             _model_name, torch_dtype=_torch_dtype,
         )
         _sample_rate = 44100
+    elif _is_musicgen(_model_name):
+        # MusicGen uses transformers, not diffusers. Loads a processor
+        # alongside the model. Sample rate is 32 kHz (model native).
+        from transformers import AutoProcessor, MusicgenForConditionalGeneration
+        _processor = AutoProcessor.from_pretrained(_model_name)
+        _pipeline = MusicgenForConditionalGeneration.from_pretrained(
+            _model_name, torch_dtype=_torch_dtype,
+        )
+        _sample_rate = _pipeline.config.audio_encoder.sampling_rate
     elif "audioldm2" in _model_name.lower():
         from diffusers import AudioLDM2Pipeline
         _pipeline = AudioLDM2Pipeline.from_pretrained(
@@ -126,13 +152,17 @@ def get_pipeline():
         )
         _sample_rate = 16000
     _pipeline = _pipeline.to(_device)
-    try:
-        _pipeline.enable_xformers_memory_efficient_attention()
-    except Exception:
-        pass
+    # xformers attention is a diffusers extension; MusicGen-on-transformers
+    # uses its own attention path so skip the call there.
+    if not _is_musicgen(_model_name):
+        try:
+            _pipeline.enable_xformers_memory_efficient_attention()
+        except Exception:
+            pass
     if os.environ.get("SCZ_AUDIO_CPU_OFFLOAD") == "1":
-        _pipeline.enable_model_cpu_offload()
-        log.info("Enabled CPU offload")
+        if hasattr(_pipeline, "enable_model_cpu_offload"):
+            _pipeline.enable_model_cpu_offload()
+            log.info("Enabled CPU offload")
     log.info("Loaded in %.1fs (sample rate %d Hz)", time.time() - t0, _sample_rate)
     return _pipeline
 
@@ -169,11 +199,21 @@ def _do_generation(
 ) -> tuple[np.ndarray, int]:
     """Run the underlying generation. Returns (audio array, sample rate).
 
-    Handles the parameter-name difference between StableAudioPipeline
-    (uses audio_end_in_s) and AudioLDM2Pipeline (uses audio_length_in_s).
+    Dispatches by model family:
+      - SAO / AudioLDM2 (diffusers): single-shot generation via the
+        pipeline call. Param-name differs (audio_end_in_s vs
+        audio_length_in_s).
+      - MusicGen (transformers): chunked autoregressive generation.
+        Generates ~30s per chunk; subsequent chunks are conditioned on
+        the last 5s of the prior output to keep the music coherent at
+        chunk seams. There's no inference-steps knob — MusicGen is
+        autoregressive token generation, not diffusion. `guidance`
+        maps to MusicGen's classifier-free guidance scale.
     """
     import torch
     pipe = get_pipeline()
+    if _is_musicgen(_model_name):
+        return _do_musicgen(prompt, duration_s, seed, guidance)
     kwargs: dict = {
         "prompt": prompt,
         "num_inference_steps": int(steps),
@@ -194,6 +234,114 @@ def _do_generation(
         audio = audio.cpu().numpy()
     audio = np.asarray(audio, dtype=np.float32)
     return audio, _sample_rate
+
+
+# MusicGen produces ~50 tokens per second of audio (32 kHz / 640 codec
+# downsampling). Keep chunks at 30 s = 1500 tokens to stay inside the
+# model's native context. Use a 5 s overlap so the new chunk picks up
+# the previous one's tempo + texture rather than restarting.
+_MG_TOKENS_PER_S = 50
+_MG_CHUNK_S = 30
+_MG_CHUNK_TOKENS = _MG_TOKENS_PER_S * _MG_CHUNK_S
+_MG_OVERLAP_S = 5
+_MG_OVERLAP_TOKENS = _MG_TOKENS_PER_S * _MG_OVERLAP_S
+
+
+def _do_musicgen(
+    prompt: str,
+    duration_s: float,
+    seed: int | None,
+    guidance: float,
+) -> tuple[np.ndarray, int]:
+    """MusicGen with chunked audio-conditioning continuation.
+
+    First chunk: generate ~30 s from the text prompt only.
+    Subsequent chunks: feed the last 5 s of the running output as an
+    audio prompt + the same text prompt. The model returns
+    [audio_prompt + new_audio]; we strip the prompt prefix and append
+    the new portion. This stitches without crossfade and stays
+    musically coherent because each chunk is conditioned on the prior.
+
+    Returns audio shape (channels, samples) for stereo models or
+    (samples,) for mono. The caller's _audio_to_b64_wav handles either.
+    """
+    import torch
+    pipe = get_pipeline()
+    if seed is not None:
+        torch.manual_seed(int(seed))
+        if _device == "cuda":
+            torch.cuda.manual_seed_all(int(seed))
+
+    target_samples = int(float(duration_s) * _sample_rate)
+    log.info("musicgen: target=%.1fs (%d samples) seed=%s guidance=%s",
+             float(duration_s), target_samples, seed, guidance)
+
+    audio_running: np.ndarray | None = None  # (channels, samples) or (samples,)
+    chunk_idx = 0
+    while True:
+        # Stop once we have enough audio.
+        cur_samples = 0 if audio_running is None else audio_running.shape[-1]
+        if cur_samples >= target_samples:
+            break
+
+        # Build inputs. First chunk: text-only. Subsequent chunks: feed
+        # the last _MG_OVERLAP_S of audio as the conditioning prompt.
+        if chunk_idx == 0:
+            inputs = _processor(text=[prompt], padding=True, return_tensors="pt")
+        else:
+            cont_samples = _MG_OVERLAP_S * _sample_rate
+            audio_prompt = audio_running[..., -cont_samples:]
+            inputs = _processor(
+                audio=audio_prompt,
+                sampling_rate=_sample_rate,
+                text=[prompt],
+                padding=True,
+                return_tensors="pt",
+            )
+        # Move tensors to device + cast floats to the model dtype.
+        # MusicGen on cuda+fp16 errors with "Input type (float) and bias
+        # type (struct c10::Half) should be the same" otherwise — the
+        # processor emits fp32 inputs (audio + encoded text) but the
+        # model bias is fp16. Integer inputs (token ids) must stay int.
+        def _move(v):
+            if not hasattr(v, "to"):
+                return v
+            if v.is_floating_point():
+                return v.to(device=_device, dtype=_torch_dtype)
+            return v.to(_device)
+        inputs = {k: _move(v) for k, v in inputs.items()}
+
+        with torch.no_grad():
+            out = pipe.generate(
+                **inputs,
+                do_sample=True,
+                guidance_scale=float(guidance),
+                max_new_tokens=_MG_CHUNK_TOKENS,
+            )
+        # out shape: (batch, channels, samples). Take batch 0.
+        chunk_audio = out[0].cpu().numpy().astype(np.float32)
+
+        # First chunk is just the output. Subsequent chunks have the
+        # audio prompt at the start — strip it.
+        if chunk_idx > 0:
+            cont_samples = _MG_OVERLAP_S * _sample_rate
+            chunk_audio = chunk_audio[..., cont_samples:]
+
+        if audio_running is None:
+            audio_running = chunk_audio
+        else:
+            audio_running = np.concatenate([audio_running, chunk_audio], axis=-1)
+        chunk_idx += 1
+        log.info("musicgen chunk %d: cur_samples=%d / target=%d",
+                 chunk_idx, audio_running.shape[-1], target_samples)
+        # Safety cap so a runaway can't burn forever.
+        if chunk_idx >= 20:
+            log.warning("musicgen: hit 20-chunk safety cap")
+            break
+
+    # Trim to exact target length.
+    audio_running = audio_running[..., :target_samples]
+    return audio_running, _sample_rate
 
 
 # ---------------------------------------------------------------------------

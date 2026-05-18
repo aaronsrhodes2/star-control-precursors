@@ -5,39 +5,39 @@
   "key": "D major",
   "bpm": 66,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/furling_home/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: warm wooden contrabass with deep resin-rich tone, civilization-foundation pulse, no drums no melody no pads, in D major at 66 bpm, Furling civilization home theme, warm organic-tech, wood-and-resin orchestra, civilizationally proud but tender, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/furling_home/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: copper bell rhythms + warm wood-block percussion, ceremonial but unhurried, no melody no bass no pads, in D major at 66 bpm, Furling civilization home theme, warm organic-tech, wood-and-resin orchestra, civilizationally proud but tender, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/furling_home/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: layered string pad with sinew-string warmth and copper-bell shimmer underneath, no melody no drums no bass, in D major at 66 bpm, Furling civilization home theme, warm organic-tech, wood-and-resin orchestra, civilizationally proud but tender, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/furling_home/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: plucked-string melody with warm hopeful phrasing, like a folk tune passed down generations, no drums no bass no pads, in D major at 66 bpm, Furling civilization home theme, warm organic-tech, wood-and-resin orchestra, civilizationally proud but tender, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/furling_home/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Furling crowd murmur, gentle wind through Mh-Lai's stone halls, no melody no drums no bass, in D major at 66 bpm, Furling civilization home theme, warm organic-tech, wood-and-resin orchestra, civilizationally proud but tender, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-18T00:27:18Z",
+  "generated_at": "2026-05-18T02:51:01Z",
   "notes": "The player IS Furling. This theme is HOME \u2014 warm, organic-tech, civilizationally proud but not nationalistic. Wood-and-resin instruments, copper bells, plucked sinew strings."
 }

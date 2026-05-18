@@ -5,39 +5,39 @@
   "key": "D minor",
   "bpm": 144,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/combat_high/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: aggressive palm-muted distorted electric bass riff with sixteenth-note gallop, no drums no melody no pads, in D minor at 144 bpm, escalated heavy-metal sci-fi combat, real-stakes danger, more aggressive than low-risk, in the spirit of 1990s sci-fi combat \u2014 heavy-metal escalation, ProTracker-derived, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/combat_high/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: hard thrash-metal kit with sustained double-kick, crash and china cymbals, snare rolls between fills, no melody no bass no pads, in D minor at 144 bpm, escalated heavy-metal sci-fi combat, real-stakes danger, more aggressive than low-risk, in the spirit of 1990s sci-fi combat \u2014 heavy-metal escalation, ProTracker-derived, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/combat_high/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: sustained heavy distorted power-chord stabs with chromatic motion, no melody no drums no bass, in D minor at 144 bpm, escalated heavy-metal sci-fi combat, real-stakes danger, more aggressive than low-risk, in the spirit of 1990s sci-fi combat \u2014 heavy-metal escalation, ProTracker-derived, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/combat_high/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: shredding distorted lead electric-guitar with fast melodic runs, defiant and dangerous, no drums no bass no pads, in D minor at 144 bpm, escalated heavy-metal sci-fi combat, real-stakes danger, more aggressive than low-risk, in the spirit of 1990s sci-fi combat \u2014 heavy-metal escalation, ProTracker-derived, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/combat_high/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: industrial machine-room hum, amp feedback, distant warning sirens, no melody no drums no bass, in D minor at 144 bpm, escalated heavy-metal sci-fi combat, real-stakes danger, more aggressive than low-risk, in the spirit of 1990s sci-fi combat \u2014 heavy-metal escalation, ProTracker-derived, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-17T23:16:41Z",
+  "generated_at": "2026-05-18T02:40:46Z",
   "notes": "Continuity with combat_low's heavy-metal pivot \u2014 same key (D minor), +12 bpm, more aggressive riffs."
 }

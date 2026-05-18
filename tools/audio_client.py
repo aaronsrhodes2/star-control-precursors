@@ -57,7 +57,10 @@ def music(
     body: dict = {"prompt": prompt, "duration_s": float(duration), "steps": steps, "guidance": guidance}
     if seed is not None: body["seed"] = int(seed)
     if negative_prompt: body["negative_prompt"] = negative_prompt
-    return _call("music", body, timeout=300)
+    # 600s timeout: stable-audio-open at 45s/200steps can run ~2 min on
+    # a modest GPU; first request after server cold-start also pays the
+    # ~3.5 GB model download. 600s covers both with headroom.
+    return _call("music", body, timeout=600)
 
 
 def sfx(

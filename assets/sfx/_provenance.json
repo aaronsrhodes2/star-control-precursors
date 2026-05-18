@@ -1,19 +1,19 @@
 {
   "lander/atmospheric_entry": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:38Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:36Z"
   },
   "lander/damage_taken": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:25Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:24Z"
   },
   "lander/engine_idle": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:46Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:44Z"
   },
   "lander/hazard_warning": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:17Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:16Z"
   },
   "lander/lander_arrive": {
     "backend": "elevenlabs-sound-generation",
@@ -24,8 +24,8 @@
     "generated_at": null
   },
   "lander/lift_off": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:33Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:33Z"
   },
   "lander/pickup_animal": {
     "backend": "elevenlabs-sound-generation",
@@ -40,28 +40,28 @@
     "generated_at": null
   },
   "lander/resource_chime_bio": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:09Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:08Z"
   },
   "lander/resource_chime_mineral": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:01Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:00Z"
   },
   "lander/scan_ping": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:54Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:52Z"
   },
   "scan/cloak_disengage": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:52:06Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:08:05Z"
   },
   "scan/cloak_engage": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:58Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:57Z"
   },
   "scan/enter_orbit": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:40Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:41Z"
   },
   "scan/scan_begin": {
     "backend": "elevenlabs-sound-generation",
@@ -72,216 +72,216 @@
     "generated_at": null
   },
   "scan/scan_progress_tick": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:51:49Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:07:49Z"
   },
   "scan/scan_sweep": {
     "backend": "elevenlabs-sound-generation",
     "generated_at": null
   },
   "ships/androsynth_cruiser/primary_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:32Z"
   },
   "ships/androsynth_cruiser/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:59Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:34Z"
   },
   "ships/androsynth_cruiser/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:06Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:42Z"
   },
   "ships/androsynth_cruiser/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:13Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:50Z"
   },
   "ships/arilou_skiff/primary_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:16Z"
   },
   "ships/arilou_skiff/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:39Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:11Z"
   },
   "ships/arilou_skiff/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:46Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:19Z"
   },
   "ships/arilou_skiff/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:53Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:27Z"
   },
   "ships/cleanser_cruiser/primary_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:08Z"
   },
   "ships/cleanser_cruiser/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:21Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:58Z"
   },
   "ships/cleanser_cruiser/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:28Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:05Z"
   },
   "ships/cleanser_cruiser/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:35Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:13Z"
   },
   "ships/defender_vessel/primary_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:09Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:53Z"
   },
   "ships/defender_vessel/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:18Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:01Z"
   },
   "ships/defender_vessel/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:26Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:09Z"
   },
   "ships/defender_vessel/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:34Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:17Z"
   },
   "ships/furling_scout/primary_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:56:45Z"
   },
   "ships/furling_scout/primary_impact": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:56:52Z"
   },
   "ships/furling_scout/special_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:00Z"
   },
   "ships/furling_scout/special_impact": {
     "backend": "derived/reverse_of:ships/furling_scout/special_fire",
-    "generated_at": null
+    "generated_at": "2026-05-18T03:57:00Z"
   },
   "ships/lemmkin_skitter/primary_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:23Z"
   },
   "ships/lemmkin_skitter/primary_impact": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:31Z"
   },
   "ships/lemmkin_skitter/special_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:39Z"
   },
   "ships/lemmkin_skitter/special_impact": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:46Z"
   },
   "ships/melnorme_trader/primary_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:42Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:21Z"
   },
   "ships/melnorme_trader/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:48Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:29Z"
   },
   "ships/melnorme_trader/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:47:55Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:37Z"
   },
   "ships/melnorme_trader/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:02Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:59:45Z"
   },
   "ships/mmrnmhrm_sentinel/primary_fire": {
-    "backend": "elevenlabs-sound-generation",
-    "generated_at": null
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:24Z"
   },
   "ships/mmrnmhrm_sentinel/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:42Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:25Z"
   },
   "ships/mmrnmhrm_sentinel/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:49Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:33Z"
   },
   "ships/mmrnmhrm_sentinel/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:48:57Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:41Z"
   },
   "ships/persuader_vessel/primary_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:10Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:40Z"
   },
   "ships/persuader_vessel/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:19Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:47Z"
   },
   "ships/persuader_vessel/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:26Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:57:55Z"
   },
   "ships/persuader_vessel/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:33Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T03:58:03Z"
   },
   "ships/proto_qor_ah/primary_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:06Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:52Z"
   },
   "ships/proto_qor_ah/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:13Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:00Z"
   },
   "ships/proto_qor_ah/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:22Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:07Z"
   },
   "ships/proto_qor_ah/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:50:30Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:02:15Z"
   },
   "ships/proto_ur_quan/primary_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:04Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:49Z"
   },
   "ships/proto_ur_quan/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:12Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:00:57Z"
   },
   "ships/proto_ur_quan/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:19Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:05Z"
   },
   "ships/proto_ur_quan/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:27Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:13Z"
   },
   "ships/sentry_drone_47t/primary_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:35Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:20Z"
   },
   "ships/sentry_drone_47t/primary_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:41Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:28Z"
   },
   "ships/sentry_drone_47t/special_fire": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:50Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:36Z"
   },
   "ships/sentry_drone_47t/special_impact": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:49:58Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:01:44Z"
   },
   "ui/alert_danger": {
     "backend": "elevenlabs-sound-generation",
     "generated_at": null
   },
   "ui/alert_warning": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:45:56Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:20Z"
   },
   "ui/hud_acknowledge": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:46:03Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:28Z"
   },
   "ui/menu_cancel": {
     "backend": "elevenlabs-sound-generation",
@@ -300,19 +300,19 @@
     "generated_at": null
   },
   "ui/modal_close": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:45:42Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:03Z"
   },
   "ui/modal_open": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:45:34Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:05:52Z"
   },
   "ui/notification": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:45:49Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:06:12Z"
   },
   "ui/screen_transition": {
-    "backend": "audioldm2-music/local-server",
-    "generated_at": "2026-05-17T23:45:27Z"
+    "backend": "stable-audio-open/local-server",
+    "generated_at": "2026-05-18T04:05:42Z"
   }
 }

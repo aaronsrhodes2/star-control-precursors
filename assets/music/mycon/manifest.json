@@ -5,51 +5,51 @@
   "key": "F minor",
   "bpm": 64,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/mycon/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: deep sub-bass bio-thrum with slow pulsing modulation, no drums no melody no pads, in F minor at 64 bpm, alien fungal-ritual species theme, slow chanting, wet bio-mechanical pulses, in the spirit of 1990s alien-fungal-ritual \u2014 chanting, multitracker chiptune, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/mycon/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: slow wet organic percussion: dripping cave-water rhythms, soft body-thuds, no melody no bass no pads, in F minor at 64 bpm, alien fungal-ritual species theme, slow chanting, wet bio-mechanical pulses, in the spirit of 1990s alien-fungal-ritual \u2014 chanting, multitracker chiptune, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/mycon/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: droning minor-key fungal-tone pad with subtle dissonance, no melody no drums no bass, in F minor at 64 bpm, alien fungal-ritual species theme, slow chanting, wet bio-mechanical pulses, in the spirit of 1990s alien-fungal-ritual \u2014 chanting, multitracker chiptune, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/mycon/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: slow ceremonial chant-melody, low voiced syllables in fragments, no drums no bass no pads, in F minor at 64 bpm, alien fungal-ritual species theme, slow chanting, wet bio-mechanical pulses, in the spirit of 1990s alien-fungal-ritual \u2014 chanting, multitracker chiptune, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/mycon/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant cave reverb, drip echoes, low spore-cloud rumble, no melody no drums no bass, in F minor at 64 bpm, alien fungal-ritual species theme, slow chanting, wet bio-mechanical pulses, in the spirit of 1990s alien-fungal-ritual \u2014 chanting, multitracker chiptune, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "obedience": {
       "path": "assets/music/mycon/obedience.wav",
       "prompt": "Isolated OBEDIENCE-RITUAL TEXTURE STEM for layered production: low-voiced chorus of synchronized ceremonial chant, calm dutiful murmuring, sense of an entire colony moving in perfect ritual harmony, in F minor at 64 bpm, obedient, calm, harmonious, ritually-perfect, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "heresy": {
       "path": "assets/music/mycon/heresy.wav",
       "prompt": "Isolated HERESY-WHISPER TEXTURE STEM for layered production: dissonant counter-chant of individual voices breaking from harmony, whispered alien syllables, growing unease in the bio-machinery, the Deep Child awakening from below, in F minor at 64 bpm, dissonant, dawning awareness, awakening from ritual, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-17T23:20:58Z",
+  "generated_at": "2026-05-18T03:19:25Z",
   "notes": "State stems 'obedience' and 'heresy' are read by src/scz/audio/state_layers.py from game.flags['mycon_heresy_level']. obedience high when player hasn't disturbed the Deep Child; heresy rises as the Deep Child whispers gain traction."
 }

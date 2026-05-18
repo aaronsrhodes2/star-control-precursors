@@ -20,6 +20,7 @@ accelerate>=1.0.0
 safetensors>=0.4.5
 sentencepiece>=0.2.0          # T5 tokenizer for stable-audio's text encoder
 protobuf>=4.25.0
+torchsde>=0.2.6               # CosineDPMSolverMultistepScheduler (stable-audio-open)
 
 # Audio I/O + DSP
 soundfile>=0.12.1

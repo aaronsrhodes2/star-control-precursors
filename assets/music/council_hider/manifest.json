@@ -5,39 +5,39 @@
   "key": "A minor",
   "bpm": 56,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/council_hider/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: ultra-low muffled drone with fabric-dampened tone, almost-felt-not-heard, no drums no melody no pads, in A minor at 56 bpm, Hider Furling Council theme \u2014 hush, fabric-rustle, dampened resonance, almost-silent retreat, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/council_hider/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: extremely sparse soft brush sweeps and cloth rustles, near-silence, no melody no bass no pads, in A minor at 56 bpm, Hider Furling Council theme \u2014 hush, fabric-rustle, dampened resonance, almost-silent retreat, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/council_hider/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: muffled minor pad heard through walls, sustained but distant, no melody no drums no bass, in A minor at 56 bpm, Hider Furling Council theme \u2014 hush, fabric-rustle, dampened resonance, almost-silent retreat, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/council_hider/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: solo muted English horn melody phrasing reluctant withdrawal, no drums no bass no pads, in A minor at 56 bpm, Hider Furling Council theme \u2014 hush, fabric-rustle, dampened resonance, almost-silent retreat, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/council_hider/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: fabric rustles, hushed breathing, distant veiled footsteps, no melody no drums no bass, in A minor at 56 bpm, Hider Furling Council theme \u2014 hush, fabric-rustle, dampened resonance, almost-silent retreat, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-18T00:35:56Z",
+  "generated_at": "2026-05-18T02:47:36Z",
   "notes": ""
 }

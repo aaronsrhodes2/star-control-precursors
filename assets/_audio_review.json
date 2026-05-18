@@ -1,38 +1,38 @@
 {
   "music/androsynth": {
-    "notes": "beats didn't match up, too experimental\n",
-    "reviewed_at": "2026-05-18T00:53:08.770722+00:00",
-    "status": "reject"
+    "status": "pending",
+    "notes": "beats didn't match up, too experimental; regenerated R3-tuned (was reject); regenerated R3-tuned (was pending)",
+    "reviewed_at": "2026-05-18T02:08:25.276888+00:00"
   },
   "music/androsynth_crash_site": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:56:55.624576+00:00",
-    "status": "reroll_requested"
+    "status": "pending",
+    "notes": "regenerated R3-tuned (was reroll_requested); regenerated R3-tuned (was pending)",
+    "reviewed_at": "2026-05-18T02:31:52.614458+00:00"
   },
   "music/arilou": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:56:29.070695+00:00",
-    "status": "reroll_requested"
+    "status": "pending",
+    "notes": "regenerated R3-tuned (was reroll_requested); regenerated R3-tuned (was pending)",
+    "reviewed_at": "2026-05-18T02:33:55.435006+00:00"
   },
   "music/arilou_sages_grove": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:54:58.651703+00:00",
-    "status": "reroll_requested"
+    "status": "pending",
+    "notes": "regenerated R3-tuned (was reroll_requested); regenerated R3-tuned (was pending)",
+    "reviewed_at": "2026-05-18T02:35:37.409722+00:00"
   },
   "music/bargainers": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:54:26.057081+00:00",
-    "status": "reroll_requested"
+    "status": "pending",
+    "notes": "regenerated R3-tuned (was reroll_requested)",
+    "reviewed_at": "2026-05-18T02:37:21.245655+00:00"
   },
   "music/burvixese": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:54:21.996611+00:00",
-    "status": "reroll_requested"
+    "status": "pending",
+    "notes": "regenerated R3-tuned (was reroll_requested)",
+    "reviewed_at": "2026-05-18T02:39:03.778906+00:00"
   },
   "music/chenjesu": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:53:59.695887+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:12:27.434309+00:00"
   },
   "music/cleanser_council": {
     "notes": "great",
@@ -40,14 +40,14 @@
     "status": "keep"
   },
   "music/combat_boss": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T00:58:33.036863+00:00",
-    "status": "reroll_requested"
+    "status": "pending",
+    "notes": "regenerated R3-tuned (was reroll_requested)",
+    "reviewed_at": "2026-05-18T02:40:46.574185+00:00"
   },
   "music/combat_high": {
-    "notes": "too fast.",
-    "reviewed_at": "2026-05-18T00:58:02.845052+00:00",
-    "status": "reject"
+    "status": "pending",
+    "notes": "too fast.; regenerated R3-tuned (was reject)",
+    "reviewed_at": "2026-05-18T02:42:29.860255+00:00"
   },
   "music/combat_low": {
     "notes": "",
@@ -55,64 +55,64 @@
     "status": "keep"
   },
   "music/council_compeller": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:44:12.637453+00:00"
   },
   "music/council_defender": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:45:54.265534+00:00"
   },
   "music/council_denier": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:47:36.060133+00:00"
   },
   "music/council_hider": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:49:20.082347+00:00"
   },
   "music/council_persuader": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:51:01.913961+00:00"
   },
   "music/ending_cleanser": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:02:21.868823+00:00"
   },
   "music/ending_compeller": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:03:22.783988+00:00"
   },
   "music/ending_defender": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:04:23.690509+00:00"
   },
   "music/ending_denier": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:05:25.244803+00:00"
   },
   "music/ending_hider": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:06:27.799604+00:00"
   },
   "music/ending_persuader": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:07:32.070832+00:00"
   },
   "music/furling_home": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:52:43.716403+00:00"
   },
   "music/hyperspace": {
     "notes": "great with adjustments per listen-pass 1",
@@ -125,59 +125,59 @@
     "status": "keep"
   },
   "music/lemmkin": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:00:11.010390+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:14:10.492260+00:00"
   },
   "music/melnorme": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:00:23.374232+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:15:52.096471+00:00"
   },
   "music/melnorme_bio_cargo_hold": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:00:29.647537+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:17:41.422552+00:00"
   },
   "music/mmrnmhrm": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:00:57.476535+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:19:25.626684+00:00"
   },
   "music/mycon": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:01:03.747681+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:21:51.104781+00:00"
   },
   "music/mycon_hive_awakening": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:01:22.836543+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:23:42.309786+00:00"
   },
   "music/others_reveal": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:01:31.831620+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:30:23.602800+00:00"
   },
   "music/planar": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:01:37.415056+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:25:35.814830+00:00"
   },
   "music/planet_lander": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:02:05.538794+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:27:29.932195+00:00"
   },
   "music/planet_orbit_cloaked": {
-    "notes": "",
-    "reviewed_at": "2026-05-18T01:02:25.519282+00:00",
-    "status": "keep"
+    "status": "pending",
+    "notes": "regenerated via stable-audio-open (was keep)",
+    "reviewed_at": "2026-05-18T03:29:18.115537+00:00"
   },
   "music/proto_species_wonder": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:54:26.460578+00:00"
   },
   "music/quasispace_travel": {
     "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
@@ -185,9 +185,9 @@
     "status": "provisional"
   },
   "music/rainbow_seeding_climax": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:56:13.376634+00:00"
   },
   "music/slylandro": {
     "notes": "great",
@@ -195,9 +195,9 @@
     "status": "keep"
   },
   "music/slylandro_conservatory": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:57:55.245131+00:00"
   },
   "music/system_travel": {
     "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
@@ -205,14 +205,14 @@
     "status": "provisional"
   },
   "music/taalo": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T02:59:36.729069+00:00"
   },
   "music/tension_other_ripple": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:08:34.242048+00:00"
   },
   "music/title_menu": {
     "notes": "",
@@ -220,9 +220,9 @@
     "status": "keep"
   },
   "music/utwig": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "status": "pending",
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; regenerated R3-tuned (was provisional)",
+    "reviewed_at": "2026-05-18T03:01:20.751668+00:00"
   },
   "sfx/lander/atmospheric_entry": {
     "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",

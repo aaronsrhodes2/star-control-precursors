@@ -5,39 +5,39 @@
   "key": "B flat major",
   "bpm": 112,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/burvixese/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: confident walking tuba bassline with marching forward momentum, no drums no melody no pads, in B flat major at 112 bpm, confident-announcement species theme, bright brass fanfares, fearless declaration, four-handed engineering precision, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/burvixese/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: four-handed mechanical metal percussion, factory-floor rhythmic precision, no melody no bass no pads, in B flat major at 112 bpm, confident-announcement species theme, bright brass fanfares, fearless declaration, four-handed engineering precision, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/burvixese/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: bright brass fanfare pad in major chords, fearless announcing, no melody no drums no bass, in B flat major at 112 bpm, confident-announcement species theme, bright brass fanfares, fearless declaration, four-handed engineering precision, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/burvixese/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: herald-trumpet melody declaring confident phrases, broadcasting outward, no drums no bass no pads, in B flat major at 112 bpm, confident-announcement species theme, bright brass fanfares, fearless declaration, four-handed engineering precision, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/burvixese/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant city-square announcements, ringing metal workshops, no melody no drums no bass, in B flat major at 112 bpm, confident-announcement species theme, bright brass fanfares, fearless declaration, four-handed engineering precision, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-18T00:12:00Z",
+  "generated_at": "2026-05-18T02:37:21Z",
   "notes": "The Be-Loud doctrine: they expected the Others would recognize them as peers if they broadcast loud enough. They were wrong. The music should sound CONFIDENT, FORWARD, ANNOUNCING \u2014 but the listener (who knows what's coming) should hear the tragedy in it."
 }

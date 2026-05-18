@@ -5,39 +5,39 @@
   "key": "A minor",
   "bpm": 68,
   "duration_s": 90,
-  "backend": "audioldm2-music/local-server",
+  "backend": "stable-audio-open/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/proto_species_wonder/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: warm low contrabass drone with very slow pitch swells, no drums no melody no pads, in A minor at 68 bpm, primordial alien wildlife observation, slow contemplative wonder, lightly melancholy reverence for life that doesn't know it's being watched, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "percussion": {
       "path": "assets/music/proto_species_wonder/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: sparse hand percussion: distant log-drum taps, dripping cave-water rhythms, no melody no bass no pads, in A minor at 68 bpm, primordial alien wildlife observation, slow contemplative wonder, lightly melancholy reverence for life that doesn't know it's being watched, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "pad": {
       "path": "assets/music/proto_species_wonder/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: warm minor-key string pad with subtle vibrato, gently swelling chord beds, no melody no drums no bass, in A minor at 68 bpm, primordial alien wildlife observation, slow contemplative wonder, lightly melancholy reverence for life that doesn't know it's being watched, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "lead": {
       "path": "assets/music/proto_species_wonder/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: solo bone-flute melody, slow plaintive phrases, ancient and wordless, no drums no bass no pads, in A minor at 68 bpm, primordial alien wildlife observation, slow contemplative wonder, lightly melancholy reverence for life that doesn't know it's being watched, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     },
     "ambient": {
       "path": "assets/music/proto_species_wonder/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant primordial wildlife calls, wind through reeds, soft scattered chirps, no melody no drums no bass, in A minor at 68 bpm, primordial alien wildlife observation, slow contemplative wonder, lightly melancholy reverence for life that doesn't know it's being watched, stems-only mix",
-      "sample_rate": 16000,
-      "backend": "audioldm2-music/local-server"
+      "sample_rate": 44100,
+      "backend": "stable-audio-open/local-server"
     }
   },
-  "generated_at": "2026-05-18T00:01:30Z",
+  "generated_at": "2026-05-18T02:52:43Z",
   "notes": "Proto-species are below the Others' threshold; observation is lighthearted-melancholy. One track reused across proto-Ur-Quan, proto-Spathi, proto-Yehat, proto-humans, etc."
 }
