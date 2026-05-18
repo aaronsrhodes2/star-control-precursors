@@ -101,15 +101,16 @@
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_chenjesu_witness.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_chenjesu_witness.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-17T18:06:30.859278+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T01:43:59Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "remove the arms",
-    "reviewed_at": "2026-05-18T01:09:37.042217+00:00"
+    "notes": "REROLLED 2026-05-17 burst 3. Prior had arms. Per Aaron: 'remove the arms.' Now: rooted crystal-spire being, no arms, immobile ancient mineral consciousness. Prior: remove the arms",
+    "reviewed_at": "2026-05-18T01:09:37.042217+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_avatars/avatar_coel_tessar": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_coel_tessar.txt",
@@ -199,14 +200,14 @@
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_planar_witness.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_planar_witness.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-18T00:42:37Z",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T01:43:59Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "No body, just a sheet of transparancy",
+    "notes": "REROLLED 2026-05-17 burst 3. Prior had a humanoid figure inside the glass. Per Aaron: 'No body, just a sheet of transparency.' Now: pure iridescent rectangular sheet of pearlescent glass, no figure inside, just the geometric flat shape. Prior: No body, just a sheet of transparancy",
     "reviewed_at": "2026-05-18T01:09:00.419972+00:00",
     "model": "Firefly Image 3"
   },
@@ -661,15 +662,16 @@
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_planet_surface.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_planet_surface.png",
     "aspect": "1:1",
-    "generated_at": "2026-05-17T16:25:46.751614+00:00",
-    "status": "reject",
+    "generated_at": "2026-05-18T01:43:59Z",
+    "status": "pending",
     "tags": [
       "dialog_backgrounds"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "We need our planet surfaces to be top-down terrain for our resource gathering game. This is a landscape view.",
-    "reviewed_at": "2026-05-18T01:11:37.814292+00:00"
+    "notes": "REROLLED 2026-05-17 burst 3. Prior was landscape view. Per Aaron: 'need top-down terrain for our resource gathering minigame.' Now: bird's-eye-view satellite shot, rocky desert tile with umber sand + pale-cream outcrops. Prior: We need our planet surfaces to be top-down terrain for our resource gathering game. This is a landscape view.",
+    "reviewed_at": "2026-05-18T01:11:37.814292+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_dialog_backgrounds/bg_selvenne_brain_coral_sanctum": {
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_selvenne_brain_coral_sanctum.txt",
@@ -1431,15 +1433,16 @@
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mmrnmhrm_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mmrnmhrm_portrait.png",
     "aspect": "1:1",
-    "generated_at": "2026-05-17T03:00:01+00:00",
-    "status": "reject",
+    "generated_at": "2026-05-18T01:43:59Z",
+    "status": "pending",
     "tags": [
       "portraits"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "A fine androsynth, if not menacing enough",
-    "reviewed_at": "2026-05-18T01:15:23.405000+00:00"
+    "notes": "REROLLED 2026-05-17 burst 3. Prior was rejected as 'fine androsynth, if not menacing enough'. Now: hulking armored ancient mechanical guardian with single bright cyan central optical sensor, brutalist industrial styling, menacing. Prior: A fine androsynth, if not menacing enough",
+    "reviewed_at": "2026-05-18T01:15:23.405000+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_portraits/species_mrokon_operator_bunker": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mrokon_operator_bunker.txt",
@@ -1473,15 +1476,16 @@
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mycon_biot_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
     "aspect": "1:1",
-    "generated_at": "2026-05-17T02:55:11+00:00",
-    "status": "reject",
+    "generated_at": "2026-05-18T01:43:59Z",
+    "status": "pending",
     "tags": [
       "portraits"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "this is the bone planet, not the mycon",
-    "reviewed_at": "2026-05-18T01:15:20.814375+00:00"
+    "notes": "REROLLED 2026-05-17 burst 3. Prior was wrong species (bone planet). Now: canonical SC2 Mycon biot — fungal humanoid with mushroom-cap head and mycelial neck-fronds. Prior: this is the bone planet, not the mycon",
+    "reviewed_at": "2026-05-18T01:15:20.814375+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_portraits/species_planar_blade_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_planar_blade_portrait.txt",
