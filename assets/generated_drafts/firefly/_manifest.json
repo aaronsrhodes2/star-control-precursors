@@ -13,353 +13,20 @@
     "notes": "",
     "reviewed_at": "2026-05-17T20:53:34.597171+00:00"
   },
-  "tier1_backdrops/backdrop_council_chamber": {
-    "prompt_path": "tools/firefly_prompts/tier1_backdrops/backdrop_council_chamber.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png",
-    "aspect": "16:9",
-    "generated_at": "2026-05-17T03:23:07+00:00",
-    "status": "keep",
-    "tags": [
-      "backdrops"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:00:04.635809+00:00"
-  },
-  "tier1_cutscenes/cutscene_distress_beacon": {
-    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_distress_beacon.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png",
-    "aspect": "16:9",
-    "generated_at": "2026-05-17T03:24:56+00:00",
-    "status": "keep",
-    "tags": [
-      "cutscenes"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T21:02:27.747583+00:00"
-  },
-  "tier1_lander/lander_furling": {
-    "prompt_path": "tools/firefly_prompts/tier1_lander/lander_furling.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T03:17:29+00:00",
-    "status": "keep",
-    "tags": [
-      "lander"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T22:12:45.027984+00:00"
-  },
-  "tier1_planets/planet_drahn": {
-    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_drahn.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_drahn.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T02:45:19+00:00",
-    "status": "keep",
-    "tags": [
-      "planets"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T22:17:59.957896+00:00"
-  },
-  "tier1_planets/planet_ossuary": {
-    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_ossuary.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_ossuary.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T02:51:52+00:00",
-    "status": "keep",
-    "tags": [
-      "planets"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T22:17:45.264475+00:00"
-  },
-  "tier1_portraits/species_arilou_sage_portrait": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_arilou_sage_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "arilou",
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "arilou look like The Greys\n",
-    "reviewed_at": "2026-05-17T22:23:39.952201+00:00"
-  },
-  "tier1_portraits/species_coel_tessar_portrait": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_coel_tessar_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "coel",
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "make all androsynth greyish-blue",
-    "reviewed_at": "2026-05-17T22:23:42.010964+00:00"
-  },
-  "tier1_portraits/species_commander_halia_portrait": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_commander_halia_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "halia",
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "too much like a wookie, should look like an anthrapamorphic cat",
-    "reviewed_at": "2026-05-17T22:23:44.065836+00:00"
-  },
-  "tier1_portraits/species_melnorme_portrait": {
-    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_melnorme_portrait.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_melnorme_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T02:36:46+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "needs shoulders, use other melnorme candidate",
-    "reviewed_at": "2026-05-17T22:23:46.131871+00:00"
-  },
-  "tier1_portraits/species_mmrnmhrm_portrait": {
-    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mmrnmhrm_portrait.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mmrnmhrm_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T03:00:01+00:00",
-    "status": "keep",
-    "tags": [
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "A fine androsynth, if not menacing enough",
-    "reviewed_at": "2026-05-17T22:16:44.697975+00:00"
-  },
-  "tier1_portraits/species_mycon_biot_portrait": {
-    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mycon_biot_portrait.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T02:55:11+00:00",
-    "status": "keep",
-    "tags": [
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "this is the bone planet, not the mycon",
-    "reviewed_at": "2026-05-17T22:16:45.513547+00:00"
-  },
-  "tier1_portraits/species_planar_blade_portrait": {
-    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_planar_blade_portrait.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T03:13:44+00:00",
-    "status": "keep",
-    "tags": [
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "SPECIES RENAMED 2026-05-17: Planar -> Thinn. Existing visual is salvageable; primary action is filename rename to species_thinn_blade_portrait.png after Lore-chat commits species-the-thinn.md. Visual itself is canonically fine.",
-    "reviewed_at": "2026-05-17T21:46:47.652031+00:00"
-  },
-  "tier1_portraits/species_sentry_drone_47t_portrait": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_sentry_drone_47t_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "keep",
-    "tags": [
-      "sentry",
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "THey are not a species, they just work for the furlings",
-    "reviewed_at": "2026-05-17T22:16:50.995642+00:00"
-  },
-  "tier1_portraits/species_slylandro_witness_portrait": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_slylandro_witness_portrait.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "slylandro",
-      "portraits"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Slylandro Witness portrait — semi-transparent gas vortex with bright cyan centroid, in gas-giant atmosphere",
-    "reviewed_at": "2026-05-17T22:23:48.183613+00:00"
-  },
-  "tier1_ships/ship_arilou_skiff": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_arilou_skiff.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "arilou-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Arilou Skiff top-down — iridescent flying saucer blue,",
-    "reviewed_at": "2026-05-17T22:23:54.344421+00:00"
-  },
-  "tier1_ships/ship_cleanser_cruiser": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_cleanser_cruiser.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "keep",
-    "tags": [
-      "cleanser-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Cleanser Cruiser top-down — white-violet heavy ring with teardrop emitters, Quiet Ledger glyph",
-    "reviewed_at": "2026-05-17T21:49:41.606048+00:00"
-  },
-  "tier1_ships/ship_defender_vessel": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_defender_vessel.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "keep",
-    "tags": [
-      "defender-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Defender Vessel top-down — burgundy slab-armor warship, kinetic turrets, Sa-Matra sword-and-star insignia",
-    "reviewed_at": "2026-05-17T21:49:42.632845+00:00"
-  },
-  "tier1_ships/ship_furling_scout": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_furling_scout.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "furling-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Furling Scout top-down — copper ring nacelle + central football hull + red warp halo, player ship\n\nMake it longer, without the red warp bubble\n",
-    "reviewed_at": "2026-05-17T22:16:08.452550+00:00"
-  },
-  "tier1_ships/ship_melnorme_trader": {
-    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_melnorme_trader.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_melnorme_trader.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T02:29:39+00:00",
-    "status": "reject",
-    "tags": [
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "diplicate",
-    "reviewed_at": "2026-05-17T22:16:22.555948+00:00"
-  },
-  "tier1_ships/ship_mmrnmhrm_sentinel": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_mmrnmhrm_sentinel.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "reroll_requested",
-    "tags": [
-      "mmrnmhrm-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Mmrnmhrm Sentinel top-down — silver-and-patina octagonal hull, optical-cluster band forward, weathered ancient",
-    "reviewed_at": "2026-05-17T22:23:56.409343+00:00"
-  },
-  "tier1_ships/ship_persuader_vessel": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_persuader_vessel.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "keep",
-    "tags": [
-      "persuader-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "too many spherical ships",
-    "reviewed_at": "2026-05-17T22:13:39.000524+00:00"
-  },
-  "tier1_ships/ship_proto_urquan": {
-    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
-    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_proto_urquan.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T04:02:20+00:00",
-    "status": "keep",
-    "tags": [
-      "urquan-ship",
-      "ships"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "Qur-ah, not ur-quan",
-    "reviewed_at": "2026-05-17T22:13:27.458725+00:00"
-  },
-  "tier1_ui/icon_module_drive": {
-    "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_drive.txt",
-    "image_path": "assets/generated_drafts/firefly/tier1_ui/icon_module_drive.png",
-    "aspect": "1:1",
-    "generated_at": "2026-05-17T03:19:36+00:00",
-    "status": "keep",
-    "tags": [
-      "ui"
-    ],
-    "destination": null,
-    "manifest_entry_to_update": null,
-    "notes": "",
-    "reviewed_at": "2026-05-17T22:14:01.925856+00:00"
-  },
   "tier1_artifacts/artifact_distress_beacon_device": {
     "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_distress_beacon_device.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_artifacts/artifact_distress_beacon_device.png",
     "aspect": "1:1",
-    "generated_at": "2026-05-17T04:54:21.113116+00:00",
-    "status": "reject",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "artifacts"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "Not sure what this is supposed to be for",
-    "reviewed_at": "2026-05-17T21:42:48.697534+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Not sure what this is supposed to be for",
+    "reviewed_at": "2026-05-17T21:42:48.697534+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_artifacts/artifact_rainbow_resonator": {
     "prompt_path": "tools/firefly_prompts/tier1_artifacts/artifact_rainbow_resonator.txt",
@@ -477,29 +144,31 @@
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_mmrnmhrm_sentinel.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_mmrnmhrm_sentinel.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-17T16:25:00.680624+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "GORGEOUS, too many legs. Needs to be more asymmetric.",
-    "reviewed_at": "2026-05-17T20:56:26.684520+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: GORGEOUS, too many legs. Needs to be more asymmetric.",
+    "reviewed_at": "2026-05-17T20:56:26.684520+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_avatars/avatar_planar_witness": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_planar_witness.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_planar_witness.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-17T16:25:19.426021+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "Planar beings only look like a square luminescent, pearlescent sheet of glass sort of. They have no weight so they float around as they please easily.",
-    "reviewed_at": "2026-05-17T21:32:05.128370+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Planar beings only look like a square luminescent, pearlescent sheet of glass sort of. They have no weight so they float around as they please easily.",
+    "reviewed_at": "2026-05-17T21:32:05.128370+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_avatars/avatar_proto_qor_ah": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_proto_qor_ah.txt",
@@ -561,43 +230,60 @@
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_taalo.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_taalo.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-17T18:08:58.290118+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "Taalo are like lumps of shambling rock with a frilly bottom curtain",
-    "reviewed_at": "2026-05-17T21:32:07.169463+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Taalo are like lumps of shambling rock with a frilly bottom curtain",
+    "reviewed_at": "2026-05-17T21:32:07.169463+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_avatars/avatar_utwig_elder": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_utwig_elder.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_utwig_elder.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-17T17:17:10.375896+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "Cool, but I think we need skin. Make them totally goth and skinnny though\n",
-    "reviewed_at": "2026-05-17T20:59:39.826139+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Cool, but I think we need skin. Make them totally goth and skinnny though\n",
+    "reviewed_at": "2026-05-17T20:59:39.826139+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_avatars/avatar_vael_souren_cleanser": {
     "prompt_path": "tools/firefly_prompts/tier1_avatars/avatar_vael_souren_cleanser.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_avatars/avatar_vael_souren_cleanser.png",
     "aspect": "2:3",
-    "generated_at": "2026-05-17T17:16:54.964922+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "avatars"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "It's head is off or something, it looks not right.",
-    "reviewed_at": "2026-05-17T21:32:03.073128+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: It's head is off or something, it looks not right.",
+    "reviewed_at": "2026-05-17T21:32:03.073128+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_backdrops/backdrop_council_chamber": {
+    "prompt_path": "tools/firefly_prompts/tier1_backdrops/backdrop_council_chamber.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T03:23:07+00:00",
+    "status": "keep",
+    "tags": [
+      "backdrops"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:00:04.635809+00:00"
   },
   "tier1_cutscenes/cutscene_cleanser_arrival": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_cleanser_arrival.txt",
@@ -669,6 +355,20 @@
     "notes": "",
     "reviewed_at": "2026-05-17T21:02:36.578878+00:00"
   },
+  "tier1_cutscenes/cutscene_distress_beacon": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_distress_beacon.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png",
+    "aspect": "16:9",
+    "generated_at": "2026-05-17T03:24:56+00:00",
+    "status": "keep",
+    "tags": [
+      "cutscenes"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T21:02:27.747583+00:00"
+  },
   "tier1_cutscenes/cutscene_drahn_destruction": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_drahn_destruction.png",
@@ -687,15 +387,16 @@
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_migration_portal.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_migration_portal.png",
     "aspect": "16:9",
-    "generated_at": "2026-05-17T05:05:05.777316+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "cutscenes"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "It looks cool, but doesn't match the narrative well. The rainbow planet stars are very far apart. We should show a video of the stars forming the arrow as par the SC2 map, and the straight line pointing to Andromeda. ",
-    "reviewed_at": "2026-05-17T21:23:34.066616+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: It looks cool, but doesn't match the narrative well. The rainbow planet stars are very far apart. We should show a video of the stars forming the arrow as par the SC2 map, and the straight line pointing to Andromeda. ",
+    "reviewed_at": "2026-05-17T21:23:34.066616+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_cutscenes/cutscene_others_consuming": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_others_consuming.txt",
@@ -753,6 +454,19 @@
     "notes": "",
     "reviewed_at": "2026-05-17T22:11:44.551382+00:00"
   },
+  "tier1_cutscenes/cutscene_selvenne_memory_playback": {
+    "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_selvenne_memory_playback.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_selvenne_memory_playback.png",
+    "aspect": "16:9",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "cutscene",
+      "selvenne qualia memory frame"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
   "tier1_cutscenes/cutscene_talos_erasure": {
     "prompt_path": "tools/firefly_prompts/tier1_cutscenes/cutscene_talos_erasure.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_talos_erasure.png",
@@ -795,6 +509,32 @@
     "notes": "",
     "reviewed_at": "2026-05-17T22:11:59.335140+00:00"
   },
+  "tier1_dialog_backgrounds/bg_karavem_welcome_choir": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_karavem_welcome_choir.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_karavem_welcome_choir.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "bg",
+      "karavem 12-voice welcome choir"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_dialog_backgrounds/bg_kovellim_receiving_chamber": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_kovellim_receiving_chamber.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_kovellim_receiving_chamber.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "bg",
+      "kovellim octagonal chamber"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
   "tier1_dialog_backgrounds/bg_open_space": {
     "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_open_space.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_open_space.png",
@@ -822,6 +562,32 @@
     "manifest_entry_to_update": null,
     "notes": "We need our planet surfaces to be top-down terrain for our resource gathering game. This is a landscape view.",
     "reviewed_at": "2026-05-17T22:23:35.821607+00:00"
+  },
+  "tier1_dialog_backgrounds/bg_selvenne_brain_coral_sanctum": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_selvenne_brain_coral_sanctum.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_selvenne_brain_coral_sanctum.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "bg",
+      "selvenne coral sanctum"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_dialog_backgrounds/bg_stelloth_trading_post": {
+    "prompt_path": "tools/firefly_prompts/tier1_dialog_backgrounds/bg_stelloth_trading_post.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_dialog_backgrounds/bg_stelloth_trading_post.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "bg",
+      "stelloth station interior"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
   },
   "tier1_faction_insignia/insignia_cleanser": {
     "prompt_path": "",
@@ -1019,6 +785,20 @@
     "notes": "PASS 4: Aaron rejected all 6 generic furling_reference plates. These were placeholder LAYERED_INFO entries used as faction-level dialog avatars when no specific NPC existed. The Furling factions now have (or will have) named NPC avatars: Persuader=commander_halia, Cleanser=vael_souren, etc. COORDINATION QUESTION (game-design + lore): should the generic furling_reference plates be officially DEPRECATED in favor of named NPC avatars per faction? If yes, the LAYERED_INFO in tools/build_species_inventory.py should update the faction avatar_path entries to point at named-NPC avatars (e.g. COMPELLER_FACTION -> some named Compeller NPC, etc). Until then, this image is rejected but the system still references it; do NOT delete the file.",
     "reviewed_at": "2026-05-17T22:24:08.770705+00:00"
   },
+  "tier1_lander/lander_furling": {
+    "prompt_path": "tools/firefly_prompts/tier1_lander/lander_furling.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T03:17:29+00:00",
+    "status": "keep",
+    "tags": [
+      "lander"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:12:45.027984+00:00"
+  },
   "tier1_lander/lander_furling_v1_legs": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_lander/lander_furling_v1_legs.png",
@@ -1047,6 +827,32 @@
     "notes": "",
     "reviewed_at": "2026-05-17T22:12:48.013312+00:00"
   },
+  "tier1_planets/bg_aeris_sing_canyons": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/bg_aeris_sing_canyons.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/bg_aeris_sing_canyons.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "bg",
+      "karavem homeworld canyon-cities"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_planets/bg_kovellim_eight_knot_station": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/bg_kovellim_eight_knot_station.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/bg_kovellim_eight_knot_station.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "bg",
+      "kovellim eight-knot orbital station"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
   "tier1_planets/planet_arilou_sanctuary": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_arilou_sanctuary.png",
@@ -1074,6 +880,20 @@
     "manifest_entry_to_update": null,
     "notes": "",
     "reviewed_at": "2026-05-17T22:18:15.966975+00:00"
+  },
+  "tier1_planets/planet_drahn": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_drahn.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_drahn.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:45:19+00:00",
+    "status": "keep",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:17:59.957896+00:00"
   },
   "tier1_planets/planet_drahn_v1_melnorme_misread": {
     "prompt_path": "",
@@ -1116,6 +936,33 @@
     "manifest_entry_to_update": null,
     "notes": "",
     "reviewed_at": "2026-05-17T22:17:54.507332+00:00"
+  },
+  "tier1_planets/planet_mrokons_stand_surface": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_mrokons_stand_surface.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_mrokons_stand_surface.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "planet",
+      "mrokon homeworld surface"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_planets/planet_ossuary": {
+    "prompt_path": "tools/firefly_prompts/tier1_planets/planet_ossuary.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_planets/planet_ossuary.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:51:52+00:00",
+    "status": "keep",
+    "tags": [
+      "planets"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:17:45.264475+00:00"
   },
   "tier1_planets/planet_procyon": {
     "prompt_path": "",
@@ -1215,6 +1062,21 @@
     "notes": "",
     "reviewed_at": "2026-05-17T22:17:41.180121+00:00"
   },
+  "tier1_portraits/species_arilou_sage_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_arilou_sage_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "reroll_requested",
+    "tags": [
+      "arilou",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "arilou look like The Greys\n",
+    "reviewed_at": "2026-05-17T22:23:39.952201+00:00"
+  },
   "tier1_portraits/species_burvixese_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_burvixese_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_burvixese_portrait.png",
@@ -1242,6 +1104,145 @@
     "manifest_entry_to_update": null,
     "notes": "no arms",
     "reviewed_at": "2026-05-17T22:17:12.474694+00:00"
+  },
+  "tier1_portraits/species_coel_tessar_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_coel_tessar_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "reroll_requested",
+    "tags": [
+      "coel",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "make all androsynth greyish-blue",
+    "reviewed_at": "2026-05-17T22:23:42.010964+00:00"
+  },
+  "tier1_portraits/species_commander_halia_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_commander_halia_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "reroll_requested",
+    "tags": [
+      "halia",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "too much like a wookie, should look like an anthrapamorphic cat",
+    "reviewed_at": "2026-05-17T22:23:44.065836+00:00"
+  },
+  "tier1_portraits/species_karavem_veled_elder": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_karavem_veled_elder.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_karavem_veled_elder.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "species",
+      "karavem elder conductor"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_portraits/species_kovellim_ovala_elder": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_kovellim_ovala_elder.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_kovellim_ovala_elder.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "species",
+      "kovellim elder with knot-scars"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_portraits/species_melnorme_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_melnorme_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_melnorme_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: needs shoulders, use other melnorme candidate",
+    "reviewed_at": "2026-05-17T22:23:46.131871+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_portraits/species_mmrnmhrm_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mmrnmhrm_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mmrnmhrm_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T03:00:01+00:00",
+    "status": "keep",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "A fine androsynth, if not menacing enough",
+    "reviewed_at": "2026-05-17T22:16:44.697975+00:00"
+  },
+  "tier1_portraits/species_mrokon_operator_bunker": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mrokon_operator_bunker.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mrokon_operator_bunker.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "species",
+      "mrokon operator bunker-dweller"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_portraits/species_mrokon_vrek_puppet": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mrokon_vrek_puppet.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mrokon_vrek_puppet.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "species",
+      "mrokon vrek puppet"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_portraits/species_mycon_biot_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_mycon_biot_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:55:11+00:00",
+    "status": "keep",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "this is the bone planet, not the mycon",
+    "reviewed_at": "2026-05-17T22:16:45.513547+00:00"
+  },
+  "tier1_portraits/species_planar_blade_portrait": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_planar_blade_portrait.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T03:13:44+00:00",
+    "status": "keep",
+    "tags": [
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "SPECIES RENAMED 2026-05-17: Planar -> Thinn. Existing visual is salvageable; primary action is filename rename to species_thinn_blade_portrait.png after Lore-chat commits species-the-thinn.md. Visual itself is canonically fine.",
+    "reviewed_at": "2026-05-17T21:46:47.652031+00:00"
   },
   "tier1_portraits/species_proto_qor_ah_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_proto_qor_ah_portrait.txt",
@@ -1271,19 +1272,77 @@
     "notes": "",
     "reviewed_at": "2026-05-17T22:16:47.400873+00:00"
   },
+  "tier1_portraits/species_selvenne_polyp": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_selvenne_polyp.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_selvenne_polyp.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "species",
+      "selvenne bioluminescent polyp"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_portraits/species_sentry_drone_47t_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_sentry_drone_47t_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "keep",
+    "tags": [
+      "sentry",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "THey are not a species, they just work for the furlings",
+    "reviewed_at": "2026-05-17T22:16:50.995642+00:00"
+  },
+  "tier1_portraits/species_slylandro_witness_portrait": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_slylandro_witness_portrait.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "slylandro",
+      "portraits"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Slylandro Witness portrait — semi-transparent gas vortex with bright cyan centroid, in gas-giant atmosphere",
+    "reviewed_at": "2026-05-17T22:23:48.183613+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_portraits/species_stelloth_chord": {
+    "prompt_path": "tools/firefly_prompts/tier1_portraits/species_stelloth_chord.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_stelloth_chord.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "species",
+      "stelloth chord-being portrait"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
   "tier1_portraits/species_taalo_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_taalo_portrait.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_portraits/species_taalo_portrait.png",
     "aspect": "1:1",
-    "generated_at": "2026-05-17T18:24:55.784832+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "portraits"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "WRONG SPECIES per 2026-05-17 canon update: see avatar_taalo notes. Portrait re-roll: Horta-style basalt-and-quartz creature with mineral pseudopod-legs and acid-drip maw, no eyes (or compound geo-sensor patches). Background: a mountainside that IS another sleeping Taalo - the species IS the landscape. Plus a calcifying-corpse in middle distance already turning back into ordinary rock, foreshadowing the slice tragedy (Taalo Shield fails; species Eliminated).",
-    "reviewed_at": "2026-05-17T22:23:50.233572+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: WRONG SPECIES per 2026-05-17 canon update: see avatar_taalo notes. Portrait re-roll: Horta-style basalt-and-quartz creature with mineral pseudopod-legs and acid-drip maw, no eyes (or compound geo-sensor patches). Background: a mountainside that IS another sleeping Taalo - the species IS the landscape. Plus a calcifying-corpse in middle distance already turning back into ordinary rock, foreshadowing the slice tragedy (Taalo Shield fails; species Eliminated).",
+    "reviewed_at": "2026-05-17T22:23:50.233572+00:00",
+    "model": "Firefly Image 3"
   },
   "tier1_portraits/species_utwig_portrait": {
     "prompt_path": "tools/firefly_prompts/tier1_portraits/species_utwig_portrait.txt",
@@ -1359,15 +1418,118 @@
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_androsynth_cruiser.png",
     "aspect": "1:1",
-    "generated_at": "2026-05-17T04:08:59.991805+00:00",
-    "status": "reroll_requested",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
     "tags": [
       "ships"
     ],
     "destination": null,
     "manifest_entry_to_update": null,
-    "notes": "Doesn't look like an androsynth cruiser, refer to internal assets",
-    "reviewed_at": "2026-05-17T22:23:52.285148+00:00"
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Doesn't look like an androsynth cruiser, refer to internal assets",
+    "reviewed_at": "2026-05-17T22:23:52.285148+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_ships/ship_arilou_skiff": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_arilou_skiff.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "arilou-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Arilou Skiff top-down — iridescent flying saucer blue,",
+    "reviewed_at": "2026-05-17T22:23:54.344421+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_ships/ship_cleanser_cruiser": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_cleanser_cruiser.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "keep",
+    "tags": [
+      "cleanser-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Cleanser Cruiser top-down — white-violet heavy ring with teardrop emitters, Quiet Ledger glyph",
+    "reviewed_at": "2026-05-17T21:49:41.606048+00:00"
+  },
+  "tier1_ships/ship_defender_vessel": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_defender_vessel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "keep",
+    "tags": [
+      "defender-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Defender Vessel top-down — burgundy slab-armor warship, kinetic turrets, Sa-Matra sword-and-star insignia",
+    "reviewed_at": "2026-05-17T21:49:42.632845+00:00"
+  },
+  "tier1_ships/ship_furling_scout": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_furling_scout.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "furling-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Furling Scout top-down — copper ring nacelle + central football hull + red warp halo, player ship\n\nMake it longer, without the red warp bubble\n",
+    "reviewed_at": "2026-05-17T22:16:08.452550+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_ships/ship_karavem_aria_skiff": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_karavem_aria_skiff.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_karavem_aria_skiff.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "ship",
+      "karavem bird-of-prey combat skiff"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_ships/ship_kovellim_crossing_frigate": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_kovellim_crossing_frigate.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_kovellim_crossing_frigate.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "ship",
+      "kovellim crossing frigate"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_ships/ship_melnorme_trader": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_melnorme_trader.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_melnorme_trader.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T02:29:39+00:00",
+    "status": "reject",
+    "tags": [
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "diplicate",
+    "reviewed_at": "2026-05-17T22:16:22.555948+00:00"
   },
   "tier1_ships/ship_melnorme_trader_v2": {
     "prompt_path": "",
@@ -1383,6 +1545,35 @@
     "notes": "",
     "reviewed_at": "2026-05-17T22:13:56.172059+00:00"
   },
+  "tier1_ships/ship_mmrnmhrm_sentinel": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_mmrnmhrm_sentinel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "mmrnmhrm-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "REROLLED 2026-05-17 via Firefly Image 3 (free unlimited tier). Prior notes: Mmrnmhrm Sentinel top-down — silver-and-patina octagonal hull, optical-cluster band forward, weathered ancient",
+    "reviewed_at": "2026-05-17T22:23:56.409343+00:00",
+    "model": "Firefly Image 3"
+  },
+  "tier1_ships/ship_mrokon_hammer_ship": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_mrokon_hammer_ship.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_mrokon_hammer_ship.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "ship",
+      "mrokon hammer warship"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
   "tier1_ships/ship_others_vessel": {
     "prompt_path": "tools/firefly_prompts/tier1_ships/ship_others_vessel.txt",
     "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_others_vessel.png",
@@ -1396,6 +1587,21 @@
     "manifest_entry_to_update": null,
     "notes": "",
     "reviewed_at": "2026-05-17T22:13:45.395602+00:00"
+  },
+  "tier1_ships/ship_persuader_vessel": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_persuader_vessel.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "keep",
+    "tags": [
+      "persuader-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "too many spherical ships",
+    "reviewed_at": "2026-05-17T22:13:39.000524+00:00"
   },
   "tier1_ships/ship_planar_blade": {
     "prompt_path": "tools/firefly_prompts/tier1_ships/ship_planar_blade.txt",
@@ -1425,6 +1631,21 @@
     "notes": "ur-quan, not qor-ah",
     "reviewed_at": "2026-05-17T22:13:10.662032+00:00"
   },
+  "tier1_ships/ship_proto_urquan": {
+    "prompt_path": "(inline JS prompt during R2 burst — not stored as file)",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_proto_urquan.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T04:02:20+00:00",
+    "status": "keep",
+    "tags": [
+      "urquan-ship",
+      "ships"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "Qur-ah, not ur-quan",
+    "reviewed_at": "2026-05-17T22:13:27.458725+00:00"
+  },
   "tier1_ships/ship_sentry_drone_47t": {
     "prompt_path": "",
     "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_sentry_drone_47t.png",
@@ -1438,6 +1659,33 @@
     "manifest_entry_to_update": null,
     "notes": "",
     "reviewed_at": "2026-05-17T22:13:59.901121+00:00"
+  },
+  "tier1_ships/ship_stelloth_three_voice_arc": {
+    "prompt_path": "tools/firefly_prompts/tier1_ships/ship_stelloth_three_voice_arc.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ships/ship_stelloth_three_voice_arc.png",
+    "aspect": "1:1",
+    "model": "Firefly Image 3",
+    "generated_at": "2026-05-18T00:42:37Z",
+    "status": "pending",
+    "tags": [
+      "ship",
+      "stelloth triple-hull ship"
+    ],
+    "notes": "NEW 2026-05-17 Phase 1 new-species batch. Per HANDOFF_image_chat.md from Lore-chat worktree. Simplified prompt (~800-900 chars) to avoid Firefly content filter. Awaiting Aaron review."
+  },
+  "tier1_ui/icon_module_drive": {
+    "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_drive.txt",
+    "image_path": "assets/generated_drafts/firefly/tier1_ui/icon_module_drive.png",
+    "aspect": "1:1",
+    "generated_at": "2026-05-17T03:19:36+00:00",
+    "status": "keep",
+    "tags": [
+      "ui"
+    ],
+    "destination": null,
+    "manifest_entry_to_update": null,
+    "notes": "",
+    "reviewed_at": "2026-05-17T22:14:01.925856+00:00"
   },
   "tier1_ui/icon_module_scanner": {
     "prompt_path": "tools/firefly_prompts/tier1_ui/icon_module_scanner.txt",
