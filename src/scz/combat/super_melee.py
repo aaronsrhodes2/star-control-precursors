@@ -36,6 +36,10 @@ Focus = Literal["precursor", "homesteader", "start"]
 class SuperMeleeScene(Scene):
     """Picker + launcher for 1v1 AI-vs-AI super-melee fights."""
 
+    # Title-menu music plays in the picker; combat music takes over when
+    # a fight starts (MeleeCombatScene declares its own music_context).
+    music_context = "title_menu"
+
     def __init__(self) -> None:
         super().__init__()
         self.precursors = precursor_ships()
@@ -64,8 +68,14 @@ class SuperMeleeScene(Scene):
         # Picker is intentionally not Time-Drive rewindable.
         return None
 
+    def _click_sfx(self) -> None:
+        """Fire ui/menu_select if SFX is wired (silent on headless/test)."""
+        if self.game is not None and hasattr(self.game, "sfx"):
+            self.game.sfx.play("ui/menu_select")
+
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         if inp.cancel and self.game is not None:
+            self._click_sfx()
             from scz.scenes.stubs import MainMenuScene
             self.game.set_scene(MainMenuScene())
             return
@@ -73,41 +83,50 @@ class SuperMeleeScene(Scene):
         # D-pad left / right (menu_prev / menu_next): switch focus column
         if inp.menu_prev:
             self.focus = self._focus_left()
+            self._click_sfx()
         elif inp.menu_next:
             self.focus = self._focus_right()
+            self._click_sfx()
 
         # Up / down within focused column
         if self.focus == "precursor":
             n = len(self.precursors)
             if inp.menu_up:
                 self.p_idx = (self.p_idx - 1) % n
+                self._click_sfx()
             elif inp.menu_down:
                 # Wrap into START when at the bottom
                 if self.p_idx == n - 1:
                     self.focus = "start"
                 else:
                     self.p_idx = (self.p_idx + 1) % n
+                self._click_sfx()
         elif self.focus == "homesteader":
             n = len(self.homesteaders)
             if inp.menu_up:
                 self.h_idx = (self.h_idx - 1) % n
+                self._click_sfx()
             elif inp.menu_down:
                 if self.h_idx == n - 1:
                     self.focus = "start"
                 else:
                     self.h_idx = (self.h_idx + 1) % n
+                self._click_sfx()
         else:  # start
             if inp.menu_up:
                 # Pop back to the column we came from
                 self.focus = "precursor"
+                self._click_sfx()
             elif inp.menu_down:
                 # Wrap to top of precursor column
                 self.focus = "precursor"
                 self.p_idx = 0
+                self._click_sfx()
 
         # A: confirm
         if inp.confirm and self.game is not None:
             if self.focus == "start":
+                self._click_sfx()
                 self._launch_fight()
             # otherwise A just stays on the row (no per-ship "info" action yet)
 

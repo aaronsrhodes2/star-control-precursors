@@ -29,6 +29,9 @@ Focus = Literal["slots", "modules"]
 class ShipCustomizationScene(Scene):
     """Module install/uninstall UX."""
 
+    # Furling Mh-Lai theme carries through the shipyard.
+    music_context: str | None = "furling_home"
+
     def __init__(self) -> None:
         super().__init__()
         self.focus: Focus = "slots"
@@ -56,15 +59,22 @@ class ShipCustomizationScene(Scene):
             if self.last_msg_age > 3.0:
                 self.last_msg = ""
 
+        def _click() -> None:
+            if hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_select")
+
         if inp.cancel:
+            _click()
             from scz.station.scene import StationScene
             self.game.set_scene(StationScene())
             return
 
         if inp.menu_prev:
             self.focus = "slots"
+            _click()
         elif inp.menu_next:
             self.focus = "modules"
+            _click()
 
         # Available modules — purchasable + uninstalled quest rewards
         avail = self._available_modules_list()
@@ -73,9 +83,12 @@ class ShipCustomizationScene(Scene):
             n = len(SLOTS)
             if inp.menu_up:
                 self.slot_idx = (self.slot_idx - 1) % n
+                _click()
             elif inp.menu_down:
                 self.slot_idx = (self.slot_idx + 1) % n
+                _click()
             if inp.confirm:
+                _click()
                 # A on a slot uninstalls the currently-equipped module
                 self._try_uninstall(SLOTS[self.slot_idx])
         else:  # modules
@@ -83,9 +96,12 @@ class ShipCustomizationScene(Scene):
             if n > 0:
                 if inp.menu_up:
                     self.module_idx = (self.module_idx - 1) % n
+                    _click()
                 elif inp.menu_down:
                     self.module_idx = (self.module_idx + 1) % n
+                    _click()
                 if inp.confirm:
+                    _click()
                     self._try_install(avail[self.module_idx])
 
     def render(self, screen: pygame.Surface) -> None:

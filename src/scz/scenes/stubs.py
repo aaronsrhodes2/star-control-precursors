@@ -160,6 +160,10 @@ class MainMenuScene(StubScene):
     ACCENT = (240, 230, 200)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_migration_portal.png"
     BACKDROP_DIM = 140
+    # Plays the title_menu music context on entry (Eleven-keep 4-min
+    # orchestrated piece). Aaron 2026-05-19: was silent because no
+    # music_context was declared and the game boots straight into here.
+    music_context = "title_menu"
     DETAILS = [
         "Title screen — entry point of the game.",
         "",
@@ -180,6 +184,8 @@ class MainMenuScene(StubScene):
             return
         # Confirm → launch the real game (Station: home base)
         if inp.confirm and self.game is not None:
+            if hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_select")
             from scz.station.scene import StationScene
             self.game.set_scene(StationScene())
             return
@@ -188,6 +194,7 @@ class MainMenuScene(StubScene):
 class PlanetScanScene(StubScene):
     TITLE = "Planet Scan"
     SUBTITLE = "Pre-landing reconnaissance from orbit"
+    music_context = "planet_orbit_cloaked"
     ACCENT = (140, 230, 200)
     DETAILS = [
         "From the star-system view, before landing on a planet,",
@@ -227,6 +234,7 @@ class DialogScene(StubScene):
 class ObservationScene(StubScene):
     TITLE = "Proto-Species Observation"
     SUBTITLE = "Lightweight visit to a pre-sentient species"
+    music_context = "proto_species_wonder"
     ACCENT = (140, 220, 160)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_planets/planet_sol_iii.png"
     DETAILS = [
@@ -252,6 +260,10 @@ class ObservationScene(StubScene):
 class CouncilScene(StubScene):
     TITLE = "Furling Council"
     SUBTITLE = "Internal debate over species fates and migration policy"
+    # Stub doesn't know which faction is presiding; use Persuader's
+    # default council theme. Real CouncilScene (TBD) will swap to the
+    # presiding-faction's theme dynamically.
+    music_context = "council_persuader"
     ACCENT = (220, 180, 240)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png"
     DETAILS = [
@@ -272,6 +284,7 @@ class CouncilScene(StubScene):
 class StationScene(StubScene):
     TITLE = "Station / Home Port"
     SUBTITLE = "Furling waystation — commander, trade, upgrade"
+    music_context = "furling_home"
     ACCENT = (180, 220, 240)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cloak_install.png"
     DETAILS = [
@@ -293,6 +306,7 @@ class StationScene(StubScene):
 class ShipCustomizationScene(StubScene):
     TITLE = "Ship Customization"
     SUBTITLE = "Modular Furling Scout — install / swap / remove modules"
+    music_context = "furling_home"
     ACCENT = (240, 200, 140)
     DETAILS = [
         "The player's Furling Scout has slots for:",
@@ -312,6 +326,7 @@ class ShipCustomizationScene(StubScene):
 class ClusterStatusBoardScene(StubScene):
     TITLE = "Cluster Status Board"
     SUBTITLE = "Win-condition tracking — every species, every terminal status"
+    music_context = "furling_home"
     ACCENT = (255, 230, 140)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_rainbow_seeding.png"
     DETAILS = [
@@ -334,6 +349,7 @@ class ClusterStatusBoardScene(StubScene):
 class ArchiveScene(StubScene):
     TITLE = "Furling Bio-Archive"
     SUBTITLE = "Codex — observations, council reports, lore unlocked"
+    music_context = "furling_home"
     ACCENT = (160, 220, 200)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png"
     DETAILS = [

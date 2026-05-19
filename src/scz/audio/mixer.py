@@ -165,11 +165,20 @@ class StemMixer:
                     self.set_stem_volume(name, vol)
             return
 
-        if fade_out_prev and self._active:
-            self.fade_out_all(rate=2.0)
-            # Note: the caller's update() loop will finish the fade-out
-            # naturally; we proceed with fade-in immediately, which gives
-            # a brief crossfade.
+        # Hard-stop the previous context's stems before starting new ones.
+        # The pre-2026-05-19 version of this method called fade_out_all
+        # (just sets target_volume=0 in _active) then immediately wrote
+        # `self._active = new_active`, ORPHANING the old StemState
+        # entries — their channels were still playing loops=-1 but no
+        # longer in _active for the update() ramp loop to touch. Result:
+        # previous-scene music kept playing under the new scene's music
+        # at whatever volume it was at the moment of transition. The
+        # fade-in fade_ms=400 on the new stems below is enough to keep
+        # the start of the new context from popping.
+        if self._active:
+            for st in self._active.values():
+                st.channel.stop()
+            self._active.clear()
 
         track = self.load_track(context, track_dir)
         volumes = stem_volumes or {name: 1.0 for name in track.stems}
@@ -180,7 +189,7 @@ class StemMixer:
                 log.warning("no free channels for stem %s", name)
                 break
             ch = free_channels.pop(0)
-            # Loop the stem indefinitely
+            # Loop the stem indefinitely; small fade-in to avoid clicks.
             ch.play(sound, loops=-1, fade_ms=400)
             ch.set_volume(0.0)
             new_active[name] = StemState(

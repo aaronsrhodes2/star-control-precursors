@@ -39,11 +39,9 @@ PLANET_MH_LAI_PATH = os.path.join(
 class StationScene(Scene):
     """Mh-Lai Station hub view."""
 
-    # No starbase music track yet — Furling civilization theme set is
-    # queued for future generation (Furling home / Mh-Lai). Until then
-    # leave music_context = None and let the prior scene's music carry
-    # through. Set this to "furling_home" once that track lands.
-    music_context: str | None = None
+    # Furling-civilization Mh-Lai theme. Generated in the 2026-05-17/18
+    # MusicGen pass and shipped under assets/music/furling_home/.
+    music_context: str | None = "furling_home"
 
     # Class-level seeded starfield so it doesn't shimmer on re-entry
     _starfield: list[tuple[int, int, int]] | None = None
@@ -91,14 +89,21 @@ class StationScene(Scene):
             return
 
         # Menu navigation
+        def _click() -> None:
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_select")
+
         n = len(ACTIONS)
         if inp.menu_up:
             self.selected_action = (self.selected_action - 1) % n
+            _click()
         elif inp.menu_down:
             self.selected_action = (self.selected_action + 1) % n
+            _click()
 
         # Confirm → trigger action
         if inp.confirm and self.game is not None:
+            _click()
             label, action = ACTIONS[self.selected_action]
             if action == "talk":
                 from scz.dialog.characters import commander_halia

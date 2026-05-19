@@ -239,15 +239,22 @@ class DialogScene(Scene):
             self._exit_dialog()
             return
 
+        def _click() -> None:
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_select")
+
         # Menu navigation: D-pad up/down + arrow keys (edge), wrap
         n = len(state.choices)
         if inp.menu_up:
             self.selected_choice = (self.selected_choice - 1) % n
+            _click()
         elif inp.menu_down:
             self.selected_choice = (self.selected_choice + 1) % n
+            _click()
 
         # Confirm → pick this choice
         if inp.confirm:
+            _click()
             choice = state.choices[self.selected_choice]
             override_state: str | None = None
             if choice.side_effect is not None and self.game is not None:
