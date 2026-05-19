@@ -39,12 +39,16 @@ def _load_manifest(ctx_dir: Path) -> dict:
 
 
 def _list_music_contexts() -> list[tuple[Path, dict]]:
-    """Return (ctx_dir, manifest) for every music context found."""
+    """Return (ctx_dir, manifest) for every music context found.
+
+    Skips dirs starting with '_' (e.g. '_quality_probe' holds prompt
+    A/B test artifacts — they're useful on disk but shouldn't appear
+    on the review page)."""
     if not MUSIC_ROOT.is_dir():
         return []
     items: list[tuple[Path, dict]] = []
     for d in sorted(MUSIC_ROOT.iterdir()):
-        if d.is_dir():
+        if d.is_dir() and not d.name.startswith("_"):
             items.append((d, _load_manifest(d)))
     return items
 
@@ -221,39 +225,220 @@ def _render_music_section(ctx_dir: Path, manifest: dict, review_state: dict) -> 
     </section>"""
 
 
+def _render_sfx_item(group_label: str, p: Path,
+                     review_state: dict, sfx_provenance: dict,
+                     show_subdir: bool = True) -> str:
+    """Render one SFX item (one card). Decoupled from group rendering so
+    the species-bucket layout can interleave items from multiple subdirs
+    under a single species heading (e.g. all Furling-faction ship SFX
+    under one Furling section)."""
+    spec = _try_lookup_sfx_spec(p.stem, group_label) or {}
+    prompt = spec.get("prompt", "")
+    dur = spec.get("duration_s", "")
+    loop_flag = spec.get("loop", False)
+    cat = spec.get("category", "")
+    # Per-SFX review state. Key is the audio-review key: sfx/<subdir>/<name>
+    sfx_key = f"sfx/{group_label}/{p.stem}"
+    review_entry = review_state.get(sfx_key, {}) or {}
+    review_status = review_entry.get("status") or "pending"
+    review_notes = review_entry.get("notes") or ""
+    # Per-SFX backend provenance. Key shape: <subdir>/<name>
+    prov_key = f"{group_label}/{p.stem}"
+    prov_entry = sfx_provenance.get(prov_key) or {}
+    backend = prov_entry.get("backend") if isinstance(prov_entry, dict) else (prov_entry or "")
+    backend_chip = _backend_chip_html(backend or "")
+    # Subdir badge — only shown in species buckets (Furling has multiple
+    # ships, so callers want it; UI/Lander/Scan buckets have a single
+    # subdir, so callers suppress to reduce noise).
+    subdir_badge = (f'<span class="sfx-subdir">{_esc(group_label)}/</span>'
+                    if show_subdir else "")
+    return f"""
+    <div class="sfx-item{' loopable' if loop_flag else ''}" data-review-status="{_esc(review_status)}">
+      <button class="play-sfx" onclick="playSfx(this)">▶</button>
+      <span class="sfx-name">{subdir_badge}{_esc(p.stem)} {backend_chip}</span>
+      <span class="sfx-meta">{_esc(str(dur))}s{' · LOOP' if loop_flag else ''}{(' · ' + _esc(cat)) if cat else ''}</span>
+      <span class="sfx-prompt">{_esc(prompt)}</span>
+      <audio src="{_audio_url(p)}" preload="metadata" {'loop' if loop_flag else ''}></audio>
+      {_review_actions_html(sfx_key, review_status, review_notes)}
+    </div>"""
+
+
 def _render_sfx_group(group_label: str, paths: list[Path],
                       review_state: dict, sfx_provenance: dict) -> str:
-    items_html = []
-    for p in paths:
-        spec = _try_lookup_sfx_spec(p.stem, group_label) or {}
-        prompt = spec.get("prompt", "")
-        dur = spec.get("duration_s", "")
-        loop_flag = spec.get("loop", False)
-        cat = spec.get("category", "")
-        # Per-SFX review state. Key is the audio-review key: sfx/<subdir>/<name>
-        sfx_key = f"sfx/{group_label}/{p.stem}"
-        review_entry = review_state.get(sfx_key, {}) or {}
-        review_status = review_entry.get("status") or "pending"
-        review_notes = review_entry.get("notes") or ""
-        # Per-SFX backend provenance. Key shape: <subdir>/<name>
-        prov_key = f"{group_label}/{p.stem}"
-        prov_entry = sfx_provenance.get(prov_key) or {}
-        backend = prov_entry.get("backend") if isinstance(prov_entry, dict) else (prov_entry or "")
-        backend_chip = _backend_chip_html(backend or "")
-        items_html.append(f"""
-        <div class="sfx-item{' loopable' if loop_flag else ''}" data-review-status="{_esc(review_status)}">
-          <button class="play-sfx" onclick="playSfx(this)">▶</button>
-          <span class="sfx-name">{_esc(p.stem)} {backend_chip}</span>
-          <span class="sfx-meta">{_esc(str(dur))}s{' · LOOP' if loop_flag else ''}{(' · ' + _esc(cat)) if cat else ''}</span>
-          <span class="sfx-prompt">{_esc(prompt)}</span>
-          <audio src="{_audio_url(p)}" preload="metadata" {'loop' if loop_flag else ''}></audio>
-          {_review_actions_html(sfx_key, review_status, review_notes)}
-        </div>""")
+    items_html = [
+        _render_sfx_item(group_label, p, review_state, sfx_provenance,
+                         show_subdir=False)
+        for p in paths
+    ]
     return f"""
     <section class="sfx-group">
       <h3>{_esc(group_label)} <span class="meta">— {len(paths)} sound{'s' if len(paths)!=1 else ''}</span></h3>
       <div class="sfx-list">{''.join(items_html)}
       </div>
+    </section>"""
+
+
+# ---------------------------------------------------------------------------
+# Species + universal bucket assignment for Aaron's review pass.
+# Aaron 2026-05-19: "organize it all by species, or if not related to a
+# species, sub-categorize as UI, universal, etc..."
+# ---------------------------------------------------------------------------
+
+# Bucket display order: Furling (player) first, then other species
+# alphabetical, then universal categories.
+BUCKET_ORDER = [
+    "Furling",
+    "Androsynth", "Arilou", "Burvixese", "Chenjesu", "Lemmkin",
+    "Melnorme", "Mmrnmhrm", "Mycon", "Proto-Qor-Ah", "Proto-Ur-Quan",
+    "Slylandro", "Taalo", "Thinn (Planar)", "Utwig",
+    "Travel & Navigation", "Combat", "Story Moments", "Endings",
+    "UI", "Lander Tools", "Scan",
+    "Universal — Title", "Universal — Misc",
+]
+
+
+def _bucket_for_music(name: str) -> str:
+    """Map a music-context name to its review bucket."""
+    if name in ("arilou", "arilou_sages_grove"):
+        return "Arilou"
+    if name in ("androsynth", "androsynth_crash_site"):
+        return "Androsynth"
+    if name == "burvixese":
+        return "Burvixese"
+    if name == "chenjesu":
+        return "Chenjesu"
+    if name == "lemmkin":
+        return "Lemmkin"
+    if name in ("melnorme", "melnorme_bio_cargo_hold", "bargainers"):
+        return "Melnorme"
+    if name == "mmrnmhrm":
+        return "Mmrnmhrm"
+    if name in ("mycon", "mycon_hive_awakening"):
+        return "Mycon"
+    if name in ("planar", "thinn"):
+        return "Thinn (Planar)"
+    if name == "slylandro" or name.startswith("slylandro"):
+        return "Slylandro"
+    if name == "taalo":
+        return "Taalo"
+    if name == "utwig":
+        return "Utwig"
+    # Furling player content (homeworld + civil-war faction councils +
+    # faction-named themes like 'cleanser_council').
+    if (name == "furling_home"
+            or name.startswith("council_")
+            or "_council" in name):
+        return "Furling"
+    # Universal context-music categories.
+    if name.startswith("combat_"):
+        return "Combat"
+    if name.startswith("ending_"):
+        return "Endings"
+    if (name.startswith("hyperspace")
+            or name.startswith("system_travel")
+            or name.startswith("planet_lander")
+            or name.startswith("planet_orbit")
+            or name.startswith("quasispace")):
+        return "Travel & Navigation"
+    if name in ("others_reveal", "tension_other_ripple",
+                "rainbow_seeding_climax", "proto_species_wonder"):
+        return "Story Moments"
+    if name == "title_menu":
+        return "Universal — Title"
+    return "Universal — Misc"
+
+
+def _bucket_for_sfx(out_subdir: str) -> str:
+    """Map a SFX subdir to its review bucket. The subdir is the relative
+    path under assets/sfx (e.g. 'ships/arilou_skiff', 'ui', 'lander/...')."""
+    # Ship-specific SFX (weapon fire/impact) — bucket by owning species.
+    if out_subdir.startswith("ships/"):
+        ship_id = out_subdir[len("ships/"):].split("/", 1)[0]
+        if ship_id in ("furling_scout", "persuader_vessel", "defender_vessel",
+                       "cleanser_cruiser", "sentry_drone_47t"):
+            return "Furling"
+        if ship_id == "arilou_skiff":
+            return "Arilou"
+        if ship_id == "androsynth_cruiser":
+            return "Androsynth"
+        if ship_id == "melnorme_trader":
+            return "Melnorme"
+        if ship_id == "mmrnmhrm_sentinel":
+            return "Mmrnmhrm"
+        if ship_id == "lemmkin_skitter":
+            return "Lemmkin"
+        if ship_id == "proto_ur_quan":
+            return "Proto-Ur-Quan"
+        if ship_id == "proto_qor_ah":
+            return "Proto-Qor-Ah"
+        return "Universal — Misc"
+    # Universal sub-categories.
+    head = out_subdir.split("/", 1)[0]
+    if head == "ui":
+        return "UI"
+    if head == "lander":
+        return "Lander Tools"
+    if head == "scan":
+        return "Scan"
+    return "Universal — Misc"
+
+
+def _render_bucket_section(
+    bucket: str,
+    music_items: list[tuple[Path, dict]],
+    sfx_items: list[tuple[str, Path]],
+    review_state: dict,
+    sfx_provenance: dict,
+) -> str:
+    """Render one bucket: a species or universal category. Contains the
+    bucket's music contexts (full multi-stem players) AND its SFX items
+    (compact one-line cards)."""
+    if not music_items and not sfx_items:
+        return ""
+    anchor = ("bucket-" + bucket.lower()
+              .replace(" ", "-").replace("(", "").replace(")", "")
+              .replace("—", "").replace("--", "-").replace("/", "-")
+              .strip("-"))
+    n_music = len(music_items)
+    n_sfx = len(sfx_items)
+    counts = []
+    if n_music:
+        counts.append(f"{n_music} music")
+    if n_sfx:
+        counts.append(f"{n_sfx} SFX")
+    counts_html = (f'<span class="bucket-counts">{" · ".join(counts)}</span>'
+                   if counts else "")
+    sections = []
+    if music_items:
+        music_html = []
+        for ctx_dir, manifest in music_items:
+            s = _render_music_section(ctx_dir, manifest, review_state)
+            if s.strip():
+                music_html.append(s)
+        if music_html:
+            sections.append(
+                '<h3 class="bucket-subheading">Music</h3>'
+                + "".join(music_html)
+            )
+    if sfx_items:
+        # In species buckets we DO show the subdir prefix per item (the
+        # Furling bucket has 5 different ship subdirs and "primary_fire"
+        # alone is ambiguous). In universal SFX buckets (UI / Lander /
+        # Scan) we hide it since the subdir is implied by the bucket.
+        show_subdir = bucket not in ("UI", "Lander Tools", "Scan")
+        items_html = [
+            _render_sfx_item(subdir, p, review_state, sfx_provenance,
+                             show_subdir=show_subdir)
+            for subdir, p in sfx_items
+        ]
+        sections.append(
+            '<h3 class="bucket-subheading">SFX</h3>'
+            f'<div class="sfx-list">{"".join(items_html)}</div>'
+        )
+    return f"""
+    <section class="bucket" id="{_esc(anchor)}" data-bucket="{_esc(bucket)}">
+      <h2 class="bucket-heading">{_esc(bucket)} {counts_html}</h2>
+      {''.join(sections)}
     </section>"""
 
 
@@ -392,6 +577,59 @@ HTML_HEAD = """<!doctype html>
   /* For SFX items the action row sits underneath the grid */
   .sfx-item .review-actions { grid-column: 1 / -1; margin-top: .15em; padding-left: 50px; }
   .sfx-item .notes-edit     { grid-column: 1 / -1; padding-left: 50px; }
+
+  /* Bucket layout (2026-05-19 — Aaron's species-grouped review pass).
+     Each species or universal category gets its own section with
+     music contexts + SFX items inline. */
+  .bucket {
+    margin: 2em 0; padding: 1em 1.2em 1.4em;
+    border: 1px solid var(--border); border-radius: 8px;
+    background: linear-gradient(180deg, rgba(0,255,136,.025) 0%, transparent 80px);
+  }
+  .bucket-heading {
+    color: var(--accent); margin: 0 0 .8em;
+    border-bottom: 1px solid var(--accent-dim); padding-bottom: .35em;
+    display: flex; align-items: baseline; gap: .6em;
+  }
+  .bucket-counts {
+    color: var(--muted); font-size: .7em; font-weight: normal;
+    letter-spacing: .04em;
+  }
+  .bucket-subheading {
+    color: var(--warn); font-size: 1em; margin: 1em 0 .4em;
+    font-weight: normal; letter-spacing: .04em; text-transform: uppercase;
+  }
+  /* Inside a bucket, nested music-ctx / sfx-list panels shed their own
+     borders so the bucket frames the visual hierarchy. */
+  .bucket .music-ctx { border: 1px solid var(--border); margin-bottom: .8em; }
+  .bucket .sfx-list  { margin-top: 0; }
+
+  /* SFX subdir prefix badge — disambiguates "primary_fire" across the
+     Furling bucket's 5 ships, hidden in single-subdir buckets (UI/etc). */
+  .sfx-subdir {
+    color: var(--muted); font-size: .85em;
+    font-family: monospace; opacity: .65;
+  }
+
+  /* Top-of-page bucket navigation: chips with anchor links + counts. */
+  .bucket-nav {
+    display: flex; flex-wrap: wrap; gap: .35em; margin: 1em 0 1.5em;
+    padding: .6em .8em; background: var(--panel);
+    border: 1px solid var(--border); border-radius: 6px;
+    position: sticky; top: 0; z-index: 10;
+  }
+  .nav-chip {
+    display: inline-flex; align-items: center; gap: .35em;
+    padding: .25em .6em; background: rgba(0,255,136,.06);
+    color: var(--accent); border: 1px solid var(--accent-dim);
+    border-radius: 3px; font-size: .8em; text-decoration: none;
+    transition: background .15s, border-color .15s;
+  }
+  .nav-chip:hover { background: rgba(0,255,136,.18); border-color: var(--accent); }
+  .nav-count {
+    color: var(--muted); font-size: .85em; font-weight: bold;
+    background: rgba(0,0,0,.4); padding: .05em .35em; border-radius: 2px;
+  }
 </style>
 </head>
 <body>
@@ -729,15 +967,60 @@ def build() -> Path:
     review_state = _load_audio_review_manifest()
     sfx_provenance = _load_sfx_provenance()
 
-    music_sections = []
+    # Bucket music contexts + SFX items by species / universal category.
+    # music_buckets[bucket] -> list[(ctx_dir, manifest)]
+    # sfx_buckets[bucket] -> list[(subdir, path)]
+    music_buckets: dict[str, list[tuple[Path, dict]]] = {}
     for ctx_dir, manifest in contexts:
-        s = _render_music_section(ctx_dir, manifest, review_state)
-        if s.strip():
-            music_sections.append(s)
+        bucket = _bucket_for_music(ctx_dir.name)
+        music_buckets.setdefault(bucket, []).append((ctx_dir, manifest))
 
-    sfx_sections = []
-    for group_label, paths in sfx_groups.items():
-        sfx_sections.append(_render_sfx_group(group_label, paths, review_state, sfx_provenance))
+    sfx_buckets: dict[str, list[tuple[str, Path]]] = {}
+    for subdir, paths in sfx_groups.items():
+        for p in paths:
+            bucket = _bucket_for_sfx(subdir)
+            sfx_buckets.setdefault(bucket, []).append((subdir, p))
+    # Sort SFX inside each bucket: subdir first, then by filename so
+    # primary_fire/primary_impact/special_fire/special_impact cluster
+    # per ship.
+    for items in sfx_buckets.values():
+        items.sort(key=lambda t: (t[0], t[1].name))
+
+    # Order buckets canonically (BUCKET_ORDER), then any unknown bucket
+    # alphabetical at the end.
+    all_buckets = set(music_buckets) | set(sfx_buckets)
+    ordered: list[str] = [b for b in BUCKET_ORDER if b in all_buckets]
+    extra = sorted(all_buckets - set(BUCKET_ORDER))
+    ordered.extend(extra)
+
+    # Render bucket sections.
+    bucket_sections = []
+    for bucket in ordered:
+        s = _render_bucket_section(
+            bucket,
+            music_buckets.get(bucket, []),
+            sfx_buckets.get(bucket, []),
+            review_state, sfx_provenance,
+        )
+        if s.strip():
+            bucket_sections.append(s)
+
+    # Top-of-page navigation: one chip per non-empty bucket. Anchors
+    # let Aaron jump straight to a species during the review pass.
+    nav_chips = []
+    for bucket in ordered:
+        m = len(music_buckets.get(bucket, []))
+        s_n = len(sfx_buckets.get(bucket, []))
+        anchor = ("bucket-" + bucket.lower()
+                  .replace(" ", "-").replace("(", "").replace(")", "")
+                  .replace("—", "").replace("--", "-").replace("/", "-")
+                  .strip("-"))
+        total = m + s_n
+        nav_chips.append(
+            f'<a class="nav-chip" href="#{_esc(anchor)}">'
+            f'{_esc(bucket)} <span class="nav-count">{total}</span></a>'
+        )
+    nav_html = '<nav class="bucket-nav">' + "".join(nav_chips) + '</nav>'
 
     total_audio_files = sum(
         len(list(d.glob("*.mp3"))) + len(list(d.glob("*.wav"))) + len(list(d.glob("*.ogg")))
@@ -748,19 +1031,16 @@ def build() -> Path:
         f'<div class="summary">'
         f'{len(contexts)} music context{"s" if len(contexts)!=1 else ""} · '
         f'{sum(len(paths) for paths in sfx_groups.values())} SFX · '
-        f'{total_audio_files} audio files total'
+        f'{total_audio_files} audio files · '
+        f'{len(ordered)} buckets'
         f'</div>'
     )
 
-    body = HTML_HEAD + summary
-    if music_sections:
-        body += "<h2>Music</h2>" + "".join(music_sections)
+    body = HTML_HEAD + summary + nav_html
+    if bucket_sections:
+        body += "".join(bucket_sections)
     else:
-        body += '<p class="summary">(no music yet — run audio_generate.py --round N)</p>'
-    if sfx_sections:
-        body += "<h2>SFX</h2>" + "".join(sfx_sections)
-    else:
-        body += '<p class="summary">(no SFX yet — run audio_sfx_generate.py --round N)</p>'
+        body += '<p class="summary">(no audio yet — run audio_generate.py / audio_sfx_generate.py)</p>'
     body += HTML_TAIL
 
     OUT_PATH.write_text(body, encoding="utf-8")
