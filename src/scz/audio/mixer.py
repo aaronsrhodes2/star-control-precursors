@@ -66,6 +66,16 @@ class StemMixer:
         self._initialized = False
         self._tracks: dict[str, Track] = {}
         self._active: dict[str, StemState] = {}  # stem name -> state
+        # Stems that belong to the previous context but are still fading
+        # out. Tracked separately from _active so the update() ramp loop
+        # can continue ramping them down (and stop their channels when
+        # they reach silence) WHILE the new context's stems are ramping
+        # up — a true crossfade with no perceptible silence between
+        # scenes. Pre-2026-05-19 these were orphaned when _active was
+        # overwritten on transition; subsequent fix hard-stopped them
+        # (instant cut, ~400ms gap until new music fades in); this
+        # design fades both directions in parallel.
+        self._fading_out: list[StemState] = []
         self._current_context: Optional[str] = None
         self._master_volume = 1.0
 
@@ -89,10 +99,13 @@ class StemMixer:
         )
 
     def shutdown(self) -> None:
-        """Stop everything and release channels."""
+        """Stop everything and release channels (active + fading-out)."""
         for state in list(self._active.values()):
             state.channel.stop()
         self._active.clear()
+        for state in self._fading_out:
+            state.channel.stop()
+        self._fading_out.clear()
         self._current_context = None
 
     # ----- Track loading -----
@@ -165,19 +178,20 @@ class StemMixer:
                     self.set_stem_volume(name, vol)
             return
 
-        # Hard-stop the previous context's stems before starting new ones.
-        # The pre-2026-05-19 version of this method called fade_out_all
-        # (just sets target_volume=0 in _active) then immediately wrote
-        # `self._active = new_active`, ORPHANING the old StemState
-        # entries — their channels were still playing loops=-1 but no
-        # longer in _active for the update() ramp loop to touch. Result:
-        # previous-scene music kept playing under the new scene's music
-        # at whatever volume it was at the moment of transition. The
-        # fade-in fade_ms=400 on the new stems below is enough to keep
-        # the start of the new context from popping.
+        # Crossfade: move the previous context's stems to the
+        # _fading_out list so the update() loop can ramp them down to
+        # zero in parallel with the new context fading in. Once a
+        # fading-out stem reaches silence, update() stops its channel
+        # and removes it from the list — no orphaned loops=-1 leaks.
+        # Aaron 2026-05-19: "There should not be non-music moments or
+        # views." With this design every scene transition overlaps the
+        # outgoing + incoming music for ~1.5 s, so the player never
+        # hears silence between scenes.
         if self._active:
             for st in self._active.values():
-                st.channel.stop()
+                st.target_volume = 0.0
+                st.fade_rate = 1.5   # ~0.7 s fade-out
+                self._fading_out.append(st)
             self._active.clear()
 
         track = self.load_track(context, track_dir)
@@ -201,8 +215,13 @@ class StemMixer:
         self._current_context = context
 
     def _free_channels(self) -> list[pygame.mixer.Channel]:
-        """Find channels not currently used by an active stem."""
+        """Find channels not currently used by an active OR fading-out
+        stem. Excluding fading-out channels is what lets the crossfade
+        work — the new context's stems claim fresh channels while the
+        old context's stems continue ramping down on the channels they
+        already own."""
         used = {st.channel for st in self._active.values()}
+        used.update(st.channel for st in self._fading_out)
         return [
             pygame.mixer.Channel(i)
             for i in range(self._channel_count)
@@ -229,11 +248,14 @@ class StemMixer:
     # ----- Per-frame update -----
 
     def update(self, dt: float) -> None:
-        """Per-frame: advance volume ramps toward targets."""
-        if not self._initialized or not self._active:
+        """Per-frame: advance volume ramps toward targets for both the
+        active context's stems AND any stems still fading out from the
+        prior context (crossfade)."""
+        if not self._initialized:
             return
-        stopped: list[str] = []
-        for name, st in self._active.items():
+
+        def _ramp(st: StemState) -> None:
+            """Advance one stem's volume toward target; apply to channel."""
             if abs(st.current_volume - st.target_volume) < 1e-3:
                 st.current_volume = st.target_volume
             else:
@@ -242,10 +264,24 @@ class StemMixer:
                     st.current_volume = min(st.target_volume, st.current_volume + step)
                 else:
                     st.current_volume = max(st.target_volume, st.current_volume - step)
-                st.channel.set_volume(st.current_volume)
-            # If a stem has fully faded out, free the channel
-            if st.current_volume <= 0.001 and st.target_volume == 0.0:
-                st.channel.stop()
-                stopped.append(name)
-        for name in stopped:
-            del self._active[name]
+            st.channel.set_volume(st.current_volume)
+
+        # Active stems: ramp up to target. Also handle the edge case
+        # where active stems are individually faded to 0 (e.g. state-
+        # driven layers at low disposition) — when one fully reaches
+        # silence we leave it in _active (it'll ramp back up if the
+        # state changes) but ensure the channel volume is zero.
+        for st in self._active.values():
+            _ramp(st)
+
+        # Fading-out stems from the prior context: ramp toward 0; once
+        # silent, stop the channel and drop the StemState.
+        if self._fading_out:
+            still_fading: list[StemState] = []
+            for st in self._fading_out:
+                _ramp(st)
+                if st.current_volume <= 0.001:
+                    st.channel.stop()
+                else:
+                    still_fading.append(st)
+            self._fading_out = still_fading
