@@ -48,7 +48,102 @@ OUT_ROOT = ROOT / "assets" / "music"
 BACKEND = os.environ.get("SCZ_AUDIO_BACKEND", "local").lower()
 
 
-def _gen_music_array(prompt: str, duration_s: float):
+import re
+
+
+# Category-appropriate genre/groove suffixes for MusicGen. Aaron's
+# 2026-05-17 direction: "cruising in space, having a good time" — beat-
+# driven, coherent, not ambient drift. Suffixes carry the energy while
+# the spec.prompt body keeps the species/context identity.
+_MUSICGEN_CAT_SUFFIX = {
+    "travel": (
+        ", synthwave space cruise music, driving mid-tempo electronic "
+        "beat with crisp drum machine, melodic synth bassline, "
+        "optimistic and fun retro 80s sci-fi soundtrack, full-band "
+        "arrangement"
+    ),
+    "homeworld": (
+        ", warm cinematic sci-fi soundtrack with steady mid-tempo "
+        "groove, optimistic and homely, full-band arrangement with "
+        "rhythmic foundation"
+    ),
+    "species_peace": (
+        ", atmospheric sci-fi soundtrack with steady rhythmic backbone, "
+        "full-band arrangement, characterful and immersive, drum kit "
+        "with melodic synth"
+    ),
+    "furling_faction": (
+        ", cinematic political mid-tempo soundtrack with rhythmic pulse, "
+        "contemplative and weighty, full-band arrangement"
+    ),
+    "cinematic": (
+        ", dramatic cinematic short-form score, full-band arrangement "
+        "with rhythmic drive"
+    ),
+    "combat": (
+        ", driving aggressive electronic combat soundtrack, hard-hitting "
+        "drum beat, intense and exciting, full-band arrangement"
+    ),
+    "ending": (
+        ", cinematic ending theme with steady groove, full-band "
+        "arrangement, melodic resolution"
+    ),
+}
+
+
+def _rewrite_for_musicgen(prompt: str, category: str = "") -> str:
+    """Rewrite a SAO/AudioLDM2-style stem prompt into a MusicGen-native
+    full-track prompt.
+
+    Why: the existing spec prompts use 'Isolated <ROLE> STEM for layered
+    production: ...  no drums no melody no pads, ..., stems-only mix' —
+    framing that worked for SAO/AudioLDM2 because the diffusion path
+    actually honored the stem-isolation intent. MusicGen, in contrast,
+    is an autoregressive full-mix generator: it tries to produce a
+    coherent musical idea regardless of what we say about isolation,
+    and the negation language ('no drums no melody no pads') tends to
+    just confuse it. So for MusicGen we strip the SAO framing and lean
+    into a beat-driven, category-appropriate full-track aesthetic.
+
+    Trade-off: 'stems' generated this way are really 5 different full
+    mixes of the same musical idea, not separable layers. The runtime
+    mixer will play them simultaneously, which is acceptable when all
+    5 derive from the same key/bpm/identity prompt — they'll roughly
+    align even though they're not true stems. The variation layer
+    (post-MVP) will further mute/jitter individual 'stems' to break up
+    any sameness.
+
+    Aaron's 2026-05-17 direction: 'cruising in space, having a good
+    time' → favor synthwave/outrun/space-funk-driven full-band
+    arrangements over ambient drift. Encoded per-category in
+    `_MUSICGEN_CAT_SUFFIX`.
+    """
+    p = prompt
+    # Drop SAO stem-isolation framing.
+    p = re.sub(r"^Isolated\s+[A-Z\s]+STEM\s+for\s+layered\s+production:\s*",
+               "", p)
+    # Drop the no-X-no-Y negations (any order / 2-4 instruments).
+    p = re.sub(
+        r",?\s*no\s+(?:drums|melody|pads|bass)"
+        r"(?:\s+no\s+(?:drums|melody|pads|bass)){1,3}",
+        "", p, flags=re.IGNORECASE)
+    # Drop 'stems-only mix' and 'isolated track' framing fragments.
+    p = re.sub(r",?\s*stems[-\s]only\s+mix\b", "", p, flags=re.IGNORECASE)
+    p = re.sub(r",?\s*isolated\s+track\b", "", p, flags=re.IGNORECASE)
+    # Drop trailing/leading whitespace + dangling commas.
+    p = re.sub(r"\s+,", ",", p)
+    p = re.sub(r",\s*,", ",", p)
+    p = p.strip().strip(",").strip()
+    # Append category-appropriate groove suffix.
+    suffix = _MUSICGEN_CAT_SUFFIX.get(
+        category,
+        ", atmospheric sci-fi soundtrack with rhythmic backbone, "
+        "full-band arrangement",
+    )
+    return p + suffix
+
+
+def _gen_music_array(prompt: str, duration_s: float, category: str = ""):
     """Backend-dispatch: returns (audio_array, sample_rate).
 
     Local-backend dispatch is further model-aware via SCZ_AUDIO_MODEL:
@@ -58,8 +153,10 @@ def _gen_music_array(prompt: str, duration_s: float):
       params (steps=200, guidance=10) + negative prompt.
     - musicgen* (transformers): 32 kHz stereo (or mono), arbitrary
       duration via server-side chunked continuation. No diffusion
-      steps; autoregressive token generation. Use guidance=3.0 (Meta's
-      recommended CFG default).
+      steps; autoregressive token generation. Prompt gets rewritten
+      from SAO-style to MusicGen-native style (drop stem-isolation
+      framing, add beat-driven full-track suffix per category).
+      Use guidance=3.0 (Meta's recommended CFG default).
     - audioldm2-music / audioldm: 16 kHz mono. Cap at 45s. Same tuned
       diffusion params; ignored where not applicable.
     """
@@ -71,12 +168,12 @@ def _gen_music_array(prompt: str, duration_s: float):
     model = os.environ.get("SCZ_AUDIO_MODEL", "audioldm2-music").lower()
 
     if "musicgen" in model:
-        # MusicGen: arbitrary duration, but each token chunk is
-        # autoregressive so longer = slower. The audio-server handles
-        # the chunking; we just pass duration. Steps is unused
-        # (MusicGen isn't diffusion); guidance is the CFG scale.
+        # Rewrite SAO-style stem prompts into MusicGen-native full-track
+        # prompts. Strips stem-isolation framing + adds category-
+        # appropriate beat/groove suffix.
+        mg_prompt = _rewrite_for_musicgen(prompt, category=category)
         return _local_music(
-            prompt=prompt,
+            prompt=mg_prompt,
             duration=float(duration_s),
             steps=1,            # ignored by server in MusicGen path
             guidance=3.0,       # Meta's recommended CFG default
@@ -174,7 +271,11 @@ def generate_context(
         print(f"    prompt: {prompt[:100]}...", flush=True)
         t0 = time.time()
         try:
-            audio, sr = _gen_music_array(prompt=prompt, duration_s=spec.duration_s)
+            audio, sr = _gen_music_array(
+                prompt=prompt,
+                duration_s=spec.duration_s,
+                category=spec.category,
+            )
         except Exception as e:
             print(f"    FAIL: {e}", flush=True)
             continue

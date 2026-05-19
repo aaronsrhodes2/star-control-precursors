@@ -4,28 +4,28 @@
   "description": "Ending \u2014 Defender path; honor preserved, fight refused-but-honored",
   "key": "A major",
   "bpm": 72,
-  "duration_s": 60,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "drone": {
       "path": "assets/music/ending_defender/drone.wav",
       "prompt": "Isolated DRONE BASS STEM for layered production: warm brass-and-steel major chord sustain, honest reliable triumph, in A major at 72 bpm, Defender-path ending \u2014 honor preserved, stalwart-honest civilization survived the Migration by refusing to dishonor anyone, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pulse": {
       "path": "assets/music/ending_defender/pulse.wav",
       "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: clean military timpani heartbeat, disciplined closure, in A major at 72 bpm, Defender-path ending \u2014 honor preserved, stalwart-honest civilization survived the Migration by refusing to dishonor anyone, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "texture": {
       "path": "assets/music/ending_defender/texture.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant trumpet fanfare across the cluster, banners and remembered names, in A major at 72 bpm, Defender-path ending \u2014 honor preserved, stalwart-honest civilization survived the Migration by refusing to dishonor anyone, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T03:03:22Z",
+  "generated_at": "2026-05-19T02:06:22Z",
   "notes": ""
 }

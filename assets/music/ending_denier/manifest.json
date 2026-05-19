@@ -4,28 +4,28 @@
   "description": "Ending \u2014 Denier path; brittle pretend-everything-is-fine; the music knows",
   "key": "F major",
   "bpm": 84,
-  "duration_s": 60,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "drone": {
       "path": "assets/music/ending_denier/drone.wav",
       "prompt": "Isolated DRONE BASS STEM for layered production: warm major-key drone with one subtly-flat tone, sustained surface cheer that almost works, in F major at 84 bpm, Denier-path ending \u2014 brittle major-key cheer holding together over slowly-resolving dissonance, the music knows what the Deniers won't admit, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pulse": {
       "path": "assets/music/ending_denier/pulse.wav",
       "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: cheerful but rigid metronomic bell pulse, party music tempo gone wrong, in F major at 84 bpm, Denier-path ending \u2014 brittle major-key cheer holding together over slowly-resolving dissonance, the music knows what the Deniers won't admit, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "texture": {
       "path": "assets/music/ending_denier/texture.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: forced laughter and party chatter at impossible distance, civilization pretending nothing is happening, in F major at 84 bpm, Denier-path ending \u2014 brittle major-key cheer holding together over slowly-resolving dissonance, the music knows what the Deniers won't admit, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T03:04:23Z",
+  "generated_at": "2026-05-19T14:22:57Z",
   "notes": "The Deniers refused to believe. This ending is the saddest in disguise: brittle major-key cheer over slow underlying dissonance. Cheerful surface, tragic substance."
 }

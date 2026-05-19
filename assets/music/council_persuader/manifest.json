@@ -4,40 +4,40 @@
   "description": "Council \u2014 Persuader faction; diplomatic-reluctant negotiation",
   "key": "C major",
   "bpm": 68,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/council_persuader/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: warm low cello pulse on slow downbeats, gentle and reluctant, no drums no melody no pads, in C major at 68 bpm, Persuader Furling Council theme \u2014 diplomatic-reluctant, soft strings, warm winds, almost-apologetic negotiation, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/council_persuader/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: very sparse muted timpani + soft brush snare, restrained pace, no melody no bass no pads, in C major at 68 bpm, Persuader Furling Council theme \u2014 diplomatic-reluctant, soft strings, warm winds, almost-apologetic negotiation, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/council_persuader/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: soft string section pad with warm winds underneath, supportive sustaining chords, no melody no drums no bass, in C major at 68 bpm, Persuader Furling Council theme \u2014 diplomatic-reluctant, soft strings, warm winds, almost-apologetic negotiation, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/council_persuader/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: solo clarinet melody phrasing patient persuasive arguments, no drums no bass no pads, in C major at 68 bpm, Persuader Furling Council theme \u2014 diplomatic-reluctant, soft strings, warm winds, almost-apologetic negotiation, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/council_persuader/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Council chamber acoustics, scrolls being unrolled, no melody no drums no bass, in C major at 68 bpm, Persuader Furling Council theme \u2014 diplomatic-reluctant, soft strings, warm winds, almost-apologetic negotiation, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:49:20Z",
+  "generated_at": "2026-05-19T10:39:39Z",
   "notes": ""
 }

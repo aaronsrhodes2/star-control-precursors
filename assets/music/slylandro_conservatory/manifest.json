@@ -4,40 +4,40 @@
   "description": "Slylandro Conservatory \u2014 gas-giant city of awe; more energy than peace theme",
   "key": "A major",
   "bpm": 92,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/slylandro_conservatory/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: rich layered analog synth bass with floating major-key motion, more present than the peace theme, no drums no melody no pads, in A major at 92 bpm, Slylandro homeworld \u2014 magnificent gas-giant cloud city, more energy than the contact theme, awe-rich and majestic, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/slylandro_conservatory/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: warm mid-tempo mallet percussion + soft kit, gentle propulsion, no melody no bass no pads, in A major at 92 bpm, Slylandro homeworld \u2014 magnificent gas-giant cloud city, more energy than the contact theme, awe-rich and majestic, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/slylandro_conservatory/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: huge major-key choral synth pad with layered string warmth, magnificent atmospheric beds, no melody no drums no bass, in A major at 92 bpm, Slylandro homeworld \u2014 magnificent gas-giant cloud city, more energy than the contact theme, awe-rich and majestic, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/slylandro_conservatory/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: bright flute-and-bell duo melody, awed celebratory phrases climbing through cloud layers, no drums no bass no pads, in A major at 92 bpm, Slylandro homeworld \u2014 magnificent gas-giant cloud city, more energy than the contact theme, awe-rich and majestic, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/slylandro_conservatory/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: gas-giant wind sweeping through pressure shells, distant Slylandro chorus, cloud-city activity, no melody no drums no bass, in A major at 92 bpm, Slylandro homeworld \u2014 magnificent gas-giant cloud city, more energy than the contact theme, awe-rich and majestic, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:56:13Z",
+  "generated_at": "2026-05-19T08:51:55Z",
   "notes": ""
 }

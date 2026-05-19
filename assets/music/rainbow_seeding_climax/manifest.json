@@ -4,40 +4,40 @@
   "description": "Rainbow World seeding climax \u2014 Act 4 set-piece; civilizational hope",
   "key": "G major",
   "bpm": 76,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/rainbow_seeding_climax/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: full orchestral low end: contrabass + tuba + low brass, deep cinematic foundation building, no drums no melody no pads, in G major at 76 bpm, Rainbow World seeding climax \u2014 civilizational hope, mythic scale, earned triumph after a long arc, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/rainbow_seeding_climax/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: orchestral percussion with timpani rolls + crash cymbals on the climax beats, ceremonial weight, no melody no bass no pads, in G major at 76 bpm, Rainbow World seeding climax \u2014 civilizational hope, mythic scale, earned triumph after a long arc, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/rainbow_seeding_climax/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: huge sustained string section + horns + choir, rising major-key hope, swelling on each phrase, no melody no drums no bass, in G major at 76 bpm, Rainbow World seeding climax \u2014 civilizational hope, mythic scale, earned triumph after a long arc, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/rainbow_seeding_climax/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: HEROIC THEME: full brass + woodwinds stating a memorable melodic phrase of civilizational hope, soaring and noble, no drums no bass no pads, in G major at 76 bpm, Rainbow World seeding climax \u2014 civilizational hope, mythic scale, earned triumph after a long arc, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/rainbow_seeding_climax/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Furling chorus singing wordless awe, cosmic wind, rainbow-color resonance, no melody no drums no bass, in G major at 76 bpm, Rainbow World seeding climax \u2014 civilizational hope, mythic scale, earned triumph after a long arc, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:54:26Z",
+  "generated_at": "2026-05-19T13:05:15Z",
   "notes": "The Rainbow Worlds form the arrow toward Andromeda. This is the moment of placement \u2014 civilizational hope at scale, mythic and earned. 5-stem rather than 3-stem because it's a set-piece."
 }

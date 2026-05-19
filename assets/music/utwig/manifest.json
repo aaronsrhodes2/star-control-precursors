@@ -4,40 +4,40 @@
   "description": "Utwig \u2014 mournful-shame-cloaked, veiled drums, ceremonial bells under fabric",
   "key": "F sharp minor",
   "bpm": 54,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/utwig/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: muffled low taiko-drum heart-pulse on slow downbeats, dampened by fabric, no drums no melody no pads, in F sharp minor at 54 bpm, mournful muted ceremonial species theme, every sound dampened as if heard through cloth, ancient grief disciplined into stillness, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/utwig/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: veiled ceremonial bells with cloth-muted strikes, soft slow shaker, no melody no bass no pads, in F sharp minor at 54 bpm, mournful muted ceremonial species theme, every sound dampened as if heard through cloth, ancient grief disciplined into stillness, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/utwig/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: distant mournful horn-pad in close minor harmony, soft sustained chord beds heard through walls, no melody no drums no bass, in F sharp minor at 54 bpm, mournful muted ceremonial species theme, every sound dampened as if heard through cloth, ancient grief disciplined into stillness, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/utwig/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: solo low cello solo with mournful phrasing, restrained dignified grief, no drums no bass no pads, in F sharp minor at 54 bpm, mournful muted ceremonial species theme, every sound dampened as if heard through cloth, ancient grief disciplined into stillness, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/utwig/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: soft fabric-rustle, distant low chant fragments, dampened cathedral reverb, no melody no drums no bass, in F sharp minor at 54 bpm, mournful muted ceremonial species theme, every sound dampened as if heard through cloth, ancient grief disciplined into stillness, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:59:36Z",
+  "generated_at": "2026-05-19T07:31:01Z",
   "notes": "The long shame is their cognitive cloak. Veiled drums, distant mournful horns, ceremonial bells UNDER FABRIC \u2014 every sound should feel slightly muffled, dampened, hidden."
 }

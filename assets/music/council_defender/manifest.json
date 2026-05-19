@@ -4,40 +4,40 @@
   "description": "Council \u2014 Defender faction; stalwart-honest, brass-and-steel reliability",
   "key": "D minor",
   "bpm": 84,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/council_defender/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: solid brass bass with clean military rhythm, no nonsense, no drums no melody no pads, in D minor at 84 bpm, Defender Furling Council theme \u2014 stalwart-honest, brass-and-steel military reliability, no embellishment, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/council_defender/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: clean snare-and-bass-drum military pattern, disciplined timekeeping, no melody no bass no pads, in D minor at 84 bpm, Defender Furling Council theme \u2014 stalwart-honest, brass-and-steel military reliability, no embellishment, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/council_defender/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: bright brass chord beds in mid-bright major-7 harmony, honest fanfare, no melody no drums no bass, in D minor at 84 bpm, Defender Furling Council theme \u2014 stalwart-honest, brass-and-steel military reliability, no embellishment, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/council_defender/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: trumpet melody phrasing direct honorable phrases, no flourishes, no drums no bass no pads, in D minor at 84 bpm, Defender Furling Council theme \u2014 stalwart-honest, brass-and-steel military reliability, no embellishment, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/council_defender/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant boots-on-stone, banners flapping, parade-ground discipline, no melody no drums no bass, in D minor at 84 bpm, Defender Furling Council theme \u2014 stalwart-honest, brass-and-steel military reliability, no embellishment, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:44:12Z",
+  "generated_at": "2026-05-19T11:33:29Z",
   "notes": ""
 }

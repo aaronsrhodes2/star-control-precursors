@@ -4,40 +4,40 @@
   "description": "Council \u2014 Denier faction; brittle major-key cheer, forced calm",
   "key": "F major",
   "bpm": 88,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/council_denier/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: bright major-key walking bass with slight pitch wavering you can't quite pin, no drums no melody no pads, in F major at 88 bpm, Denier Furling Council theme \u2014 brittle major-key cheer, slightly-off-pitched bells, forced calm, denial as a sound, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/council_denier/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: cheerful light kit + tambourine, slightly too eager, no melody no bass no pads, in F major at 88 bpm, Denier Furling Council theme \u2014 brittle major-key cheer, slightly-off-pitched bells, forced calm, denial as a sound, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/council_denier/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: bright major-key pad with one note SUBTLY FLAT so the cheer reads as wrong, no melody no drums no bass, in F major at 88 bpm, Denier Furling Council theme \u2014 brittle major-key cheer, slightly-off-pitched bells, forced calm, denial as a sound, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/council_denier/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: upbeat flute melody phrasing reassuring messages with that same slightly-off pitch wavering, no drums no bass no pads, in F major at 88 bpm, Denier Furling Council theme \u2014 brittle major-key cheer, slightly-off-pitched bells, forced calm, denial as a sound, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/council_denier/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant cheerful Council chatter, party-pleasantry murmurs, papers being shuffled too quickly, no melody no drums no bass, in F major at 88 bpm, Denier Furling Council theme \u2014 brittle major-key cheer, slightly-off-pitched bells, forced calm, denial as a sound, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:45:54Z",
+  "generated_at": "2026-05-19T12:27:18Z",
   "notes": "The Deniers refuse to believe the Others are coming. Their music is BRITTLE major-key cheerfulness \u2014 slightly off-pitched bells that you can hear are wrong but the Deniers can't."
 }

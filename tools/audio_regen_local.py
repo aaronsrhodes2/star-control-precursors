@@ -159,13 +159,29 @@ def main(argv: list[str]) -> int:
               f"({spec.duration_s}s nominal, {len(spec.stems)} stems)",
               flush=True)
         try:
-            generate_context(spec, overwrite=True)
+            manifest = generate_context(spec, overwrite=True)
         except Exception as e:
             print(f"[regen] FAILED {name}: {e}", flush=True)
             continue
+        # Only reset the review status when the regen *actually* wrote
+        # stems — otherwise (server crashed mid-run, every stem failed,
+        # etc.) the on-disk audio is unchanged and we shouldn't mislead
+        # Aaron into re-reviewing a file he already reviewed.
+        n_written = len(manifest.get("stems", {}))
+        n_expected = len(spec.stems)
+        if n_written == 0:
+            print(f"[regen] {name} produced ZERO stems in {time.time()-t0:.1f}s "
+                  f"(server failure or all stems errored) — review status "
+                  f"UNCHANGED", flush=True)
+            continue
+        if n_written < n_expected:
+            print(f"[regen] {name} partial: {n_written}/{n_expected} stems "
+                  f"in {time.time()-t0:.1f}s — review still reset to pending",
+                  flush=True)
         _reset_review(name, prior_status.get(name, "pending"))
         print(f"[regen] done {name} in {time.time()-t0:.1f}s "
-              f"(review reset to pending)", flush=True)
+              f"(review reset to pending, {n_written}/{n_expected} stems)",
+              flush=True)
     elapsed = time.time() - t_start
     print(f"\n[regen] ALL DONE in {elapsed/60:.1f} min "
           f"({len(targets)} contexts)")

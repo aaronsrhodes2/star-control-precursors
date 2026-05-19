@@ -4,40 +4,40 @@
   "description": "Taalo \u2014 silicon-meditative, stone-on-stone, multi-millennial patience",
   "key": "C minor",
   "bpm": 44,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/taalo/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: ultra-low sub-bass slow geological tone, like distant tectonic shift, no drums no melody no pads, in C minor at 44 bpm, silicon-meditative species theme, geological time-scale, stone-on-stone harmonics, deep multi-millennial patience, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/taalo/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: very sparse stone-on-stone percussion with long ring-tails, struck-pebble rhythms, no melody no bass no pads, in C minor at 44 bpm, silicon-meditative species theme, geological time-scale, stone-on-stone harmonics, deep multi-millennial patience, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/taalo/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: sustained granular drone pad with slow modulation, mineral-resonance harmony, no melody no drums no bass, in C minor at 44 bpm, silicon-meditative species theme, geological time-scale, stone-on-stone harmonics, deep multi-millennial patience, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/taalo/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: solo struck-stone bell-tone melody phrasing extremely slowly, no human urgency, no drums no bass no pads, in C minor at 44 bpm, silicon-meditative species theme, geological time-scale, stone-on-stone harmonics, deep multi-millennial patience, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/taalo/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant cave-water drip, deep stone reverberation, slow tectonic creak, no melody no drums no bass, in C minor at 44 bpm, silicon-meditative species theme, geological time-scale, stone-on-stone harmonics, deep multi-millennial patience, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:57:55Z",
+  "generated_at": "2026-05-19T07:57:52Z",
   "notes": "Silicon-based species below the Others' threshold by biology. Slow geological harmonics. The music should feel like it's moving at a different time-scale from the listener."
 }

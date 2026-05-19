@@ -4,40 +4,40 @@
   "description": "Arilou Sage's Grove \u2014 Quasi-Space colony; richer than peace theme",
   "key": "B flat major",
   "bpm": 80,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/arilou_sages_grove/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: warm sub-bass with dimensional phase-shift modulation, slightly more grounded than peace version, no drums no melody no pads, in B flat major at 80 bpm, Arilou Quasi-Space colony, dimensional-pocket city, richer and more present than the peace theme, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/arilou_sages_grove/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: mallet percussion with long phase-shifted reverb tails, gentle propulsion, no melody no bass no pads, in B flat major at 80 bpm, Arilou Quasi-Space colony, dimensional-pocket city, richer and more present than the peace theme, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/arilou_sages_grove/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: layered choral synth pad with multi-dimensional harmonic textures, no melody no drums no bass, in B flat major at 80 bpm, Arilou Quasi-Space colony, dimensional-pocket city, richer and more present than the peace theme, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/arilou_sages_grove/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: celesta + struck-bell melody phrasing thoughtful patient phrases, no drums no bass no pads, in B flat major at 80 bpm, Arilou Quasi-Space colony, dimensional-pocket city, richer and more present than the peace theme, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/arilou_sages_grove/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: Quasi-Space dimensional shimmer, distant Arilou voices in folded grammar, no melody no drums no bass, in B flat major at 80 bpm, Arilou Quasi-Space colony, dimensional-pocket city, richer and more present than the peace theme, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:33:55Z",
+  "generated_at": "2026-05-18T06:43:55Z",
   "notes": ""
 }

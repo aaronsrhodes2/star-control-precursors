@@ -4,40 +4,40 @@
   "description": "Melnorme \u2014 bio-cargo trader, gold/silver chimes, enigmatic commerce",
   "key": "E major",
   "bpm": 96,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/melnorme/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: low gravelly cargo-hold rumble with metallic scrape undertones, no drums no melody no pads, in E major at 96 bpm, enigmatic alien-trader species theme, gold-silver bell harmonics over gravelly cargo-hold bass, mercantile but not unkind, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/melnorme/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: resonant gold-silver chime patterns, soft metallic clinks of coinage, no melody no bass no pads, in E major at 96 bpm, enigmatic alien-trader species theme, gold-silver bell harmonics over gravelly cargo-hold bass, mercantile but not unkind, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "pad": {
       "path": "assets/music/melnorme/pad.wav",
       "prompt": "Isolated PAD STEM for layered production: warm major-key brass pad with cargo-deck wood-warmth underneath, no melody no drums no bass, in E major at 96 bpm, enigmatic alien-trader species theme, gold-silver bell harmonics over gravelly cargo-hold bass, mercantile but not unkind, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "lead": {
       "path": "assets/music/melnorme/lead.wav",
       "prompt": "Isolated LEAD MELODY STEM for layered production: solo high struck-bell melody, persuasive merchant phrasing with enigmatic minor inflections, no drums no bass no pads, in E major at 96 bpm, enigmatic alien-trader species theme, gold-silver bell harmonics over gravelly cargo-hold bass, mercantile but not unkind, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/melnorme/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant trade-network chatter, ship-hold metallic creaks, gentle gold-coin clinking, no melody no drums no bass, in E major at 96 bpm, enigmatic alien-trader species theme, gold-silver bell harmonics over gravelly cargo-hold bass, mercantile but not unkind, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T03:14:10Z",
+  "generated_at": "2026-05-19T07:04:02Z",
   "notes": "Bio-cargo trader sonic identity per the AUDIO_INFO row: resonant gold/silver chimes, low gravelly cargo-hold bass, enigmatic merchant air."
 }

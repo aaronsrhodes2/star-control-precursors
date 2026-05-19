@@ -4,28 +4,40 @@
   "description": "Androsynth Crash Site \u2014 Coel Tessar's refugee outpost; bittersweet hopeful",
   "key": "A minor",
   "bpm": 104,
-  "duration_s": 90,
-  "backend": "stable-audio-open/local-server",
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
   "stems": {
     "bass": {
       "path": "assets/music/androsynth_crash_site/bass.wav",
       "prompt": "Isolated BASS STEM for layered production: warm analog synth bass with steady determined motion, refugee resourcefulness, no drums no melody no pads, in A minor at 104 bpm, Androsynth refugee crash site, jury-rigged human ingenuity, bittersweet survivor hope, retro-Atari over warm analog, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "percussion": {
       "path": "assets/music/androsynth_crash_site/percussion.wav",
       "prompt": "Isolated DRUMS STEM for layered production: mid-tempo retro-PCM kit with slight reverb, brave forward rhythm, no melody no bass no pads, in A minor at 104 bpm, Androsynth refugee crash site, jury-rigged human ingenuity, bittersweet survivor hope, retro-Atari over warm analog, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pad": {
+      "path": "assets/music/androsynth_crash_site/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: warm analog string pad with major-minor mode shifts, bittersweet hope, no melody no drums no bass, in A minor at 104 bpm, Androsynth refugee crash site, jury-rigged human ingenuity, bittersweet survivor hope, retro-Atari over warm analog, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "lead": {
+      "path": "assets/music/androsynth_crash_site/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: brave Atari-era PCM lead melody, hopeful refugee anthem with hints of melancholy, no drums no bass no pads, in A minor at 104 bpm, Androsynth refugee crash site, jury-rigged human ingenuity, bittersweet survivor hope, retro-Atari over warm analog, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     },
     "ambient": {
       "path": "assets/music/androsynth_crash_site/ambient.wav",
       "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: crash-site machinery hum, distant voices in human languages, salvaged-tech tones, no melody no drums no bass, in A minor at 104 bpm, Androsynth refugee crash site, jury-rigged human ingenuity, bittersweet survivor hope, retro-Atari over warm analog, stems-only mix",
-      "sample_rate": 44100,
-      "backend": "stable-audio-open/local-server"
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
     }
   },
-  "generated_at": "2026-05-18T02:08:25Z",
+  "generated_at": "2026-05-18T05:38:29Z",
   "notes": "The Distress Beacon is the slice's anchor moment. The site theme leans into REFUGEE HOPE under the time-displacement tragedy."
 }

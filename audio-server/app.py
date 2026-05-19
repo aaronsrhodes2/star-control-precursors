@@ -278,10 +278,20 @@ def _do_musicgen(
 
     audio_running: np.ndarray | None = None  # (channels, samples) or (samples,)
     chunk_idx = 0
+    # The encodec codec frames audio in ~640-sample groups, so each
+    # chunk's actual sample count lands ~1920 samples short of the
+    # nominal 30 s. After 6 chunks the cumulative shortfall is ~11500
+    # samples — without enough slack the loop bursts out an extra ~30 s
+    # chunk just to trim it away, wasting ~1 chunk (~60s wall) per stem.
+    # Slack = 1 s at the model's sample rate covers up to ~16 chunks of
+    # accumulated shortfall, which is way more than we ever need at
+    # 180 s targets.
+    _MG_SLACK = _sample_rate  # ~1 s of slack in samples
     while True:
-        # Stop once we have enough audio.
+        # Stop once we have enough audio, allowing for codec frame
+        # quantization slack at the boundary.
         cur_samples = 0 if audio_running is None else audio_running.shape[-1]
-        if cur_samples >= target_samples:
+        if cur_samples >= target_samples - _MG_SLACK:
             break
 
         # Build inputs. First chunk: text-only. Subsequent chunks: feed
