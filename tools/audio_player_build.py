@@ -310,6 +310,20 @@ BUCKET_ORDER = [
 ]
 
 
+def _anchor_for_bucket(bucket: str) -> str:
+    """ASCII-safe, fragment-safe id for a bucket's <section>. Strips
+    characters that have special meaning in URLs (`&`, parens, `/`,
+    em-dash) so the anchor link doesn't get misinterpreted by the
+    browser and so the rendered href doesn't need HTML-entity escaping
+    for `&`."""
+    a = bucket.lower()
+    a = (a.replace(" ", "-").replace("(", "").replace(")", "")
+          .replace("—", "").replace("&", "and").replace("/", "-"))
+    while "--" in a:
+        a = a.replace("--", "-")
+    return "bucket-" + a.strip("-")
+
+
 def _bucket_for_music(name: str) -> str:
     """Map a music-context name to its review bucket."""
     if name in ("arilou", "arilou_sages_grove"):
@@ -430,10 +444,7 @@ def _render_bucket_section(
         # Every item in this bucket is already committed; skip entirely.
         return ""
 
-    anchor = ("bucket-" + bucket.lower()
-              .replace(" ", "-").replace("(", "").replace(")", "")
-              .replace("—", "").replace("--", "-").replace("/", "-")
-              .strip("-"))
+    anchor = _anchor_for_bucket(bucket)
     counts: list[str] = []
     if music_html_pieces:
         counts.append(f"{len(music_html_pieces)} music")
@@ -1034,10 +1045,7 @@ def build() -> Path:
     for bucket, html in rendered_buckets:
         # Count visible music + sfx cards inside the rendered HTML.
         n = html.count('class="music-ctx"') + html.count('class="sfx-item')
-        anchor = ("bucket-" + bucket.lower()
-                  .replace(" ", "-").replace("(", "").replace(")", "")
-                  .replace("—", "").replace("--", "-").replace("/", "-")
-                  .strip("-"))
+        anchor = _anchor_for_bucket(bucket)
         nav_chips.append(
             f'<a class="nav-chip" href="#{_esc(anchor)}">'
             f'{_esc(bucket)} <span class="nav-count">{n}</span></a>'
