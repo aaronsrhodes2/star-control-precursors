@@ -59,12 +59,12 @@ class ShipCustomizationScene(Scene):
             if self.last_msg_age > 3.0:
                 self.last_msg = ""
 
-        def _click() -> None:
+        def _click(kind: str = "select") -> None:
             if hasattr(self.game, "sfx"):
-                self.game.sfx.play("ui/menu_select")
+                self.game.sfx.play(f"ui/menu_{kind}")
 
         if inp.cancel:
-            _click()
+            _click("cancel")
             from scz.station.scene import StationScene
             self.game.set_scene(StationScene())
             return
@@ -88,7 +88,7 @@ class ShipCustomizationScene(Scene):
                 self.slot_idx = (self.slot_idx + 1) % n
                 _click()
             if inp.confirm:
-                _click()
+                _click("confirm")
                 # A on a slot uninstalls the currently-equipped module
                 self._try_uninstall(SLOTS[self.slot_idx])
         else:  # modules
@@ -101,7 +101,7 @@ class ShipCustomizationScene(Scene):
                     self.module_idx = (self.module_idx + 1) % n
                     _click()
                 if inp.confirm:
-                    _click()
+                    _click("confirm")
                     self._try_install(avail[self.module_idx])
 
     def render(self, screen: pygame.Surface) -> None:

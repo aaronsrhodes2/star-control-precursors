@@ -21,6 +21,7 @@ Phase 2 MVP scope:
 from __future__ import annotations
 
 import math
+import random
 from typing import TYPE_CHECKING
 
 import pygame
@@ -173,8 +174,12 @@ class PlanetSurfaceScene(Scene):
 
     def on_enter(self) -> None:
         assert self.game is not None
-        # SFX: lander drone swooshing into position over the surface
+        # SFX: lander drone deploying from orbit + arrival swoosh.
+        # Both play together — deploy is the thruster ignition + flight
+        # down (~1.6s), arrive is the hover-into-position over surface.
+        # The slight overlap reads as "ship → deploy → arrive at surface".
         if hasattr(self.game, "sfx"):
+            self.game.sfx.play("lander/lander_deploy")
             self.game.sfx.play("lander/lander_arrive")
         w, h = self.game.screen.get_size()
         # Reserve a HUD on the left, surface fills the rest with margin
@@ -275,12 +280,12 @@ class PlanetSurfaceScene(Scene):
         replacement cost from game.cargo.
         """
         assert self.game is not None
-        # SFX: lander_arrive (the swoosh-into-hover) reverse-feels right
-        # for lift-off too — drone leaving the surface. Until/unless we
-        # generate a dedicated lift_off.wav, reuse arrive. Drone goes
-        # up like it came down.
+        # SFX: dedicated lift_off — Furling warm-tech engine surge
+        # (departure thrust, ~2.5s). Aaron 2026-05-19 wire-everything
+        # pass: this replaces the old "reuse lander_arrive in reverse"
+        # placeholder; lift_off.wav now exists and sounds right.
         if hasattr(self.game, "sfx"):
-            self.game.sfx.play("lander/lander_arrive")
+            self.game.sfx.play("lander/lift_off")
         if committed:
             for t, v in self.trip_haul.items():
                 if v > 0:
@@ -477,6 +482,17 @@ class PlanetSurfaceScene(Scene):
                 "PACKAGE_SCANNER_MK3": "ui/notification",  # quest pickup
             }.get(d.type, "lander/pickup_mineral")
             self.game.sfx.play(sfx_name)
+            # Layer a "resource detected" chime over the quick pickup tone
+            # so the pickup feels weighty. Different chime per resource
+            # family: warm/organic for BIO, bright/metallic for minerals.
+            chime = {
+                "BIO": "lander/resource_chime_bio",
+                "ENERGY": "lander/resource_chime_mineral",
+                "COMMON": "lander/resource_chime_mineral",
+                "USEFUL": "lander/resource_chime_mineral",
+            }.get(d.type)
+            if chime is not None:
+                self.game.sfx.play(chime)
         if d.type == "PACKAGE_SCANNER_MK3":
             # Quest item — immediate commit; survives lander destruction
             self.game.flags["scanner_mk3_in_cargo"] = True
@@ -513,26 +529,218 @@ class PlanetSurfaceScene(Scene):
     def _draw_hazards(
         self, screen: pygame.Surface, ground_rect: pygame.Rect
     ) -> None:
-        """Render each hazard as a colored ring on the ground. Active
-        hazards are bright + filled; inactive (between pulses) are a
-        faint outline so the player can see the threat-zones."""
+        """Render hazards with per-type animated graphics so they read
+        as distinct threats, not just colored circles. Active and
+        inactive states are visually distinct so the player can plan
+        around pulse cycles.
+        """
+        t = self.surface_time
         for h in self.hazards:
-            cx = ground_rect.x + h.x * ground_rect.width
-            cy = ground_rect.y + h.y * ground_rect.height
+            cx = int(ground_rect.x + h.x * ground_rect.width)
+            cy = int(ground_rect.y + h.y * ground_rect.height)
             r = int(h.radius * ground_rect.width)
-            active = h.is_active(self.surface_time)
+            active = h.is_active(t)
+            renderer = self._HAZARD_RENDERERS.get(h.type, self._draw_hazard_generic)
+            renderer(self, screen, cx, cy, r, h, t, active)
+
+    # Per-type hazard renderers ------------------------------------------------
+
+    def _draw_hazard_generic(
+        self, screen, cx, cy, r, h, t, active,
+    ) -> None:
+        if active:
+            surf = pygame.Surface((r * 2 + 4, r * 2 + 4), pygame.SRCALPHA)
+            pygame.draw.circle(surf, (*h.color, 110), (r + 2, r + 2), r)
+            pygame.draw.circle(surf, (*h.color, 220), (r + 2, r + 2), r, 2)
+            screen.blit(surf, (cx - r - 2, cy - r - 2))
+        else:
+            dim = (h.color[0] // 3, h.color[1] // 3, h.color[2] // 3)
+            pygame.draw.circle(screen, dim, (cx, cy), r, 1)
+
+    def _draw_hazard_lava(self, screen, cx, cy, r, h, t, active) -> None:
+        # Lava pools are always active. Glowing molten core with darker
+        # crusted rim, animated ember sparks rising, heat-shimmer ring.
+        surf = pygame.Surface((r * 2 + 16, r * 2 + 16), pygame.SRCALPHA)
+        center = (r + 8, r + 8)
+        # Outer heat shimmer (faint pulse)
+        pulse = (math.sin(t * 1.5 + h.phase) + 1) * 0.5
+        glow_r = r + int(6 * pulse)
+        pygame.draw.circle(surf, (255, 120, 40, 25), center, glow_r)
+        # Crust rim — dark red-black
+        crust = (max(0, h.color[0] - 80), max(0, h.color[1] - 40), max(0, h.color[2] - 20))
+        pygame.draw.circle(surf, (*crust, 200), center, r)
+        # Molten core
+        molten_r = max(2, int(r * 0.78))
+        pygame.draw.circle(surf, (*h.color, 230), center, molten_r)
+        # Bright hot spots (3 nested bands)
+        pygame.draw.circle(surf, (255, 180, 80, 200), center, max(2, int(r * 0.55)))
+        pygame.draw.circle(surf, (255, 230, 160, 230), center, max(1, int(r * 0.30)))
+        screen.blit(surf, (cx - r - 8, cy - r - 8))
+        # Ember sparks rising — 4 sparks per pool at different phases
+        for i in range(4):
+            phase = (t * 0.8 + h.phase + i * 0.71) % 1.0
+            ang = (h.phase * 53 + i * 1.7) % (math.pi * 2)
+            sx = cx + math.cos(ang) * r * (0.4 + 0.5 * phase)
+            sy = cy + math.sin(ang) * r * (0.4 + 0.5 * phase) - phase * 10
+            alpha = int(255 * (1 - phase))
+            spk = pygame.Surface((4, 4), pygame.SRCALPHA)
+            pygame.draw.circle(spk, (255, 200, 100, alpha), (2, 2), 2)
+            screen.blit(spk, (int(sx) - 2, int(sy) - 2))
+
+    def _draw_hazard_lightning(self, screen, cx, cy, r, h, t, active) -> None:
+        # Storm cell: faint outline always, bright jagged bolts when active.
+        if active:
+            # Dramatic flash + jagged bolts radiating from center
+            surf = pygame.Surface((r * 2 + 16, r * 2 + 16), pygame.SRCALPHA)
+            center = (r + 8, r + 8)
+            # Flash halo
+            pygame.draw.circle(surf, (200, 220, 255, 70), center, r + 6)
+            pygame.draw.circle(surf, (255, 255, 255, 140), center, max(2, int(r * 0.4)))
+            screen.blit(surf, (cx - r - 8, cy - r - 8))
+            # Three jagged bolts radiating out
+            rng = random.Random(int(t * 12) ^ int(h.phase * 1000))
+            for _ in range(3):
+                ang = rng.uniform(0, math.pi * 2)
+                tip_x = cx + math.cos(ang) * r
+                tip_y = cy + math.sin(ang) * r
+                # Zigzag from center to tip
+                pts = [(cx, cy)]
+                segs = 4
+                for s in range(1, segs + 1):
+                    f = s / segs
+                    px = cx + math.cos(ang) * r * f + rng.uniform(-r * 0.18, r * 0.18)
+                    py = cy + math.sin(ang) * r * f + rng.uniform(-r * 0.18, r * 0.18)
+                    pts.append((px, py))
+                pts.append((tip_x, tip_y))
+                # Bolt + glow
+                pygame.draw.lines(screen, (200, 220, 255), False, pts, 3)
+                pygame.draw.lines(screen, (255, 255, 255), False, pts, 1)
+        else:
+            # Faint storm cloud — pulsing inner darkness with sparkle hints
+            charge = (math.sin(t * 3 + h.phase) + 1) * 0.5  # 0..1 charging
+            cloud = pygame.Surface((r * 2 + 4, r * 2 + 4), pygame.SRCALPHA)
+            center = (r + 2, r + 2)
+            pygame.draw.circle(cloud, (40, 45, 70, 130), center, r)
+            pygame.draw.circle(cloud, (90, 100, 140, 180), center, r, 2)
+            # Faint inner spark hint as charge builds
+            spark_a = int(80 * charge)
+            pygame.draw.circle(cloud, (180, 200, 255, spark_a), center, max(1, int(r * 0.5)))
+            screen.blit(cloud, (cx - r - 2, cy - r - 2))
+
+    def _draw_hazard_earthquake(self, screen, cx, cy, r, h, t, active) -> None:
+        # Cracked ground with jagged fissure lines. When active: shake
+        # offset + brighter fissures + dust puff.
+        rng = random.Random(int(h.phase * 1000) ^ 0xEA)
+        shake_x, shake_y = 0, 0
+        if active:
+            # Small shake offset on the whole pattern
+            shake_x = int(math.sin(t * 30 + h.phase) * 2)
+            shake_y = int(math.cos(t * 27 + h.phase) * 2)
+        surf = pygame.Surface((r * 2 + 8, r * 2 + 8), pygame.SRCALPHA)
+        center = (r + 4, r + 4)
+        # Faint ground discoloration ring
+        pygame.draw.circle(surf, (90, 60, 40, 80), center, r)
+        # 5 jagged fissure lines from center to edge
+        for i in range(5):
+            ang = rng.uniform(0, math.pi * 2)
+            pts = [(center[0], center[1])]
+            segs = 3
+            for s in range(1, segs + 1):
+                f = s / segs
+                px = center[0] + math.cos(ang) * r * f + rng.uniform(-r * 0.15, r * 0.15)
+                py = center[1] + math.sin(ang) * r * f + rng.uniform(-r * 0.15, r * 0.15)
+                pts.append((px, py))
+            color = (220, 160, 80, 240) if active else (h.color[0], h.color[1], h.color[2], 160)
+            pygame.draw.lines(surf, color, False, pts, 2 if active else 1)
+        # Hot rim when active
+        if active:
+            pygame.draw.circle(surf, (240, 140, 60, 180), center, r, 2)
+        else:
+            pygame.draw.circle(surf, (120, 80, 50, 160), center, r, 1)
+        screen.blit(surf, (cx - r - 4 + shake_x, cy - r - 4 + shake_y))
+
+    def _draw_hazard_heat(self, screen, cx, cy, r, h, t, active) -> None:
+        # Heat shimmer — animated expanding rings, always active.
+        surf = pygame.Surface((r * 2 + 8, r * 2 + 8), pygame.SRCALPHA)
+        center = (r + 4, r + 4)
+        # Base orange ground discoloration
+        pygame.draw.circle(surf, (*h.color, 80), center, r)
+        # 3 expanding shimmer rings at staggered phases
+        for i in range(3):
+            phase = (t * 0.6 + h.phase + i * 0.33) % 1.0
+            ring_r = int(r * (0.2 + 0.8 * phase))
+            alpha = int(180 * (1 - phase))
+            if ring_r > 0:
+                pygame.draw.circle(surf, (255, 200, 120, alpha), center, ring_r, 2)
+        # Stable outer rim
+        pygame.draw.circle(surf, (*h.color, 200), center, r, 2)
+        screen.blit(surf, (cx - r - 4, cy - r - 4))
+
+    def _draw_hazard_crack(self, screen, cx, cy, r, h, t, active) -> None:
+        # Ice fissure — jagged shattered ice lines.
+        rng = random.Random(int(h.phase * 100) ^ 0x1CE)
+        surf = pygame.Surface((r * 2 + 8, r * 2 + 8), pygame.SRCALPHA)
+        center = (r + 4, r + 4)
+        # Faint cold blue ground
+        pygame.draw.circle(surf, (140, 180, 220, 60), center, r)
+        # 6 jagged crack lines radiating out
+        for i in range(6):
+            ang = rng.uniform(0, math.pi * 2)
+            pts = [center]
+            segs = 4
+            for s in range(1, segs + 1):
+                f = s / segs
+                px = center[0] + math.cos(ang) * r * f + rng.uniform(-r * 0.12, r * 0.12)
+                py = center[1] + math.sin(ang) * r * f + rng.uniform(-r * 0.12, r * 0.12)
+                pts.append((px, py))
             if active:
-                # Translucent filled circle in hazard color
-                surf = pygame.Surface((r * 2 + 4, r * 2 + 4), pygame.SRCALPHA)
-                fill = (*h.color, 110)
-                pygame.draw.circle(surf, fill, (r + 2, r + 2), r)
-                pygame.draw.circle(surf, (*h.color, 220), (r + 2, r + 2), r, 2)
-                screen.blit(surf, (int(cx) - r - 2, int(cy) - r - 2))
+                # Bright icy white-blue when cracking
+                pygame.draw.lines(surf, (220, 240, 255, 230), False, pts, 3)
+                pygame.draw.lines(surf, (255, 255, 255, 255), False, pts, 1)
             else:
-                # Faint dashed outline so the player can SEE the danger
-                # before it activates again
-                dim = (h.color[0] // 3, h.color[1] // 3, h.color[2] // 3)
-                pygame.draw.circle(screen, dim, (int(cx), int(cy)), r, 1)
+                pygame.draw.lines(surf, (140, 170, 220, 160), False, pts, 1)
+        if active:
+            pygame.draw.circle(surf, (220, 240, 255, 200), center, r, 2)
+        screen.blit(surf, (cx - r - 4, cy - r - 4))
+
+    def _draw_hazard_thermal_vent(self, screen, cx, cy, r, h, t, active) -> None:
+        # Underwater thermal vent: rising bubble column + steam.
+        surf = pygame.Surface((r * 2 + 8, r * 2 + 8), pygame.SRCALPHA)
+        center = (r + 4, r + 4)
+        # Cool blue water disc
+        pygame.draw.circle(surf, (90, 130, 180, 100), center, r)
+        # Vent mouth
+        pygame.draw.circle(surf, (40, 60, 90, 200), center, max(2, int(r * 0.3)))
+        if active:
+            # Erupting — rising bubble + hot column
+            pygame.draw.circle(surf, (255, 220, 140, 120), center, max(2, int(r * 0.5)))
+            for i in range(6):
+                phase = (t * 1.2 + h.phase + i * 0.16) % 1.0
+                bx = center[0] + math.sin(t * 2 + i) * r * 0.15
+                by = center[1] - phase * r * 0.85
+                br = max(1, int(2 + 2 * (1 - phase)))
+                alpha = int(220 * (1 - phase))
+                pygame.draw.circle(surf, (220, 240, 255, alpha), (int(bx), int(by)), br)
+            pygame.draw.circle(surf, (180, 220, 250, 230), center, r, 2)
+        else:
+            # Calm — faint bubbles only
+            for i in range(3):
+                phase = (t * 0.4 + h.phase + i * 0.33) % 1.0
+                by = center[1] - phase * r * 0.7
+                pygame.draw.circle(surf, (200, 220, 240, 120), (center[0], int(by)), 1)
+            pygame.draw.circle(surf, (100, 150, 200, 160), center, r, 1)
+        screen.blit(surf, (cx - r - 4, cy - r - 4))
+
+    @property
+    def _HAZARD_RENDERERS(self):
+        return {
+            "lava": PlanetSurfaceScene._draw_hazard_lava,
+            "lightning": PlanetSurfaceScene._draw_hazard_lightning,
+            "earthquake": PlanetSurfaceScene._draw_hazard_earthquake,
+            "heat": PlanetSurfaceScene._draw_hazard_heat,
+            "crack": PlanetSurfaceScene._draw_hazard_crack,
+            "thermal_vent": PlanetSurfaceScene._draw_hazard_thermal_vent,
+        }
 
     def _draw_destruction_overlay(self, screen: pygame.Surface) -> None:
         """Fullscreen wreck banner. Held for ~2.5s then we auto-eject."""

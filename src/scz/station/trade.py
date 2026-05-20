@@ -63,12 +63,12 @@ class TradeScene(Scene):
             if self.last_sale_age > 2.5:
                 self.last_sale_msg = ""
 
-        def _click() -> None:
+        def _click(kind: str = "select") -> None:
             if self.game is not None and hasattr(self.game, "sfx"):
-                self.game.sfx.play("ui/menu_select")
+                self.game.sfx.play(f"ui/menu_{kind}")
 
         if inp.cancel and self.game is not None:
-            _click()
+            _click("cancel")
             from scz.station.scene import StationScene
             self.game.set_scene(StationScene())
             return
@@ -82,7 +82,7 @@ class TradeScene(Scene):
             _click()
 
         if inp.confirm and self.game is not None:
-            _click()
+            _click("confirm")
             _, action = ACTIONS[self.selected]
             if action == "back":
                 from scz.station.scene import StationScene

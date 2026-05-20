@@ -225,24 +225,24 @@
     "reviewed_at": "2026-05-19T07:57:52.747527+00:00"
   },
   "sfx/lander/atmospheric_entry": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/damage_taken": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/engine_idle": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/hazard_warning": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/lander_arrive": {
     "notes": "promoted keep -> wired (committed to game)",
@@ -255,9 +255,9 @@
     "status": "wired"
   },
   "sfx/lander/lift_off": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/pickup_animal": {
     "notes": "promoted keep -> wired (committed to game)",
@@ -275,34 +275,34 @@
     "status": "wired"
   },
   "sfx/lander/resource_chime_bio": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/resource_chime_mineral": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/lander/scan_ping": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/scan/cloak_disengage": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/scan/cloak_engage": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/scan/enter_orbit": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/scan/scan_begin": {
     "notes": "promoted keep -> wired (committed to game)",
@@ -315,9 +315,9 @@
     "status": "wired"
   },
   "sfx/scan/scan_progress_tick": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/scan/scan_sweep": {
     "notes": "promoted keep -> wired (committed to game)",
@@ -330,19 +330,19 @@
     "status": "wired"
   },
   "sfx/ships/androsynth_cruiser/primary_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/androsynth_cruiser/special_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/androsynth_cruiser/special_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/arilou_skiff/primary_fire": {
     "notes": "skiff was a zippy lazer sound, strart high, go low tri-tone; promoted keep -> wired (committed to game)",
@@ -350,19 +350,19 @@
     "status": "wired"
   },
   "sfx/ships/arilou_skiff/primary_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/arilou_skiff/special_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/arilou_skiff/special_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/cleanser_cruiser/primary_fire": {
     "notes": "Need this to be the same as the Furling scout, but bigger and louder; promoted keep -> wired (committed to game)",
@@ -445,24 +445,24 @@
     "status": "wired"
   },
   "sfx/ships/melnorme_trader/primary_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/melnorme_trader/primary_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/melnorme_trader/special_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/melnorme_trader/special_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/mmrnmhrm_sentinel/primary_fire": {
     "notes": "more like machine gun fire; promoted keep -> wired (committed to game)",
@@ -470,19 +470,19 @@
     "status": "wired"
   },
   "sfx/ships/mmrnmhrm_sentinel/primary_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/mmrnmhrm_sentinel/special_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/mmrnmhrm_sentinel/special_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/persuader_vessel/primary_fire": {
     "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted keep -> wired (committed to game)",
@@ -505,44 +505,44 @@
     "status": "wired"
   },
   "sfx/ships/proto_qor_ah/primary_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_qor_ah/primary_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_qor_ah/special_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_qor_ah/special_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_ur_quan/primary_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_ur_quan/primary_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_ur_quan/special_fire": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/proto_ur_quan/special_impact": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ships/sentry_drone_47t/primary_fire": {
     "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted keep -> wired (committed to game)",
@@ -570,14 +570,14 @@
     "status": "wired"
   },
   "sfx/ui/alert_warning": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ui/hud_acknowledge": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ui/menu_cancel": {
     "notes": "cancel should just be a short low bump sound; promoted keep -> wired (committed to game)",
@@ -600,19 +600,19 @@
     "status": "wired"
   },
   "sfx/ui/modal_close": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ui/modal_open": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ui/notification": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   },
   "sfx/ui/scan_lock": {
     "notes": "This is no good. What is scan lock anyway?",
@@ -620,8 +620,8 @@
     "status": "reject"
   },
   "sfx/ui/screen_transition": {
-    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.",
-    "reviewed_at": "2026-05-18T01:07:44.729231+00:00",
-    "status": "provisional"
+    "notes": "Auto-approved without listen-pass; revisit when there is time to filter.; promoted provisional -> wired (committed as starting-point pass)",
+    "reviewed_at": "2026-05-20T00:25:23.107086+00:00",
+    "status": "wired"
   }
 }

@@ -183,6 +183,14 @@ class SceneSwitcher(Scene):
     def on_enter(self) -> None:
         self.font = pygame.font.SysFont("consolas", 22)
         self.title_font = pygame.font.SysFont("consolas", 36, bold=True)
+        # Modal overlay open chime (F1 toggle from any scene).
+        if self.game is not None and hasattr(self.game, "sfx"):
+            self.game.sfx.play("ui/modal_open")
+
+    def on_exit(self) -> None:
+        # Modal overlay close chime.
+        if self.game is not None and hasattr(self.game, "sfx"):
+            self.game.sfx.play("ui/modal_close")
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         # Esc / B → dismiss (overlay closes, underlying scene resumes).

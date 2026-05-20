@@ -180,12 +180,14 @@ class MainMenuScene(StubScene):
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         # MainMenu's "back" is quit (no parent)
         if inp.cancel and self.game is not None:
+            if hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_cancel")
             self.game.quit()
             return
         # Confirm → launch the real game (Station: home base)
         if inp.confirm and self.game is not None:
             if hasattr(self.game, "sfx"):
-                self.game.sfx.play("ui/menu_select")
+                self.game.sfx.play("ui/menu_confirm")
             from scz.station.scene import StationScene
             self.game.set_scene(StationScene())
             return

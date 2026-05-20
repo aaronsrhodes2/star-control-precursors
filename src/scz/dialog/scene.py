@@ -140,6 +140,12 @@ class DialogScene(Scene):
         self.fonts["npc"] = pygame.font.SysFont("consolas", 24)
         self.fonts["choice"] = pygame.font.SysFont("consolas", 22)
         self.fonts["small"] = pygame.font.SysFont("consolas", 16)
+        # Dialog opens as a modal-like overlay over the prior scene's
+        # music. Play modal_open + acknowledge so the player knows
+        # contact has been established.
+        if self.game is not None and hasattr(self.game, "sfx"):
+            self.game.sfx.play("ui/modal_open")
+            self.game.sfx.play("ui/hud_acknowledge")
         # Prefer the layered (avatar + backgrounds) render path. If the
         # avatar fails to load OR the character has no avatar configured,
         # fall through to the legacy disc loader.
@@ -147,6 +153,11 @@ class DialogScene(Scene):
             self._load_layered_surfaces()
         if self._avatar_surface is None:
             self._load_portrait_image()
+
+    def on_exit(self) -> None:
+        # Dialog closing — modal_close on the way out.
+        if self.game is not None and hasattr(self.game, "sfx"):
+            self.game.sfx.play("ui/modal_close")
 
     def _load_portrait_image(self) -> None:
         """Load + scale character.portrait_image_path (if any) once per
@@ -231,6 +242,8 @@ class DialogScene(Scene):
 
         # B / Esc → exit dialog
         if inp.cancel:
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_cancel")
             self._exit_dialog()
             return
 
@@ -239,9 +252,9 @@ class DialogScene(Scene):
             self._exit_dialog()
             return
 
-        def _click() -> None:
+        def _click(kind: str = "select") -> None:
             if self.game is not None and hasattr(self.game, "sfx"):
-                self.game.sfx.play("ui/menu_select")
+                self.game.sfx.play(f"ui/menu_{kind}")
 
         # Menu navigation: D-pad up/down + arrow keys (edge), wrap
         n = len(state.choices)
@@ -254,7 +267,7 @@ class DialogScene(Scene):
 
         # Confirm → pick this choice
         if inp.confirm:
-            _click()
+            _click("confirm")
             choice = state.choices[self.selected_choice]
             override_state: str | None = None
             if choice.side_effect is not None and self.game is not None:

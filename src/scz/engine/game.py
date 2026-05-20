@@ -147,6 +147,17 @@ class Game:
         self.close_overlay()
         if self.current_scene is not None:
             self.current_scene.on_exit()
+        # Cross-scene whoosh — gives every set_scene transition an
+        # audible mark. Layered under the music crossfade and any
+        # per-scene on_enter SFX, this fills the few-hundred-ms gap
+        # while the new scene's first frame renders. Skipped on the
+        # very first set_scene (no prior scene → no transition feel).
+        if (
+            self.current_scene is not None
+            and hasattr(self, "sfx")
+            and getattr(self, "_audio_ready", False)
+        ):
+            self.sfx.play("ui/screen_transition")
         scene.game = self
         self.current_scene = scene
         scene.on_enter()

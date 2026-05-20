@@ -85,13 +85,15 @@ class StationScene(Scene):
 
         # B → quit (Station is the top-level scene; backing out exits)
         if inp.cancel and self.game is not None:
+            if hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_cancel")
             self.game.quit()
             return
 
         # Menu navigation
-        def _click() -> None:
+        def _click(kind: str = "select") -> None:
             if self.game is not None and hasattr(self.game, "sfx"):
-                self.game.sfx.play("ui/menu_select")
+                self.game.sfx.play(f"ui/menu_{kind}")
 
         n = len(ACTIONS)
         if inp.menu_up:
@@ -103,7 +105,7 @@ class StationScene(Scene):
 
         # Confirm → trigger action
         if inp.confirm and self.game is not None:
-            _click()
+            _click("confirm")
             label, action = ACTIONS[self.selected_action]
             if action == "talk":
                 from scz.dialog.characters import commander_halia

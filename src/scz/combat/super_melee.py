@@ -68,14 +68,16 @@ class SuperMeleeScene(Scene):
         # Picker is intentionally not Time-Drive rewindable.
         return None
 
-    def _click_sfx(self) -> None:
-        """Fire ui/menu_select if SFX is wired (silent on headless/test)."""
-        if self.game is not None and hasattr(self.game, "sfx"):
-            self.game.sfx.play("ui/menu_select")
+    def _click_sfx(self, kind: str = "select") -> None:
+        """Fire a UI SFX if the bus is wired. Kinds: 'select' (nav arrows),
+        'confirm' (A), 'cancel' (B). Silent on headless/test."""
+        if self.game is None or not hasattr(self.game, "sfx"):
+            return
+        self.game.sfx.play(f"ui/menu_{kind}")
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         if inp.cancel and self.game is not None:
-            self._click_sfx()
+            self._click_sfx("cancel")
             from scz.scenes.stubs import MainMenuScene
             self.game.set_scene(MainMenuScene())
             return
@@ -126,7 +128,7 @@ class SuperMeleeScene(Scene):
         # A: confirm
         if inp.confirm and self.game is not None:
             if self.focus == "start":
-                self._click_sfx()
+                self._click_sfx("confirm")
                 self._launch_fight()
             # otherwise A just stays on the row (no per-ship "info" action yet)
 
