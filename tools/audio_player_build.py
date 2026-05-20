@@ -166,6 +166,14 @@ def _render_music_section(ctx_dir: Path, manifest: dict, review_state: dict) -> 
     review_status = review_entry.get("status") or "pending"
     review_notes = review_entry.get("notes") or ""
 
+    # Hide already-committed audio from the review page. Aaron 2026-05-19:
+    # 'remove the approved from the list, the page was locking up'.
+    # 'keep' = Aaron approved + committed; 'wired' = same, also in active
+    # game use. Neither needs further review and rendering all 100+
+    # players bogs down the browser.
+    if review_status in ("keep", "wired"):
+        return ""
+
     audio_files = (
         sorted(ctx_dir.glob("*.mp3"))
         + sorted(ctx_dir.glob("*.ogg"))
@@ -242,6 +250,11 @@ def _render_sfx_item(group_label: str, p: Path,
     review_entry = review_state.get(sfx_key, {}) or {}
     review_status = review_entry.get("status") or "pending"
     review_notes = review_entry.get("notes") or ""
+
+    # Hide already-committed SFX from the review page (see same comment
+    # in _render_music_section).
+    if review_status in ("keep", "wired"):
+        return ""
     # Per-SFX backend provenance. Key shape: <subdir>/<name>
     prov_key = f"{group_label}/{p.stem}"
     prov_entry = sfx_provenance.get(prov_key) or {}
@@ -392,48 +405,52 @@ def _render_bucket_section(
 ) -> str:
     """Render one bucket: a species or universal category. Contains the
     bucket's music contexts (full multi-stem players) AND its SFX items
-    (compact one-line cards)."""
+    (compact one-line cards). Items whose review status is `keep` or
+    `wired` are filtered out by the per-item renderers, so a bucket
+    that's fully approved disappears from the page entirely."""
     if not music_items and not sfx_items:
         return ""
+    # Render items up-front and count what actually survives the
+    # status filter, so we don't emit an empty bucket section.
+    music_html_pieces: list[str] = []
+    for ctx_dir, manifest in music_items:
+        s = _render_music_section(ctx_dir, manifest, review_state)
+        if s.strip():
+            music_html_pieces.append(s)
+
+    show_subdir = bucket not in ("UI", "Lander Tools", "Scan")
+    sfx_html_pieces: list[str] = []
+    for subdir, p in sfx_items:
+        s = _render_sfx_item(subdir, p, review_state, sfx_provenance,
+                             show_subdir=show_subdir)
+        if s.strip():
+            sfx_html_pieces.append(s)
+
+    if not music_html_pieces and not sfx_html_pieces:
+        # Every item in this bucket is already committed; skip entirely.
+        return ""
+
     anchor = ("bucket-" + bucket.lower()
               .replace(" ", "-").replace("(", "").replace(")", "")
               .replace("—", "").replace("--", "-").replace("/", "-")
               .strip("-"))
-    n_music = len(music_items)
-    n_sfx = len(sfx_items)
-    counts = []
-    if n_music:
-        counts.append(f"{n_music} music")
-    if n_sfx:
-        counts.append(f"{n_sfx} SFX")
+    counts: list[str] = []
+    if music_html_pieces:
+        counts.append(f"{len(music_html_pieces)} music")
+    if sfx_html_pieces:
+        counts.append(f"{len(sfx_html_pieces)} SFX")
     counts_html = (f'<span class="bucket-counts">{" · ".join(counts)}</span>'
                    if counts else "")
-    sections = []
-    if music_items:
-        music_html = []
-        for ctx_dir, manifest in music_items:
-            s = _render_music_section(ctx_dir, manifest, review_state)
-            if s.strip():
-                music_html.append(s)
-        if music_html:
-            sections.append(
-                '<h3 class="bucket-subheading">Music</h3>'
-                + "".join(music_html)
-            )
-    if sfx_items:
-        # In species buckets we DO show the subdir prefix per item (the
-        # Furling bucket has 5 different ship subdirs and "primary_fire"
-        # alone is ambiguous). In universal SFX buckets (UI / Lander /
-        # Scan) we hide it since the subdir is implied by the bucket.
-        show_subdir = bucket not in ("UI", "Lander Tools", "Scan")
-        items_html = [
-            _render_sfx_item(subdir, p, review_state, sfx_provenance,
-                             show_subdir=show_subdir)
-            for subdir, p in sfx_items
-        ]
+    sections: list[str] = []
+    if music_html_pieces:
+        sections.append(
+            '<h3 class="bucket-subheading">Music</h3>'
+            + "".join(music_html_pieces)
+        )
+    if sfx_html_pieces:
         sections.append(
             '<h3 class="bucket-subheading">SFX</h3>'
-            f'<div class="sfx-list">{"".join(items_html)}</div>'
+            f'<div class="sfx-list">{"".join(sfx_html_pieces)}</div>'
         )
     return f"""
     <section class="bucket" id="{_esc(anchor)}" data-bucket="{_esc(bucket)}">
@@ -993,8 +1010,11 @@ def build() -> Path:
     extra = sorted(all_buckets - set(BUCKET_ORDER))
     ordered.extend(extra)
 
-    # Render bucket sections.
-    bucket_sections = []
+    # Render bucket sections first (which applies the keep/wired
+    # filter), then build the top-of-page nav from ONLY the buckets
+    # that produced non-empty content. Otherwise nav chips would
+    # point to empty bucket sections that no longer render.
+    rendered_buckets: list[tuple[str, str]] = []  # (bucket, html)
     for bucket in ordered:
         s = _render_bucket_section(
             bucket,
@@ -1003,36 +1023,51 @@ def build() -> Path:
             review_state, sfx_provenance,
         )
         if s.strip():
-            bucket_sections.append(s)
+            rendered_buckets.append((bucket, s))
 
-    # Top-of-page navigation: one chip per non-empty bucket. Anchors
-    # let Aaron jump straight to a species during the review pass.
+    bucket_sections = [html for _, html in rendered_buckets]
+
+    # Top-of-page navigation: one chip per RENDERED bucket. The chip
+    # count reflects only items that survived the keep/wired filter
+    # (i.e. the work Aaron still has to review in that bucket).
     nav_chips = []
-    for bucket in ordered:
-        m = len(music_buckets.get(bucket, []))
-        s_n = len(sfx_buckets.get(bucket, []))
+    for bucket, html in rendered_buckets:
+        # Count visible music + sfx cards inside the rendered HTML.
+        n = html.count('class="music-ctx"') + html.count('class="sfx-item')
         anchor = ("bucket-" + bucket.lower()
                   .replace(" ", "-").replace("(", "").replace(")", "")
                   .replace("—", "").replace("--", "-").replace("/", "-")
                   .strip("-"))
-        total = m + s_n
         nav_chips.append(
             f'<a class="nav-chip" href="#{_esc(anchor)}">'
-            f'{_esc(bucket)} <span class="nav-count">{total}</span></a>'
+            f'{_esc(bucket)} <span class="nav-count">{n}</span></a>'
         )
     nav_html = '<nav class="bucket-nav">' + "".join(nav_chips) + '</nav>'
 
-    total_audio_files = sum(
-        len(list(d.glob("*.mp3"))) + len(list(d.glob("*.wav"))) + len(list(d.glob("*.ogg")))
-        for d, _ in contexts
-    ) + sum(len(paths) for paths in sfx_groups.values())
+    # Count keep+wired items so the summary can show what was filtered.
+    n_committed_music = 0
+    n_committed_sfx = 0
+    for ctx_dir, _m in contexts:
+        rev = review_state.get(f"music/{ctx_dir.name}", {}) or {}
+        if rev.get("status") in ("keep", "wired"):
+            n_committed_music += 1
+    for subdir, paths in sfx_groups.items():
+        for p in paths:
+            rev = review_state.get(f"sfx/{subdir}/{p.stem}", {}) or {}
+            if rev.get("status") in ("keep", "wired"):
+                n_committed_sfx += 1
+    n_committed = n_committed_music + n_committed_sfx
+
+    # Tally what's STILL on the page after filtering.
+    visible_music = len(contexts) - n_committed_music
+    visible_sfx = sum(len(paths) for paths in sfx_groups.values()) - n_committed_sfx
 
     summary = (
         f'<div class="summary">'
-        f'{len(contexts)} music context{"s" if len(contexts)!=1 else ""} · '
-        f'{sum(len(paths) for paths in sfx_groups.values())} SFX · '
-        f'{total_audio_files} audio files · '
-        f'{len(ordered)} buckets'
+        f'Showing <strong>{visible_music}</strong> music + '
+        f'<strong>{visible_sfx}</strong> SFX awaiting review · '
+        f'<strong>{n_committed}</strong> already committed (keep/wired) '
+        f'hidden from this page · {len(rendered_buckets)} non-empty buckets'
         f'</div>'
     )
 
