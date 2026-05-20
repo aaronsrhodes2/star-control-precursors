@@ -269,6 +269,7 @@ class ShipCustomizationScene(Scene):
 
     def _try_install(self, mod: Module) -> None:
         assert self.game is not None
+        sfx = getattr(self.game, "sfx", None)
         # Determine target slot. Default to mod.slot; for crew, prefer
         # crew_1 then crew_2 (whichever's empty).
         if mod.slot in ("crew_1", "crew_2"):
@@ -280,6 +281,7 @@ class ShipCustomizationScene(Scene):
             if target is None:
                 self.last_msg = "no crew slots available — uninstall one first"
                 self.last_msg_age = 0.0
+                if sfx: sfx.play("ui/menu_invalid")
                 return
         else:
             target = mod.slot
@@ -288,6 +290,7 @@ class ShipCustomizationScene(Scene):
         if self.game.ship_modules.get(target) is not None:
             self.last_msg = f"{target} slot is occupied — uninstall first"
             self.last_msg_age = 0.0
+            if sfx: sfx.play("ui/menu_invalid")
             return
 
         # If quest reward: requires count >= 1 in inventory
@@ -295,12 +298,14 @@ class ShipCustomizationScene(Scene):
             if self.game.uninstalled_modules.get(mod.id, 0) <= 0:
                 self.last_msg = f"{mod.name} not in inventory"
                 self.last_msg_age = 0.0
+                if sfx: sfx.play("ui/menu_invalid")
                 return
         else:
             # Purchasable — check credits + resources
             if self.game.credits < mod.cost_credits:
                 self.last_msg = f"need {mod.cost_credits}c, have {self.game.credits}"
                 self.last_msg_age = 0.0
+                if sfx: sfx.play("ui/menu_invalid")
                 return
             for t, q in mod.cost_resources.items():
                 if self.game.cargo.get(t, 0) < q:
@@ -308,6 +313,7 @@ class ShipCustomizationScene(Scene):
                         f"need {q} {t.lower()}, have {self.game.cargo.get(t, 0)}"
                     )
                     self.last_msg_age = 0.0
+                    if sfx: sfx.play("ui/menu_invalid")
                     return
 
         # Pay costs and install
@@ -332,10 +338,12 @@ class ShipCustomizationScene(Scene):
 
     def _try_uninstall(self, slot: str) -> None:
         assert self.game is not None
+        sfx = getattr(self.game, "sfx", None)
         installed_id = self.game.ship_modules.get(slot)
         if installed_id is None:
             self.last_msg = f"{slot} is already empty"
             self.last_msg_age = 0.0
+            if sfx: sfx.play("ui/menu_invalid")
             return
         # Return module to inventory
         self.game.uninstalled_modules[installed_id] = (

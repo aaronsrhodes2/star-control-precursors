@@ -102,6 +102,7 @@ class TradeScene(Scene):
                 else:
                     self.last_sale_msg = "nothing to sell"
                     self.last_sale_age = 0.0
+                    _click("invalid")
                 return
             # Sell one mineral type
             t = ACTION_TO_TYPE[action]
@@ -109,6 +110,7 @@ class TradeScene(Scene):
             if qty <= 0:
                 self.last_sale_msg = f"no {t.lower()} to sell"
                 self.last_sale_age = 0.0
+                _click("invalid")
                 return
             value = qty * MINERAL_PRICES[t]
             self.game.cargo[t] = 0
