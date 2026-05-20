@@ -174,13 +174,38 @@ class PlanetSurfaceScene(Scene):
 
     def on_enter(self) -> None:
         assert self.game is not None
-        # SFX: lander drone deploying from orbit + arrival swoosh.
-        # Both play together — deploy is the thruster ignition + flight
-        # down (~1.6s), arrive is the hover-into-position over surface.
-        # The slight overlap reads as "ship → deploy → arrive at surface".
+        # SFX: full descent sequence —
+        #   atmospheric_entry  (3s loop-marked reentry roar; played as
+        #                       one-shot here for the descent feel)
+        #   lander_deploy      (1.6s thrusters igniting)
+        #   lander_arrive      (1.6s hover-into-position over surface)
+        # Stagger them by playing all on enter; the natural durations
+        # produce a layered "ship → entry roar → deploy → arrive" sense
+        # even without a dedicated lifecycle event chain.
         if hasattr(self.game, "sfx"):
+            self.game.sfx.play("lander/atmospheric_entry")
             self.game.sfx.play("lander/lander_deploy")
             self.game.sfx.play("lander/lander_arrive")
+            # Initial surface-scan ping when the Scanner Mk III module
+            # is installed (the player just deployed and the scanner
+            # immediately sweeps the surface for the in-HUD readout).
+            if self.game.flags.get("scanner_mk3_installed"):
+                self.game.sfx.play("lander/scan_ping")
+        # Looping engine idle hum while the lander is on the surface.
+        # play_loop returns the channel so we can stop it on lift-off
+        # (in _exit_to_orbit) or destruction.
+        self._engine_idle_channel = None
+        if hasattr(self.game, "sfx"):
+            self._engine_idle_channel = self.game.sfx.play_loop(
+                "lander/engine_idle", volume=0.35,
+            )
+        # Per-frame hazard-proximity tracking for hazard_warning SFX.
+        # We track "currently in hazard radius" per-hazard and fire the
+        # warning ON ENTRY (edge transition), not continuously.
+        self._hazard_in_contact: set[int] = set()
+        # Damage-tick throttle: damage_taken plays at most every 0.6s
+        # while the lander is sustaining hazard damage.
+        self._damage_sfx_cooldown: float = 0.0
         w, h = self.game.screen.get_size()
         # Reserve a HUD on the left, surface fills the rest with margin
         HUD_W = 360
@@ -234,17 +259,29 @@ class PlanetSurfaceScene(Scene):
 
         # Hazards — apply damage to the lander when in contact with an
         # active hazard. lander_hp is per-trip; reaches 0 → destroyed.
-        for h in self.hazards:
+        if self._damage_sfx_cooldown > 0:
+            self._damage_sfx_cooldown -= dt
+        new_in_contact: set[int] = set()
+        for h_idx, h in enumerate(self.hazards):
             if not h.is_active(self.surface_time):
                 continue
             dx = h.x - self.lander_x
             dy = h.y - self.lander_y
             if math.hypot(dx, dy) <= h.radius:
+                new_in_contact.add(h_idx)
+                # First-contact edge transition → one-shot hazard_warning
+                if h_idx not in self._hazard_in_contact and hasattr(self.game, "sfx"):
+                    self.game.sfx.play("lander/hazard_warning")
+                # Continuous damage tick → throttled damage_taken
+                if self._damage_sfx_cooldown <= 0 and hasattr(self.game, "sfx"):
+                    self.game.sfx.play("lander/damage_taken")
+                    self._damage_sfx_cooldown = 0.6
                 self.lander_hp -= h.damage_per_sec * dt
                 if self.lander_hp <= 0.0:
                     self.lander_hp = 0.0
                     self._destroy_lander(h.type)
                     return
+        self._hazard_in_contact = new_in_contact
 
         # Tractor-beam pull: anything inside the effective radius is
         # collected (no shooting, no killing — life and minerals both
@@ -280,6 +317,13 @@ class PlanetSurfaceScene(Scene):
         replacement cost from game.cargo.
         """
         assert self.game is not None
+        # Stop the looping engine_idle that started on scene enter.
+        if getattr(self, "_engine_idle_channel", None) is not None:
+            try:
+                self._engine_idle_channel.stop()
+            except Exception:
+                pass
+            self._engine_idle_channel = None
         # SFX: dedicated lift_off — Furling warm-tech engine surge
         # (departure thrust, ~2.5s). Aaron 2026-05-19 wire-everything
         # pass: this replaces the old "reuse lander_arrive in reverse"
@@ -323,6 +367,14 @@ class PlanetSurfaceScene(Scene):
         wreck for a couple seconds, then auto-ejects to orbit. Trip haul
         is lost; cost flagged in destruction_msg for the HUD."""
         assert self.game is not None
+        # Stop the engine_idle loop immediately on destruction (the
+        # lander engine isn't running once the lander is wreckage).
+        if getattr(self, "_engine_idle_channel", None) is not None:
+            try:
+                self._engine_idle_channel.stop()
+            except Exception:
+                pass
+            self._engine_idle_channel = None
         self.lander_destroyed = True
         self.destruction_age = 0.0
         haul_summary = ", ".join(

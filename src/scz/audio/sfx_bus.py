@@ -107,3 +107,22 @@ class SfxBus:
         on the StemMixer pool — they have their own channels)."""
         for snd in self._cache.values():
             snd.stop()
+
+    def play_loop(self, name: str, *, volume: float | None = None):
+        """Start an SFX looping indefinitely. Returns the pygame.mixer.Channel
+        the sound is playing on (or None if the SFX is missing / muted / no
+        free channel). Caller is responsible for stopping it via the returned
+        channel's .stop() when the loop should end (e.g. on scene exit)."""
+        if self._muted or not pygame.mixer.get_init():
+            return None
+        snd = self._load(name)
+        if snd is None:
+            return None
+        if volume is not None:
+            snd.set_volume(max(0.0, min(1.0, volume)) * self._master_volume)
+        ch = snd.play(loops=-1)
+        # Restore the master volume on the cached Sound so subsequent
+        # one-shot plays start at the right level.
+        if volume is not None:
+            snd.set_volume(self._master_volume)
+        return ch
