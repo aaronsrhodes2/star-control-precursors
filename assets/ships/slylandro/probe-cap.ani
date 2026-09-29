@@ -1,3 +1,15 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:a9b85a953eab9fc959edec60d03ee5045e400d3fb6b5996e0e4d9fa3613bc921
-size 428
+probe-cap-000.png -1 1 0 0
+probe-cap-001.png 1 1 -4 0
+probe-cap-002.png 1 1 -4 0
+probe-cap-003.png 1 1 -4 0
+probe-cap-004.png 1 1 -43 0
+probe-cap-005.png 1 1 -43 0
+probe-cap-006.png 0 1 -14 -14
+probe-cap-007.png 0 1 -14 -14
+probe-cap-008.png 0 1 -14 -14
+probe-cap-009.png 0 1 -10 -8
+probe-cap-010.png 0 1 -10 -8
+probe-cap-011.png 0 1 -10 -8
+probe-cap-012.png 0 1 -6 -16
+probe-cap-013.png 0 1 -6 -16
+probe-cap-014.png 0 1 -6 -16

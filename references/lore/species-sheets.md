@@ -4,7 +4,9 @@
 
 When implementing dialog FSMs, encounter scenes, ship visuals, quest hooks, or AI prompts, look here first for the structured facts. When the structured facts conflict with a narrative doc, the narrative doc wins (lore is canon, sheets are projections) — but flag the discrepancy as a bug.
 
-The seven slice species:
+> **⚠ DOC SCOPE — UPDATED 2026-05-19**: this doc covers the **8 baseline slice species** (the original "seven slice species" plus Chenjesu) with full §1-§7 sheets. The slice has since canonical-expanded to canonical-include canonical-many-more-species canonical-with canonical-rich-canon canonical-authored canonical-elsewhere — see **Extended-species redirect** below. New sheets canonical-may canonical-be canonical-added canonical-here-or canonical-elsewhere canonical-as canonical-needed; canonical-canon canonical-coherence canonical-is canonical-the canonical-priority canonical-not canonical-doc canonical-completeness.
+
+The 8 baseline slice species (with full §1-§7 sheets in this doc):
 1. Slylandro Observers
 2. Proto-Ur-Quan limpets
 3. Proto-Qor-Ah limpets
@@ -15,6 +17,36 @@ The seven slice species:
 8. Chenjesu Crystalline Collective
 
 Plus a non-species sheet for **the Others** as antagonist.
+
+### Extended-species redirect (2026-05-19)
+
+The slice's canonical-canon-content canonical-has canonical-expanded to canonical-include canonical-the canonical-following canonical-species with canonical-rich canonical-canon canonical-authored canonical-in canonical-separate canonical-docs. canonical-Treat canonical-these canonical-docs canonical-as canonical-the canonical-source-of-truth canonical-for canonical-each canonical-species; canonical-this canonical-doc's canonical-§1-§7 canonical-format canonical-is canonical-not canonical-yet canonical-applied:
+
+| Species | Canonical source-of-truth doc |
+|---|---|
+| Lemmkin | [`species-the-lemmkin.md`](species-the-lemmkin.md) |
+| Utwig | [`utwig-quest.md`](utwig-quest.md) |
+| Taalo | [`loop-closing-content-pass.md §6`](loop-closing-content-pass.md) |
+| Burvixese | [`loop-closing-content-pass.md §7`](loop-closing-content-pass.md) |
+| Thinn (née Planar) | [`species-the-thinn.md`](species-the-thinn.md) + [`loop-closing-content-pass.md §8`](loop-closing-content-pass.md) |
+| Stelloth | [`loop-closing-content-pass.md §1`](loop-closing-content-pass.md) |
+| Selvenne | [`loop-closing-content-pass.md §2`](loop-closing-content-pass.md) |
+| Kovellim | [`loop-closing-content-pass.md §3`](loop-closing-content-pass.md) |
+| Karavem | [`loop-closing-content-pass.md §4`](loop-closing-content-pass.md) |
+| Mrokon | [`loop-closing-content-pass.md §5`](loop-closing-content-pass.md) |
+| Melnorme | [`loop-closing-content-pass.md §9`](loop-closing-content-pass.md) |
+| Dnyarri | [`loop-closing-content-pass.md §10`](loop-closing-content-pass.md) |
+| Orz | [`loop-closing-content-pass.md §11`](loop-closing-content-pass.md) |
+| 5 Furling factions (Persuader/Compeller/Cleanser/Preserver/Hider) | [`factions-and-war.md`](factions-and-war.md) + [`cleansers-as-ice-branch.md`](cleansers-as-ice-branch.md) + [`preservers-as-tree-branch.md`](preservers-as-tree-branch.md) |
+| 12 proto-species (Spathi/Yehat/Pkunk/VUX/Druuge/Ilwrath/Shofixti/Thraddash/Syreen/Supox/Utwig/Zot-Yin-Dag-Hap-Lod-Nit-Fot-Pik) | [`proto-species-bio-archive-entries.md`](proto-species-bio-archive-entries.md) + [`proto-species-observations.md`](proto-species-observations.md) |
+
+**Retired-species canonical-name-history**:
+- `TALOS_SUBFACTION` (Furling sub-faction) — canonical-retired 2026-05-17; replaced by canonical-Taalo (Horta-lineage silicon-mountain species) + canonical-Thinn (canonical-2D ribbon-species)
+- `Planar` — canonical-renamed-to canonical-Thinn 2026-05-17
+- `The Defiant` (canonical-invented-species) — canonical-renamed-to canonical-Mrokon
+- `The Curious` (canonical-invented-species) — canonical-renamed-to canonical-Lemmkin
+- `The Long-Memories` (canonical-invented-species) — canonical-renamed-to canonical-Kovellim
+- `The Bargainers` (canonical-invented-species) — canonical-renamed-to canonical-Selvenne
 
 ---
 

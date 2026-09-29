@@ -1,0 +1,74 @@
+{
+  "template_id": "common_room_ambient",
+  "generated_at": "2026-05-19T02:20:49.380199+00:00",
+  "model": "gemini-2.5-flash-lite",
+  "raw_text": "[\n  {\n    \"beat_id\": \"post_fall_3_days\",\n    \"scene\": \"Mraka is fiddling with a small device, Tarven observes from his archive station.\",\n    \"exchanges\": [\n      {\"speaker\": \"Mraka\", \"line\": \"This micro-resonator… it’s just not responding. Tools are alphabetized, you know. Every single one.\"},\n      {\"speaker\": \"Tarven\", \"line\": \"Indeed. The records are useful, Mraka. Perhaps you are attempting to recalibrate a dampener with a flux coil? It is a common error.\"},\n      {\"speaker\": \"Mraka\", \"line\": \"A common error is assuming I make common errors. It's the coupling. It needs… a certain *feel*.\"},\n      {\"speaker\": \"Tarven\", \"line\": \"A feel that the records do not detail, I presume. Fascinating. My own analysis suggests thermal variance.\"}\n    ]\n  },\n  {\n    \"beat_id\": \"post_fall_3_weeks\",\n    \"scene\": \"Sevra is reading to Vresh-Hum-Of-The-Slow-Veins, who is humming a subdued pattern. Renn is nearby, ostensibly cleaning.\",\n    \"exchanges\": [\n      {\"speaker\": \"Sevra\", \"line\": \"‘…and the starlight, once a comforting blanket, now seemed to stretch thin, brittle.’\"},\n      {\"speaker\": \"Vresh-Hum-Of-The-Slow-Veins\", \"line\": \"We-all feel the… stretch. The brittleness. It resonates.\"},\n      {\"speaker\": \"Renn\", \"line\": \"Yeah, that… that feeling. Like the whole ship’s hum is a little… off. Off-key, you know? Not groovy at all.\"},\n      {\"speaker\": \"Sevra\", \"line\": \"We will find the right key again, Renn. Tomorrow, perhaps.\"}\n    ]\n  },\n  {\n    \"beat_id\": \"post_fall_1_month\",\n    \"scene\": \"Forward is watching the main display, a slight ripple of his ribbon-body. Forty-Seven's presence is subtly noted.\",\n    \"exchanges\": [\n      {\"speaker\": \"Forward\", \"line\": \"The sensor sweep indicates a 0.003% increase in ambient nebula density. Facing forward, this presents a marginal tactical consideration.\"},\n      {\"speaker\": \"Forty-Seven\", \"line\": \"By my standards, that is a statistically significant deviation from baseline. I am cross-referencing with historical atmospheric models.\"},\n      {\"speaker\": \"Mraka\", \"line\": \"Deviation means something changed. Always something changing. Keeps things… interesting, I guess.\"},\n      {\"speaker\": \"Tarven\", \"line\": \"The records indicate many changes, Mraka. Some are more… impactful than others. The present era is certainly marked by impact.\"}\n    ]\n  }\n]",
+  "parsed_beats": [
+    {
+      "beat_id": "post_fall_3_days",
+      "scene": "Mraka is fiddling with a small device, Tarven observes from his archive station.",
+      "exchanges": [
+        {
+          "speaker": "Mraka",
+          "line": "This micro-resonator… it’s just not responding. Tools are alphabetized, you know. Every single one."
+        },
+        {
+          "speaker": "Tarven",
+          "line": "Indeed. The records are useful, Mraka. Perhaps you are attempting to recalibrate a dampener with a flux coil? It is a common error."
+        },
+        {
+          "speaker": "Mraka",
+          "line": "A common error is assuming I make common errors. It's the coupling. It needs… a certain *feel*."
+        },
+        {
+          "speaker": "Tarven",
+          "line": "A feel that the records do not detail, I presume. Fascinating. My own analysis suggests thermal variance."
+        }
+      ]
+    },
+    {
+      "beat_id": "post_fall_3_weeks",
+      "scene": "Sevra is reading to Vresh-Hum-Of-The-Slow-Veins, who is humming a subdued pattern. Renn is nearby, ostensibly cleaning.",
+      "exchanges": [
+        {
+          "speaker": "Sevra",
+          "line": "‘…and the starlight, once a comforting blanket, now seemed to stretch thin, brittle.’"
+        },
+        {
+          "speaker": "Vresh-Hum-Of-The-Slow-Veins",
+          "line": "We-all feel the… stretch. The brittleness. It resonates."
+        },
+        {
+          "speaker": "Renn",
+          "line": "Yeah, that… that feeling. Like the whole ship’s hum is a little… off. Off-key, you know? Not groovy at all."
+        },
+        {
+          "speaker": "Sevra",
+          "line": "We will find the right key again, Renn. Tomorrow, perhaps."
+        }
+      ]
+    },
+    {
+      "beat_id": "post_fall_1_month",
+      "scene": "Forward is watching the main display, a slight ripple of his ribbon-body. Forty-Seven's presence is subtly noted.",
+      "exchanges": [
+        {
+          "speaker": "Forward",
+          "line": "The sensor sweep indicates a 0.003% increase in ambient nebula density. Facing forward, this presents a marginal tactical consideration."
+        },
+        {
+          "speaker": "Forty-Seven",
+          "line": "By my standards, that is a statistically significant deviation from baseline. I am cross-referencing with historical atmospheric models."
+        },
+        {
+          "speaker": "Mraka",
+          "line": "Deviation means something changed. Always something changing. Keeps things… interesting, I guess."
+        },
+        {
+          "speaker": "Tarven",
+          "line": "The records indicate many changes, Mraka. Some are more… impactful than others. The present era is certainly marked by impact."
+        }
+      ]
+    }
+  ]
+}

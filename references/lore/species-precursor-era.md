@@ -2,9 +2,26 @@
 
 > **Naming note:** the player's people are **Furlings**, not "Precursors" (see [the-furlings-and-the-others.md](the-furlings-and-the-others.md)). "Precursor" is what *future* civilizations call them in retrospect. In-fiction, that word does not exist.
 
+> **⚠ DOC SCOPE — UPDATED 2026-05-19**: this doc canonical-originated as the canonical-baseline 4-species canonical-vertical-slice roster (canonical-Slylandro / canonical-Proto-Ur-Quan / canonical-Mycon / canonical-Arilou) plus canonical-Background-species canonical-sketches. canonical-The canonical-slice canonical-has canonical-since canonical-expanded canonical-substantially. **Canonical-extended-species canonical-canon canonical-now canonical-lives canonical-in canonical-canonical-newer canonical-source-of-truth canonical-docs** — see redirect table below. canonical-This canonical-doc canonical-remains canonical-canonical-canon-for canonical-the canonical-4 canonical-baseline-species canonical-it canonical-was canonical-authored canonical-for.
+>
+> **Extended-species canonical-source-of-truth canonical-redirect**:
+>
+> | Species | Canon doc |
+> |---|---|
+> | Androsynth (canonical-time-displaced) | [`the-androsynth-refugees.md`](the-androsynth-refugees.md) |
+> | Mmrnmhrm + Chenjesu (canonical-prior-cycle-survivors) | [`the-mmrnmhrm-and-chenjesu.md`](the-mmrnmhrm-and-chenjesu.md) |
+> | Taalo (canonical-Horta-lineage canonical-silicon-mountains) | [`loop-closing-content-pass.md §6`](loop-closing-content-pass.md) |
+> | Burvixese (canonical-Be-Loud canonical-engineers) | [`loop-closing-content-pass.md §7`](loop-closing-content-pass.md) |
+> | Thinn (canonical-2D-ribbon-beings; canonical-née-Planar) | [`species-the-thinn.md`](species-the-thinn.md) |
+> | Lemmkin (canonical-anthropomorphic-squirrels) | [`species-the-lemmkin.md`](species-the-lemmkin.md) |
+> | Utwig (canonical-Veils-Falling) | [`utwig-quest.md`](utwig-quest.md) |
+> | Stelloth / Selvenne / Kovellim / Karavem / Mrokon / Melnorme / Dnyarri / Orz | [`loop-closing-content-pass.md §§1-5,9-11`](loop-closing-content-pass.md) |
+> | 12 proto-species (canonical-fanservice-visits) | [`proto-species-bio-archive-entries.md`](proto-species-bio-archive-entries.md) + [`proto-species-observations.md`](proto-species-observations.md) |
+> | 5 Furling factions (Persuader/Compeller/Cleanser/Preserver/Hider) | [`factions-and-war.md`](factions-and-war.md) + [`cleansers-as-ice-branch.md`](cleansers-as-ice-branch.md) + [`preservers-as-tree-branch.md`](preservers-as-tree-branch.md) |
+
 Each species needs an LLM personality profile that captures: **voice/language**, **lore facts the LLM can draw on**, **disposition variables**, **encounter states**, and a **canned-text fallback bank** for offline play. Every species profile must now also include **evacuation stance** and **awareness of the Others / Migration** — these inflect every conversation in the slice's era.
 
-The runtime YAML profiles live in `src/scz/content/species/<id>/profile.yaml`. The four species below are the vertical-slice roster. Background species (Furling Council factions, Orz rift creatures, off-screen Mael-Num) are sketched at the end.
+The runtime YAML profiles live in `src/scz/content/species/<id>/profile.yaml`. The four species below are the **baseline vertical-slice roster** (canonical-2026-04-canon). Background species (Furling Council factions, Orz rift creatures, off-screen Mael-Num) are sketched at the end. canonical-Extended-species canonical-canon canonical-canonical-lives canonical-in canonical-the canonical-redirect canonical-table canonical-above.
 
 ## The Universal Tension
 
