@@ -84,6 +84,18 @@ class SystemScene(Scene):
         elif star.get("defined_name") == "SLYLANDRO":
             from scz.content.beta_corvi import beta_corvi_planets
             self.planets = beta_corvi_planets()
+        elif star.get("defined_name") == "MMRNMHRM_OSSUARY":
+            from scz.content.ossuary_system import ossuary_planets
+            self.planets = ossuary_planets()
+        elif star.get("defined_name") == "TAALOS_STONE":
+            from scz.content.taalos_stone_system import taalos_stone_planets
+            self.planets = taalos_stone_planets()
+        elif star.get("defined_name") == "BURVIX_CASTER":
+            from scz.content.burvix_caster_system import burvix_caster_planets
+            self.planets = burvix_caster_planets()
+        elif star.get("defined_name") == "LEMMKIN_WHIRLIGIG":
+            from scz.content.whirligig_system import whirligig_planets
+            self.planets = whirligig_planets()
         else:
             # UQM-faithful procgen — mirrors SC2's planet placement for
             # every unnamed star. Uses the ORIGINAL SC2-era star coords
@@ -124,6 +136,15 @@ class SystemScene(Scene):
         self.font: pygame.font.Font | None = None
         self.title_font: pygame.font.Font | None = None
 
+        # Scanner-lore reveal state — set in on_enter from the
+        # `scanner_lore` registry. `_scanner_text` is the full passage
+        # to display in the HUD; None means the star has no registered
+        # lore (HUD shows just a blank slot). `_scanner_first_reveal`
+        # is True only for the first visit to this star and drives the
+        # one-time "+ ARCHIVE ENTRY" indicator.
+        self._scanner_text: str | None = None
+        self._scanner_first_reveal: bool = False
+
     # ------------------------------------------------------------------
     # Scene API
     # ------------------------------------------------------------------
@@ -141,31 +162,27 @@ class SystemScene(Scene):
         self.title_font = pygame.font.SysFont("consolas", 26, bold=True)
         self._update_camera()
 
-        # Arrival event — Melnorme nomadic trader at any super-giant system
-        # (tagged MELNORME_PROTO in the precursor-era universe data). The
-        # dialog auto-launches on entry; closing it returns to a fresh
-        # SystemScene with skip_arrival_event=True so the player can fly
-        # around without re-triggering the encounter.
-        if (
-            not self.skip_arrival_event
-            and self.star.get("defined_name") == "MELNORME_PROTO"
-        ):
-            from scz.dialog.characters import melnorme
-            from scz.dialog.scene import DialogScene
-            star = self.star
-            planets = self.planets
+        # Arrival path — table-driven via `star_arrival.ARRIVAL_HANDLERS`.
+        # Records the visit unconditionally (drives Bio-Archive gating,
+        # Star-Reader briefings, future content), then fires any handler
+        # registered for the star's `defined_name` (Melnorme dialog,
+        # proto-species observation, Orz rift sighting, etc.) when
+        # skip_arrival_event is False.
+        from scz.content.star_arrival import fire_arrival, record_visit
+        record_visit(self)
 
-            def _back_to_system() -> "SystemScene":
-                return SystemScene(
-                    star=star, planets=planets, skip_arrival_event=True
-                )
+        # Scanner-lore reveal — surface the star-level lore passage if
+        # the registry has an entry. Always fires (not gated by
+        # skip_arrival_event) because the scanner runs passively;
+        # subsequent visits show the abbreviated indicator via the
+        # is_first_reveal flag.
+        from scz.content.scanner_lore import reveal_star_lore
+        text, first_reveal = reveal_star_lore(self.game, self.star)
+        self._scanner_text = text
+        self._scanner_first_reveal = first_reveal
 
-            self.game.set_scene(
-                DialogScene(
-                    character=melnorme(), parent_factory=_back_to_system
-                )
-            )
-            return
+        if not self.skip_arrival_event:
+            fire_arrival(self)
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
@@ -483,6 +500,43 @@ class SystemScene(Scene):
                 return p
         return None
 
+    def _wrap_text(
+        self,
+        screen: pygame.Surface,
+        text: str,
+        x: int,
+        y: int,
+        max_width: int,
+        color: tuple[int, int, int],
+    ) -> int:
+        """Word-wrap `text` to fit within `max_width` pixels, rendering
+        each line at `(x, y)` with `self.font`. Returns the new y
+        cursor after the wrapped text. Splits on whitespace; preserves
+        paragraph breaks via `\\n\\n` markers (renders as a blank line).
+        """
+        assert self.font is not None
+        line_h = self.font.get_linesize()
+        # Split into paragraphs (text uses no \n\n here, but support
+        # it in case lore-text introduces them later)
+        for paragraph in text.split("\n\n"):
+            words = paragraph.split()
+            line = ""
+            for word in words:
+                test = f"{line} {word}".strip()
+                if self.font.size(test)[0] <= max_width:
+                    line = test
+                else:
+                    if line:
+                        screen.blit(self.font.render(line, True, color), (x, y))
+                        y += line_h
+                    line = word
+            if line:
+                screen.blit(self.font.render(line, True, color), (x, y))
+                y += line_h
+            # Paragraph spacer
+            y += line_h // 3
+        return y
+
     def _draw_hud(
         self, screen: pygame.Surface, landing_target: Planet | None = None
     ) -> None:
@@ -535,6 +589,26 @@ class SystemScene(Scene):
                 color = (150, 160, 180)
             screen.blit(self.font.render(label, True, color), (x, y))
             y += 22
+
+        # Scanner-lore reveal panel — Furling Steward's onboard scanner
+        # surfaces the star's canonical lore passage on system entry.
+        # The first reveal also includes a "+ ARCHIVE ENTRY" indicator.
+        if self._scanner_text is not None:
+            y += 12
+            scanner_header = "SCANNER  ·  STAR"
+            if self._scanner_first_reveal:
+                scanner_header += "   + ARCHIVE ENTRY"
+            screen.blit(
+                self.font.render(scanner_header, True, (140, 220, 240)),
+                (x, y),
+            )
+            y += 24
+            # Word-wrap the lore text to the HUD width
+            y = self._wrap_text(
+                screen, self._scanner_text, x, y,
+                HUD_W - 2 * x, (200, 215, 230),
+            )
+            y += 6
 
         # Edge-of-system warning
         dist = math.hypot(self.player_x, self.player_y)
@@ -613,9 +687,9 @@ class SystemScene(Scene):
         controls_y += 28
         for line in (
             "Move:    WASD / L-stick",
-            "Leave:   Backspace / B",
+            "Leave:   Esc / B / Backspace",
             "Rewind:  R / Back",
-            "Quit:    Esc / Start",
+            "Quit:    Start (or Leave -> Pause -> Quit)",
         ):
             screen.blit(self.font.render(line, True, (130, 150, 180)), (x, controls_y))
             controls_y += 22

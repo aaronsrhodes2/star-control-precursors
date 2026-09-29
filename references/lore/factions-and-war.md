@@ -71,12 +71,7 @@ The factions are not formally chartered. They are tendencies, reading-rooms, mut
 **Weakness:** Untested at scale. The Others' senses are not well-mapped. One leak ends the Migration's effectiveness.
 **In the slice:** The Mycon biots, if they awaken into Deep Child sentience, might be candidates for the Hider strategy — they live underground, surrounded by spore-clouds that might mask mind-light. This is a genuinely-debated option in the player's Council reports.
 
-### Talos — *Be Loud. Be Heard. Be Spared.* (Homesteader, Stay-Side)
-**Doctrine:** The Others sense cognition. Fine — *meet them with cognition*. Build a transmitter that broadcasts our intelligence at such an overwhelming amplitude that the Others must either parley, recognize a peer, or simply pass us over as too costly to engage. *Hiding is cowardice; running is surrender; defending is suicide. The fourth path is to be brilliantly, deafeningly unignorable.*
-**Leverage:** The **Talos Resonator** — a Furling-built signal-amplifier device tuned to project the operator's full cognitive bandwidth across dimensional substrates. Mid-stage prototype during the slice; nearly operational by mid-game.
-**Weakness:** **Catastrophically wrong.** The Others do not parley. They do not recognize peers. They do not pass over the loud. They *eat the loud first*. The Talos broadcast is the equivalent of a dinner bell.
-**In the slice (mid-game event):** A small Talos faction enclave operating in a peripheral cluster system completes its Resonator and activates it. The player witnesses the broadcast — a brief moment of *enormous* signal flooding every comm channel, a defiant message in Furling — then **silence**, followed by an Other arrival that erases the system within minutes. The Talos device itself survives (it was built into the planet's mantle); the Others ignore the inert hardware after the broadcasters are gone.
-**SC2 callforward:** the surviving **Talos Resonator** is recoverable as a Furling-era artifact. SC2-era humans find one of these devices intact — its operators long dead — and recognize it as Precursor technology. It becomes a famous SC2 artifact: a still-functional broadcaster of unknown purpose. SC2 captains treat it as a mystery. The slice player knows what it really is: a martyr's loud goodbye.
+> **Retracted section (Talos sub-faction)**: an earlier draft canonized a Furling Stay-Side sub-faction called *Talos* with a "Be Loud. Be Heard. Be Spared." doctrine. **That sub-faction does not exist in canon.** The Be-Loud doctrine is exclusively a **Burvixese** (alien species) project; see [species-sheets.md §10 Burvixese](species-sheets.md) and [furling-artifacts-and-callforwards.md "The Burvixese and the Caster"](furling-artifacts-and-callforwards.md). The Furling Council's six factions are Persuaders, Compellers, Cleansers, Defenders, Deniers, and Hiders — no Talos. *(The name "Talos" was Aaron's typo of "Taalo," which is now correctly used for the SC2-canonical silicon-based alien species at [species-sheets.md §9](species-sheets.md).)*
 
 ## The Species' Responses (slice-relevant only)
 
@@ -115,7 +110,7 @@ The factions are not formally chartered. They are tendencies, reading-rooms, mut
 5. **The Closing of the Door** (after the slice): the dimensional crossing is closed by the Arilou-Persuader alliance to prevent further conflict from leaking into the new galaxy. Whoever is on this side stays on this side.
 6. **The Culling** (after the door closes): the Others arrive. The galaxy goes silent. Most holdouts die. Some Hider enclaves survive (notably Chenjesu, awakening Mycon). The Sa-Matra hurts the Others enough to make them move on faster — possibly the only reason the Arilou's return-path stays open.
 7. **The Long Quiet** (millennia): the galaxy bacterial again. The proto-Ur-Quan limpets crawl on tide-pools.
-8. **The Return** (SC2's prologue, much later): species from the neighboring galaxy filter back. Some find the Sa-Matra. Some find the awakened Mycon. Some find the Slylandro who survived in their gas-clouds because the Cloaking Satellite worked. The SC2 era begins.
+8. **The Return** (SC2's prologue, much later): species from the neighboring galaxy — Andromeda M31 — filter back through the dimensional crossing. Some find the Sa-Matra. Some find the awakened Mycon. Some find the Slylandro who survived in their gas-clouds because the Cloaking Satellite worked. The SC2 era begins.
 
 ## Implications for the Player
 

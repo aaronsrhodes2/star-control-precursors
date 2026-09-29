@@ -44,7 +44,7 @@ Mechanically:
 
 - **Act 2 milestone encounter**: a damaged Androsynth ship enters the cluster from a Quasi-Space-adjacent fold. The Arilou cousins flag it for the player. The player meets Coel Tessar. They tell their story.
 - **Their gift to the player**: an **Androsynth Distress Beacon** — a small device that records and replays their last day on Vulpeculae. Footage of the swap. Audio of the experiment's first successful image-capture, then static. Imagery of the cities replaced with ruins in mid-thought. **This is unimpeachable evidence that the Others are real and that they do what the Furlings think they do.** The player can show this beacon to other species to dramatically accelerate any Convince attempt against Deniers.
-- **What they ask**: sanctuary, supplies, a route to join the Migration. They do not want to stay in this era. They want to evacuate with the Precursors to the nearest neighboring galaxy and start over.
+- **What they ask**: sanctuary, supplies, a route to join the Migration. They do not want to stay in this era. They want to evacuate with the Precursors to the nearest neighboring galaxy — **Andromeda (M31)** in our canon — and start over.
 - **Optional Act 3 quest**: the Androsynth survivors are sick. The dimensional shear is killing them slowly. The player may divert resources to help them, accelerating their evacuation timeline at the cost of slowing the player's other cluster tasks.
 
 ## Their Voice (LLM Prompt Notes)
@@ -75,7 +75,7 @@ For SC2 fans, the Androsynth encounter is the *secret rosetta stone* of the enti
 - **The Androsynth disappearance** at Vulpeculae → caused by the Others' decursion
 - **The Orz** filling the vacated space in SC2 → not the Androsynth themselves transformed, but Other-adjacent entities filling the dimensional wake the Others left behind
 - **The corpse-Vulpeculae** SC2 archaeologists find → the future-parallel version the Others swapped in
-- **What SC2 players never learn** → the Androsynth went *backward in time*, met the Furlings, and migrated with them. Their bloodline (or what's left of it) is now in the nearest neighboring galaxy, founded a sister civilization, and may someday return.
+- **What SC2 players never learn** → the Androsynth went *backward in time*, met the Furlings, and migrated with them. Their bloodline (or what's left of it) is now in **the Andromeda Galaxy (M31)**, founded a sister civilization, and may someday return.
 
 The Star Control Zero player learns this. SC2 players never can. The asymmetry is delicious.
 

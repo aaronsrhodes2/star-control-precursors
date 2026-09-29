@@ -89,9 +89,10 @@ Each entry is the species' SC2 identity → what they look like in our era. Slic
 *SC2 race*: Beautiful psychic women; their world destroyed by Mycon (in SC2's future).
 *In our era*: humanoid sea-dwellers with bioluminescent skin patterns. Their colonies coordinate through a low-frequency vibrational communication that propagates kilometers underwater. They are NOT psychic yet — their cognitive substrate is just unusually *resonant* with electromagnetic patterns. The Furling archive notes "long-range coherent communication; if this evolves into telepathy as we suspect, this species is a future asset."
 
-### Proto-Utwig (Gorno region)
-*SC2 race*: Depressed warriors who wear masks to hide their faces.
-*In our era*: armored bipedal grazers with extremely expressive facial musculature *and* a hyper-developed shame response. When threatened or rebuked by their herd-mates, they bury their faces. **The face-hiding is already the trauma response.** The Furling archive notes this with sympathy.
+### ~~Proto-Utwig (Gorno region)~~ *(reclassified — see [species-sheets.md §11 Utwig](species-sheets.md))*
+*Historical observation (older Steward visits)*: armored bipedal grazers with extremely expressive facial musculature *and* a hyper-developed shame response. When threatened or rebuked by their herd-mates, they bury their faces. **The face-hiding was already the trauma response.** The Furling archive at the time noted this with sympathy.
+
+*Status update (2026-05-17)*: the Utwig have *just* become sentient in our era. They are no longer a proto-species; they are an active slice species with a decision to make. Their pre-existing face-hiding shame-response has become the biological substrate for the **mask-and-ceremony doctrine** they are about to adopt as cognitive-dampening — see [species-sheets.md §11 Utwig](species-sheets.md) and [species-quests.md "The Veils Falling"](species-quests.md). The historical proto-observation above is preserved as deep-past context; it is not a current Furling-era observation any more.
 
 ### Proto-Supox (Libris area)
 *SC2 race*: Plant-people; gentle botanists.

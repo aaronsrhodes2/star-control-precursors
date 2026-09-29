@@ -26,10 +26,11 @@ def _entries():
     from scz.scenes.stubs import (
         MainMenuScene,
         ObservationScene,
-        CouncilScene,
-        ClusterStatusBoardScene,
-        ArchiveScene,
     )
+    # Real implementations — these scenes used to be stubs.
+    from scz.station.council import CouncilScene
+    from scz.station.status_board import ClusterStatusBoardScene
+    from scz.station.archive import BioArchiveScene
     # Real implementations (replacing stubs)
     from scz.dialog.characters import arilou_sage, coel_tessar, commander_halia, melnorme, sentry_drone_47t, slylandro_witness
     from scz.dialog.scene import DialogScene
@@ -120,6 +121,42 @@ def _entries():
         planet = next(p for p in sys.planets if p.name == "Mh-Lai II")
         return PlanetOrbitScene(planet=planet, star=home_star(), parent_scene_cls=_Sys)
 
+    def _fleet_combat_test():
+        """Diagnostic fleet-combat scene — 2v1 with the Furling Scout +
+        Arilou Skiff player fleet vs a Cleanser Cruiser. Used by
+        `walk_fleet_combat` to exercise the FleetCombatScene engine
+        end-to-end. On finish, writes test flags to game.flags
+        (`test_fleet_winner_side`, `test_fleet_round_count`,
+        `test_fleet_p_survivors`, `test_fleet_h_survivors`,
+        `test_fleet_timed_out`) and returns to MainMenuScene so the
+        walk can observe the final state cleanly.
+        """
+        from scz.combat import ships
+        from scz.scenes.fleet_combat import FleetCombatScene, FleetResult
+        from scz.scenes.stubs import MainMenuScene
+
+        scene_ref: list[FleetCombatScene | None] = [None]
+
+        def _on_finish(r: FleetResult) -> None:
+            s = scene_ref[0]
+            if s is None or s.game is None:
+                return
+            s.game.flags["test_fleet_winner_side"] = r.winner_side
+            s.game.flags["test_fleet_round_count"] = r.round_count
+            s.game.flags["test_fleet_p_survivors"] = len(r.precursor_survivors)
+            s.game.flags["test_fleet_h_survivors"] = len(r.homesteader_survivors)
+            s.game.flags["test_fleet_timed_out"] = r.timed_out
+            s.game.set_scene(MainMenuScene())
+
+        scene = FleetCombatScene(
+            precursor_fleet=[ships.FURLING_SCOUT, ships.ARILOU_SKIFF],
+            homesteader_fleet=[ships.CLEANSER_CRUISER],
+            on_finish=_on_finish,
+            max_round_duration=60.0,
+        )
+        scene_ref[0] = scene
+        return scene
+
     def _melnorme_supergiant():
         """Closest MELNORME_PROTO super-giant to Mh-Lai — entering this
         system auto-launches the Melnorme trader dialog."""
@@ -159,12 +196,20 @@ def _entries():
         ("Super Melee",              lambda: SuperMeleeScene(),              None),
         ("Trade",                    lambda: TradeScene(),                   None),
         ("Ship Customization",       lambda: ShipCustomizationScene(),       None),
-        # Stubs
+        # Real implementations replacing former stubs.
+        # ORDER IS LOAD-BEARING: index-based walks (walk_input_fuzz,
+        # walk_lander_collect_all, walk_planet_life, etc.) navigate by
+        # press("menu_down") count. Append new entries to the diagnostic
+        # block at the bottom, never reorder this list.
         ("Observation Encounter",    lambda: ObservationScene(),             None),
         ("Furling Council",          lambda: CouncilScene(),                 None),
         ("Cluster Status Board",     lambda: ClusterStatusBoardScene(),      None),
-        ("Bio-Archive",              lambda: ArchiveScene(),                 None),
+        ("Bio-Archive",              lambda: BioArchiveScene(),              None),
         ("Mh-Lai II Orbit (hazardous)", _mh_lai_2_orbit,                     None),
+        # Diagnostic entries — appended at the end so existing index-
+        # based walks (e.g. walk_input_fuzz) don't break when new
+        # diagnostic scenes are added.
+        ("Fleet Combat 2v1 (test)",  _fleet_combat_test,                     None),
     ]
 
 

@@ -14,7 +14,7 @@ We aim for **5 ships per side** at slice scope (10 total + Cleanser variant + Ot
 | **Persuader Vessel** | Furling Persuader faction | Diplomatic, light combat | Light-medium | **Yes** | Dialog-amplifier weapon (forces brief truce in combat — risky utility) |
 | **Arilou Skiff** | Arilou cousins | Fast, evasive | Light | No (Quasi-Space evasion instead) | Quasi-Space short-jump (brief invulnerability + teleport) |
 | **Androsynth Refugee Cruiser** | Androsynth (time-displaced) | Medium-armor, science-tech | Medium | No | Dimensional-shear cannon (damages standard ships AND has a chance to disrupt Others-aligned entities) |
-| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | TBD | Variable |
+| **[INVENTED species ship — TBD]** | OPEN — was Burvixese Memorialist; Burvixese reframed as Be-Loud doctrine with no combat ship. Slot now open for a Precursor-aligned invented species (the Curious are the leading candidate per [species-content-backlog.md](species-content-backlog.md)) | Variable | Variable | TBD | Variable |
 
 ### Homesteader (Stay) side — 5 ships
 
@@ -25,6 +25,18 @@ We aim for **5 ships per side** at slice scope (10 total + Cleanser variant + Ot
 | **Proto-Ur-Quan Warship** | Proto-Ur-Quan (mid-uplift) | Aggressive, ramming-capable | Medium | No | Crushing-claw forward arc (high damage close-range) |
 | **Proto-Qor-Ah Marauder** | Proto-Qor-Ah (mid-uplift, lethal) | Glass-cannon, fanatic | Light-medium | No | Cutting-blade spinning attack (continuous AOE in close range; suicidal aggression in AI) |
 | **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | TBD | Variable |
+
+### Species without ships (slice scope — deliberate)
+
+Five slice encounter-groups have no unique ship class. Their absence from super-melee is canonical, not an oversight; the reasons should be visible in each entity's species sheet §5:
+
+- **Slylandro Observers** — their physiology *is* the gas-current of their gas giant. They have no body to lift, no engineering tradition that builds vessels, and no path to migrate without dying. (See [species-sheets.md §1 Slylandro](species-sheets.md).)
+- **Chenjesu Crystalline Collective** — rooted; no mobility, no fabrication, no propulsion until the *Mobilization* that happens long after the Furlings depart. In our era they are *stones that talk*. (See [species-sheets.md §8 Chenjesu](species-sheets.md).)
+- **Taalo** *(SC2-canonical silicon-based aliens; Homesteader-by-biology)* — slow-walking silicon-based sentients with no engineering tradition for voidcraft in our era. They have not yet built ships and will not until after the Furlings depart (the Taalo Shield, built ~230kya from now, is *not* a vessel). In our slice they receive Furling visitors on their homeworld; Furling transport handles any rare Taalo-individual relocation as cargo-class courtesy. (See [species-sheets.md §9 Taalo](species-sheets.md).)
+- **Burvixese** *(SC2-canonical engineer aliens; Homesteader-by-doctrine — Be-Loud)* — pre-doctrine Burvixese had simple orbital voidcraft for cargo and personnel transfer. Under the Be-Loud doctrine, all their engineering capacity is committed to the Burv Caster array build-out; they do not field combat ships. The small surviving migrant contingent (the ones who happened to be off-world during the Caster's failed activation) reach Andromeda via Furling lift, not their own hulls. (See [species-sheets.md §10 Burvixese](species-sheets.md).)
+- **Utwig** *(newly-sentient Homesteader — chosen devolution by mask-and-ceremony)* — pre-doctrine Utwig had simple orbital transfer-shuttles; the doctrine declares technology profane and the foundries have gone cold by slice mid-game. By the Veils Falling event, the Utwig have ritually dismantled their voidcraft and repurposed the hull-plates as mask-plates. They do not fight, do not migrate, and do not have a ship class in super-melee. (SC2-era Utwig will build the *Jugger* combat ship from Druuge-traded plans 250,000 years later; that's not slice scope.) See [species-sheets.md §11 Utwig](species-sheets.md).
+
+Mycon biots also have no ship — they are rooted to planetary mantles by mycelial network. Their absence from this list is because they are *biot-class*, not full species; the Mycon are listed in [species-sheets.md §4](species-sheets.md) but treated as Furling-fielded terraforming tools rather than independent civilizations.
 
 ### Special — Cleanser Furling Cruiser
 
@@ -184,6 +196,8 @@ Each block conforms to [ship-design-schema.md](ship-design-schema.md). These are
 
 - **Primary — Twin Rail**: 10 dmg, 5 energy/shot, 2 shots/sec, range 500, projectile (1200 units/s). *"Two thin tracers from forward rails."*
 - **Special — Dimensional Shear Cannon**: 35 dmg single shot, range 600, slow projectile (400 units/s), but +50% damage to Others-aligned entities and stuns regular ships for 0.8s. Energy 50, 6s cooldown. **Counter**: the projectile is slow enough to be dodged sideways. Used as a finisher, not a duel weapon.
+
+> **Retracted: Burvixese Memorialist stat block.** An earlier draft included a Burvixese combat ship called the Memorialist (utility-cargo, broadcaster-deployment special). That ship is *removed* — under the canonized Be-Loud doctrine, the Burvixese have no spare engineering capacity for a combat ship; all of it is on the Caster array. The Precursor-side ship roster's 5th slot is open; the Curious (invented; pending) is the leading candidate. The broadcaster-deployment mechanic the Memorialist had could be repurposed for whichever species fills that slot, or retired entirely.
 
 ### Defender Vessel *(Homesteader — Furling Defender faction)*
 

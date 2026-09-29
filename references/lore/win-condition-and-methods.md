@@ -4,7 +4,7 @@
 
 ## The Win Condition
 
-> **You win by handling every sentient species in the galaxy before the Migration window closes, then crossing into the nearest neighboring galaxy yourself — leaving what remains to the Others, hoping one day to return.**
+> **You win by handling every sentient species in the galaxy before the Migration window closes, then crossing into the nearest neighboring galaxy yourself — canonically the Andromeda Galaxy (M31) — leaving what remains to the Others, hoping one day to return.**
 
 "Handling" a species means resolving its status into one of these terminal states:
 

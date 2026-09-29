@@ -283,7 +283,7 @@
       "type": "DWARF_STAR",
       "color": "RED_BODY",
       "defined_index": 0,
-      "defined_name": null,
+      "defined_name": "MMRNMHRM_OSSUARY",
       "prefix_index": 3,
       "postfix_index": 8,
       "cluster_name": "Gamma Trianguli"
@@ -3072,7 +3072,7 @@
       "type": "DWARF_STAR",
       "color": "YELLOW_BODY",
       "defined_index": 0,
-      "defined_name": null,
+      "defined_name": "BURVIX_CASTER",
       "prefix_index": 4,
       "postfix_index": 17,
       "cluster_name": "Delta Cassiopeiae"
@@ -3936,7 +3936,7 @@
       "type": "DWARF_STAR",
       "color": "GREEN_BODY",
       "defined_index": 0,
-      "defined_name": null,
+      "defined_name": "LEMMKIN_WHIRLIGIG",
       "prefix_index": 2,
       "postfix_index": 33,
       "cluster_name": "Beta Crucis"

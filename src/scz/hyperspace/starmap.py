@@ -10,9 +10,12 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
-from typing import Callable
+from typing import TYPE_CHECKING, Callable
 
 import pygame
+
+if TYPE_CHECKING:
+    from scz.engine.game import Game
 
 
 # UQM color names → RGB. Loose interpretation; we can tune later.
@@ -53,6 +56,18 @@ LABEL_MIN_ZOOM_LORE_TAGGED: dict[str, float] = {
 }
 LABEL_MIN_ZOOM_RAINBOW: float = 0.8   # always visible — plot-critical
 
+# Per-dim-tier brightness multipliers applied at render time. Tier 0 is
+# untouched (full brightness); tier 1 is visited-but-still-worth-revisiting
+# (slight dim); tier 2 is fully-drained-and-explored (very dim — barely
+# a marker). See `system_scan.system_dim_tier` for the tier-assignment
+# rules.
+DIM_FACTOR_BY_TIER: dict[int, float] = {
+    0: 1.0,
+    1: 0.55,
+    2: 0.22,
+}
+
+
 # Subtle tints applied to label text so each star color reads slightly
 # different. Mixed with off-white for legibility.
 LABEL_COLOR_BY_STAR: dict[str, tuple[int, int, int]] = {
@@ -85,21 +100,50 @@ class Starmap:
         # very much there and visible. Arilou Outpost is the Sage's seat.
         from scz.content.arilou_outpost import arilou_outpost_star
         from scz.content.home_system import home_star
+        from scz.content.taalos_stone_system import taalos_stone_star
         self.stars.append(home_star())
         self.stars.append(arilou_outpost_star())
+        self.stars.append(taalos_stone_star())
 
         # Pre-filter Rainbow-being-seeded stars for special rendering
         self.rainbow_stars: list[dict] = [
             s for s in self.stars if s.get("defined_name") == "RAINBOW_BEING_SEEDED"
         ]
 
-    def render(self, surface: pygame.Surface, transform: TransformFn) -> None:
-        """Draw all stars onto the surface using the transform."""
+    def render(
+        self,
+        surface: pygame.Surface,
+        transform: TransformFn,
+        game: "Game | None" = None,
+    ) -> None:
+        """Draw all stars onto the surface using the transform.
+
+        When `game` is supplied, each star's color is dimmed by its
+        `system_dim_tier` — visited systems render slightly dimmer;
+        drained-and-fully-explored systems render very dim. Without
+        `game`, all stars render at full brightness (back-compat).
+        """
+        # Lazy import — keeps starmap.py free of the system_scan circular
+        # dependency when no game is supplied.
+        if game is not None:
+            from scz.content.system_scan import system_dim_tier
         for star in self.stars:
             x, y = transform(star["x"], star["y"])
             ix, iy = int(x), int(y)
             radius = STAR_TYPE_RADIUS.get(star["type"], 2)
             color = STAR_COLOR_RGB.get(star["color"], (200, 200, 200))
+
+            # Apply visit / depletion dimming. Tier 0 is a no-op (factor
+            # 1.0); tiers 1/2 scale all color channels uniformly.
+            if game is not None:
+                tier = system_dim_tier(game, star)
+                factor = DIM_FACTOR_BY_TIER.get(tier, 1.0)
+                if factor < 1.0:
+                    color = (
+                        int(color[0] * factor),
+                        int(color[1] * factor),
+                        int(color[2] * factor),
+                    )
 
             # Glow halo for giants and supergiants
             if star["type"] == "SUPER_GIANT_STAR":

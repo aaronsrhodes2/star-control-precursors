@@ -4,7 +4,24 @@ In *Star Control 2*, the Rainbow Worlds are an unresolved mystery: ten unique pl
 
 **In our game, the player places them — and the arrow points somewhere else.** The arrow points to a **dimensional crossing whose exit is in the nearest neighboring galaxy** — the destination of the **Precursors faction**'s Migration. (Important: "Precursors" is the in-fiction name of the *migrating faction*, of which the Furlings are one member. The Furlings call themselves Furlings; in retrospect, SC2-era observers will misread "Precursors" as referring to the Furlings specifically — see [the-precursors-and-homesteaders.md](the-precursors-and-homesteaders.md).)
 
-The Rainbow Worlds are *both* an exit-sign (for the evacuating Precursors, *now*) and a **return-map** (for after the Others pass, decades or centuries from now). They are aimed at the dimensional crossing — which lies in the galactic-center direction as seen from our coordinate plane, which is why SC2 archaeologists 250,000 years later will conclude the arrow points "to the Core." (They are mistaking the *direction* of the arrow for its *destination*. The arrow's destination is the crossing itself; the crossing's destination is the neighboring galaxy.)
+**Why *that* neighboring galaxy.** The Furlings did not pick a destination at random. Generations of long-range cognition-pattern surveys came back null for one specific neighboring galaxy: **the Andromeda Galaxy (M31)** — our nearest large spiral neighbor, ~2.5 million light-years from Sol. The Furlings **felt no presence of The Others there**. They cannot be certain the absence is permanent; the Arilou have a quiet concern that it isn't (see [§8 of the-furlings-and-the-others.md](the-furlings-and-the-others.md)). But at the time of choosing, Andromeda reads as *quiet*, large enough to host every Migrant civilization, and reachable through the dimensional-crossing technique the Furling Hider faction had developed. The Council bet the Migration on it.
+
+**Why a *galactic* crossing as the strategy.** A galactic crossing — even a *dimensional* one that folds the 2.5-million-light-year traverse into a single Furling-engineered jump — is a *difficult task*. It took the Furlings generations to develop the technique, requires the Rainbow World infrastructure to find the exit, and consumes immense energy reserves to execute. **The difficulty itself is the buffer.** Even if the Others noticed the crossing's effects and wanted to follow, replicating that effort is more than they typically expend on prey — they prefer to cull the loud where they find it. The Furlings' hope is that by the time the Others might learn the crossing (if they ever do), they will have already moved on from the Milky Way with minimal lasting damage to it — and the migrated civilizations can return.
+
+The Rainbow Worlds are *both* an exit-sign (for the evacuating Precursors, *now*) and a **return-map** (for after the Others pass, decades or centuries from now). They are aimed at the dimensional crossing — which **on the SC2 starmap's 2D projection lies in the upper-right quadrant**, which SC2-era archaeologists 250,000 years later will misread as "toward the Galactic Core."
+
+## How SC2 archaeologists get it wrong (canonical retcon)
+
+This is the in-fiction error the Star Control Zero player gets to know is wrong.
+
+SC2-era researchers, working from incomplete starmap projections and without context for the dimensional crossing, plot the ten Rainbow Worlds' coordinates and observe the arrow's vector pointing **up-and-right in the local stellar projection**. They label that direction "**toward the Galactic Core**" — because in their 2D map convention, up-and-right is where the Core symbol sits. They are doubly wrong:
+
+1. **Wrong direction on the real sky.** The actual constellation cluster the upper-right quadrant maps to is the *Pegasus / Andromeda / Aquarius* region of the night sky from Sol's perspective — which is **the direction toward Andromeda Galaxy (M31)**, not toward the Milky Way's center. (The Galactic Core is in the *Sagittarius* direction, on the opposite arc of the sky.) The SC2 starmap convention swapped these in projection; the in-fiction archaeologists never caught the projection error.
+2. **Wrong destination type.** Even if "Galactic Core" were the direction, the destination is **not in this galaxy**. The arrow points to the *dimensional crossing*, whose exit is in M31. SC2 archaeologists are interpreting a *crossing-marker* as a *coordinate-marker* — assuming "the Precursors are at the arrow's vector," when really *the Precursors are through a portal the arrow marks*.
+
+**The diegetic wink**: one of the canonical Rainbow Worlds (per the table below) is **Alpha Andromedae** itself — the Precursors named a Rainbow World after the constellation that points to the destination galaxy. SC2 archaeologists never made the connection because they assumed the arrow pointed to the Core, not to where the constellation's name suggests. Star Control Zero players catch the wink — *we* know the Furlings were marking the direction of M31 in the very names of their seeded worlds.
+
+**The Furlings did not go to the Galactic Core. They went through a crossing to Andromeda.**
 
 The Rainbow Worlds aren't just lore — they're the **mechanical and narrative spine** of the slice and the larger game. They are placed by the player regardless of whether their specific cluster's species choose to migrate, cloak-and-stay (the Slylandro path), or hide-and-watch (the Arilou path). The cluster's Rainbow World is a contribution to the *galaxy-wide* arrow, not a per-cluster evacuation marker.
 
@@ -13,7 +30,7 @@ The Rainbow Worlds aren't just lore — they're the **mechanical and narrative s
 From Aaron's original worldbuilding doc:
 > "We seeded the Rainbow Worlds, a trail of breadcrumbs for those who would one day be strong enough to find us at the Core."
 
-The 250,000-year-old assumption that the arrow points to the *Core* is exactly what we'd expect SC2-era archaeologists to conclude — they don't know about the dimensional crossing. The Furlings did not go to the Galactic Core. They went *through* a crossing in that direction to the **nearest neighboring galaxy** still untouched by the Others. The arrow is a love note, yes — but also a survival document.
+The 250,000-year-old assumption that the arrow points to the *Core* is exactly what we'd expect SC2-era archaeologists to conclude — they don't know about the dimensional crossing, and their starmap projection conflates *upper-right* with *coreward* (it doesn't; see the next section). The Furlings did not go to the Galactic Core. They went *through* a crossing aimed at **the Andromeda Galaxy (M31)** — our nearest large neighbor, ~2.5 million light-years away, surveyed and confirmed empty of the Others before the Migration began. The arrow is a love note, yes — but also a survival document, and a destination marker SC2 archaeologists will misread for 250,000 years until the Star Control Zero player gets to know better.
 
 ## The 10 Rainbow Worlds (Extracted Data)
 
@@ -32,7 +49,7 @@ From `src/scz/content/universe/stars.json`, tagged `RAINBOW_BEING_SEEDED`:
 | Gamma Aquarii        | (8403, 8759)   | ORANGE_BODY   | NE                        |
 | Groombridge          | (9989, 8934)   | WHITE_BODY    | Upper-right corner        |
 
-The centroid sits at roughly (6143, 6579) — above and to the right of map center. The **densest concentration is in the upper-right quadrant**, which is the direction the arrow points: toward the Galactic Core in SC2 lore.
+The centroid sits at roughly (6143, 6579) — above and to the right of map center. The **densest concentration is in the upper-right quadrant**. SC2 lore reads that direction as "toward the Galactic Core"; our canon reads it as "toward Andromeda" via the dimensional crossing — see the *How SC2 archaeologists get it wrong* section above. Note that one of the ten worlds is literally **Alpha Andromedae** — the Precursors named a Rainbow World after the constellation that points to their destination galaxy. SC2 archaeologists missed it because they were looking for a Milky-Way-internal destination.
 
 The seven different star colors are intentional — each Rainbow World "sings" in a different spectral signature. A future Newcomer scanning for the rainbow pattern will see seven distinct chromatic peaks across ten systems. (Three colors repeat to keep the signature unmistakable.)
 

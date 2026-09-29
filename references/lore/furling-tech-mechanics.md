@@ -85,10 +85,11 @@ This eliminates ~half of SC2's busywork without removing the *interesting* resou
 
 ### How upgrades are earned
 
-- Many are quest rewards from the species you help (Slylandro give you a sensor; Arilou give you Quasi-Space access; etc.)
-- Some are from Council faction reputation (Persuaders give diplomatic modules; Wardens give defensive)
-- Some are found in old Furling installations (the precursor era's own pre-history)
-- Some are crafted from rare minerals + blueprints
+- **Quest-reward modules (tier 0)** are installed *in-field* by the quest-giving species (Slylandro give you a sensor; Arilou give you Quasi-Space access; Mycon hand-grow the Bio-Architect cradle). These bypass the Mh-Lai install rule because they're built using *the quest-giver's* fabrication discipline.
+- **Schematic-gated ship mods (tier 1+)** are the meat of the slice's progression. The Steward gathers **schematics** in the field (quest rewards, salvage, faction trades, Bio-Archive payouts), brings them to **Mh-Lai Station**, and the schematic is consumed in the Schematic Vault to *unlock* the mod for purchase. The mod then costs credits + minerals to build and is installed *only at Mh-Lai* — Furling shipyard tolerance is too tight for field-fitting. This is the slice's primary **return-home loop**. See [economy-and-trade-loops.md](economy-and-trade-loops.md) for the full doctrine.
+- **Sensor and lander-hardening upgrades** are sold by the **Melnorme** for BIO-cargo and are field-installable (these are sub-systems, not ship-mods proper, and aren't bound by the Mh-Lai tolerance rule).
+- **Crew specialists** are recruited via dedicated side-quests, not bought; see [crew-recruitment-quests.md](crew-recruitment-quests.md).
+- **Allied species ships** become available at Mh-Lai once the Steward has earned alliance with a species — fly out in a Slylandro Lift, Mmrnmhrm Sentinel, etc. as a side-loadout option to the Furling Scout.
 
 ### Visual
 
@@ -152,7 +153,7 @@ Two related player-experience commitments captured from Aaron's design notes:
 
 ## Anti-Annoyances to Watch For (don't recreate SC2's mistakes)
 
-- **No "you must visit this NPC every game-week" mechanic.** SC2's Melnorme was great but felt artificial. Our NPCs come to you, or are at fixed locations the player visits when they want to.
+- **No "you must visit this NPC every game-week" mechanic.** SC2's Melnorme was great but felt artificial. Our NPCs come to you, or are at fixed locations the player visits when they want to. **The schematic-loop return-home cadence** ([economy-and-trade-loops.md](economy-and-trade-loops.md)) is the *one* exception, and it's player-driven — the player goes to Mh-Lai when *they* have a schematic to convert, not on a calendar.
 - **No "you must memorize the calendar" mechanic.** SC2 had hidden time-sensitive events that fired off-screen. The Migration deadline is the *only* major countdown, and the HUD always shows it.
 - **No "fail state requires restart from scratch."** Time Drive covers it.
 - **No "you discovered something but the game won't let you act on it because you haven't talked to the right person."** Limit knowledge-gate barriers to one or two narratively-required threads.

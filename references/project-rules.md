@@ -77,3 +77,51 @@ When the narrative refers to something SC2 referenced (an artifact, an alien spe
 2. Use it as the starting visual reference
 3. Apply a deliberate regression delta (per the species/artifact's lore)
 4. Note the SC2 source + the regression rationale in the commit message and the canon doc that introduces it
+
+## Rule 5 — Multi-chat workstream coordination (Star Control Zero group)
+
+The project runs as **five parallel Claude Code chats** in the "SCZ" group to keep per-turn latency manageable. Each chat owns a specific lane; cross-lane work is dispatched via named HANDOFF documents; all chats sync against the species spreadsheet.
+
+### The five lanes
+
+| Lane | Owns (primary lane) | Cross-cut exceptions |
+|---|---|---|
+| **SCZ: Game Design** | All code modification — `src/`, `tools/*.py` (non-image), tests, scenes, FSMs, game systems. *Exclusive code-mod authority.* | — |
+| **SCZ: Game Lore** | `references/lore/*.md`, the species spreadsheet (`tools/build_species_inventory.py` + `tools/species_inventory.csv`), `memory/*.md` documenting lore | Narrow code-edit exception: `name` / `description` / `locked` on stub modules carrying `TODO_LORE` markers (NEVER framework fields) |
+| **SCZ: Images** | `tools/firefly_*.py`, `tools/gen_image.py`, `tools/firefly_prompts/`, `tools/gemini_drafts/`, `assets/generated_drafts/firefly/*`, `assets/comm/`, `assets/cutscene/`, `assets/planets/`, `assets/ships/`, image-only avatar/portrait fields in `src/scz/dialog/characters.py`, `src/scz/dialog/articulation.py` | — |
+| **SCZ: Audio** | Music, SFX, VO authoring; audio asset directory; audio-pipeline tools; ElevenLabs voice profiles (per `memory/project_voices_future.md`) | — |
+| **SCZ: Testing** | Walk-test scripts (`src/scz/testing/scripts.py`), test harness, scene-switcher exploration, bug reports | Narrow code-edit exception: small obvious bug fixes in-lane; large/design-decision bugs dispatch to Design |
+
+### Dispatch protocol — the five mandates
+
+1. **Whenever a feature needs testing**, dispatch to **SCZ: Testing** via `references/lore/HANDOFF_testing_chat.md`
+2. **Whenever an image needs to be generated**, dispatch to **SCZ: Images** via `references/lore/HANDOFF_image_chat.md`
+3. **Whenever a sound or song needs to be generated**, dispatch to **SCZ: Audio** via `references/lore/HANDOFF_audio_chat.md`
+4. **Whenever lore is impacted**, dispatch to **SCZ: Game Lore** via `references/lore/HANDOFF_lore_chat.md`
+5. **Whenever code work is required**, dispatch to **SCZ: Game Design** via `references/lore/HANDOFF_design_chat.md` (Design owns code-mod exclusively to avoid merge conflicts)
+
+Each chat **reads its own inbox at session start**, processes open entries, marks each `✅ PROCESSED <date>` when caught up. New entries are appended at the top.
+
+### Species + Quest spreadsheets as universal sync point
+
+Two canonical cross-chat spreadsheets, both **Lore-chat-owned**, both consumed by all five lanes:
+
+**`tools/species_inventory.csv`** (built from `tools/build_species_inventory.py`):
+- **Lore chat** maintains canonical species data (faction, doctrine, sentience, slice-status, gaps)
+- **Design chat** reads it to know which species are slice-ready vs. concept-stub
+- **Image chat** consumes the `gaps` column for portrait/ship/cinematic targets
+- **Audio chat** consumes the `gaps` column for voice-profile + SFX targets
+- **Testing chat** consumes the species list to know which scene paths to walk
+
+**`tools/quest_inventory.csv`** (built from `tools/build_quest_inventory.py`, added 2026-05-17):
+- **Lore chat** authors quest dialog trees as ROWS data in the build script — one row per state-or-choice, with NPC lines, Steward options, prereqs, transitions, side effects, and terminal Win-condition status
+- **Design chat** consumes it to wire dialog FSMs in `src/scz/dialog/characters.py` and side-effect plumbing — the spreadsheet IS the FSM specification
+- **Image chat** consumes the `npc_speaker` column for unique-NPC art targets
+- **Audio chat** consumes the `npc_speaker` column for voice-profile targets
+- **Testing chat** consumes the quest list + terminal-status branches to write per-quest walk-tests
+
+**All chats sync against both spreadsheets at session start and refer to them when finding new tasks.** They are the single source of truth for "what's in the slice" (species) and "what conversations the slice contains" (quests). Skipping the sync starves downstream chats of work targets.
+
+### Why this structure exists
+
+Single-chat turns were too long with all five concerns competing for the same context window. The split lets each chat keep a tight context. The dispatch protocol prevents handoff drift; the species spreadsheet prevents canon drift; the code-mod restriction prevents merge-conflict drift.

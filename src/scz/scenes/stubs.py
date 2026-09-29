@@ -107,16 +107,10 @@ class StubScene(Scene):
         if self._backdrop_surface is not None:
             screen.blit(self._backdrop_surface, (0, 0))
 
-        # STUB tag in top-right
-        if self.tag_font is not None:
-            tag = self.tag_font.render("STUB — content coming soon", True, COL_STUB_TAG)
-            tw, _ = tag.get_size()
-            screen.blit(tag, (w - tw - 20, 20))
-
-        # F1 hint top-left
-        if self.tag_font is not None:
-            f1 = self.tag_font.render("F1: scene switcher", True, COL_DETAIL)
-            screen.blit(f1, (20, 20))
+        # (Debug-only labels — "STUB — content coming soon" tag + F1
+        # switcher hint — hidden 2026-05-19. These were never intended
+        # for actual gameplay. The F1 hotkey is preserved silently for
+        # development use.)
 
         # Title — centered, large
         if self.title_font is not None:
@@ -139,10 +133,12 @@ class StubScene(Scene):
                 screen.blit(surf, ((w - lw) // 2 - 80, y))
                 y += 30
 
-        # Controls hint at bottom
+        # Controls hint at bottom — gameplay actions only; the F1
+        # scene-switcher is a debug surface and intentionally not
+        # advertised in this hint.
         if self.font is not None:
             controls = self.font.render(
-                "[Esc / B / Backspace] back        [F1] scene switcher        [Start] quit",
+                "[Esc / B / Backspace] back        [Start] quit",
                 True,
                 COL_CONTROLS,
             )
@@ -155,73 +151,290 @@ class StubScene(Scene):
 # ---------------------------------------------------------------------------
 
 class MainMenuScene(StubScene):
+    """Real main menu with campaign management (Aaron 2026-05-18).
+
+    Top-level options:
+      Continue        — load the most-recent save of the most-recent campaign
+      New Campaign    — create a new campaign and start at Mh-Lai
+      Load Campaign   — pick from existing campaigns
+      Super Melee     — AI-vs-AI combat picker (no campaign)
+      Quit            — exit
+
+    Campaign creation uses an auto-generated stardate name (no name-
+    entry UI to keep the menu controller-friendly). The campaign list
+    shows display name + "Nm ago" updated time.
+    """
+
     TITLE = "STAR CONTROL ZERO"
     SUBTITLE = "The Precursors — Furling Era"
     ACCENT = (240, 230, 200)
     BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_migration_portal.png"
     BACKDROP_DIM = 140
-    DETAILS = [
-        "Title screen — entry point of the game.",
-        "",
-        "Will offer:  Continue · New Game · Super Melee · Settings · Quit",
-        "",
-        "Press F1 to open the scene switcher and jump straight into any view.",
-        "",
-        "Press A / Space to begin (you'll start at Mh-Lai Station).",
-    ]
+
+    # Top-level menu items. Each is (label, action_key). The Continue
+    # entry is hidden when no campaigns exist; Load is hidden then too.
+    _ALL_ITEMS: tuple[tuple[str, str], ...] = (
+        ("Continue",       "continue"),
+        ("New Campaign",   "new"),
+        ("Load Campaign",  "load"),
+        ("Super Melee",    "melee"),
+        ("Quit",           "quit"),
+    )
 
     def __init__(self) -> None:
         super().__init__(parent_scene_cls=None)
+        # Two-mode UI: "main" (top-level menu) or "load" (campaign list).
+        self.mode: str = "main"
+        self.menu_idx: int = 0
+        self.load_idx: int = 0
+        self._campaigns_cache: list = []   # CampaignInfo list, refreshed in on_enter
+
+    # ------------------------------------------------------------------
+
+    def on_enter(self) -> None:
+        super().on_enter()
+        self._refresh_campaigns()
+        # Cursor always starts at the first visible item — that's
+        # "Continue" when campaigns exist, "New Campaign" otherwise
+        # (the no-campaign filter removes Continue+Load from the list).
+        # First-press-confirm therefore always routes to a Station entry
+        # (load-or-create), which is the canonical "I want to play" path
+        # and keeps the test harness's `press("confirm")` walks working.
+        self.menu_idx = 0
+
+    def _refresh_campaigns(self) -> None:
+        if self.game is None:
+            self._campaigns_cache = []
+            return
+        # Test-harness isolation: walks run in a fresh in-memory game
+        # state; if a prior test left a campaign on disk, picking it up
+        # here would auto-load and overwrite the walk's pre-seeded
+        # credits/cargo/flags. Skip the on-disk scan under isolation.
+        cm = self.game.campaign_manager
+        if getattr(cm, "_test_isolated", False):
+            self._campaigns_cache = []
+            return
+        self._campaigns_cache = cm.list_campaigns()
+
+    def _has_campaigns(self) -> bool:
+        return bool(self._campaigns_cache)
+
+    def _visible_items(self) -> list[tuple[str, str]]:
+        """Filter out Continue/Load when no campaigns exist."""
+        if self._has_campaigns():
+            return list(self._ALL_ITEMS)
+        return [it for it in self._ALL_ITEMS if it[1] not in ("continue", "load")]
+
+    # ------------------------------------------------------------------
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
-        # MainMenu's "back" is quit (no parent)
-        if inp.cancel and self.game is not None:
+        if self.game is None:
+            return
+        if self.mode == "main":
+            self._update_main(inp)
+        else:
+            self._update_load(inp)
+
+    def _update_main(self, inp) -> None:  # type: ignore[no-untyped-def]
+        items = self._visible_items()
+        n = len(items)
+        if inp.cancel:
             self.game.quit()
             return
-        # Confirm → launch the real game (Station: home base)
-        if inp.confirm and self.game is not None:
-            from scz.station.scene import StationScene
-            self.game.set_scene(StationScene())
+        if inp.menu_up:
+            self.menu_idx = (self.menu_idx - 1) % n
+        elif inp.menu_down:
+            self.menu_idx = (self.menu_idx + 1) % n
+        if inp.confirm:
+            _, action = items[self.menu_idx]
+            self._do_action(action)
+
+    def _update_load(self, inp) -> None:  # type: ignore[no-untyped-def]
+        n = max(1, len(self._campaigns_cache))
+        if inp.cancel:
+            self.mode = "main"
             return
+        if inp.menu_up:
+            self.load_idx = (self.load_idx - 1) % n
+        elif inp.menu_down:
+            self.load_idx = (self.load_idx + 1) % n
+        if inp.confirm and self._campaigns_cache:
+            self._load_campaign_by_index(self.load_idx)
+
+    # ------------------------------------------------------------------
+
+    def _do_action(self, action: str) -> None:
+        if action == "continue":
+            # Quick-resume — bypass the scrubber, just restore the
+            # latest save from the most-recent campaign and drop into
+            # Station. (Aaron 2026-05-18 split: Continue = fast, Load
+            # = scrubber-driven moment-picker.)
+            if not self._campaigns_cache:
+                return
+            self._continue_latest(self._campaigns_cache[0].slug)
+        elif action == "new":
+            self._start_new_campaign()
+        elif action == "load":
+            self.mode = "load"
+            self.load_idx = 0
+        elif action == "melee":
+            from scz.combat.super_melee import SuperMeleeScene
+            self.game.set_scene(SuperMeleeScene())
+        elif action == "quit":
+            self.game.quit()
+
+    def _continue_latest(self, slug: str) -> None:
+        """Quick-resume entry point — auto-load latest save and drop
+        into Station. No scrubber UI."""
+        state = self.game.campaign_manager.load_latest(slug)
+        if state is None:
+            return
+        from scz.engine.persistence import restore_game
+        restore_game(self.game, state)
+        self.game.campaign_manager.set_active(slug)
+        from scz.station.scene import StationScene
+        self.game.set_scene(StationScene())
+
+    def _start_new_campaign(self) -> None:
+        # Under test isolation, skip the on-disk campaign creation +
+        # auto-snapshot entirely — those would persist to ~/.scz and
+        # contaminate subsequent test runs. Just transition to Station.
+        cm = self.game.campaign_manager
+        if not getattr(cm, "_test_isolated", False):
+            # Auto-generate a name. Players who want a specific name can
+            # rename the campaign dir on disk later (file rename, no UI
+            # for it yet — controller-friendly menus don't need text entry
+            # for the MVP).
+            import time as _time
+            name = _time.strftime("Stardate %Y-%m-%d %H%M")
+            slug = cm.create_campaign(name)
+            cm.set_active(slug)
+            # Take an immediate first snapshot so the campaign has at least
+            # one save on disk before the player does anything.
+            cm.snapshot(self.game)
+        from scz.station.scene import StationScene
+        self.game.set_scene(StationScene())
+
+    def _load_campaign_by_index(self, idx: int) -> None:
+        """Pick a campaign — open the save scrubber on it (Aaron
+        2026-05-18: thumbnail-driven scrubber UI for save selection).
+        Doesn't auto-load the latest save; the player picks from the
+        20-save scrubber.
+        """
+        if not self._campaigns_cache:
+            return
+        idx = max(0, min(idx, len(self._campaigns_cache) - 1))
+        info = self._campaigns_cache[idx]
+        # Activate the campaign first so the scrubber's auto-save-after-
+        # restore goes back into the same dossier.
+        self.game.campaign_manager.set_active(info.slug)
+        from scz.scenes.save_scrubber import SaveScrubberScene
+        self.game.set_scene(SaveScrubberScene(
+            slug=info.slug,
+            default_cursor_age_s=0.0,   # newest save selected by default
+            title_prefix="LOAD A MOMENT",
+        ))
+
+    # ------------------------------------------------------------------
+
+    def render(self, screen: pygame.Surface) -> None:
+        screen.fill(COL_BG)
+        w, h = screen.get_size()
+
+        self._ensure_backdrop((w, h))
+        if self._backdrop_surface is not None:
+            screen.blit(self._backdrop_surface, (0, 0))
+
+        # (F1-switcher hint hidden 2026-05-19 — it's a debug-only
+        # surface, not advertised in production play. F1 hotkey still
+        # works for development; players just aren't told about it.)
+
+        # Title — centered.
+        if self.title_font is not None:
+            title = self.title_font.render(self.TITLE, True, self.ACCENT)
+            tw, _ = title.get_size()
+            screen.blit(title, ((w - tw) // 2, int(h * 0.14)))
+
+        # Subtitle — centered under title.
+        if self.subtitle_font is not None:
+            sub = self.subtitle_font.render(self.SUBTITLE, True, COL_SUBTITLE)
+            sw, _ = sub.get_size()
+            screen.blit(sub, ((w - sw) // 2, int(h * 0.14) + 80))
+
+        if self.mode == "main":
+            self._render_main(screen, w, h)
+        else:
+            self._render_load(screen, w, h)
+
+        # Controls hint at bottom.
+        if self.font is not None:
+            if self.mode == "main":
+                controls = "[↑/↓] navigate     [A / Space] select     [Esc] quit"
+            else:
+                controls = "[↑/↓] navigate     [A / Space] load     [Esc] back"
+            ctxt = self.font.render(controls, True, COL_CONTROLS)
+            cw, _ = ctxt.get_size()
+            screen.blit(ctxt, ((w - cw) // 2, h - 60))
+
+    def _render_main(self, screen: pygame.Surface, w: int, h: int) -> None:
+        items = self._visible_items()
+        if self.menu_idx >= len(items):
+            self.menu_idx = 0
+        big = pygame.font.SysFont("consolas", 32, bold=True)
+        small = pygame.font.SysFont("consolas", 18)
+        y = int(h * 0.42)
+        for i, (label, _) in enumerate(items):
+            is_selected = (i == self.menu_idx)
+            color = (255, 240, 200) if is_selected else (160, 170, 200)
+            prefix = "▶ " if is_selected else "  "
+            surf = big.render(f"{prefix}{label}", True, color)
+            lw, _h = surf.get_size()
+            screen.blit(surf, ((w - lw) // 2, y))
+            y += 50
+        # Campaign summary on the right side if any exist.
+        if self._campaigns_cache:
+            latest = self._campaigns_cache[0]
+            txt = f"Last play: {latest.name}  ·  {latest.updated_ago_human()}  ·  {latest.save_count} saves"
+            surf = small.render(txt, True, COL_DETAIL)
+            tw, _ = surf.get_size()
+            screen.blit(surf, ((w - tw) // 2, int(h * 0.82)))
+
+    def _render_load(self, screen: pygame.Surface, w: int, h: int) -> None:
+        big = pygame.font.SysFont("consolas", 26, bold=True)
+        small = pygame.font.SysFont("consolas", 16)
+        header = big.render("LOAD CAMPAIGN", True, COL_TITLE)
+        hw, _ = header.get_size()
+        screen.blit(header, ((w - hw) // 2, int(h * 0.32)))
+        if not self._campaigns_cache:
+            empty = small.render(
+                "(no campaigns yet — press Esc to go back and start a new one)",
+                True, COL_DETAIL,
+            )
+            ew, _ = empty.get_size()
+            screen.blit(empty, ((w - ew) // 2, int(h * 0.45)))
+            return
+        if self.load_idx >= len(self._campaigns_cache):
+            self.load_idx = 0
+        y = int(h * 0.40)
+        for i, info in enumerate(self._campaigns_cache):
+            is_selected = (i == self.load_idx)
+            color = (255, 240, 200) if is_selected else (160, 170, 200)
+            prefix = "▶ " if is_selected else "  "
+            line = f"{prefix}{info.name:32}  ·  {info.save_count:>3} saves  ·  {info.updated_ago_human()}"
+            surf = small.render(line, True, color)
+            lw, _h = surf.get_size()
+            screen.blit(surf, ((w - lw) // 2, y))
+            y += 28
 
 
-class PlanetScanScene(StubScene):
-    TITLE = "Planet Scan"
-    SUBTITLE = "Pre-landing reconnaissance from orbit"
-    ACCENT = (140, 230, 200)
-    DETAILS = [
-        "From the star-system view, before landing on a planet,",
-        "the player initiates a three-spectrum scan:",
-        "",
-        "   MINERAL scan      reveals common/useful element deposits",
-        "   BIOLOGICAL scan   reveals bio-data nodes & living organisms",
-        "   ENERGY scan       reveals artifact/anomaly emissions",
-        "",
-        "Scan results determine whether a planet is worth landing on,",
-        "and pre-reveal the deposit locations the lander will collect.",
-        "",
-        "Implementation note: lightweight overlay/sub-mode of SystemScene,",
-        "not strictly its own scene. Stub for reference only.",
-    ]
+# PlanetScanScene retired 2026-05-18 — folded into SystemScene's planet
+# list with the LR Mineral Scanner sensor providing the from-orbit
+# preview. The "three-spectrum scan" pattern is replaced by the
+# always-on sensor pillar (one sensor per discovery axis).
 
-
-class DialogScene(StubScene):
-    TITLE = "Dialog"
-    SUBTITLE = "Alien conversation — LLM-rendered text over a fixed FSM"
-    ACCENT = (180, 200, 255)
-    DETAILS = [
-        "The central LLM-powered system. Each alien species has:",
-        "",
-        "   • a deterministic finite state machine (FSM) of conversation states",
-        "   • per-state choice categories (FIGHT / FLEE / TALK / GIVE / ASK / ...)",
-        "   • side effects (SET_GAME_STATE) on transitions",
-        "",
-        "The LLM renders ONLY the surface text — the words the alien says, and the",
-        "player's choice phrasings — based on species voice profile + disposition",
-        "+ recent history. Same encounter twice = same outcome, different words.",
-        "",
-        "Fallback: canned text per (state, intent) when the LLM is unavailable.",
-    ]
+# DialogScene stub retired 2026-05-18 — the real DialogScene lives at
+# `scz.dialog.scene`; the stub was vestigial documentation and was
+# never imported by any production code path.
 
 
 class ObservationScene(StubScene):
@@ -249,108 +462,26 @@ class ObservationScene(StubScene):
 # SuperMeleeScene picks ships and launches it; both sides are AI-driven.
 
 
-class CouncilScene(StubScene):
-    TITLE = "Furling Council"
-    SUBTITLE = "Internal debate over species fates and migration policy"
-    ACCENT = (220, 180, 240)
-    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_backdrops/backdrop_council_chamber.png"
-    DETAILS = [
-        "The Furling player's home base. A circular chamber with six faction",
-        "representatives, each an LLM-driven NPC:",
-        "",
-        "   Persuaders  • Compellers  • Cleansers",
-        "   Defenders   • Deniers     • Hiders",
-        "",
-        "The player presents observation reports and recommendations on each",
-        "species' fate (Migrate / Cloak / Cleanse / Leave-alone, etc.).",
-        "Each faction reacts in character; the Council updates faction balance.",
-        "",
-        "Unique to our game — SC2 has nothing equivalent.",
-    ]
+# CouncilScene stub retired 2026-05-18 — real scene lives at
+# `scz.station.council.CouncilScene` and is wired in the switcher.
 
+# StationScene stub retired 2026-05-18 — real scene lives at
+# `scz.station.scene.StationScene` and is wired in the switcher.
 
-class StationScene(StubScene):
-    TITLE = "Station / Home Port"
-    SUBTITLE = "Furling waystation — commander, trade, upgrade"
-    ACCENT = (180, 220, 240)
-    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_cloak_install.png"
-    DETAILS = [
-        "The Furling equivalent of SC2's Earth Starbase. Three sub-modes:",
-        "",
-        "   COMMANDER — dialog with the station commander (mission briefings,",
-        "               lore, rumor about other species, plot beats)",
-        "",
-        "   TRADE     — sell resources (minerals, bio-data, energy) for",
-        "               Furling Council credits / faction standing / module parts",
-        "",
-        "   UPGRADE   — install ship modules (Ship Customization scene)",
-        "",
-        "Stations are visible on the starmap as special points. The slice",
-        "may have one or two; the full game would have several.",
-    ]
+# ShipCustomizationScene stub retired 2026-05-18 — real scene lives at
+# `scz.station.customization.ShipCustomizationScene`.
 
+# ClusterStatusBoardScene stub retired 2026-05-18 — real scene lives at
+# `scz.station.status_board.ClusterStatusBoardScene`.
 
-class ShipCustomizationScene(StubScene):
-    TITLE = "Ship Customization"
-    SUBTITLE = "Modular Furling Scout — install / swap / remove modules"
-    ACCENT = (240, 200, 140)
-    DETAILS = [
-        "The player's Furling Scout has slots for:",
-        "",
-        "   Hull modules     — armor, structure, crew capacity, hangars, cargo",
-        "   Drive modules    — thrusters, hyperdrive class, Time Drive capacity",
-        "   Weapon modules   — beams, missiles, point-defense",
-        "   Sensor modules   — bio-scanner, mineral-scanner, Other-detector",
-        "   Field modules    — shields, cloaks, terraforming, Rainbow Resonator",
-        "   Crew specialists — Archivist, Bio-Architect, Warden, Tunneler",
-        "",
-        "Many quest rewards are permanent ship upgrades. Ship silhouette",
-        "changes visibly with the installed module config.",
-    ]
-
-
-class ClusterStatusBoardScene(StubScene):
-    TITLE = "Cluster Status Board"
-    SUBTITLE = "Win-condition tracking — every species, every terminal status"
-    ACCENT = (255, 230, 140)
-    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_rainbow_seeding.png"
-    DETAILS = [
-        "The slice's win-condition view. Each sentient species in the cluster",
-        "is listed with its current terminal status:",
-        "",
-        "   Slylandro Observers      [ Cloaking Satellite installed → CLOAKED ]",
-        "   Mycon Biot Hive          [ Deep Child suppressed → PRE-SENTIENT  ]",
-        "   Proto-Ur-Quan colonies   [ left undisturbed → PRE-SENTIENT       ]",
-        "   Arilou Outpost           [ withdrawing to exile → HIDDEN          ]",
-        "",
-        "Plus:  Migration deadline countdown (T-minus years/months)",
-        "       Furling Council faction standings",
-        "       Bio-Archive entries collected",
-        "",
-        "Win = every species in a terminal status + Rainbow World seeded.",
-    ]
-
-
-class ArchiveScene(StubScene):
-    TITLE = "Furling Bio-Archive"
-    SUBTITLE = "Codex — observations, council reports, lore unlocked"
-    ACCENT = (160, 220, 200)
-    BACKDROP_PATH = "assets/generated_drafts/firefly/tier1_cutscenes/cutscene_distress_beacon.png"
-    DETAILS = [
-        "The player's accumulated knowledge. Browsable by category:",
-        "",
-        "   SPECIES     — every alien encountered (proto-, sentient, refugees)",
-        "                 with the Archivist's log entries + your annotations",
-        "",
-        "   ARTIFACTS   — Rainbow Worlds seeded, Cloaking Satellites installed,",
-        "                 found Furling-era objects (Sa-Matra updates, Moonbase, etc.)",
-        "",
-        "   COUNCIL     — Furling Council ledger: your recommendations, their",
-        "                 outcomes, faction standings over time",
-        "",
-        "   THE OTHERS  — what the Furlings know about the threat (grows with",
-        "                 each Androsynth/Chenjesu/Mmrnmhrm testimony)",
-    ]
+# ArchiveScene stub retired 2026-05-18 — superseded by
+# `scz.station.archive.BioArchiveScene` (wired in switcher + StationScene).
 
 
 # QuasiSpaceScene is now a real scene — see scz/quasispace/scene.py.
+
+
+# EndingPlaceholderScene retired 2026-05-18 — superseded by
+# `scz.scenes.ending.EndingScene` which renders the canonical 6-tier
+# ending per `references/lore/the-endings.md`. FinalConflictScene's win
+# path now drives `resolve_ending(game)` + transitions to EndingScene.
