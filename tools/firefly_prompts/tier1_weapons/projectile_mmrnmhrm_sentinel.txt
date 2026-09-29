@@ -1,0 +1,11 @@
+# aspect: 1:1
+# notes: Mmrnmhrm Particle Stream projectile. Stream of pale-white
+# particles, 6 dmg, 5 shots/sec.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically. Subject: a thin stream of
+pale-white particles, a vertical streak of small luminous specks
+strung together like a faint comet trail, oriented vertically (top
+of frame = forward). Bright white-cyan core with cool blue-white
+ambient glow. Mathematical, precise. Pure black void background,
+isolated. Stylized 1990s sci-fi painterly game art, crisp silhouette.

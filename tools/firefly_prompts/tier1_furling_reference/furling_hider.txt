@@ -1,16 +1,41 @@
 # aspect: 2:3
-# notes: v5 (FINAL).
+# notes: RE-ROLL 2026-05-19 — previous Hider was a hooded humanoid alien
+# face (off-canon). Aaron confirmed shaggy-sasquatch canon. This version
+# anchors firmly in that aesthetic.
+#
+# Hider identity: the Furling sub-faction that wants to CLOAK whole
+# species so the Others can't see them. Cloak-and-flee. Color: deep
+# midnight blue-grey shifting to near-black at the edges (camouflage,
+# shadow). Accessory: cloaking shroud / shadow-fur effect where the
+# outline of the figure visibly fades into the dark backdrop.
 
-ONE single anthropomorphic alien character, BIPEDAL HUMANOID,
-STANDING UPRIGHT on TWO LEGS, NAKED with no clothes, body covered
-ENTIRELY in dense fur. Pale gray fur with a cool blue-silver
-gradient from crown to feet (fur seems to absorb light) and subtle
-indigo brindle markings. BIG tall fennec-fox ears (slightly
-translucent tips), long bushy fox-tail with silver filigree wrap,
-WIDE calm friendly Cheshire-cat grin, ANDROGYNOUS flat chest no
-genitalia, pale-blue eyes. Head-mane loose, parted at center. ONE
-midnight-blue leather strap-harness across the shoulder carrying a
-Cloaking-resonator vial at the chest and a small cognition-baffle
-unit at the hip. Two arms at sides, head tilted slightly in
-thought. Background solid dark navy. Painted stylized sci-fi
-character portrait, single subject. Reads QUIET, PROTECTIVE.
+ONE single TALL SHAGGY FUR-LUMP alien character, standing upright,
+photographed in soft museum-portrait studio lighting against a
+plain dark backdrop. So densely covered in long matted fur that
+you cannot count its legs — the body silhouette is a heavy
+furred TEARDROP from shoulders to the floor, like a Snuffleupagus
+or Cousin Itt. Two LONG furry arms hang at its sides with dark
+clawed hands visible at the wrists. Two BIG triangular ears poke
+up through the fur on top of its head. A small partial face is
+barely visible behind a curtain of fur.
+
+FUR COLOR (Hider-specific): deep midnight indigo-blue and
+charcoal-grey matted shag, with the outer fringe of the silhouette
+fading SOFTLY into the dark backdrop — as if the character is
+partially cloaked / camouflaged. The edges should look like
+they're DISSOLVING into the shadow, not crisply outlined. NOT
+deep red (Cleanser), NOT pale beige (Denier).
+
+ACCESSORY (Hider-specific): a dark grey hood-like LAYERED MANTLE
+of fur over the head and shoulders (an extra layer of darker fur,
+like a built-in cloak) — emphasizes the hide-in-shadow theme.
+A small silver fade-glyph token at the throat.
+
+POSE: standing relaxed three-quarter, full body, head slightly
+ducked, partial profile.
+
+STYLE: painterly stylized sci-fi character portrait. Reads as
+QUIET and WATCHFUL — the Hider's strategy is invisibility.
+Cinematic museum-portrait lighting with strong shadow contrast.
+NO humanoid alien face, NO bipedal silhouette, NO visible feet,
+NO short fur, NO sci-fi armor, NO hood covering the face entirely.

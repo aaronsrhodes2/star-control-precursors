@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Compeller sedation-prong beam — Furling deception/restraint
+# faction. Anchor against the "asteroid/celestial body" failure mode.
+
+A flat 2D HUD VFX icon for a video-game weapon effect. THIS IS NOT
+A CELESTIAL BODY. NOT AN ASTEROID. NOT A PLANET. Abstract glowing
+energy graphic on pure black.
+
+Subject: a SEDATION TRACTOR BEAM — slim coherent green beam segment,
+~5:1 aspect ratio, oriented vertically (top of frame is forward).
+The beam is translucent GREEN energy with a brighter pale-green core,
+twin parallel EMERALD THREADS spiraling around it, and pulsing
+green particles trailing behind. The beam reads as a HYPNOTIC
+NERVE-QUIETING FIELD — not a hot plasma round.
+
+COLOR: vivid GREEN core (RGB ~120,240,140) with darker emerald
+sheath and pale-mint glow. NO red. NO blue. NO ice.
+
+COMPOSITION: flat 2D iconography, viewed head-on. Beam centered,
+vertical, occupies ~70% of frame height. Pure black background.
+NO 3D rendering. NO stone. NO surface. NO stars. NO planet.
+
+STYLE: arcade-shooter beam-weapon VFX. Glowing translucent energy.

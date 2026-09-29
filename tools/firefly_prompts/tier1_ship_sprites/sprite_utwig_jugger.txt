@@ -1,0 +1,38 @@
+# aspect: 1:1
+# notes: Sprite for the Utwig Jugger (pre-doctrine). Heavy bipedal
+# mask-craft aesthetic — the Utwig built ships before they devolved.
+# Boxy, ceremonially-ornamented. Heavy shield emitter prominent — the
+# iconic absorption shield is what they're known for. Sandy/cream hull
+# with green-tinged shield-edge visible. Reads "tank".
+
+Top-down 2D game ship sprite of an UTWIG JUGGER (pre-doctrine era).
+
+SHAPE: heavy boxy hull, broad and rectangular, ceremonially
+ornamented with raised ridges and engraved geometric panels.
+Forward face dominated by a large circular SHIELD EMITTER
+DISC — the iconic Utwig absorption shield projector. Side
+hull panels show ritual engravings (mask-priest symbology).
+Rear thrusters are large but few — this is a TANK, not fast.
+Mask-craft motif: small protruding faceplate ornaments on the
+bow forming a stylized Utwig mask.
+
+COLOR: sandy/cream hull (RGB ~180,200,160) with green-tinged
+shield-edge glow visible at the front emitter disc. Engraved
+panels have darker shadow lines. Thruster glow muted amber.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Nose
+pointing toward TOP of frame. Symmetric across vertical axis.
+Subject centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO nebula, NO horizon.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+The ship reads as a HEAVY CEREMONIAL TANK. This is the
+PRE-doctrine Utwig — they built ships before the Veils Falling.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, slim
+agile aesthetic, primitive aesthetic, devolved aesthetic,
+masks-as-faces (the masks are an ornament motif, not the
+literal shape).

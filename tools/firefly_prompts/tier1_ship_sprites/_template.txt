@@ -1,0 +1,42 @@
+# aspect: 1:1
+# notes: GENERIC SPRITE PROMPT for ALL ship sprites.
+# Workflow: upload the corresponding approved hero PNG as Firefly's
+# Composition Reference image, then paste this prompt body into Firefly's
+# prompt textarea. The reference image carries the per-ship design;
+# this prompt enforces sprite-friendly composition.
+#
+# Source heros: assets/generated_drafts/firefly/tier1_ships/ship_*.png
+# Output target: assets/generated_drafts/firefly/tier1_ship_sprites/
+#                sprite_<ship_id>.png
+
+Convert the reference image into a clean 2D top-down game ship
+sprite suitable for a sprite-based starship combat game.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: the camera is looking straight down
+at the ship from directly above. Nose pointing toward the top
+of the frame. NO three-quarter perspective. NO side profile.
+NO oblique angle. Symmetric across the vertical axis.
+
+SUBJECT: ISOLATED in the center of the frame. The ship occupies
+~70% of the frame's largest dimension, centered, with even
+margin on all sides. PRESERVE the reference image's silhouette,
+color palette, distinctive structural features, faction styling,
+materials, and decorative details — the ship in the output must
+be RECOGNIZABLY THE SAME SHIP as the reference.
+
+BACKGROUND: solid pure black (#000000), edge to edge, completely
+uniform. NO starfield. NO atmospheric haze. NO clouds. NO nebula.
+NO motion lines. NO ground. NO horizon. NO secondary subjects.
+NO planetary silhouettes. NO ambient color gradients. Just black.
+
+STYLE: stylized 1990s sci-fi game sprite art rendered at modern
+fidelity — crisp readable silhouette, clean color blocks,
+distinct silhouette readable at small scale, painterly surface
+detail kept tight inside the ship outline. The silhouette must
+read INSTANTLY against the black background.
+
+NEGATIVE: starfield, stars, nebula, atmospheric haze, motion
+blur, perspective view, three-quarter view, side profile,
+ground, horizon, planet, sun, secondary subjects, painterly
+drips outside the silhouette, soft halo extending into the
+background, painterly background, off-center subject.

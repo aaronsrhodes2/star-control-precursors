@@ -1,0 +1,10 @@
+# aspect: 1:1
+# notes: Persuader Beam projectile. Weak diplomatic beam, 5 dmg.
+# Visually a softer/dimmer version of the Furling Beam — warm amber.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically. Subject: a slim warm-amber
+energy beam segment, narrower and gentler than a warship cannon,
+~5:1 aspect, with a soft amber-gold core and faded edges. A faint
+amber haze trails behind. Pure black void background, isolated.
+Stylized 1990s sci-fi painterly game art, crisp silhouette.

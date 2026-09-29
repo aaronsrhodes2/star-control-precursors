@@ -1,0 +1,59 @@
+# aspect: 1:1
+# notes: Sprite for the Mmrnmhrm Sentinel — ancient self-modifying
+# robot vessel. Weapon per ship-roster: Particle Stream (6 dmg, 5
+# shots/sec) + Mode Shift (Fabricator) special (mid-fight repair).
+# Visual canon per project memory: F-14 TOMCAT swing-wing variable-
+# geometry fighter; wings sweep for two combat modes; weathered
+# patchwork-alloy plating from millions of years of self-repair.
+#
+# NOTE: the hero reroll for this ship is pending Firefly burst 4
+# (current heros marked reroll_requested). Sprite is prompted from
+# the locked visual canon directly.
+
+Top-down 2D game sprite of an MMRNMHRM SENTINEL starship.
+
+SHAPE: F-14 TOMCAT-style VARIABLE-GEOMETRY SWING-WING JET-
+FIGHTER silhouette. Long slender central fuselage oriented
+vertically (~5:1 aspect, nose to top), with a tapered
+teardrop nose and twin engine nacelles flanking the rear.
+WINGS: large swing-wings extending laterally from the mid-
+fuselage, shown in the INTERMEDIATE position (~25° forward-
+swept from perpendicular). Visible wing-pivot hinges at the
+fuselage root.
+
+WEAPONS: forward-mounted PARTICLE STREAM cannon clusters
+visible at the wing leading edges and a central nose
+emitter — small white-glowing apertures (matches the
+particle stream's pale-white projectile color). The
+MODE-SHIFT FABRICATOR is implied by visible fabricator-bay
+panels on the dorsal surface (small recessed bays with
+brass internal hardware visible through cutaway slots).
+
+DETAIL: WEATHERED PATCHWORK PLATING — three distinct alloys
+welded together (brushed silver-titanium, tarnished copper-
+bronze, matte gunmetal). Clearly visible seams between
+alloys. ASYMMETRIC mods — one wing pylon fractionally
+thicker than its mirror; one sensor cluster different from
+the other. Subtle Mmrnmhrm geometric glyphs etched in cool
+platinum on a dorsal panel (one notably newer/brighter,
+recent self-repair signature).
+
+COLOR: silver-titanium dominant with copper-bronze (older
+repair) and gunmetal-gray (newer repair) patches. Pale-white
+weapon glow. No flag, no faction emblem, no organic decoration.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric
+across vertical axis. Subject centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: MELANCHOLY, ANCIENT,
+MATHEMATICAL, a ship maintained by itself for millions of
+years.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, octagonal blocky hull, dome, sphere,
+biological decoration, shiny new finish.

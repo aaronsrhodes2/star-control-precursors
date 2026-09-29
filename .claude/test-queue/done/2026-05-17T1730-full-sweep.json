@@ -1,0 +1,291 @@
+{
+  "id": "2026-05-17T1730-full-sweep",
+  "status": "passed",
+  "summary": "308 passed, 0 failed across 27 test(s)",
+  "tests_run": [
+    "walk_arilou_sage",
+    "walk_bio_archive",
+    "walk_cleanser_combat",
+    "walk_cleanser_cooperate",
+    "walk_customization",
+    "walk_dnyarri_encounter",
+    "walk_hazard_destroys_lander",
+    "walk_hyperspace_encounters",
+    "walk_hyperspace_retire_after_resolved",
+    "walk_hyperspace_teleport_into_zone",
+    "walk_melnorme",
+    "walk_melnorme_recruitment",
+    "walk_orbit_and_surface",
+    "walk_recruit_mraka",
+    "walk_salvage_wreck",
+    "walk_slylandro_cloak",
+    "walk_super_melee",
+    "walk_system_visit_dim_tier",
+    "walk_trade",
+    "walk_tutorial_arc",
+    "walk_tutorial_beat_3",
+    "walk_tutorial_beat_3_to_5",
+    "walk_tutorial_beat_4",
+    "walk_tutorial_beat_6",
+    "walk_tutorial_path",
+    "walk_upgrade_loop",
+    "walk_visit_proto_species"
+  ],
+  "details": [
+    {
+      "test": "walk_arilou_sage",
+      "passed": 18,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 18 passed, 0 failed."
+    },
+    {
+      "test": "walk_bio_archive",
+      "passed": 5,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 5 passed, 0 failed."
+    },
+    {
+      "test": "walk_cleanser_combat",
+      "passed": 9,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 9 passed, 0 failed."
+    },
+    {
+      "test": "walk_cleanser_cooperate",
+      "passed": 9,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 9 passed, 0 failed."
+    },
+    {
+      "test": "walk_customization",
+      "passed": 7,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 7 passed, 0 failed."
+    },
+    {
+      "test": "walk_dnyarri_encounter",
+      "passed": 11,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 11 passed, 0 failed."
+    },
+    {
+      "test": "walk_hazard_destroys_lander",
+      "passed": 7,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 7 passed, 0 failed."
+    },
+    {
+      "test": "walk_hyperspace_encounters",
+      "passed": 6,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 6 passed, 0 failed."
+    },
+    {
+      "test": "walk_hyperspace_retire_after_resolved",
+      "passed": 8,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 8 passed, 0 failed."
+    },
+    {
+      "test": "walk_hyperspace_teleport_into_zone",
+      "passed": 6,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 6 passed, 0 failed."
+    },
+    {
+      "test": "walk_melnorme",
+      "passed": 26,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 26 passed, 0 failed."
+    },
+    {
+      "test": "walk_melnorme_recruitment",
+      "passed": 25,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 25 passed, 0 failed."
+    },
+    {
+      "test": "walk_orbit_and_surface",
+      "passed": 5,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 5 passed, 0 failed."
+    },
+    {
+      "test": "walk_recruit_mraka",
+      "passed": 11,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 11 passed, 0 failed."
+    },
+    {
+      "test": "walk_salvage_wreck",
+      "passed": 6,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 6 passed, 0 failed."
+    },
+    {
+      "test": "walk_slylandro_cloak",
+      "passed": 11,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 11 passed, 0 failed."
+    },
+    {
+      "test": "walk_super_melee",
+      "passed": 6,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 6 passed, 0 failed."
+    },
+    {
+      "test": "walk_system_visit_dim_tier",
+      "passed": 5,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 5 passed, 0 failed."
+    },
+    {
+      "test": "walk_trade",
+      "passed": 9,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 9 passed, 0 failed."
+    },
+    {
+      "test": "walk_tutorial_arc",
+      "passed": 41,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 41 passed, 0 failed."
+    },
+    {
+      "test": "walk_tutorial_beat_3",
+      "passed": 6,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 6 passed, 0 failed."
+    },
+    {
+      "test": "walk_tutorial_beat_3_to_5",
+      "passed": 15,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 15 passed, 0 failed."
+    },
+    {
+      "test": "walk_tutorial_beat_4",
+      "passed": 11,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 11 passed, 0 failed."
+    },
+    {
+      "test": "walk_tutorial_beat_6",
+      "passed": 10,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 10 passed, 0 failed."
+    },
+    {
+      "test": "walk_tutorial_path",
+      "passed": 9,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 9 passed, 0 failed."
+    },
+    {
+      "test": "walk_upgrade_loop",
+      "passed": 21,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 21 passed, 0 failed."
+    },
+    {
+      "test": "walk_visit_proto_species",
+      "passed": 5,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 5 passed, 0 failed."
+    }
+  ],
+  "log": ".claude/test-queue/logs/2026-05-17T1730-full-sweep.log",
+  "started_at": "2026-05-17T21:38:07.309090+00:00",
+  "completed_at": "2026-05-17T21:41:00.628760+00:00",
+  "request": {
+    "id": "2026-05-17T1730-full-sweep",
+    "tests": [
+      "all"
+    ],
+    "worktree": "elegant-bartik-733a37",
+    "requester": "design-chat",
+    "note": "Full regression sweep requested by Aaron. Recent Design-chat work has shipped: visit-aware dim tier + HUD readout (walk_system_visit_dim_tier), hyperspace parity probes (walk_hyperspace_teleport_into_zone, walk_hyperspace_retire_after_resolved), Melnorme recruitment quest (walk_melnorme_recruitment), Dnyarri bespoke encounter (walk_dnyarri_encounter, refactored to set_player_pos for determinism), salvage wrecks (walk_salvage_wreck), proto-species arrival registry (walk_visit_proto_species), Mraka recruitment (walk_recruit_mraka), Cleanser climax (walk_cleanser_cooperate, walk_cleanser_combat), hyperspace encounters (walk_hyperspace_encounters). Last Design-chat sweep was 20/20 green, 241/241 assertions. ALSO: see new HANDOFF_testing_chat.md entry titled 'Full gameplay sweep request' which dispatches manual visual+feel playtest work in parallel. Report both automated (this job's result JSON) and manual (HANDOFF_testing_chat.md Findings section)."
+  }
+}

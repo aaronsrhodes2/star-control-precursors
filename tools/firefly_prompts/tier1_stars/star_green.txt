@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Star sprite for GREEN_BODY stars — rare exotic stellar bodies
+# (the green color is canonical SC2 and signals lore-tagged anomalies).
+# Wiring target: assets/stars/star_green.png
+
+A gorgeous 2D game sprite of an EXOTIC GREEN STAR, viewed from a
+great distance. Bright white-mint core surrounded by an unusual
+JADE-GREEN corona radiating outward in delicate streamers. The
+green tint suggests forbidden atmospheric chemistry or anomalous
+fusion processes — this star reads as UNCOMMON and SLIGHTLY UNCANNY.
+A subtle inner cyan ring near the limb hints at high-energy emissions.
+
+COLOR: brilliant WHITE-MINT center (RGB ~240,255,240), surrounding
+JADE-GREEN corona (RGB ~140,255,160), fading to deep black at the
+perimeter. Subtle cyan inner ring.
+
+VIEW: head-on, sphere-disc centered, ~70% of frame diameter. Pure
+black starless background outside the corona.
+
+STYLE: painterly with photoreal stellar texture. Crisp, gorgeous,
+with an UNCANNY exotic edge. Suitable as a lore-tagged anomaly in
+a sci-fi space game. NO stars in the background, NO planets, NO
+orbiting bodies. Just the star, alone, in the void.

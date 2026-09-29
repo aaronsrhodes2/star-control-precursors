@@ -1,0 +1,40 @@
+# aspect: 1:1
+# notes: Sprite for the Melnorme Trade Pod — bio-cargo trader at super-
+# giant stars. Per ship-roster: stock plasma cannon primary + Confusion
+# Pulse special (forces brief enemy aim-jitter). SC2-canonical
+# cyclopean tangerine pod with one big blue optical cluster.
+
+Top-down 2D game sprite of a MELNORME TRADE POD starship.
+
+SHAPE: thick rounded ORANGE POD, deliberately asymmetric in
+the SC2 cyclopean tradition. Roughly egg-shaped from above,
+slightly broader at the rear. ONE large luminous BLUE
+OPTICAL CLUSTER as its visible center — a Cyclops-eye iris
+in deep electric-blue, prominent on the forward-dorsal
+surface.
+
+WEAPONS: TWIN STUBBY FORWARD PLASMA CANNONS — two short
+fixed-position barrels poking forward from the pod's leading
+edge, capped with bronze housings and a faint orange muzzle
+glow (matches the plasma cannon's orange projectile color).
+Several small rounded UTILITY BLISTERS around the rim
+(trade-port apertures and Confusion Pulse broadcasters).
+
+COLOR: bright tangerine-orange hull with gold accents,
+deeply lit as if by a nearby super-giant star. Plasma-violet
+ovoid warp halo as a translucent ring surrounding the pod.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Subject
+centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: MERCANTILE, EYE-DOMINANT,
+SC2-canonical cyclopean alien trader.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, human-style cockpit windows, multiple eyes,
+symmetric hull.

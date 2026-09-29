@@ -1,0 +1,43 @@
+# aspect: 1:1
+# notes: Sprite for the Furling Scout (player default). Per ship-roster
+# canon: Furling Beam (slim coherent warm-gold beam, hitscan, 8 dmg) +
+# Time Drive Pulse special. Hull design from project canon: long slender
+# yacht hull THROUGH a ring nacelle, hull nose protrudes FORWARD past
+# the ring (Vulcan D'Kyr-inspired). Copper-cream palette.
+
+Top-down 2D game sprite of a FURLING SCOUT starship. Nose
+pointing toward the top of the frame.
+
+SHAPE: long slender yacht-like hull oriented vertically, ~4:1
+aspect, with a tapered teardrop nose at top. Around the FORWARD
+third of the hull: a LARGE RING-SHAPED NACELLE concentric with
+the hull, slightly wider than the hull beam. THE HULL EXTENDS
+FORWARD OF THE RING — the nose protrudes past the front edge
+of the ring. Half the hull is also visible BEHIND the ring.
+2 to 4 slender pylons connect the ring to the hull.
+
+WEAPON: forward-mounted FURLING BEAM EMITTER at the very tip of
+the nose — a small recessed lens behind a brass aperture,
+glowing warm gold (matches the beam's color). One single
+forward-arc emitter, no turrets.
+
+COLOR: warm copper-cream hull with brass bracketing at the
+seams; ring inner-rim glows soft red-amber; main thrusters at
+the rear glow soft cyan-violet. Small Furling glyph etched at
+the ring-pylon junction.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric
+across the vertical axis. Subject centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Painterly surface detail tight
+inside the silhouette. Tone: ELEGANT-EXPLORER, the careful
+gardener-civilization's ship — NOT a warship.
+
+NEGATIVE: starfield, stars, nebula, atmospheric haze,
+perspective view, three-quarter view, side profile, ground,
+horizon, painterly background bleed, ring obscuring the nose,
+short stubby hull, hull entirely inside the ring footprint.

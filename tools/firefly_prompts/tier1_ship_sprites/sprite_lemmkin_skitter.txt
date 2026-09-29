@@ -1,0 +1,43 @@
+# aspect: 1:1
+# notes: Sprite for the Lemmkin Skitter — glass-cannon scout. Weapon
+# per canon: Burst-Scatter Probe (front-arc shrapnel) + Tail-Drop
+# 180-pivot mine. Improvised scrap-built scout, friendly NOT warlike.
+
+Top-down 2D game sprite of a LEMMKIN SKITTER starship.
+
+SHAPE: compact ~2:1 OVOID HULL with a sharply tapered nose
+at the top and a long fluffy thruster-shroud at the rear
+(visually echoing the Lemmkin species' fluffy tail — a
+clear deliberate diegetic homage). The fluffy tail-shroud
+trails behind the ship like a brush. Hull made of mismatched
+scrap plates rivetted into a cheerful patchwork. A row of
+round porthole windows down the dorsal centerline (small
+black ovals along the hull's spine).
+
+WEAPONS: TWIN FORWARD BURST-SCATTER PROBE CANNONS — two
+chestnut-shaped emitter barrels protruding from the nose,
+wrapped in brass coils, with small amber muzzle glows. Below
+the tail-shroud, a small hatched panel — the TAIL-DROP MINE
+ejector — glowing soft amber through a brass-rimmed iris
+(the mine-package release point).
+
+COLOR: bright russet-orange and cream hull plates riveted
+together with burnished copper trim. Small cyan-violet
+thruster glow visible through the fluffy tail-shroud. Brass
+accents at every joint.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Subject
+centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: GLASS CANNON, FAST,
+OBVIOUSLY-IMPROVISED, friendly fearless curiosity — a ship
+built by a species that thought "what if our spaceship had
+a TAIL?"
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, sleek warship aesthetic, military uniformity.

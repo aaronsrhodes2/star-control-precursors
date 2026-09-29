@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Star sprite for YELLOW_BODY stars — G-class main-sequence stars
+# like our Sun. The most common color in the slice. Wiring target:
+# assets/stars/star_yellow.png
+
+A gorgeous 2D game sprite of a SUN-LIKE YELLOW STAR, viewed from a
+great distance. Brilliant yellow-white core with visible solar
+granulation texture. Warm golden corona radiating outward in long
+delicate streamers. A few visible solar prominences arcing off the
+limb. The star feels familiar — a G-class main-sequence body, the
+color of our Sol seen from interplanetary distance.
+
+COLOR: brilliant CREAM-WHITE center (RGB ~255,250,220), surrounding
+WARM-GOLD corona (RGB ~255,230,120), shifting to amber-orange near
+prominence arcs, fading to deep black at the perimeter.
+
+VIEW: head-on, sphere-disc centered, ~70% of frame diameter. Pure
+black starless background outside the corona.
+
+STYLE: painterly with photoreal stellar texture. Visible surface
+granulation. Crisp, gorgeous, suitable as a hero element in a sci-fi
+space game. NO stars in the background, NO planets, NO orbiting
+bodies. Just the star, alone, in the void.

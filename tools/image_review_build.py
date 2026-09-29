@@ -40,6 +40,194 @@ PROMPTS_ROOT = ROOT / "tools" / "firefly_prompts"
 OUT_PATH = Path(__file__).resolve().parent / "image_review.html"
 
 
+# ---------------------------------------------------------------------------
+# Species classification — Aaron's 2026-05-19 ask: organize the review page
+# BY SPECIES first, with non-species items grouped under UI / Universal /
+# etc. categories so the review session can flow species-by-species.
+#
+# Each species lists FILENAME-FRAGMENT tokens. The classifier checks each
+# image's filename against these. First species whose token appears in the
+# filename wins. Order matters when species names overlap (e.g. "proto_"
+# variants check first so they don't get swept into a generic "ur_quan").
+#
+# Lore reference: references/lore/species-* docs + species_inventory.csv.
+# ---------------------------------------------------------------------------
+SPECIES_PATTERNS: list[tuple[str, list[str]]] = [
+    # Order matters — proto-variants checked first so they don't get
+    # absorbed into the generic species pool below.
+    ("Proto-Ur-Quan",   ["proto_urquan", "proto_ur_quan"]),
+    ("Proto-Qor-Ah",    ["proto_qor_ah"]),
+    # New 2026-05-19 proto-species observation-portrait set.
+    ("Proto-Spathi",    ["proto_spathi"]),
+    ("Proto-Ilwrath",   ["proto_ilwrath"]),
+    ("Proto-Shofixti",  ["proto_shofixti"]),
+    ("Proto-Syreen",    ["proto_syreen"]),
+    ("Proto-Z-Y-D-H-L-N-F-P", ["proto_zydhlnfp", "proto_zoq_yin"]),
+    ("Proto-Yehat/Pkunk", ["proto_yehat", "proto_pkunk"]),
+    ("Proto-Druuge",    ["proto_druuge"]),
+    ("Proto-VUX",       ["proto_vux"]),
+    ("Proto-Thraddash", ["proto_thraddash"]),
+    ("Proto-Supox",     ["proto_supox"]),
+    # Sentient species in alphabetical order
+    ("Androsynth",      ["androsynth", "coel_tessar"]),
+    ("Arilou",          ["arilou", "arilou_skiff_quasispace"]),
+    # Burv Caster + destruction cutscene route here.
+    ("Burvixese",       ["burvixese", "burv_", "burv_caster", "burvixese_destruction"]),
+    # Chenjesu canon: planet_procyon is the Proto-Ilwrath colony at
+    # Procyon, which is a Chenjesu call-forward per the proto-species
+    # Bio-Archive entries.
+    ("Chenjesu",        ["chenjesu", "procyon"]),
+    ("Karavem",         ["karavem", "aeris_sing"]),
+    ("Kovellim",        ["kovellim"]),
+    ("Lemmkin",         ["lemmkin"]),
+    ("Melnorme",        ["melnorme"]),
+    ("Mmrnmhrm",        ["mmrnmhrm"]),
+    # Includes Hammer-Of-Refusal cutscene + Mrokon's Stand surface backdrop.
+    ("Mrokon",          ["mrokon", "drahn", "hammer_of_refusal"]),
+    # Mycon canon: deep_child cutscene = nascent Mycon Deep Child awakening.
+    # mycon_egg_cases is the Mycon's incubation artifact.
+    ("Mycon",           ["mycon", "deep_child", "mycon_egg_cases"]),
+    ("Selvenne",        ["selvenne"]),
+    # Source Mass = Slylandro gas-giant homeworld backdrop.
+    ("Slylandro",       ["slylandro", "beta_corvi", "source_mass"]),
+    ("Stelloth",        ["stelloth"]),
+    # Taalo includes the retired "Talos" Furling sub-faction insignia,
+    # the planet_ossuary (Taalo calcified-bodies landscape per
+    # 2026-05-17 canon), and the Taalo Shield artifact (2026-05-17:
+    # *we* build the shield in this slice; it fails; bodies calcify
+    # into landscape).
+    ("Taalo",           [
+        "taalo", "talos_resonator", "talos_system", "talos_erasure",
+        "insignia_talos", "ossuary", "taalo_shield", "taalo_stone",
+    ]),
+    # Includes Forward (the Thinn rebel crew member portrait).
+    ("Thinn",           ["thinn", "planar", "forward_thinn"]),
+    # Includes the Veils Falling ceremony cutscene.
+    ("Utwig",           ["utwig", "veils_falling"]),
+    # The Furling protagonist faction — checked LAST among species so that
+    # specific sub-faction names (compeller/persuader/etc.) and species-
+    # specific cutscenes/backdrops sweep into their proper species above
+    # before generic Furling tokens take over.
+    ("Furling",         [
+        "furling", "halia", "vael_souren", "mh_lai", "drev_tok",
+        "compeller", "persuader", "cleanser", "defender",
+        "denier", "hider",
+        "sentry_drone",   # Furling-built drone
+        "council_chamber", "council_convocation", "rainbow_resonator",
+        "cloaking_satellite", "cloak_install", "distress_beacon",
+        "crew_common_room",   # the Steward's crew gathering space
+        "fall_of_mh_lai",     # Furling homeworld destruction cutscene
+        "furlmart",           # Mh-Lai station merchant emporium
+        "lander_descent",     # Furling lander entering atmosphere
+        "orbit_arrival",      # Furling Scout entering planet orbit
+        "time_drive",         # Furling Time Drive activation
+        "hijack_mission",     # Steward stealing an Others' Vessel
+    ]),
+    # The antagonist faction
+    ("The Others",      ["others_", "decursion"]),
+]
+
+# Substring tokens that route an image into a NON-species category instead.
+# Order matters: more-specific tokens first.
+NON_SPECIES_CATEGORIES: list[tuple[str, list[str]]] = [
+    ("UI",          ["icon_module", "icon_resource"]),
+    ("Asteroids",   ["asteroid_"]),
+    ("Stars & Sky", [
+        "bg_galaxy_nebula", "bg_open_space", "nebula",
+        "combat_starfield", "star_blue", "star_white", "star_yellow",
+        "star_green", "star_orange", "star_red",
+    ]),
+    ("Universal Backdrops", [
+        "bg_planet_surface", "bg_alien_ship",
+        "bg_hyperspace_tunnel", "hyperspace_tunnel",
+        "quasispace_portal", "hyperspace_nebula",
+    ]),
+    ("Lander Terrains", ["lander_terrain"]),
+    # Endings / Migration / Rainbow-arc artwork — the cross-species
+    # plot beats that don't sit with any one species.
+    ("Endings & Migration", [
+        "migration_portal", "rainbow_seeding",
+        "cutscene_ending_", "ending_best", "ending_great", "ending_good",
+        "ending_at_cost", "ending_unsuccessful", "ending_disastrous",
+        "final_conflict",
+    ]),
+    # Generic combat / gameplay-moment cutscenes — Steward-POV
+    # gameplay rather than species or plot.
+    ("Gameplay Moments", [
+        "combat_victory", "bio_capture", "tutorial_opening",
+    ]),
+    # Precursor-era artifacts that aren't species-specific — Sa-Matra,
+    # Vela Factory, Sun Device, Aqua Helix, Moonbase. (Mycon eggs route
+    # to Mycon, Taalo Shield to Taalo, Burv Caster to Burvixese — see
+    # SPECIES_PATTERNS above.)
+    ("Precursor Artifacts", [
+        "sa_matra", "vela_factory", "sun_device", "aqua_helix",
+        "moonbase",
+    ]),
+    # Worlds that aren't tied to a single sentient species (proto-Yehat
+    # homeworld, Earth pre-Neolithic, Mmrnmhrm cohort planets, etc.)
+    # See references/lore/scanner-lore.md for canon backdating.
+    ("Worlds / Locations", [
+        "sol_iii",         # Earth pre-Neolithic
+        "gorno_iii",       # Proto-Yehat homeworld
+        "xylos_prime",     # Unique-system planet
+        "spire",           # Lore location
+    ]),
+]
+
+# Catch-all bucket for things not matched by either species or non-species
+# patterns above. Visible in the review UI so you can audit what isn't
+# being classified and tighten the patterns.
+UNCLASSIFIED_GROUP = "Unclassified"
+
+
+def classify(stem: str) -> tuple[str, str]:
+    """Return (group_kind, group_name) for an image filename stem.
+
+    group_kind is one of {"species", "category", "unclassified"} so the
+    UI can style species sections differently from utility categories.
+    """
+    s = stem.lower()
+    for species, tokens in SPECIES_PATTERNS:
+        for t in tokens:
+            if t in s:
+                return ("species", species)
+    for category, tokens in NON_SPECIES_CATEGORIES:
+        for t in tokens:
+            if t in s:
+                return ("category", category)
+    return ("unclassified", UNCLASSIFIED_GROUP)
+
+
+# Furling SUB-FACTION sub-grouping. Inside the Furling species section,
+# images are further bucketed so the 6 sub-factions show up as their own
+# headers (Compeller / Persuader / Cleanser / Defender / Denier / Hider)
+# alongside a "General Furling" bucket for cross-faction stuff (Halia,
+# Council, lander, artifacts, scout, sentry drone, etc.). Aaron's 2026-05-19
+# ask: the 93-image Furling section is too dense to review as one block.
+FURLING_SUB_FACTION_PATTERNS: list[tuple[str, list[str]]] = [
+    ("Compeller",  ["compeller"]),
+    ("Persuader",  ["persuader"]),
+    ("Cleanser",   ["cleanser", "vael_souren"]),
+    ("Defender",   ["defender"]),
+    ("Denier",     ["denier"]),
+    ("Hider",      ["hider"]),
+]
+
+
+def furling_sub_faction(stem: str) -> str:
+    """Return a Furling sub-faction name (or "General Furling") for an
+    image stem already classified as Furling. Used inside the Furling
+    section to render sub-headers.
+    """
+    s = stem.lower()
+    for name, tokens in FURLING_SUB_FACTION_PATTERNS:
+        for t in tokens:
+            if t in s:
+                return name
+    return "General Furling"
+
+
 def _load_manifest() -> dict:
     if not MANIFEST.exists():
         return {}
@@ -163,6 +351,10 @@ def _render_image_card(p: Path, manifest_entry: dict | None) -> str:
     destination = (manifest_entry or {}).get("destination") or ""
     prompt_path = (manifest_entry or {}).get("prompt_path") or ""
     prompt_body = _load_prompt_body(prompt_path) if prompt_path else ""
+    # Species/category group — also exposed as data-group so the search
+    # box can match by group name (e.g. typing "arilou" filters to that
+    # species section even when the filename doesn't carry the token).
+    _, group_name = classify(p.stem)
     # Truncate for the collapsed preview
     preview_chars = 140
     prompt_short = prompt_body[:preview_chars] + ("..." if len(prompt_body) > preview_chars else "")
@@ -207,9 +399,9 @@ def _render_image_card(p: Path, manifest_entry: dict | None) -> str:
         </details>"""
 
     return f"""
-    <div class="img-card" data-name="{_esc(name)}" data-status="{_esc(status)}" data-tier="{_esc(_tier_of_path(p))}" data-key="{_esc(key)}">
+    <div class="img-card" data-name="{_esc(name)}" data-status="{_esc(status)}" data-tier="{_esc(_tier_of_path(p))}" data-group="{_esc(group_name.lower())}" data-key="{_esc(key)}">
       <a class="thumb" href="{img_url}" target="_blank" rel="noopener">
-        <img loading="lazy" src="{img_url}" alt="{_esc(name)}" />
+        <img loading="lazy" data-src="{img_url}" alt="{_esc(name)}" />
       </a>
       <div class="meta">
         <div class="row1">
@@ -353,6 +545,50 @@ HTML_HEAD = """<!doctype html>
                  border-top: 1px dashed var(--border); font-family: monospace; }
   .prompt-single { padding-top: 0; border-top: none; }
   .tier-stats { color: var(--muted); font-size: .85em; font-weight: normal; }
+  /* Quick-jump nav — species + category links so Aaron can leap to
+     any group without scrolling through the whole gallery. */
+  .quick-jump {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 6px;
+    padding: .6em .8em; margin-bottom: 1em; display: flex; flex-wrap: wrap;
+    gap: .35em .5em; align-items: center;
+  }
+  .jump-label { color: var(--muted); font-size: .85em; margin-right: .3em; }
+  .jump-link {
+    color: var(--text); background: var(--bg); border: 1px solid var(--border);
+    padding: .15em .55em; border-radius: 3px; font-size: .82em;
+    text-decoration: none; display: inline-flex; gap: .3em; align-items: center;
+  }
+  .jump-link:hover { color: var(--accent); border-color: var(--accent); }
+  .jump-link.jump-species { color: var(--accent); border-color: var(--accent-dim); }
+  .jump-link.jump-category { color: var(--info); border-color: rgba(0,204,255,.3); }
+  .jump-link.jump-unclassified { color: var(--warn); border-color: rgba(255,170,0,.3); }
+  .jump-count { color: var(--muted); font-size: .9em; }
+  /* Section-kind styling so species feel like primary content vs.
+     utility categories. */
+  .section-species h2 { color: var(--accent); }
+  .section-category h2 { color: var(--info); }
+  .section-unclassified h2 { color: var(--warn); }
+  /* PERFORMANCE: tell the browser it can skip rendering cards that
+     are off-screen. Without this, 694 image cards all rendered at
+     once = sluggish initial load. With `content-visibility: auto`,
+     the browser virtualizes the section — only paints what's near
+     the viewport. Cards remain in the DOM (so JS / filters work),
+     just aren't painted until needed. `contain-intrinsic-size`
+     keeps scrollbar steady by pre-reserving estimated space. */
+  .section-species,
+  .section-category,
+  .section-unclassified {
+    content-visibility: auto;
+    contain-intrinsic-size: auto 800px;
+  }
+  /* Furling sub-faction sub-headers — slightly dimmer / lighter than
+     the species h2 so they read as a sub-hierarchy. */
+  h3.sub-faction {
+    color: var(--accent); border-bottom: 1px dashed var(--accent-dim);
+    padding-bottom: .25em; margin: 1.4em 0 .5em; font-size: 1.05em;
+    font-weight: normal; letter-spacing: .03em;
+  }
+  h3.sub-faction .tier-stats { color: var(--muted); font-size: .85em; }
 </style>
 </head>
 <body>
@@ -361,6 +597,24 @@ HTML_HEAD = """<!doctype html>
 
 HTML_TAIL = """
 <script>
+// IntersectionObserver-based lazy image loading. Each <img> has its
+// real URL in data-src; we swap to src only when the card scrolls
+// near the viewport. Without this, all 694+ images request at once
+// and Chrome rate-limits them to 503s (2026-05-19 bug).
+const lazyImgObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const img = e.target;
+    if (img.dataset.src) {
+      img.src = img.dataset.src;
+      delete img.dataset.src;
+    }
+    lazyImgObserver.unobserve(img);
+  });
+}, { rootMargin: '400px' });  // Start loading 400px before visible.
+
+document.querySelectorAll('img[data-src]').forEach(img => lazyImgObserver.observe(img));
+
 const cards = Array.from(document.querySelectorAll('.img-card'));
 const searchInput = document.getElementById('search');
 const filterBtns = Array.from(document.querySelectorAll('.filter-btn'));
@@ -372,7 +626,9 @@ function applyFilters() {
   cards.forEach(c => {
     const name = c.dataset.name.toLowerCase();
     const status = c.dataset.status;
-    const matchSearch = !q || name.includes(q) || c.dataset.tier.includes(q);
+    const matchSearch = !q || name.includes(q) ||
+                              c.dataset.tier.includes(q) ||
+                              (c.dataset.group || '').includes(q);
     const matchStatus = activeStatus === 'all' || status === activeStatus;
     const show = matchSearch && matchStatus;
     c.classList.toggle('hidden', !show);
@@ -382,6 +638,13 @@ function applyFilters() {
   document.querySelectorAll('section').forEach(sec => {
     const visible = sec.querySelectorAll('.img-card:not(.hidden)').length;
     sec.style.display = visible ? '' : 'none';
+  });
+  // Hide jump-links whose section is empty after filtering.
+  document.querySelectorAll('.jump-link').forEach(link => {
+    const href = link.getAttribute('href') || '';
+    if (!href.startsWith('#sec-')) return;
+    const sec = document.getElementById(href.slice(1));
+    link.style.display = (sec && sec.style.display === 'none') ? 'none' : '';
   });
 }
 
@@ -503,15 +766,22 @@ def build() -> Path:
         _save_manifest(manifest)
         print(f"indexed {added} new images into the manifest")
 
-    # Build (tier -> [(path, manifest_entry_or_None)])
-    by_tier: dict[str, list[tuple[Path, dict | None]]] = defaultdict(list)
+    # Build (group_name -> [(path, manifest_entry_or_None, group_kind)])
+    # Group by SPECIES first; non-species items fall into utility categories
+    # (UI / Asteroids / Stars & Sky / Universal Backdrops / Unclassified).
+    # 2026-05-19 — replaces the previous by-tier layout per Aaron's ask
+    # ("organize it all by species, or if it is not related to a species,
+    # make it sub-categorized as UI, universal, etc.").
+    by_group: dict[str, list[tuple[Path, dict | None]]] = defaultdict(list)
+    group_kind: dict[str, str] = {}
     status_counts: dict[str, int] = defaultdict(int)
     untracked_count = 0
     for p in pngs:
         key = _key_from_path(p)
         entry = manifest.get(key)
-        tier = _tier_of_path(p)
-        by_tier[tier].append((p, entry))
+        kind, group = classify(p.stem)
+        by_group[group].append((p, entry))
+        group_kind[group] = kind
         if entry:
             status_counts[entry.get("status") or "pending"] += 1
         else:
@@ -549,6 +819,42 @@ def build() -> Path:
         'placeholder="search by name/tier (press / to focus)" />'
     )
 
+    # Section ordering: species first (alphabetical), then non-species
+    # categories (UI / Asteroids / Stars & Sky / etc. in their declared
+    # order), then any Unclassified bucket so it stands out at the bottom
+    # for audit / pattern tightening.
+    species_groups = sorted(
+        [g for g, k in group_kind.items() if k == "species"]
+    )
+    category_groups = [
+        name for (name, _toks) in NON_SPECIES_CATEGORIES if name in by_group
+    ]
+    unclassified_groups = [
+        g for g, k in group_kind.items() if k == "unclassified"
+    ]
+    ordered_groups = species_groups + category_groups + unclassified_groups
+
+    # Build the quick-jump nav so Aaron can leap to any species/category
+    # section. Hidden when fewer than 3 groups (e.g. an unusual filter set).
+    def _slug(name: str) -> str:
+        return name.lower().replace(" ", "-").replace("&", "and").replace("/", "-").replace(",", "")
+    jump_html = ""
+    if len(ordered_groups) >= 3:
+        jump_links = []
+        for g in ordered_groups:
+            count = len(by_group[g])
+            kind = group_kind.get(g, "category")
+            jump_links.append(
+                f'<a class="jump-link jump-{kind}" href="#sec-{_slug(g)}">{_esc(g)} '
+                f'<span class="jump-count">{count}</span></a>'
+            )
+        jump_html = (
+            '<nav class="quick-jump">'
+            '<span class="jump-label">Jump to:</span>'
+            + "".join(jump_links)
+            + "</nav>"
+        )
+
     body = HTML_HEAD + f"""
 <header>
   <h1>★ SCZ Image Review</h1>
@@ -556,25 +862,68 @@ def build() -> Path:
   {filter_html}
   {search_html}
 </header>
+{jump_html}
 """
 
-    # Sections per tier in alphabetical order
-    for tier in sorted(by_tier):
-        items = by_tier[tier]
+    # Sections per group: species first (alphabetical), then non-species
+    # categories in declared order, then unclassified bucket.
+    for group in ordered_groups:
+        items = by_group[group]
+        kind = group_kind.get(group, "category")
         section_status_counts: dict[str, int] = defaultdict(int)
         for _, e in items:
             section_status_counts[(e or {}).get("status") or "untracked"] += 1
         stats_parts = " · ".join(
             f"{s}: {n}" for s, n in section_status_counts.items() if n
         )
+        # Kind-specific section styling so species feel distinct from
+        # utility categories. CSS `content-visibility: auto` lets the
+        # browser skip rendering / laying out cards that are off-screen
+        # — much lighter than wrapping in <details> (which broke button
+        # event handlers and lazy image loading 2026-05-19).
+        section_class = f"section-{kind}"
         body += f"""
-<section>
-  <h2>{_esc(tier)} <span class="tier-stats">— {len(items)} images · {_esc(stats_parts)}</span></h2>
+<section id="sec-{_slug(group)}" class="{section_class}">
+  <h2>{_esc(group)} <span class="tier-stats">— {len(items)} images · {_esc(stats_parts)}</span></h2>
+"""
+        # Furling gets sub-faction sub-headers — Compeller / Persuader /
+        # Cleanser / Defender / Denier / Hider + General Furling. Aaron
+        # confirmed the "shaggy sasquatch" aesthetic 2026-05-19; the
+        # sub-faction split makes it easy to spot off-canon refs (Denier
+        # and Hider currently render as humanoid alien faces, NOT
+        # sasquatches) and approve / re-roll per sub-faction.
+        if group == "Furling":
+            sub_buckets: dict[str, list[tuple[Path, dict | None]]] = defaultdict(list)
+            for p, entry in items:
+                sub = furling_sub_faction(p.stem)
+                sub_buckets[sub].append((p, entry))
+            sub_order = (
+                [name for (name, _t) in FURLING_SUB_FACTION_PATTERNS if name in sub_buckets]
+                + (["General Furling"] if "General Furling" in sub_buckets else [])
+            )
+            for sub in sub_order:
+                sub_items = sub_buckets[sub]
+                sub_status_counts: dict[str, int] = defaultdict(int)
+                for _, e in sub_items:
+                    sub_status_counts[(e or {}).get("status") or "untracked"] += 1
+                sub_stats = " · ".join(
+                    f"{s}: {n}" for s, n in sub_status_counts.items() if n
+                )
+                body += f"""
+  <h3 class="sub-faction" id="sub-{_slug(sub)}">{_esc(sub)}
+    <span class="tier-stats">— {len(sub_items)} · {_esc(sub_stats)}</span>
+  </h3>
   <div class="grid">
 """
-        for p, entry in items:
-            body += _render_image_card(p, entry)
-        body += "  </div>\n</section>\n"
+                for p, entry in sub_items:
+                    body += _render_image_card(p, entry)
+                body += "  </div>\n"
+        else:
+            body += '  <div class="grid">\n'
+            for p, entry in items:
+                body += _render_image_card(p, entry)
+            body += "  </div>\n"
+        body += "</section>\n"
 
     body += HTML_TAIL
     OUT_PATH.write_text(body, encoding="utf-8")

@@ -1,0 +1,15 @@
+# aspect: 1:1
+# notes: Metallic dark asteroid sprite — nickel-iron asteroid with
+# bright metallic veins. Spawn 4 variants (v1..v4). Alpha-extracted via
+# tools/extract_asteroid_alpha.py (rembg + binary 160-threshold).
+# Status (2026-05-18): QUEUED — Firefly rate-limited during initial drive
+# attempt. Run when limit clears.
+
+Top-down view of an irregular metallic dark asteroid, dark
+iron-grey to silver-grey nickel-iron surface, jagged angular
+shape, pitted with craters and bright metallic veins,
+sharp shadow contrast, asteroid alone centered floating in
+deep black void of outer space. Pure black starless space
+background. NO stars, NO nebula, NO spacecraft, NO planet,
+NO water, NO boat. Photoreal metallic rock-and-metal texture.
+Video-game sprite asset on black background.

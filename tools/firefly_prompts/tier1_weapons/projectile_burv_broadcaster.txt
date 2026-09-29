@@ -1,0 +1,32 @@
+# aspect: 1:1
+# notes: Burv Broadcaster resonance pulse — the Burvixese Be-Loud
+# cognition wave. Concentric expanding sound-wave ring on PURE BLACK.
+#
+# Lessons learned (2026-05-18 first roll): Firefly Image 3 drifted to
+# photoreal asteroid-in-space interpretation. Reword prompt to anchor
+# it firmly as a flat 2D HUD effect, NOT a 3D celestial body.
+
+A flat 2D HUD VFX icon for a video-game weapon effect. THIS IS NOT
+A CELESTIAL BODY. THIS IS NOT AN ASTEROID. THIS IS NOT A PLANET.
+This is an abstract glowing energy graphic.
+
+Subject: a CONCENTRIC SHOCKWAVE — three glowing rings of bright
+crystalline cyan-blue light, expanding outward from a brilliant
+white-hot center point. The rings are translucent, glowing,
+abstract energy — like a sonar ping or radar pulse made visible.
+Soft motion blur traces along the rings suggesting outward
+propagation. A few sparks of copper-gold light orbit the
+outermost ring.
+
+COLOR: cyan-blue (RGB ~120,200,255) rings with white-hot center.
+Copper-gold orbital sparks.
+
+COMPOSITION: flat 2D iconography, viewed head-on. The graphic
+occupies ~60% of frame. Centered. Pure black background, edge to
+edge. NO 3D rendering. NO stone surface. NO crater texture. NO
+gravity. NO stars in the background. NO planet. NO asteroid. NO
+horizon. NO depth-of-field.
+
+STYLE: stylized arcade-game energy VFX, like the shockwave ring
+from a TopDown shooter. Clean, abstract, glowing, layered light.
+Not a photographic rendering.

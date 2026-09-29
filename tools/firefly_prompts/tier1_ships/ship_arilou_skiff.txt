@@ -1,27 +1,35 @@
 # aspect: 1:1
-# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
-# prompt file). Aaron review: "Skiff looks like a flying saucer, you
-# can find it in the source code." Canonical SC2 reference is at
-# references/uqm-source/sc2/content/base/ships/arilou/skiff-big-*.png
-# — small rounded blue-cyan teardrop shape with horizontal banding,
-# the classic flying-saucer disc silhouette. Half-phased into Quasi-
-# Space is the Arilou tactical hallmark.
+# notes: STRENGTHENED 2026-05-18 per Aaron review on the second-burst
+# reroll: "Needs to be a circular saucer." The v1 produced an iridescent
+# almond/teardrop shape — Firefly ignored the disc instruction. v2 must
+# hammer the CIRCULAR FLYING SAUCER shape with explicit negative prompts.
+# Canonical SC2 reference: references/uqm-source/sc2/content/base/ships/
+# arilou/skiff-big-*.png — small rounded disc.
 
-A top-down orthographic view of an Arilou Skiff starship,
-following the SC2 canonical Arilou Skiff silhouette: a compact
-ROUNDED FLYING-SAUCER DISC, ~1.5:1 footprint (slightly wider
-than deep), classic disc-shape with a low rounded dome on top
-and a wider rim at the equator. Color: cool pearlescent
-teal-cyan hull with subtle horizontal banding around the rim,
-the dome a deeper indigo with a single small luminous
-sapphire viewport at the apex (the Arilou pilot's cabin). A
-faint VIOLET-AMETHYST PHASE-HALO surrounds the hull (the half-
-Quasi-Space phase signature) — drawn as a soft offset ghost-
-silhouette slightly behind/beside the main hull, hinting that
-the ship exists in two dimensions at once. No visible thrusters
-(Quasi-Space propulsion). No weapons protrusions (the Skiff's
-auto-tracking auto-cannon is internal). Background: deep
-starfield, near-black. Style: stylized 1990s sci-fi game art,
-painterly with crisp silhouette, faithful to the SC2 Arilou
-Skiff iconography. The disc should read INSTANTLY as a classic
-flying saucer.
+A top-down orthographic view of an Arilou Skiff starship — a
+CLASSIC CIRCULAR FLYING SAUCER / UFO DISC. The footprint is
+PERFECTLY ROUND from this top-down angle — a circle, not an
+oval, not a teardrop, not an almond, not a wedge. Equator
+rim slightly wider than the central dome. A low rounded
+dome rises from the center of the disc with a single small
+luminous sapphire viewport at the apex (the Arilou pilot's
+cabin). Disc rim has subtle horizontal banding.
+
+Color: cool pearlescent teal-cyan hull, the dome a deeper
+indigo. A faint VIOLET-AMETHYST PHASE-HALO surrounds the disc
+(the half-Quasi-Space phase signature) — drawn as a soft
+offset ghost-silhouette slightly behind/beside the main hull,
+hinting that the ship exists in two dimensions at once. No
+visible thrusters (Quasi-Space propulsion). No weapons
+protrusions (the Skiff's auto-tracking auto-cannon is internal).
+
+Background: deep starfield, near-black. Style: stylized 1990s
+sci-fi game art, painterly with crisp silhouette, faithful to
+the SC2 Arilou Skiff iconography. The shape should read
+INSTANTLY as a classic flying saucer / UFO disc — a child
+seeing this should say "flying saucer".
+
+NEGATIVE (NON-NEGOTIABLE): NO teardrop, NO almond shape, NO
+wedge, NO elongated craft, NO arrowhead, NO fighter
+silhouette, NO oval, NO egg shape. The footprint MUST be
+circular.

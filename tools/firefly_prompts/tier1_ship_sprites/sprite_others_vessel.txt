@@ -1,0 +1,48 @@
+# aspect: 1:1
+# notes: Sprite for the Others' Vessel — hijack-only, post-slice. Per
+# ship-roster: NOT a conventional ship. Its weapon is DECURSION
+# (temporal-dimensional displacement). The vessel is a piece of
+# trans-dimensional geometry perceived as a ship-shaped wrongness.
+
+Top-down 2D game sprite of an OTHERS' VESSEL.
+
+SHAPE: roughly 1:1 footprint occupying a vague disc-region,
+but the visible hull is NOT a solid mass — it is a TANGLE of
+INVERTED GEOMETRY: black ribbons that fold through themselves
+at impossible angles, edges that LEAD INTO each other in ways
+that should not connect. The silhouette reads as a knotted
+black wireframe orb that the eye cannot trace fully. No
+identifiable forward / rear / dorsal axis — but the overall
+mass is centered and disc-like.
+
+WEAPON: no visible muzzle, no visible cannon, no visible
+emitter. The DECURSION weapon does not project from a barrel —
+it propagates as a localized temporal-dimensional disturbance
+from the entire vessel. Visual hint: occasional bright wrong-
+light flickers of NON-SPECTRAL GREENISH-VIOLET pulsing through
+the inverted geometry, suggesting weaponized wrongness
+percolating from the hull itself.
+
+COLOR: ABSOLUTE BLACK as the dominant value (darker than
+space). Wrong-light highlights of a non-spectral greenish-
+violet that doesn't match any other lighting in the universe.
+Background-stars (where touched by the vessel's halo) subtly
+LENS and STRETCH around its edges — visible space-folding
+artifacts even though the background is otherwise pure black.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Subject
+centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground —
+EXCEPT for faint lensing distortion artifacts immediately
+around the vessel's outline (its gravitational fold-effect).
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Tone: HORRIFYING, INCOMPREHENSIBLE, the only ship in the
+game NOT made by hands.
+
+NEGATIVE: solid hull, recognizable cockpit, recognizable
+cannon, friendly silhouette, warm colors, balanced/symmetric
+ornament, organic shapes, conventional spaceship, motion
+blur, perspective view, three-quarter view, side profile.

@@ -1,0 +1,28 @@
+# aspect: 1:1
+# notes: Mycon plasmoid — bio-mass plasma orb. Pure black background.
+# Anchor against the "asteroid" failure mode: explicitly a flat 2D
+# graphic of glowing plasma, NOT a 3D solid object.
+
+A flat 2D HUD VFX icon for a video-game weapon effect. THIS IS NOT
+A CELESTIAL BODY. THIS IS NOT AN ASTEROID. This is an abstract
+glowing energy graphic on pure black.
+
+Subject: a glowing PURPLE-RED PLASMOID — translucent organic plasma
+ball, irregular blob outline, with internal swirling tendrils of
+brighter pink-magenta plasma visible THROUGH the translucent
+exterior. The plasma is GLOWING from within, NOT a solid surface.
+A few small ember-tendrils trail behind the blob suggesting
+forward motion. Bio-luminescent magenta light leaks out.
+
+COLOR: deep PURPLE-RED translucent body (RGB ~200,90,130) with
+bright MAGENTA-PINK glowing internal tendrils. White-hot brightest
+point off-center within the orb.
+
+COMPOSITION: flat 2D iconography. The plasmoid occupies ~55% of
+frame, centered, nose oriented vertically (toward TOP of frame).
+Pure black background edge to edge. NO 3D solid rendering. NO
+asteroid surface. NO crater texture. NO stone. NO planet, NO
+moon. NO stars.
+
+STYLE: arcade-shooter plasma-bolt VFX. Glowing energy, NOT a
+physical object. Painterly translucent plasma.

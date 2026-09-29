@@ -1,0 +1,45 @@
+# aspect: 1:1
+# notes: Sprite for the Cleanser Furling Cruiser — slice climax boss
+# variant of a Furling hull. Weapon per ship-roster: Stellar Disruption
+# Beam (pale-white beam with violet edge, 11 dmg) + Engineered Plague
+# Spore (slow-moving AOE cloud). Heavy-medium Furling silhouette.
+
+Top-down 2D game sprite of a CLEANSER FURLING CRUISER.
+
+SHAPE: HEAVY MEDIUM CRUISER form — a larger, more brutal
+version of the Furling yacht silhouette. Long broad hull,
+~3:1 aspect, oriented vertically, with a wedge-shaped
+armored prow at the top. A wider waist amidships and twin
+heavy thruster blocks at the rear. The Furling forward-axis
+ring is retained but heavily armored — bristling with attack
+emplacements rather than the explorer's elegant glyphs.
+
+WEAPONS: forward-mounted STELLAR DISRUPTION BEAM emitter at
+the prow — a wide lens-aperture set into a violet-rimmed
+housing, glowing pale-white with a violet edge halo (matches
+the beam's color). Twin downward-facing PLAGUE SPORE
+DEPLOYERS amidships — small ringed pods on the dorsal
+surface (the Engineered Plague Spore aerosol dispensers),
+faintly emitting a sickly chartreuse-green light.
+
+COLOR: muted gunmetal-silver hull with cold violet-white
+accents at the weapon housings; austere brass-gone-grey
+detailing; cold-violet shield generators along the keel; the
+plague-spore pods emit a chartreuse glow that stands out
+against the cold palette as a warning.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric.
+Subject centered, ~75% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: COLD, BRUTAL, RIGHTEOUS-IN-
+THE-WORST-WAY, a Furling ship turned into a planet-killer by
+ideology.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, warm colors, friendly aesthetic, organic
+curves.

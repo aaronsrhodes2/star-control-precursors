@@ -1,33 +1,52 @@
 # aspect: 1:1
-# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "this is the bone
-# planet, not the mycon". v1 rendered as a planetary body — wrong
-# subject. v2 makes the framing crystal-clear: a CLOSE-UP of a SINGLE
-# BIOT (a small fungal worker-organism), NOT a planet, NOT a globe,
-# NOT a celestial body. The biot is the size of a torso, set in front
-# of an out-of-focus dark biological backdrop with NO planetary
-# silhouette anywhere.
+# notes: REWRITTEN 2026-05-18 per Aaron review on the second-burst
+# reroll: "Mycon look like a giant mushroom stalk grown onto the floor
+# of their ship." This REPLACES the earlier "single biot torso-sized
+# creature with motile spore-tendrils" framing. Canon now: a Mycon
+# biot is a TALL MUSHROOM STALK that has GROWN INTO/ONTO THE FLOOR
+# of a Mycon ship's interior — bio-fused to the deck plating, with
+# mycelium roots spreading visibly into the floor panels around the
+# base. The biot is the WHOLE COLUMN; no face, no humanoid bust
+# composition, no creature-portrait framing.
 
-A close-up CHARACTER PORTRAIT of a single "Mycon Biot" — a
-small fungal worker-organism, NOT a planet or celestial body.
-The biot occupies the center of the frame: a bulbous asymmetric
-mass of pale ochre and warm-grey fungal tissue roughly the size
-of a torso (think basketball-sized, NOT planet-sized), slowly
-pulsing. From its sides extrude 3-5 thin motile spore-tendrils
-that float as if in liquid, each tipped with a tiny chitinous
-sensor-bud. At the biot's center, a soft internal glow — a
-bioluminescent centroid in cool teal-cyan — is just beginning to
-manifest, suggesting the nascent "Deep Child" consciousness
-waking up inside the worker. Fine spore-dust drifts in the
-foreground, gold-flecked motes drifting in the immediate
-foreground (close-up scale, NOT a starfield). Behind the figure:
-OUT-OF-FOCUS dark biological matter — mycelial threads, fungal
-crust, the inside of a Mycon growth chamber on Xylos Prime — NO
-PLANETARY SILHOUETTE, NO HORIZON, NO STARFIELD. The scale must
-read as INTIMATE / CLOSE-UP, not orbital. Lighting: warm low-
-angle illumination from below (the volcanic mantle-vent the
-biots colonize), deep shadow above. Style: stylized 1990s sci-fi
-game portrait, painterly, crisp silhouette. Tone: STRANGE-
-BIOLOGICAL, the tool that is starting to dream. Subtle uncanny
-quality from the central glow. AVOID: anything that reads as a
-planet sphere, a moon, a starfield background, or any astronomical
-scale — this is a CREATURE PORTRAIT, intimate scale.
+A vertical full-figure painting of a single Mycon Biot — a
+GIANT MUSHROOM STALK grown onto the interior floor of a Mycon
+ship. The biot occupies the center of the frame as a tall,
+columnar fungal stalk roughly 2m to 2.5m tall, NOT a creature-
+portrait of a face. STALK ANATOMY: a thick living fungal column
+in warm ochre and pale-grey-cream tones, slightly bulbous-
+topped (the upper crown is a soft asymmetric dome, NOT a
+clean mushroom cap), tapering toward a wider rooted base. The
+upper crown carries a SOFT INTERNAL TEAL-CYAN GLOW — a
+bioluminescent centroid visible through the translucent flesh,
+suggesting the nascent Deep Child consciousness awakening
+inside. Subtle gill-like fluting wreathes the upper third. NO
+FACE, NO HUMANOID BUST, NO EYES, NO ARMS.
+
+ROOTED TO THE SHIP FLOOR: at the biot's base, the stalk fuses
+INTO the deck plating of a Mycon vessel's interior — bio-fused
+flesh grading into hexagonal mycelial root-traceries that
+spread visibly across the metal floor panels in a 1.5m radius
+around the base, like the column was GROWN there over years.
+A faint groove-pattern in the floor radiates outward (older
+growth-rings).
+
+INTERIOR SETTING: behind the biot, the dim warm-orange-lit
+INTERIOR of a Mycon ship — rusted-organic bulkheads, hex-pattern
+deck plating extending into the soft-focus distance, a few small
+warm amber pilot-lights mounted at low height. NO planet, NO
+starfield, NO horizon, NO wilderness, NO microscopic-foreground-
+spore-dust. The scale reads as a HALL OF GROWN BIOTS, intimate
+but not close-up — the camera frames the single column in its
+ship-interior context.
+
+Lighting: warm amber low-key from below (the ship's mantle-
+vent floor lights catching the rooted base), with a cool cyan
+secondary from the biot's internal glow. Style: stylized 1990s
+sci-fi game art, painterly, crisp silhouette, BOTANICAL-
+ARCHITECTURAL, the tool that is starting to dream.
+
+NEGATIVE: torso-sized creature, humanoid bust portrait,
+floating spore-tendrils unattached to floor, face, eyes, arms,
+hands, basketball-sized small biot, planet, moon, starfield,
+horizon, wilderness, exterior setting, hyphae-afro hair.

@@ -1,0 +1,12 @@
+# aspect: 1:1
+# notes: Proto-Qor-Ah primary projectile. Cream-colored fast short-
+# range, 4 dmg, modeled as the cutting Spin Blade in fast-fire form.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically. Subject: a sharp ivory-
+cream blade-shard fragment, a small dagger-shaped projectile point
+forward (top of frame), with sharp cutting edges and faint amber-
+orange glow at the leading tip. Small piece of a thrown blade-sliver
+with motion trail behind. Cream-ivory main color with bronze-black
+accents. Pure black void background, isolated. Stylized 1990s sci-fi
+painterly game art, crisp silhouette.

@@ -1,0 +1,49 @@
+# aspect: 1:1
+# notes: Sprite for Sentry Drone 47-Theta (unionized) — the canonical
+# tutorial enemy. Small, slow, can only turn left (canon labor-drone
+# limitation). Weapon: weak small-bore single gun (2 dmg). Should look
+# like a clearly-improvised, labor-class drone — NOT a warship.
+
+Top-down 2D game sprite of a SENTRY DRONE 47-THETA.
+
+SHAPE: small COMPACT UTILITY DRONE — ~1:1 footprint, roughly
+hexagonal hull with rounded corners. Industrial fabricator
+finish, not refined. The drone has a clearly-improvised look,
+like a converted cargo-handling unit pressed into a sentry
+role rather than a purpose-built combatant. A small short-
+range thruster sits on each of the 6 hex faces (omni-thrust
+for a labor drone), faintly glowing soft white.
+
+WEAPON: a SMALL FORWARD GUN mounted on one of the hex faces
+— a single short barrel sticking out from a hastily-welded
+mount. The gun looks LIGHT-DUTY: a 2-damage labor-grade
+weapon, NOT a warship cannon. A small yellow-amber muzzle
+glow.
+
+DETAIL: a small unionized-labor BADGE sigil etched onto the
+hull's dorsal centerline — a tiny diegetic wink for players
+who notice (the drone is canonically a union member who
+fights only because Local 47 mandates a single grievance
+duel). The badge is a small flat circular emblem in faded
+yellow paint.
+
+COLOR: industrial light-grey and cool-grey hull with faded
+yellow caution-stripe markings. Brass-and-rust accents at
+the structural welds.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Subject
+centered, ~50% of frame (small drone — leave plenty of
+black around it).
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: IMPROVISED, LABOR-CLASS,
+SLIGHTLY-COMICAL, the only ship in the game with a union
+card.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, sleek warship aesthetic, heavy military
+armor, intimidating silhouette.

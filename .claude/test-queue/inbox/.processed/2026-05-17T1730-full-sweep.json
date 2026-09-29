@@ -1,0 +1,7 @@
+{
+  "id": "2026-05-17T1730-full-sweep",
+  "tests": ["all"],
+  "worktree": "elegant-bartik-733a37",
+  "requester": "design-chat",
+  "note": "Full regression sweep requested by Aaron. Recent Design-chat work has shipped: visit-aware dim tier + HUD readout (walk_system_visit_dim_tier), hyperspace parity probes (walk_hyperspace_teleport_into_zone, walk_hyperspace_retire_after_resolved), Melnorme recruitment quest (walk_melnorme_recruitment), Dnyarri bespoke encounter (walk_dnyarri_encounter, refactored to set_player_pos for determinism), salvage wrecks (walk_salvage_wreck), proto-species arrival registry (walk_visit_proto_species), Mraka recruitment (walk_recruit_mraka), Cleanser climax (walk_cleanser_cooperate, walk_cleanser_combat), hyperspace encounters (walk_hyperspace_encounters). Last Design-chat sweep was 20/20 green, 241/241 assertions. ALSO: see new HANDOFF_testing_chat.md entry titled 'Full gameplay sweep request' which dispatches manual visual+feel playtest work in parallel. Report both automated (this job's result JSON) and manual (HANDOFF_testing_chat.md Findings section)."
+}

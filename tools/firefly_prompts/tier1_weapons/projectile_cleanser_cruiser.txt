@@ -1,0 +1,11 @@
+# aspect: 1:1
+# notes: Cleanser Stellar Disruption Beam. Pale-white beam with violet
+# edge halo, 11 dmg, hitscan.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically. Subject: a slim pale-white
+beam segment with a distinctive violet edge halo on both long sides.
+Roughly 5:1 aspect, oriented vertically (top of frame = forward). The
+core is bright white, the edges glow soft violet, suggesting some
+kind of cold stellar weapon. Pure black void background, isolated.
+Stylized 1990s sci-fi painterly game art, crisp silhouette.

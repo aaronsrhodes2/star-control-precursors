@@ -1,36 +1,49 @@
 # aspect: 1:1
-# notes: NEW prompt 2026-05-17 (v1 was generated without a paired
-# prompt file). Aaron review on v1: "Androsynth cruiser has a
-# canonical shape and it should look very much like that, Get it from
-# the source code and use it as the template."
+# notes: REWRITTEN 2026-05-17 after Aaron sent the canonical Androsynth
+# Guardian reference image. The prior version of this prompt described
+# a "three-pronged Y-shape" — that was WRONG. The actual SC2 Guardian
+# silhouette is a VERTICAL SPINDLE: a column of stacked dark armored
+# disc segments threaded on a central spine, with red glassy bulb-orbs
+# at top and bottom (and visible between segments). Confirmed by:
+#   references/uqm-source/sc2/content/base/ships/androsynth/guardian-big-{000,008,012}.png
+# plus Aaron's reference image (3D render) shown in chat 2026-05-17.
+# Aaron's wording: "This is what an androsynth ship looks like."
 #
-# SC2 source reference:
-#   references/uqm-source/sc2/content/base/ships/androsynth/guardian-big-*.png
-# That sprite shows the SC2-canonical Guardian: a stylized blue
-# Y-SHAPED TRI-PRONGED ship with a central glowing core, three thin
-# tapered prongs radiating outward at ~120 degrees from each other.
-# Color is cool deep-blue / electric-cyan. The Guardian was the
-# Androsynth's main cruiser in SC2; we want the SAME SILHOUETTE in
-# our higher-fidelity rendering for the slice's refugee-era variant.
+# Reference image lives at:
+#   references/lore/reference-images/sc-androsynth-guardian.png
+# (Aaron to save the image he showed in chat to this exact path so this
+# prompt and the species sheet can both cite it.)
 
-A top-down orthographic view of an Androsynth Refugee Cruiser
-starship — modeled on the SC2-canonical Androsynth Guardian
-silhouette. Shape: a clear THREE-PRONGED Y-SHAPE — three slender
-tapered prongs radiating outward at 120-degree intervals from a
-central body, each prong ending in a small forward-facing
-emitter pod (the comet missile launchers). The CENTRAL HUB is a
-rounded glowing core in electric-cyan with a deeper sapphire-blue
-faceted shell. The three prongs are deep blue with cyan piping
-along their leading edges. A faint cool-violet halo surrounds the
-ship (the comet-warhead charge field). Small thruster nodes
-between the prongs glow soft white. Hull is the deep-blue and
-electric-cyan palette characteristic of the SC2 Androsynth
-(faithful to the source sprite). At the center of the hub: a
-single small circular hatch glowing warm-amber (the time-
-displaced refugees' improvised life-support — a small Aaron-era
-addition that says "this Guardian has been MODIFIED for refugees,
-not war"). Background: deep starfield, near-black. Style:
-stylized 1990s sci-fi game art, painterly with crisp silhouette,
-faithful to the original SC2 Guardian icon while painted at
-modern fidelity. Y-shape three-prong canonical silhouette is
-NON-NEGOTIABLE.
+A three-quarter view of an Androsynth Refugee Cruiser starship —
+faithful to the SC2-canonical Androsynth Guardian silhouette.
+SHAPE: a VERTICAL SPINDLE — a stack of 4 to 5 dark armored
+disc-segments threaded on a central longitudinal spine, like a
+vertebral column. Each disc is a flattened armored ring of
+gunmetal-grey to near-black plating with deep panel-line detail.
+RED BULB-ORBS: a large translucent ruby-red glassy sphere caps
+each end of the spine (one at the top, one at the bottom), and
+smaller ruby-red orb-glints peek out from between the disc
+segments where the spine is exposed. The orbs are glowing softly
+from within — internal plasma or warp-core light. A small
+slender antenna-like protrusion rises from the topmost orb. The
+hull palette is matte dark grey to black with red as the only
+accent; no blue, no cyan. Stylistic note: the silhouette must
+read instantly as "stacked dark discs on a spine with red bulbs
+at the ends" — this is the NON-NEGOTIABLE canonical Guardian
+shape. Background: pure deep-black starfield, no horizon, no
+nebula. Lighting: dramatic single key-light from upper-left
+catching the disc-edges and glinting on the red orbs.
+
+REFUGEE-ERA ADDITION (subtle, do not let it overpower the
+silhouette): a single small warm-amber circular hatch glows on
+one of the middle disc segments — the time-displaced refugees'
+improvised life-support port. This is the only non-red light on
+the hull and says "this Guardian has been MODIFIED for refugees,
+not war".
+
+Style: stylized 1990s sci-fi game art rendered at modern
+fidelity — painterly but with a crisp readable silhouette.
+Faithful to the original SC2 Guardian icon (a vertical column
+with red orbs); not Y-shaped, not tri-pronged, not a sea
+vessel, not a diamond, not a triangle. Vertical-spindle stacked
+disc-with-red-orbs canonical silhouette is NON-NEGOTIABLE.

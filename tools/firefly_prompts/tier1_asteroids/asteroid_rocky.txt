@@ -1,0 +1,12 @@
+# aspect: 1:1
+# notes: Rocky asteroid sprite — standard greyscale silicate rock with
+# craters. Spawn 4 variants (v1..v4). Alpha-extracted via
+# tools/extract_asteroid_alpha.py (rembg + binary 160-threshold).
+
+Top-down view of an irregular rocky asteroid, grey silicate
+rock with dust-colored surface, jagged angular shape pitted
+with impact craters, sharp shadow contrast, asteroid alone
+centered floating in deep black void of outer space. Pure
+black starless space background. NO stars, NO nebula, NO
+spacecraft, NO planet, NO water, NO boat. Photoreal rock
+texture. Video-game sprite asset on black background.

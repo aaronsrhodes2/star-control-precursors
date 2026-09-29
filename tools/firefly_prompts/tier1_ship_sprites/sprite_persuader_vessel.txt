@@ -1,0 +1,42 @@
+# aspect: 1:1
+# notes: Sprite for the Furling Persuader faction vessel. Weapon per
+# ship-roster canon: Persuader Beam (5 dmg, weak diplomatic beam) +
+# Dialog Amplifier special (truce-forcing pulse). Hull is a bronze
+# armillary sphere of nested rotating rings around an oval pod.
+
+Top-down 2D game sprite of a PERSUADER VESSEL starship.
+
+SHAPE: an ORICHALCUM-BRONZE ARMILLARY SPHERE — concentric
+rings nested around a central oval pod. Three or four
+rotating bronze hoops at different angles enclose a small
+elongated central body. Brass spikes / antennae radiating
+outward from key intersection points around the rim
+(diplomatic broadcast spires). Roughly circular footprint
+from above. From this top-down view, the rings read as
+concentric ovals around the central pod.
+
+WEAPON: forward-facing DIPLOMATIC SUASION EMITTER at the
+"north" pole of the rings — a small brass aperture with a
+warm amber glow (matches the Persuader Beam's gentle amber
+color). The Dialog Amplifier is implied by additional
+small antenna-spires around the rim.
+
+COLOR: rich orichalcum / warm bronze with brass accents and
+a small central golden glow at the pod's core. Faint amber
+halo from the dialog-broadcast field.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Subject
+centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Painterly surface detail tight
+inside the silhouette. Tone: DIPLOMATIC, ORNATE, RITUAL,
+the ship of a faction that thinks language is a weapon.
+
+NEGATIVE: starfield, stars, nebula, atmospheric haze,
+perspective view, three-quarter view, side profile, ground,
+horizon, painterly background bleed, asymmetric rings,
+turrets.

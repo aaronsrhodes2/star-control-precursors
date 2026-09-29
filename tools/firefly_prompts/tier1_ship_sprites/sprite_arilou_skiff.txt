@@ -1,0 +1,43 @@
+# aspect: 1:1
+# notes: Sprite for the Arilou Skiff. Weapon per ship-roster: Pulse
+# Caster (4 dmg, fast teal pulses, 6 shots/sec). Special: Quasi-Jump
+# teleport. Hull: classic CIRCULAR FLYING SAUCER per locked Arilou
+# canon. NOT teardrop, NOT almond.
+
+Top-down 2D game sprite of an ARILOU SKIFF starship.
+
+SHAPE: classic CIRCULAR FLYING SAUCER / UFO DISC. The
+footprint is PERFECTLY ROUND from this top-down angle — a
+circle, not an oval, not a teardrop, not an almond. Equator
+rim slightly wider than the central dome. A low rounded
+dome rises from the center of the disc with a single small
+luminous sapphire viewport at the apex. Subtle horizontal
+banding around the disc rim.
+
+WEAPON: PULSE CASTER aperture at the dome's leading edge
+(toward the top of the frame) — a small recessed lens behind
+cyan-teal glassy housing. Faint cyan-teal glow visible from
+within (matches the pulse-caster's teal projectile color). No
+visible turrets — the saucer is symmetric in all directions
+but the leading-edge emitter marks "forward".
+
+COLOR: cool pearlescent teal-cyan hull; dome a deeper indigo;
+faint violet-amethyst PHASE-HALO surrounding the disc as a
+soft offset ghost-silhouette (Quasi-Space half-phase
+signature).
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric.
+Subject centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Painterly surface detail tight
+inside. Tone: ETHEREAL, ANCIENT, the careful retreat-and-
+return of a species half-out-of-the-universe.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, teardrop, almond, wedge, oval footprint,
+elongated craft, fighter silhouette.

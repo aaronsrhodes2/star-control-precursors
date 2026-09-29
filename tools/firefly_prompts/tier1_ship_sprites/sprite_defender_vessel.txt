@@ -1,0 +1,42 @@
+# aspect: 1:1
+# notes: Sprite for the Defender Vessel — Furling Defender faction
+# heavy. Weapon per ship-roster: Heavy Beam (wide amber lance, 12 dmg)
+# + Sa-Matra Prototype Lance special (60 dmg, 8-sec cooldown). Boxy
+# maroon warship with twin forward cannons.
+
+Top-down 2D game sprite of a DEFENDER VESSEL starship.
+
+SHAPE: BOXY HEAVY WARSHIP — broad, blocky, deeply armored.
+~1.6:1 aspect, oriented vertically. Twin parallel forward
+hulls flanking a central spine, like an asymmetric catamaran.
+Thick angular armor plating with riveted seams. The forward
+silhouette is dominated by an ornamental medallion-style
+sigil etched into the prow armor (the Furling Defender
+faction sigil).
+
+WEAPONS: TWIN HEAVY BEAM CANNONS — two long parallel barrels
+mounted on the forward dorsal surface, each capped with a
+brass-and-amber emitter housing (the Heavy Beam's wide amber
+lance). Between them, mounted on the central spine: the
+SA-MATRA PROTOTYPE LANCE — a single long heavy-coil cannon
+with visible amber energy-feeds running back into the hull,
+a dangerous warm yellow-orange glow at the muzzle (the
+prototype's distinctive Sa-Matra construction).
+
+COLOR: maroon-red and gold hull with brass accents and
+ornamental medallions. Amber weapon glow. Cold-grey heat
+sinks along the keel.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric.
+Subject centered, ~75% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: HEAVY, ORTHODOX, the
+Defender faction is the SC2-Ur-Quan-style militant orthodoxy.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, elegant curves, lightweight aesthetic.

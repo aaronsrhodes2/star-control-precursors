@@ -1,18 +1,18 @@
 {
   "music/androsynth": {
-    "status": "pending",
+    "status": "keep",
     "notes": "beats didn't match up, too experimental; regenerated R3-tuned (was reject); regenerated R3-tuned (was pending); regenerated via musicgen-stereo-medium (was pending); regenerated via musicgen-stereo-medium (was pending)",
-    "reviewed_at": "2026-05-19T05:43:46.356984+00:00"
+    "reviewed_at": "2026-05-20T00:48:33.029153+00:00"
   },
   "music/androsynth_crash_site": {
-    "status": "pending",
+    "status": "keep",
     "notes": "regenerated R3-tuned (was reroll_requested); regenerated R3-tuned (was pending); regenerated via musicgen-stereo-medium (was pending)",
-    "reviewed_at": "2026-05-18T06:08:26.613539+00:00"
+    "reviewed_at": "2026-05-20T00:48:39.225133+00:00"
   },
   "music/arilou": {
-    "status": "pending",
+    "status": "keep",
     "notes": "regenerated R3-tuned (was reroll_requested); regenerated R3-tuned (was pending); regenerated via musicgen-stereo-medium (was pending)",
-    "reviewed_at": "2026-05-18T06:43:55.377580+00:00"
+    "reviewed_at": "2026-05-20T00:48:42.462904+00:00"
   },
   "music/arilou_sages_grove": {
     "status": "pending",
@@ -115,8 +115,8 @@
     "reviewed_at": "2026-05-20T00:17:22.165565+00:00"
   },
   "music/hyperspace": {
-    "notes": "great with adjustments per listen-pass 1; promoted keep -> wired (committed to game)",
-    "reviewed_at": "2026-05-20T00:17:22.165565+00:00",
+    "notes": "",
+    "reviewed_at": "2026-05-20T00:33:05.298224+00:00",
     "status": "wired"
   },
   "music/hyperspace_pursuit": {
@@ -130,9 +130,9 @@
     "reviewed_at": "2026-05-20T00:17:22.165565+00:00"
   },
   "music/melnorme": {
-    "status": "pending",
+    "status": "keep",
     "notes": "regenerated via stable-audio-open (was keep); regenerated via musicgen-stereo-medium (was pending)",
-    "reviewed_at": "2026-05-19T07:31:01.477261+00:00"
+    "reviewed_at": "2026-05-20T00:45:02.930465+00:00"
   },
   "music/melnorme_bio_cargo_hold": {
     "status": "pending",

@@ -1,47 +1,66 @@
 # aspect: 2:3
-# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "GORGEOUS, too
-# many legs. Needs to be more asymmetric." The v1 visual was striking
-# but had too many limbs/legs and read as too clean. The Mmrnmhrm are
-# millions of years old self-modifying robots — the asymmetry comes
-# from EONS of patches, retrofits, and re-grafts. Each one is unique.
+# notes: REWRITTEN 2026-05-18 per Aaron review on the second-burst
+# reroll: "One less leg from the middle." Aaron is implicitly approving
+# the multi-legged centaur-style robotic form the previous v2 reroll
+# produced (NOT the strict bipedal direction the earlier rewrite called
+# for), but wants ONE FEWER leg in the middle pair — so the figure has
+# THREE LEGS instead of four. This is the canonical leg-count now.
 #
-# v2 direction: SINGLE bipedal silhouette (TWO legs, not more); ARMS
-# DELIBERATELY MISMATCHED (one short factory original, one long
-# retrofitted, different alloys, different finger counts); body
-# patchwork from a dozen different eras of repair welded together.
-# Should read as ONE robot but clearly NEVER FIXED, just continuously
-# CARRIED FORWARD by self-care for a long time.
+# Keep: ancient self-modifying robot, asymmetric patchwork plating
+# (three alloys welded), mismatched arms (one short factory-original
+# with three-finger manipulator, one long retrofitted with five-claw
+# gripper), single off-center central optical dome head, melancholy
+# mathematical tone.
+# Update: TWO ARMS + THREE LEGS (an outer pair + ONE central leg,
+# OR an outer pair + one off-center middle leg — explicitly NOT four
+# legs, NOT two legs).
 
 A full-body avatar painting of a Mmrnmhrm Sentinel, an ancient
-self-modifying robot. Humanoid silhouette but DELIBERATELY
-ASYMMETRIC, ~2.0m tall. ONLY TWO LEGS — bipedal, no extra limbs.
+self-modifying robot. The body plan is HUMANOID-CENTAUR — a
+hunched upright torso with TWO ARMS at the shoulder and THREE
+LEGS at the hip (an outer pair plus a single central leg that
+sits slightly off-center from the body axis, the remnant of a
+once-present second middle leg that has been removed in repair).
+The figure stands ~2.0m tall.
+
+LEG COUNT IS THREE — NOT TWO, NOT FOUR. The two outer legs are
+the original load-bearing pair (slightly different alloys from
+each other due to independent millennia of repair); the single
+central leg is shorter and clearly a remnant / vestigial /
+under-modified support strut. The three legs together form a
+stable tripod stance.
+
 The body is a PATCHWORK of mismatched repairs accumulated over
 millions of years: torso plating in three different alloys
 welded together (brushed titanium, tarnished copper-bronze,
 matte gunmetal-gray), seams visible. ARMS ARE DIFFERENT FROM
 EACH OTHER: left arm is shorter, factory-original, ending in a
 THREE-FINGER manipulator with delicate articulation; right arm
-is longer, clearly a later retrofit, ending in a FIVE-CLAW heavy
-gripper. Shoulders held at different heights. One leg has a
-visible knee-joint replacement (newer alloy bolted on); the
-other is original equipment. Head: a single CENTRAL optical-
-array dome glowing deep blue, set slightly OFF-CENTER on the
-neck stem (the result of a head-grafting repair). NO face — just
-sensors, seams, and a strip of subtle Mmrnmhrm geometric glyphs
-etched into the chest in cool platinum (one glyph clearly added
-later, brighter than its neighbors). Pose: standing in a quiet
-three-quarter, asymmetric: weight on the left foot, right arm
-hanging lower than the left, head tilted in computation.
-Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge.
-Lighting: even soft three-point with cool blue rim from the head
-dome, faint copper rim from the older patches. Style: stylized
-1990s sci-fi game character portrait, painterly, melancholy,
-ancient. Tone: ONE ROBOT, NEVER FIXED, JUST CARRIED FORWARD —
-the asymmetry tells the millennia.
+is longer, clearly a later retrofit, ending in a FIVE-CLAW
+heavy gripper. Shoulders held at different heights.
 
-ARTICULATION BRIEF (rig: robot_humanoid + asymmetric):
+Head: a single CENTRAL optical-array dome glowing deep blue,
+set slightly OFF-CENTER on the neck stem (the result of a
+head-grafting repair). NO face — just sensors, seams, and a
+strip of subtle Mmrnmhrm geometric glyphs etched into the chest
+in cool platinum (one glyph clearly added later, brighter than
+its neighbors).
+
+Pose: standing in a quiet three-quarter, asymmetric: weight on
+the outer left foot, central leg taking secondary load, right
+arm hanging lower than the left, head tilted in computation.
+Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge.
+Lighting: even soft three-point with cool blue rim from the
+head dome, faint copper rim from the older patches. Style:
+stylized 1990s sci-fi game character portrait, painterly,
+melancholy, ancient. Tone: ONE ROBOT, NEVER FIXED, JUST CARRIED
+FORWARD — the asymmetry tells the millennia.
+
+ARTICULATION BRIEF (rig: robot_centaur_3leg + asymmetric):
 - HEAD: separable, off-center on neck stem
 - ARMS L/R: deliberately mismatched (short vs long, fingers vs claws)
 - TORSO: three-alloy patchwork; clear seam lines for chip animation
-- LEGS: bipedal, asymmetric knee mods
-- Avoid: more than two legs, symmetric body, uniform finish
+- LEGS: THREE total — outer pair plus one off-center central leg;
+  central leg is shorter / vestigial
+- Avoid: two legs (strict bipedal), four legs (centaur quad),
+  symmetric body, uniform finish.
