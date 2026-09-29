@@ -4,6 +4,8 @@
 
 The Cleanser is **not a villain.** Their voice is gentle, sorrowful, certain. They have done this before. They will do it again. They consider themselves the deepest mercy in the Migration. The encounter's tension comes from the Steward facing someone who is *clearly trying to do right* and disagreeing with them anyway — possibly to the point of combat.
 
+**The vote behind the visit.** Vael-Souren is not arriving with a narrow mandate against the Slylandro and the Mycon alone. She is acting on the Cleanser faction's **standing vote to euthanize every grounded species in the cluster** — Slylandro, Mycon, and any other stay-behind the slice's Council deliberation has surfaced. The dialog surfaces the Slylandro and Mycon because those are the cases in active deliberation; the rest are queued behind them. The canonical Cleanser-vote doctrine — *"wipe out the life that stays behind, even the friends like the grounded species, just to be safe"* — is the substrate underneath Vael-Souren's polite request. See [cleansers-as-ice-branch.md §6](cleansers-as-ice-branch.md). When the Steward asks her *why a species we have lived with for ten thousand years*, the canonical Cleanser response is the doctrinal phrase: **"Just to be safe."** Design's call whether to surface the phrase as a player-elected dialog branch or to keep it ambient — both are canonical.
+
 The humor doctrine is **suppressed** throughout this encounter. The protagonist's wit normally surfaces; here, it would land wrong. Cleanser dialog choices for the player are serious, deliberate, weighty. One wry option may exist as a deflection mechanism, but it lands flat — which is the point.
 
 ## Trigger Conditions
@@ -106,16 +108,24 @@ arrival:
 
 about_method:
   npc_text: |
-    A spore. The Slylandro absorb it through their respiratory
-    membrane. They feel no pain. They feel nothing. They become
-    very tired, and then they cease. The Mycon biots — the same
-    spore, modified for their mycelial substrate. The mantle goes
-    quiet.
-    
-    I record each death in the Ledger. I will remember every name.
-    I will mourn longer than they will be missed by anyone else
-    in this universe. That is the price I pay. It is the only
-    price I am asked to pay.
+    A protocol. The Slylandro feel no pain. They feel nothing.
+    They become very tired. Their presence fades from the gas
+    mantle over the course of a Mh-Lai day. The Mycon biots —
+    the same protocol, calibrated for their mycelial substrate.
+    The mantle goes quiet. The hive goes quiet.
+
+    I record each departure in the Quiet Ledger. I will remember
+    every name. I will mourn longer than they will be missed by
+    anyone else in this universe. That is the price I pay. It is
+    the only price I am asked to pay.
+
+  # Canon-update 2026-05-19 (violence-depiction-doctrine.md):
+  # prior canon said "absorb it through their respiratory membrane"
+  # — re-framed to remove physiological-absorption procedural-detail.
+  # Vael-Souren's emotional-tone (canonical-Cleanser-clinical-mourner)
+  # preserved; canonical-mechanism canonical-named-as-protocol
+  # without canonical-mechanism-detail. "Quiet Ledger" canonical
+  # naming preserved.
   choices:
     - text: "Step aside. I'm not stopping you."
       next: cooperate_confirm
@@ -273,7 +283,7 @@ For the Time Drive rewind path, a `walk_cleanser_combat_loss` script that intent
 ## Tonal Notes
 
 - **Music**: per [music-system.md], the Cleanser encounter has its own theme — "combat vs Cleanser" — that begins on Step 2 (materialization) and intensifies through Step 7. The theme should be *mournful*, not triumphant or menacing. The Cleanser is doing what they think is right.
-- **Visual**: Cleanser cruiser silhouette uses the Furling base hull but with **modified accent colors** — the warm gold Persuader trim is replaced with cold white-violet. The cruiser is visibly Furling but visibly *other*. Per the warp-pod color palette in `species_visual.py`, add a `CLEANSER` species_id with palette (40, 50, 80) interior, (200, 180, 240) rim.
+- **Visual**: Cleanser cruiser silhouette uses the Furling base hull but with **modified accent colors** — the warm gold Persuader trim is replaced with cold white-violet. The cruiser is visibly Furling but visibly *other*. Per the warp-pod color palette in `species_visual.py`, add a `CLEANSER` species_id with palette (40, 50, 80) interior, (200, 180, 240) rim. **Vael-Souren herself is canonically ice-branch Furling** — white double-coat, pale grey eyes, broader shoulders, cold-violet formal wear. The cold-violet palette is grounded in lineage canon, not just aesthetic choice. See [cleansers-as-ice-branch.md](cleansers-as-ice-branch.md).
 - **Dialog text**: written in the gentlest register in the game. Vael-Souren never raises their voice. They mourn audibly. The contrast between their tone and their actions is what makes the encounter unsettling.
 
 ## Why This Encounter Matters

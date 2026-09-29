@@ -1,5 +1,21 @@
 # Species Content Backlog — Invented Species to Fill Out the Galaxy
 
+> **⚠ HISTORICAL DOC (2026-05-19 update)**: this doc canonical-captured the canonical-early-2026 canonical-brainstorm-and-finalization for canonical-invented Furling-era species. canonical-Since canonical-finalization canonical-many canonical-species canonical-have canonical-been canonical-renamed canonical-or canonical-expanded canonical-in canonical-canonical-newer canonical-source-of-truth canonical-docs. **Use the canonical-Rename History table below to map canonical-old-names to canonical-current-canon.** canonical-The canonical-brainstorm-section (canonical-§§ "Brainstormed Stay reasons" / "Brainstormed Go reasons" / "Brainstormed unaligned") is canonical-superseded canonical-by canonical-§§ Initial Picks below (which is canonical-itself canonical-superseded canonical-by canonical-the canonical-Rename History; canonical-canonical-see canonical-table).
+>
+> **Rename History (2026-05-17 → 2026-05-19)**:
+>
+> | Backlog name | Current canonical name | Source-of-truth |
+> |---|---|---|
+> | The Taalo (canonical-pacifist canonical-crystalline-amphibian) | **Taalo** (canonical-Horta-lineage canonical-silicon-mountain-range) | [`loop-closing-content-pass.md §6`](loop-closing-content-pass.md) |
+> | The Defiant | **Mrokon** | [`loop-closing-content-pass.md §5`](loop-closing-content-pass.md) |
+> | The Curious | **Lemmkin** | [`species-the-lemmkin.md`](species-the-lemmkin.md) |
+> | The Burvixese | **Burvixese** (canonical-name-preserved; canonical-canon-deepened) | [`loop-closing-content-pass.md §7`](loop-closing-content-pass.md) |
+> | The Long-Memories | **Kovellim** | [`loop-closing-content-pass.md §3`](loop-closing-content-pass.md) |
+> | The Bargainers | **Selvenne** | [`loop-closing-content-pass.md §2`](loop-closing-content-pass.md) |
+> | The Planar | **Thinn** | [`species-the-thinn.md`](species-the-thinn.md) |
+>
+> Additional canonical-2026-05-canon-species canonical-not canonical-in canonical-this canonical-doc's canonical-historical canonical-brainstorm: **Stelloth** (canonical-Three-Voice canonical-chord-beings), **Karavem** (canonical-winged canonical-musical canonical-philosophers), **Melnorme** (canonical-bio-cargo canonical-traders), **Dnyarri** (canonical-disguised-encounter canonical-super-melee canonical-gamble-pick), **Orz** (canonical-dimension-rift canonical-entities). canonical-All canonical-in canonical-[`loop-closing-content-pass.md`](loop-closing-content-pass.md).
+
 > Workspace for additional sentient species whose lore does NOT directly link to a future SC2 race. These exist for galaxy variety, ship-roster filling, and to give the Stay/Go conflict richer color. Aaron has covered all the SC2-linkable species; this doc tracks the species we invent fresh.
 
 ## Why we need these
@@ -25,6 +41,8 @@ We need **at least 2 more invented Precursor (Go) species** and **at least 2 mor
 - A faction alignment with one of the existing Furling method-factions if applicable
 
 ## Brainstormed Stay reasons (each could be its own species)
+
+> **⚠ ARCHIVED BRAINSTORM (canonical-superseded 2026-05-17)**: the canonical-brainstorm-options canonical-below are canonical-historical canonical-record canonical-of canonical-the canonical-early-2026 canonical-species-design canonical-process. canonical-Active canonical-species canonical-slots canonical-are canonical-finalized canonical-at canonical-§§ Initial Picks; canonical-current canonical-canon canonical-is canonical-in canonical-the canonical-Rename History table above. **canonical-Do canonical-not canonical-author canonical-NEW canonical-species canonical-from canonical-this canonical-brainstorm-list** — canonical-the canonical-slice canonical-is canonical-content-complete canonical-as canonical-of canonical-2026-05.
 
 Pick a couple that don't overlap with existing canon:
 

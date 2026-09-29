@@ -68,6 +68,33 @@ The Androsynth's story is the slice's first **on-screen confirmation** of severa
 
 This last one is unsettling. If the Others sometimes *displace* sentience rather than destroy it, the Migration's premise — *leave the galaxy and they'll find nothing* — might be incomplete. The Others could potentially *pull* sentients out of the neighboring galaxy too. The Furlings consider this risk and proceed anyway. (The Arilou have a quiet concern about it.)
 
+### The "from afar" theory — canonical speculative canon (2026-05-18 Aaron dispatch)
+
+> Aaron canon: *"It is possible the androsynth were the ones that drew the eye of The Others from afar with their multi-dimensional experiments."*
+
+A canonically-unconfirmed theory entertained by Coel Tessar, by some Furling researchers (mostly Hider-faction and Persuader-aligned), and quietly avoided by others: **the Androsynth's gravitational-centrifuge experiment may have been the originating event that drew the Others' attention to this galaxy in the current cycle**. Not just to the Androsynth's own civilization in the SC2-era future — but to the *entire galaxy's present-era moment* through whatever cross-temporal detection-substrate the Others operate on.
+
+The theory's mechanics (as Coel Tessar herself articulates it in private to the Steward):
+- The Androsynth experiment occurred 250,000 of our years in the future
+- The Others' detection mechanism appears to operate on a substrate where past-present-future of a region read simultaneously
+- It is canonically *possible* that the Androsynth's dimensional probing in the future caused the Others to flag this galaxy in *all* its temporal layers — including the Furling era
+- If true, the Androsynth experiment is canonically *the originating event of the Furling-era Migration crisis*
+
+**Why the theory is held tentatively**:
+- The Furling deep-dimension tunneling was happening *before* the Androsynth experiment (in the Furlings' own timeline). The Furlings may have flagged themselves independently.
+- The Chenjesu testimony canonizes that the Others have come *before* (in prior cycles); their attention does not require a single triggering event.
+- The Others may operate on a hunger-cycle that brings them periodically regardless of probing events.
+- No civilization has the instruments to confirm or deny.
+
+**Why the theory persists despite the doubt**:
+- The timing fits suspiciously well
+- The Androsynth's experimental setup was canonically *more elegant* than the Furlings' deep-dimension tunneling — it would have produced a stronger detection signal if the substrate is signal-strength-sensitive
+- The Furling Hider-faction has been quietly building computational models of detection-substrate behavior, and the models *do not rule it out*
+
+**The canonical weight on Coel Tessar**: she canonically *believes the theory might be true*. She canonically *carries the guilt of the entire current cycle* in private. She does not articulate this in public to her Androsynth survivors — they have enough grief without inheriting the broader-galactic version of it. She tells the Steward when canonical-trust has been established.
+
+**The slice does NOT confirm or deny the theory.** It remains canonical *unresolved speculation* — a thing the Furlings and the Androsynth wonder about; a thing that may or may not be true; a thing whose answer no living being canonically knows. This canonical ambiguity is canonically *the slice's deepest unresolvable Other-question*. The Furlings are leaving regardless; the Androsynth are leaving regardless; if the theory is true, the Migration is canonically *partly an atonement Coel Tessar will carry for the rest of her life*; if false, it is canonically *one less weight on a Furling-era species who has already lost everything*.
+
 ## What This Canonizes About SC2
 
 For SC2 fans, the Androsynth encounter is the *secret rosetta stone* of the entire SC2 mystery:
@@ -87,9 +114,74 @@ The Star Control Zero player learns this. SC2 players never can. The asymmetry i
 | **Slice cost** | A medium-effort Act-3 quest if the player chooses to actively help them (heal their dimensional shear, repair their ship) |
 | **Slice ending impact** | If saved and evacuated, the slice's epilogue mentions the Androsynth survivors crossing the threshold. If ignored, they probably still cross (they're self-sufficient enough) but the player doesn't see their gratitude. |
 
+## Coel Tessar — full character profile (canonical 2026-05-18 expansion)
+
+> Aaron canon: *"Coel Tessar represents the surviving androsynth that were able to escape the consumption of their world. They are devastated. They only wanted to learn more of how the universe worked, but instead, they attracted the wrong kind of attention."*
+
+### Coel as canonical representative
+
+**Coel Tessar is the canonical face of the Androsynth survivors.** Her public canonical role is canonical *representative of the surviving Androsynth* — she is canonically *the one who speaks for them* in dealings with the Furling Council, the Steward, and any non-Androsynth they encounter. The canonical survivor population (~8,000 individuals) canonically *recognizes Coel as their voice* not by election but by canonical-emergent-consensus: she was canonical *senior researcher at the centrifuge experiment*; she canonical *survived the swap with the rest of her team*; she canonical *organized the survivor regrouping* in the first 72 hours after the displacement; she canonical *did not collapse*. The other survivors canonical-followed-her. She canonical-did-not-volunteer for the role; she canonical-accepted it because canonical-someone-had-to.
+
+### Canonical defining trait — devastated
+
+**Devastated** is canonical Aaron-canon. Coel is canonical NOT angry, NOT defiant, NOT vengeful — she is canonical *devastated*. The canonical-grief is canonical-total but canonical-organized. She canonical-functions canonical-because-she-has-to; she canonical-does-not-show-the-grief-publicly; she canonical-shows-it-only-to-the-Steward-in-private-once-trust-is-built.
+
+**Canonical devastation manifestations**:
+- Canonical *flat-affect* in public; canonical *the canonical-warmth-is-controlled*
+- Canonical *long pauses* before speaking; canonical *each sentence canonical-considered*
+- Canonical *quiet voice*; canonical *she does not raise it*
+- Canonical *purposeful work*; canonical *she is canonical-busy* with organizing survivors, treating dimensional-shear injuries, repairing salvaged equipment
+- Canonical *occasional reference to lost individuals*: canonical-rare; canonical-devastating when it surfaces (*"My son was on the surface. I do not know whether he is in this past with me."* — canonical existing canon line)
+- Canonical *gratitude that does not quite reach her eyes*: canonical Furling rescue saved her; canonical she canonical-cannot-fully-feel-gratitude-while-her-civilization-is-canonical-gone
+
+### Canonical singular motivation — *we only wanted to learn*
+
+Per Aaron canon: *"They only wanted to learn more of how the universe worked, but instead, they attracted the wrong kind of attention."*
+
+Coel's canonical singular motivation pre-decursion was canonical *scientific curiosity*. The Androsynth civilization at Vulpeculae was canonical *focused on understanding the universe* — canonical philosophical-and-scientific inquiry; canonical *peaceful exploration*; canonical *not military expansion*. The centrifuge experiment was canonical *the canonical-cleanest version* of a scientific-curiosity question: *what is on the other side of the dimensional wall?*
+
+The canonical Androsynth answer to *why did you do this?* is canonical *we wanted to know*. Not military advantage; not territorial expansion; not exploitation; **just to know**. They were canonical *good people who asked a question and got a bad answer*.
+
+This canonical motivation makes Coel canonically more painful than a canonical-villain-redemption-arc would. There is canonical *no villain in the Androsynth story*; canonical *the experiment was reasonable*; canonical *the consequences were monstrous*; canonical *the lesson is that reasonable acts can have catastrophic consequences in a universe that contains the Others*. Coel canonical *carries this lesson*. She canonical *will not propose another experiment*. The Androsynth survivors canonical *have collectively decided to retire from frontier science* for the duration of canonical-anyone-alive's lifetime.
+
+### Canonical *the wrong kind of attention*
+
+Canonical Coel articulates the canonical lesson to the Steward in private:
+> *"We wanted to learn more of how the universe worked. We did not know that the universe — *(canonical pause)* — had inhabitants. We did not know that asking questions would canonical-summon them. We were canonical-good-scientists. The universe canonical-was-not-an-empty-room. We were canonical-knocking-on-someone's-canonical-door. I am sorry. To us. To you. To — *(canonical hesitates)* — possibly to everyone."*
+
+The canonical *possibly to everyone* is canonical *the "from afar" theory* surfacing in Coel's private voice. She does not say it publicly. She tells the Steward.
+
+### Voice and demeanor
+
+Per the canonical existing canon (LLM prompt notes in the doc above) and canonical-extended:
+- Late-22nd-century technical English
+- Clipped sentences; frequent apologies
+- Canonical *quieter than baseline Androsynth-survivor* (per §existing canon); canonical *most-devastated of the survivors but canonical-most-functional*
+- Canonical does NOT joke (canonical: humor was canonical-not-the-canonical-Coel register pre-decursion either; canonical *she was the serious-curious-researcher type*)
+- Canonical *will hum* — canonical small canonical *hum-tune* she canonical-produces-unconsciously while working; canonical *a piece of pre-decursion Vulpeculae music*; canonical *Renn Halvor canonically recognizes it*
+- Canonical *carries a small Vulpeculae datapad* with canonical *photos of her team*; canonical *she canonical-shows-them-to-the-Steward-once* if canonical-trust-is-built
+
+### Canonical Steward-relationship
+
+Coel canonical *trusts the Steward* because canonical *the Steward did not turn them away*. The trust is canonical-conditional-on-canonical-Furling-rescue; canonical *if the Furling Council had refused them, Coel would not be having this conversation*.
+
+Canonical scenes with the Steward:
+- **Beat 4 canonical first-meeting**: canonical the canonical *Distress Beacon delivery* scene; canonical Coel canonical-formal but canonical-grateful; canonical voice canonical-controlled
+- **Mid-slice canonical-private moments** (gated on canonical Steward visits + canonical-trust-built): canonical *Coel canonical-articulates the from-afar theory*; canonical *Coel canonical-shows-the-Steward-the-Vulpeculae-photos*; canonical *Coel canonical-asks-the-Steward-what-they-think-of-the-theory*
+- **Renn Halvor canonical-recruitment scene**: canonical Coel canonical *grants Renn permission to attach to the Steward*; canonical *Coel and Renn canonical-have-known-each-other-for-years*; canonical their canonical-exchange is canonical *short and warm*
+- **Andromeda crossing canonical**: canonical Coel canonical *boards the Steward's escort vessel for the canonical-final crossing*; canonical *one canonical-final exchange about the from-afar theory*; canonical *Coel canonical-decides-to-believe-or-not-believe-it for the rest of her life*; canonical the slice's canonical *canonical-most-private-decision*
+
+### Canonical Renn Halvor relationship
+
+Renn was canonical *Coel's junior dimensional-shear specialist* pre-decursion; canonical *they have worked together for years*; canonical *Renn canonical-trusts-Coel-completely*. When Coel canonical-grants-Renn-permission to attach to the Steward, canonical *it is a small canonical-blessing*; canonical *Coel and Renn canonical-do-not-cry-in-front-of-each-other*; canonical *they canonical-both-cry-separately-afterward*.
+
+Canonical Renn canonical *visits Coel between Steward missions* — canonical they canonical *share short conversations*; canonical *they canonical-do-not-discuss-the-experiment*; canonical *the canonical-discussion-is-canonical-postponed-indefinitely*. Canonical the slice canonical *does not force them to have it*.
+
+---
+
 ## Authoring Notes
 
-- Coel Tessar is the canonical NPC. Her name and biography should be hand-written, not LLM-generated, so SC2 fans can quote her in retrospectives.
+- Coel Tessar is the canonical NPC. Her name and biography should be hand-written, not LLM-generated, so SC2 fans can quote her in retrospectives. The canonical character bible is §"Coel Tessar — full character profile" above (2026-05-18 expansion).
 - The Distress Beacon's playback should be a specific in-game cinematic — 30-60 seconds of footage. This is one of the slice's *visual* set-pieces. Worth investing in.
 - The Androsynth ship's design should be visibly *human-lineage* — recognizable as descended from 21st-century Earth engineering aesthetics, distinct from Furling/Arilou/Slylandro/Mycon design languages.
 - The slice should never explicitly say "the Androsynth are the SC2 Androsynth." Let SC2 fans realize it on their own. The Star Control Zero player who hasn't played SC2 should still understand the encounter; SC2 fans should get an additional gut-punch of recognition.

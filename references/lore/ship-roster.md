@@ -14,7 +14,7 @@ We aim for **5 ships per side** at slice scope (10 total + Cleanser variant + Ot
 | **Persuader Vessel** | Furling Persuader faction | Diplomatic, light combat | Light-medium | **Yes** | Dialog-amplifier weapon (forces brief truce in combat — risky utility) |
 | **Arilou Skiff** | Arilou cousins | Fast, evasive | Light | No (Quasi-Space evasion instead) | Quasi-Space short-jump (brief invulnerability + teleport) |
 | **Androsynth Refugee Cruiser** | Androsynth (time-displaced) | Medium-armor, science-tech | Medium | No | Dimensional-shear cannon (damages standard ships AND has a chance to disrupt Others-aligned entities) |
-| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | TBD | Variable |
+| **Lemmkin Skitter** | Lemmkin (canonical-anthropomorphic-squirrels; canonical-no-fear-only-curiosity) | Chaotic-engineering; high-firepower-but-unstable | Light | No | **Unstable Prototype** — canonical-random-effect-weapon-fire (rolls every shot: canonical-high-damage / canonical-self-damage / canonical-area-burst / canonical-fizzle); canonical-fast canonical-skittering canonical-evasion; canonical-fast-respawn-in-super-melee (canonical: *they breed fast to make up for the losses*). See [`species-the-lemmkin.md`](species-the-lemmkin.md). |
 
 ### Homesteader (Stay) side — 5 ships
 
@@ -24,7 +24,7 @@ We aim for **5 ships per side** at slice scope (10 total + Cleanser variant + Ot
 | **Mmrnmhrm Sentinel** | Mmrnmhrm (autonomous) | Transforming | Medium-heavy | No (mid-fight fabricator instead) | Mode-shift (combat / scout / fabricator); fabricator-mode repairs hull mid-combat |
 | **Proto-Ur-Quan Warship** | Proto-Ur-Quan (mid-uplift) | Aggressive, ramming-capable | Medium | No | Crushing-claw forward arc (high damage close-range) |
 | **Proto-Qor-Ah Marauder** | Proto-Qor-Ah (mid-uplift, lethal) | Glass-cannon, fanatic | Light-medium | No | Cutting-blade spinning attack (continuous AOE in close range; suicidal aggression in AI) |
-| **[INVENTED species ship — TBD]** | Filled in via [species-content-backlog.md](species-content-backlog.md) | Variable | Variable | TBD | Variable |
+| **Mrokon Hammer-Vessel** | Mrokon (canonical-Operator-puppet-operators; canonical-Homesteader-by-defiance) | Heavy-kinetic; canonical-the-only-ship-that-marks-the-Others | Heavy | No | **Hammer-Of-Refusal** — canonical-high-damage canonical-single-shot canonical-kinetic-round; canonical-MARKS canonical-the-Others (canonical: SC2 *"dimpled Vessel"* canon-explanation); canonical-Operator-puppet-respawn (canonical-mid-combat-puppet-switch sound when hull canonical-destroyed; canonical-Operator canonical-survives; canonical-new-puppet-takes-the-fight). Canonical *kill-tally* + canonical *Grand Accounting* cultural-canon. See [`loop-closing-content-pass.md §5`](loop-closing-content-pass.md). |
 
 ### Special — Cleanser Furling Cruiser
 

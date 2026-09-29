@@ -1,0 +1,88 @@
+{
+  "template_id": "combat_banter_expansion",
+  "generated_at": "2026-05-19T02:23:57.611796+00:00",
+  "model": "gemini-2.5-flash-lite",
+  "species": {
+    "Karavem": {
+      "Opening": [
+        "(major:grief) We sing of your approach! We sing of this encounter with... sorrow.",
+        "(minor:joy) We sing of harmony! Your arrival brings an unexpected... dissonance we can't wait to resolve.",
+        "(major:grief) We sing of introductions! We are... grieved that our first song to you must be one of conflict."
+      ],
+      "75% hull": [
+        "(minor:joy) We sing of impact! Your initial strike was... almost joyful in its precision.",
+        "(major:grief) We sing of your tenacity! This... pain is deeper than we anticipated from such a... small melody.",
+        "(minor:joy) We sing of the dance! Your maneuvers are... a curious counterpoint to our own song of engagement."
+      ],
+      "50% hull": [
+        "(major:grief) We sing of your persistence! Our song becomes... heavier with each exchange, a lament for this... mutual destruction.",
+        "(minor:joy) We sing of your fury! Your relentless assault... is a vibrant, almost exhilarating rhythm we must now overcome.",
+        "(major:grief) We sing of the damage! This... fracturing of our form brings a profound... sadness to our harmony."
+      ],
+      "25% hull": [
+        "(minor:joy) We sing of survival! Your onslaught has... truly tested the core of our joyous existence, and we are... exhilarated by the challenge.",
+        "(major:grief) We sing of desperation! Our song is now a desperate plea, a lament for the... fate that has brought us to this point of profound... sorrow.",
+        "(minor:joy) We sing of resilience! Even through these... grievous wounds, our spirit finds a... defiant joy in continuing the struggle."
+      ],
+      "5% hull": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "Mrokon": {
+      "Opening": [
+        "Your presence here is an accounting error, Steward. The Hammer is for those who *earn* its attention.",
+        "We did not seek this dance, Furling. But your aggression is a number to be tallied.",
+        "Another life’s cycle begun in conflict. This one will be swift, Steward."
+      ],
+      "75% hull": [
+        "A gentle tap, Steward. The first count is registered. The Hammer awaits your next misstep.",
+        "This unit’s armor is a minor inconvenience. The true tally begins now.",
+        "You chip at our shell, Furling, but the count of your defiance grows. Accept the Hammer’s lesson."
+      ],
+      "50% hull": [
+        "The momentum of combat is clear, Steward. Your existence is being rapidly subtracted from the cosmos.",
+        "You persist, Furling, a stubborn stain on the grand ledger. The Hammer’s weight increases.",
+        "This engagement is no longer a question of if, but how deeply the Hammer will mark you."
+      ],
+      "25% hull": [
+        "The end approaches, Steward, a final digit to be etched. The Hammer is poised for the final count.",
+        "Your vessels crumble, Furling. The tally of your folly is nearly complete. Embrace the inevitable.",
+        "The Hammer’s purpose is fulfilled when the opponent’s count reaches zero. You are nearing that boundary."
+      ],
+      "5% hull": [
+        "The Hammer does not break what is already shattered, Steward. Your count is negligible.",
+        "A final whisper of existence, Furling. The Hammer has made its final, undeniable mark.",
+        "The Grand Accounting notes your final, insignificant flicker, Steward. The Hammer has concluded its task."
+      ]
+    },
+    "Lemmkin": {
+      "Opening": [
+        "Oh, hello! This is a new situation! Are you going to do something interesting now?",
+        "What a fascinating energy signature! I wonder what it feels like to be you!",
+        "Greetings! A new friend! What wonderful things are you about to do to us?"
+      ],
+      "75% hull": [
+        "Ooh, a little sting! I love when things happen! What's next on the agenda?",
+        "That was a delightful little jolt! I feel more awake now, thank you!",
+        "Look at that! A new pattern on our hull! I can't wait to see what else we discover!"
+      ],
+      "50% hull": [
+        "Halfway there! This is becoming quite the adventure, wouldn't you agree, Steward?",
+        "We're still so full of potential! I'm curious to see how much more excitement we can generate!",
+        "My goodness, we're really getting into this! Are you enjoying the dance as much as I am?"
+      ],
+      "25% hull": [
+        "Only a little bit left! This is the most thrilling part! Can you make it even more exciting?",
+        "Twenty-five! Imagine that! We're experiencing new levels of thrill! Please, keep going!",
+        "Oh, this is magnificent! We're getting closer to something truly spectacular! Don't stop now!"
+      ],
+      "5% hull": [
+        "Almost gone! What an absolutely astonishing experience this has been! Farewell, wonderful Steward!",
+        "This is it! The grand finale! I've never felt such joyous anticipation!",
+        "So much happening all at once! What a wonderful way to experience everything! Thank you!"
+      ]
+    }
+  }
+}
