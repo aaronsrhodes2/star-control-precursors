@@ -39,6 +39,10 @@ PLANET_MH_LAI_PATH = os.path.join(
 class StationScene(Scene):
     """Mh-Lai Station hub view."""
 
+    # Furling-civilization Mh-Lai theme. Generated in the 2026-05-17/18
+    # MusicGen pass and shipped under assets/music/furling_home/.
+    music_context: str | None = "furling_home"
+
     # Class-level seeded starfield so it doesn't shimmer on re-entry
     _starfield: list[tuple[int, int, int]] | None = None
     # Class-level cached planet sprite (None once we've tried and failed)
@@ -81,18 +85,27 @@ class StationScene(Scene):
 
         # B → quit (Station is the top-level scene; backing out exits)
         if inp.cancel and self.game is not None:
+            if hasattr(self.game, "sfx"):
+                self.game.sfx.play("ui/menu_cancel")
             self.game.quit()
             return
 
         # Menu navigation
+        def _click(kind: str = "select") -> None:
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play(f"ui/menu_{kind}")
+
         n = len(ACTIONS)
         if inp.menu_up:
             self.selected_action = (self.selected_action - 1) % n
+            _click()
         elif inp.menu_down:
             self.selected_action = (self.selected_action + 1) % n
+            _click()
 
         # Confirm → trigger action
         if inp.confirm and self.game is not None:
+            _click("confirm")
             label, action = ACTIONS[self.selected_action]
             if action == "talk":
                 from scz.dialog.characters import commander_halia

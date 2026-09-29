@@ -1,0 +1,43 @@
+{
+  "context": "melnorme_bio_cargo_hold",
+  "category": "homeworld",
+  "description": "Melnorme Bio-Cargo Hold \u2014 the trade pod interior; richer than peace theme",
+  "key": "E major",
+  "bpm": 88,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/melnorme_bio_cargo_hold/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: warm low cargo-hold rumble with metallic resonance, more grounded than peace version, no drums no melody no pads, in E major at 88 bpm, Melnorme bio-cargo trade pod interior, mercantile bustle, richer gold-silver harmonics than the peace theme, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/melnorme_bio_cargo_hold/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: layered gold-silver chime patterns at trade-floor tempo, coinage rhythms, no melody no bass no pads, in E major at 88 bpm, Melnorme bio-cargo trade pod interior, mercantile bustle, richer gold-silver harmonics than the peace theme, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pad": {
+      "path": "assets/music/melnorme_bio_cargo_hold/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: rich major-key brass pad with cargo-deck warmth, mercantile prosperity, no melody no drums no bass, in E major at 88 bpm, Melnorme bio-cargo trade pod interior, mercantile bustle, richer gold-silver harmonics than the peace theme, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "lead": {
+      "path": "assets/music/melnorme_bio_cargo_hold/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: trade-network melody with multiple struck-bell voices in counterpoint, busy mercantile life, no drums no bass no pads, in E major at 88 bpm, Melnorme bio-cargo trade pod interior, mercantile bustle, richer gold-silver harmonics than the peace theme, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/melnorme_bio_cargo_hold/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: bio-cargo containment system hum, distant trade negotiations, gold-coin clinks, no melody no drums no bass, in E major at 88 bpm, Melnorme bio-cargo trade pod interior, mercantile bustle, richer gold-silver harmonics than the peace theme, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T09:45:43Z",
+  "notes": ""
+}

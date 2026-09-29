@@ -1,0 +1,36 @@
+# aspect: 1:1
+# notes: Sprite for the Compeller Vessel — Furling sub-faction
+# (sedation/deception). Furling-family silhouette like Persuader/Cleanser
+# but with tractor-array antennae or sedation-prong protrusions at the bow.
+# Heavier than Persuader, lighter than Cleanser. Slate-grey + green accent.
+# Pre-Cleanser-era Furling palette.
+
+Top-down 2D game ship sprite of a COMPELLER VESSEL.
+
+SHAPE: a mid-weight Furling spacecraft, broader than the
+Persuader but lighter than the Cleanser. Symmetric blocky
+hull with rounded edges. Forward bow has prominent TRACTOR-
+ARRAY ANTENNAE and SEDATION-PRONG PROTRUSIONS — slender
+forward-projecting prongs in a small forward array. The
+side and rear hull have visible side-mounted manipulator
+arms folded close to the body — implying the ship carries
+tools, not weapons-first.
+
+COLOR: slate-grey base hull with bright GREEN accent stripes
+along the prongs and tractor-array tips. Engine glow soft
+cyan at the rear nozzles.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Nose
+pointing toward TOP of frame. Symmetric across vertical axis.
+Subject centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO nebula, NO horizon.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Pre-Cleanser-era Furling palette — still "we're here to
+help" but with restraints visible.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, harsh
+red palette, military-warship aesthetic.

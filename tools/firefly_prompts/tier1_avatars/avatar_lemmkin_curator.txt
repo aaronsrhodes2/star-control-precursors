@@ -1,0 +1,44 @@
+# aspect: 2:3
+# notes: Articulated avatar for the Lemmkin Curator (slice's dialog
+# anchor for the Lemmkin species). Lemmkin are anthropomorphic
+# squirrels with NO FEAR (vestigial amygdala) and lemming-clade troupe
+# behavior — when one investigates, the others follow off cliffs.
+# Smart AND reckless. Homesteader-by-CHOICE: the Furlings offered them
+# a Migration lift; they cheerfully declined "to see what happens" with
+# the Others. They will be Eliminated. Their archives survive and
+# become SC2's misattributed "Precursor caches".
+#
+# Their face should be CURIOUS, WIDE-EYED, BRIGHT — but the bright
+# eyes are 100% fearless in a way that reads slightly off. They are
+# the foil to the Burvixese: Burvixese died believing they'd live;
+# Lemmkin died LEARNING. Foreshadow that.
+
+A full-body avatar painting of a Lemmkin Curator. Body plan: ~1.3 m
+tall bipedal anthropomorphic squirrel. Dense russet-orange and
+cream fur with a paler underbelly; a large fluffy tail (clearly
+longer than the body) raised in a confident curve overhead. Head:
+expressive squirrel features — black button nose, prominent
+forward-facing whiskers, ROUND BLACK EYES set wide and very
+ALERT, two upright tufted ears. Both eyes are bright with active
+curiosity but show ZERO defensive squint — the gaze is open and
+fearless in a way that is subtly wrong. Two arms with delicate
+five-fingered paws — left paw holding a notebook-like archive
+slab, right paw raised mid-gesture pointing at something fascinating
+off-frame. Wears a leather-strap utility harness with brass-rimmed
+sample tubes, an oilskin journal pouch, and a single carved acorn
+pendant (clan marker). Pose: leaning forward slightly with bright
+interest, weight on the front foot, tail held high — the body
+language of a creature that has NEVER been told to be careful.
+Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge.
+Lighting: even soft three-point with a faint warm amber rim from
+the tail-fluff. Style: stylized 1990s sci-fi game character
+portrait, painterly. Tone: ARDENT CURIOSITY, BIG SMART, NO FEAR.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid + fluffy_tail):
+- HEAD: separable above the neck for animated talk
+- EARS L/R: tufted, can twitch independently
+- TAIL: massive, can articulate up/down/curl
+- ARMS L/R: archive slab in left, gesture-point in right
+- TORSO/HIPS: visible, no occluding cape
+- Avoid: cautious posture, squinting eyes, defensive crouch — they
+  have NO fear and the body language must communicate that openly

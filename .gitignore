@@ -44,3 +44,12 @@ references/*.tgz
 .env
 .env.local
 *.local.json
+tools/audio_player.html
+tools/image_review.html
+
+*.log
+sd-server/server.err
+.claude/settings.local.json
+
+# Claude Code agent worktrees (local only)
+.claude/worktrees/

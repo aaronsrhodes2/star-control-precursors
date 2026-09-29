@@ -1,0 +1,37 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. The Brain-Coral Sanctum is the
+# Selvenne dialog backdrop — the chamber inside the great central
+# reef structure on Vellumar where the Steward (in a Furling-loaned
+# submarine) approaches Choir-Of-The-East-Reef. The sanctum is the
+# THICKEST, MOST-CONVOLUTED part of the reef where the experiential-
+# memory pigment is densest. Style: warm ocean-bioluminescence, liquid
+# compositions.
+
+A square dialog-scene backdrop, 1:1, viewed as if from inside a
+small Furling submarine looking outward through a wide curved
+viewport. Foreground: a hint of the submarine's INTERIOR rim
+(copper-and-cream curved frame with brass instrument lights,
+mostly out-of-focus at the bottom of the frame). The center of
+the frame: a vast underwater BRAIN-CORAL CHAMBER carved into the
+reef itself — towering convoluted CORAL-WALLS forming a natural
+sanctum, the walls' surface a writhing labyrinth of folded
+brain-coral folds (like an enormous cerebrum rendered in living
+mineral), each fold pulsing with slow chromatic BIOLUMINESCENCE
+in pale rose, gold, aquamarine, and deep coral-pink. Hundreds of
+tiny individual polyps (the Selvenne) bloom from the chamber
+walls, their bell-crowns glowing softly. The water itself is
+warm and faintly luminous, with drifting particulate motes
+catching light. Center of the chamber: a low rounded ALTAR-DAIS
+of polished mother-of-pearl, with a SINGLE LARGER FOCAL POLYP
+(the canonical "Choir-Of-The-East-Reef" speaker) seated atop it,
+slightly brighter than its neighbors. The room is EMPTY of
+figures — the dialog character composites at runtime where the
+focal polyp sits. Above (visible through the open top of the
+sanctum's vault): a hint of upper-ocean SUN-SHAFTS streaming
+down in cool teal-gold. Lighting: warm bioluminescent INNER glow
+from the coral walls as the primary source, golden surface-light
+filtering from above, deep aquamarine cool fill. Style: stylized
+1990s sci-fi game backdrop, painterly, LIQUID composition (organic
+flowing curves), warm ocean-bioluminescence palette. Tone: A
+LIVING CATHEDRAL OF MEMORY, awe-tinged, ~50 million years of
+qualia stored in the walls.

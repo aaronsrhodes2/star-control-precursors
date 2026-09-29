@@ -1,0 +1,31 @@
+{
+  "context": "ending_persuader",
+  "category": "ending",
+  "description": "Ending \u2014 Persuader path; bittersweet success of patience",
+  "key": "C major",
+  "bpm": 64,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "drone": {
+      "path": "assets/music/ending_persuader/drone.wav",
+      "prompt": "Isolated DRONE BASS STEM for layered production: warm sustained major-key low strings + horns, bittersweet major-7 chord beds, in C major at 64 bpm, Persuader-path ending \u2014 bittersweet success of patient diplomacy, everyone who could be saved was saved by talking, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pulse": {
+      "path": "assets/music/ending_persuader/pulse.wav",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: slow ceremonial bell on the downbeats, ritual closure, in C major at 64 bpm, Persuader-path ending \u2014 bittersweet success of patient diplomacy, everyone who could be saved was saved by talking, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "texture": {
+      "path": "assets/music/ending_persuader/texture.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Furling and alien voices in chorus, mixed languages speaking together, civilizations preserved, in C major at 64 bpm, Persuader-path ending \u2014 bittersweet success of patient diplomacy, everyone who could be saved was saved by talking, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T13:33:01Z",
+  "notes": ""
+}

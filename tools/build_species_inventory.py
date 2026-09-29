@@ -34,6 +34,15 @@ COLUMNS = [
     "articulation_rig",
     "background_specs",       # comma-joined BackgroundSpec.name list
     "voice_profile_doc",      # path to references/lore/voice_profiles/*.md
+    # --- Audio fields (added 2026-05-17 by audio chat) ---
+    # `sonic_signature` is the prose anchor that drives BOTH music
+    # generation prompts and per-ship SFX prompts. Keep it specific
+    # and DISTINCT across species (Rule 5).
+    "sonic_signature",
+    "music_context",          # assets/music/<this>/  (dir name; may be future)
+    "music_status",            # placeholder | queued | round1..N | final
+    "weapon_sfx_dir",          # assets/sfx/ships/<ship_id>/  (or empty if no ship)
+    "weapon_sfx_status",       # placeholder | queued | generated | wired
 ]
 
 
@@ -84,6 +93,41 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "alien_ship",
         "",
     ),
+    # --- Per-faction Furling reference plates (2026-05-17 batch) ---
+    # COMPELLER_FACTION / DEFENDER_FACTION / HIDER_FACTION / DENIER_FACTION
+    # are conceptual factions, not single-character species. The avatar
+    # path points at a generic faction reference plate; named NPCs (if/
+    # when authored) will get their own avatars.
+    "COMPELLER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_compeller.png",
+        "bipedal_humanoid",
+        "furling_bridge",
+        "",
+    ),
+    "DEFENDER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_defender.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "HIDER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_hider.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "DENIER_FACTION": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_denier.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "TALOS": (
+        "assets/generated_drafts/firefly/tier1_furling_reference/furling_talos.png",
+        "bipedal_humanoid",
+        "planet_surface",
+        "",
+    ),
     "SENTRY_DRONE_47T": (
         "assets/generated_drafts/firefly/tier1_avatars/avatar_sentry_drone_47t.png",
         "floating_drone",
@@ -95,6 +139,236 @@ LAYERED_INFO: dict[str, tuple[str, str, str, str]] = {
         "gasbag_tendril",
         "planet_surface",
         "",
+    ),
+    # --- Utwig promoted 2026-05-17 from proto-species to a main
+    # Homesteader-Hider species. See species-the-utwig.md.
+    "UTWIG": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_utwig_elder.png",
+        "bipedal_humanoid",
+        "planet_surface",
+        "",
+    ),
+    # --- Image-lane batch 2026-05-17: avatars + portraits authored
+    # for the previously-bare full-sentient species.
+    "BURVIXESE": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_burvixese_engineer.png",
+        "bipedal_humanoid",
+        "alien_ship",
+        "",
+    ),
+    "CHENJESU": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_chenjesu_witness.png",
+        "crystalline_rooted",
+        "planet_surface",
+        "",
+    ),
+    "TAALO": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_taalo.png",
+        "bipedal_humanoid",
+        "planet_surface",
+        "",
+    ),
+    "PROTO_QOR_AH": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_qor_ah.png",
+        "insectoid_hierarch",
+        "planet_surface",
+        "",
+    ),
+    "PROTO_URQUAN": (
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_proto_urquan.png",
+        "insectoid_hierarch",
+        "planet_surface",
+        "",
+    ),
+}
+
+
+# ---------------------------------------------------------------------------
+# Audio info keyed by species_id, added 2026-05-17 by the audio chat.
+# Tuple shape: (sonic_signature, music_context, music_status,
+#               weapon_sfx_dir, weapon_sfx_status)
+#
+# The sonic_signature is the prose anchor for BOTH music generation
+# prompts AND per-ship weapon SFX prompts. Keep it specific and
+# distinct across species. When in doubt, the lore docs win; when the
+# lore is silent, fill in something creative + distinct.
+#
+# music_status values:
+#   placeholder  -- nothing generated; no music_context dir exists yet
+#   queued       -- prompt drafted in audio_context_specs.py but not generated
+#   round1..N    -- generated and committed in that round
+#   final        -- locked, will not be regenerated
+# weapon_sfx_status: placeholder | queued | generated | wired
+# ---------------------------------------------------------------------------
+AUDIO_INFO: dict[str, tuple[str, str, str, str, str]] = {
+    "FURLING_SCOUT": (
+        "Warm-organic-tech. Wood and resin, copper bells, plucked sinew strings, deep bass purr from a civilization that hears the world through its own fur. Weapons sound like a deep gong wrapped in fur — cushioned, sustained, layered overtones.",
+        "furling_home",
+        "queued",
+        "assets/sfx/ships/furling_scout/",
+        "queued",
+    ),
+    "PERSUADER_FACTION": (
+        "Diplomatic-reluctant Furling. Soft strings, warm winds, almost-apologetic. Weapons are non-lethal warning shots — gentle siren wind-up + soft electrostatic disorient.",
+        "council_persuader",
+        "queued",
+        "assets/sfx/ships/persuader_vessel/",
+        "queued",
+    ),
+    "CLEANSER_FACTION": (
+        "Monolithic religious dread. Pipe organs, taiko thumps, Furling chant fragments at the edge of intelligibility. Weapons are CEREMONIAL — slow ratchet windup + finishing-blow toll like a hangman's bell.",
+        "cleanser_council",
+        "round1",
+        "assets/sfx/ships/cleanser_cruiser/",
+        "queued",
+    ),
+    "DEFENDER_FACTION": (
+        "Stalwart-honest Furling. Clean military reliability, bright brass-and-steel, no embellishment. Weapons are HONEST — solid mechanical chunk + clean impact, no theatrics.",
+        "council_defender",
+        "queued",
+        "assets/sfx/ships/defender_vessel/",
+        "queued",
+    ),
+    "COMPELLER_FACTION": (
+        "Coercive Furling. Hard mechanical clicks, tightened cables, restrained menace under apparent calm. Weapons are RESTRAINTS — magnetic lock-on tone + grappling-claw thud.",
+        "council_compeller",
+        "queued",
+        "assets/sfx/ships/compeller_vessel/",
+        "placeholder",
+    ),
+    "HIDER_FACTION": (
+        "Veiled Furling. Hush, fabric-rustle, dampened resonance, almost-silent. Weapons are SUPPRESSED — muffled discharge + soft absorption thump.",
+        "council_hider",
+        "queued",
+        "assets/sfx/ships/hider_vessel/",
+        "placeholder",
+    ),
+    "DENIER_FACTION": (
+        "In-denial Furling. Brittle major-key cheer, slightly-off pitched bells, forced calm. Weapons are SHOULDN'T-BE-WORKING — fizzy mis-aligned crackle + apologetic small impact.",
+        "council_denier",
+        "queued",
+        "assets/sfx/ships/denier_vessel/",
+        "placeholder",
+    ),
+    "ARILOU": (
+        "Quietly weird, quasi-space displaced. Gentle phase-shifting, time-stretched chimes, dimensional whisper. Weapons phase in and out — soft warble + delayed dimensional reverb impact. State stem: 'patience' (fades as the Sage gives up on you).",
+        "arilou",
+        "queued",
+        "assets/sfx/ships/arilou_skiff/",
+        "queued",
+    ),
+    "ANDROSYNTH": (
+        "Human-improvised, retro-Atari-on-warm-analog. Refugees making do with what they have. Weapons are jury-rigged charged-particle bursts — sharp tinny zap + crunchy improvised impact.",
+        "androsynth",
+        "queued",
+        "assets/sfx/ships/androsynth_cruiser/",
+        "queued",
+    ),
+    "MELNORME": (
+        "Bio-cargo trader. Resonant gold/silver chimes, low gravelly cargo-hold bass, enigmatic. Weapons are RESONANT TRADE-NETWORK BURSTS — long bell tone wind-up + soft dispersal (they prefer not to harm; cargo damage costs them).",
+        "melnorme",
+        "queued",
+        "assets/sfx/ships/melnorme_trader/",
+        "queued",
+    ),
+    "MMRNMHRM": (
+        "Cold-precise robot. Synthetic hum, no warmth, perfect frequencies, microsecond timing. Weapons are tight directed beams — silent click + crisp surgical hit.",
+        "mmrnmhrm",
+        "queued",
+        "assets/sfx/ships/mmrnmhrm_sentinel/",
+        "queued",
+    ),
+    "MYCON_BIOT": (
+        "Organic-fungal-ritual. Chanting, wet thrumming, deep bio-mechanical pulses, distorted alien voices murmuring. Weapons are biological projectiles — wet thwip + ripping organic impact. State stems: 'obedience' + 'heresy' (Deep Child awakening).",
+        "mycon",
+        "queued",
+        "assets/sfx/ships/mycon_biot/",
+        "placeholder",
+    ),
+    "SLYLANDRO": (
+        "Airy, vast, gas-giant scale. Wind through pressure shells, deep slow-modulated bass, distant tonal hums. Weapons (rare): electrostatic discharges between cloud bodies — soft thunder. State stems: 'awe' + 'worry'.",
+        "slylandro",
+        "round1",
+        "assets/sfx/ships/slylandro_envoy/",
+        "placeholder",
+    ),
+    "PROTO_URQUAN_LIMPETS": (
+        "Primordial-raw. Guttural calls, struck stone, animal-hide drums, bone whistles. Weapons are organic kinetics (claws, slings, bio-acid) — animal roar of release + wet impact.",
+        "proto_species_wonder",
+        "queued",
+        "assets/sfx/ships/proto_ur_quan/",
+        "queued",
+    ),
+    "PROTO_QOR_AH": (
+        "Primordial-aggressive divergence. Sharper strikes, harder dissonance than its sibling Ur-Quan line. Wood splinters under chitin, more guttural calls.",
+        "proto_species_wonder",
+        "queued",
+        "assets/sfx/ships/proto_qor_ah/",
+        "queued",
+    ),
+    "CHENJESU": (
+        "Crystalline-resonant. Struck quartz, sympathetic harmonic overtones, ancient stillness. Weapons: focused-resonance lance — building harmonic tone + glassy shatter on impact. (Below the Others' threshold because they don't broadcast.)",
+        "chenjesu",
+        "queued",
+        "",  # no ship yet — Chenjesu are rooted in slice era
+        "placeholder",
+    ),
+    "UTWIG": (
+        "Mournful-shame-cloaked. Veiled drums, distant mournful horns, ceremonial bells under fabric. Weapons (when forced): repentant single-shot — drum-roll wind-up + heavy stone impact. The long shame is their cognitive cloak.",
+        "utwig",
+        "queued",
+        "assets/sfx/ships/utwig_vessel/",
+        "placeholder",
+    ),
+    "TAALO": (
+        "Silicon-meditative. Stone-on-stone, slow geological harmonics, multi-millennial patience. Weapons (rare): mineral fracture — long sub-bass crack + scattering pebble shower.",
+        "taalo",
+        "queued",
+        "assets/sfx/ships/taalo_vessel/",
+        "placeholder",
+    ),
+    "BURVIXESE": (
+        "Be-Loud-doctrine. Bright brass fanfares, four-handed metal percussion, fearless announcement. Weapons: declarative cannon — herald-trumpet windup + bright satisfying boom. (Most die during slice — survivors migrate.)",
+        "burvixese",
+        "queued",
+        "assets/sfx/ships/burvixese_vessel/",
+        "placeholder",
+    ),
+    "PLANAR": (
+        "Edge-on-quiet. Slicing whistle on the plane, silence off-plane, deliberate stereo flatness. Weapons: planar-arc shotgun — paper-flat whoosh + dimensional cut impact.",
+        "planar",
+        "queued",
+        "assets/sfx/ships/planar_vessel/",
+        "placeholder",
+    ),
+    "OTHERS": (
+        "Never-funny. Subharmonic hum below hearing, broken radio of voices speaking in reverse, the SOUND OF BEING SEEN. Weapons: decursion — silent reality-tear + reality-stitching-back-wrongly. Treated as cinematic stinger SFX, not combat SFX (Others are not in super-melee).",
+        "others_reveal",
+        "queued",
+        "",  # no super-melee ship
+        "placeholder",
+    ),
+    "SENTRY_DRONE_47T": (
+        "Industrial-robotic. Furling-built sentry; mechanical clicks, servo whines, no warmth. Weapons are basic stun/disable — buzzing electrical zap + clinical disable impact. The 'unionized' variant has the same sound; the politics is in dialog, not in tone.",
+        "",  # no per-species music; uses combat music
+        "queued",
+        "assets/sfx/ships/sentry_drone_47t/",
+        "queued",
+    ),
+    # --- Lore expansion 2026-05-17: new species ---
+    "LEMMKIN": (
+        "Bright-curious-fearless. Squirrel-chitter under the mix, plucked banjo-like strings, light tambourine and shaker percussion, woodwind pads (clarinets/oboes) with ONE subtly-flat tone so the cheerfulness reads as wrong. Weapons are CHEERFULLY IMPROVISED: brass-tinged shrapnel-scatter ratchet (primary) + snap-pivot whoosh + small confident *plink* into a contained explosive pop (special Tail-Drop 180-pivot).",
+        "lemmkin",
+        "queued",
+        "assets/sfx/ships/lemmkin_skitter/",
+        "queued",
+    ),
+    "THE_BARGAINERS": (
+        "Confident-merchant-diplomatic. Smooth brass-and-velvet chord-progressions, persuasive woodwind solos, the air of someone fully convinced their argument is closing. Eventual horror under that — a held minor-second whisper that wants to scream but won't. Weapons: TBD (no ship in current canon — Bargainers concept-only, will die confidently believing the Others can be negotiated with).",
+        "bargainers",  # future music_context dir if/when fired
+        "placeholder",
+        "",   # no ship yet
+        "placeholder",
     ),
 }
 
@@ -120,7 +394,7 @@ ROWS = [
         "assets/comm/probe/ (SC2 lift)",
         "ANDROSYNTH",
         "yes (tutorial Beat 4 milestone)",
-        "no Firefly portrait yet; no per-individual variants",
+        "no Firefly portrait yet; no per-individual variants. Distress Beacon 4-shot montage COMPLETE 2026-05-17 (cutscene_distress_beacon AFTER + cutscene_decursion_swap + cutscene_others_emerging + cutscene_others_consuming in assets/generated_drafts/firefly/tier1_cutscenes/)",
     ),
     (
         "ARILOU",
@@ -152,7 +426,7 @@ ROWS = [
         "assets/comm/safeones/ (SC2 lift)",
         "BURVIXESE",
         "no",
-        "no ship, no dialog, no Firefly portrait, no homeworld, only warp-pod color exists",
+        "no ship, no dialog, no homeworld. Avatar + species portrait COMPLETE 2026-05-17 (tier1_avatars/avatar_burvixese_engineer.png + tier1_portraits/species_burvixese_portrait.png)",
     ),
     (
         "CHENJESU",
@@ -168,7 +442,7 @@ ROWS = [
         "—",
         "—",
         "optional Act 2",
-        "no dialog character, no Firefly portrait, no warp-pod entry (they don't fly)",
+        "no dialog character, no warp-pod entry (they don't fly). Avatar + species portrait COMPLETE 2026-05-17 (tier1_avatars/avatar_chenjesu_witness.png + tier1_portraits/species_chenjesu_portrait.png)",
     ),
     (
         "CLEANSER_FACTION",
@@ -200,7 +474,7 @@ ROWS = [
         "—",
         "FURLING_COMPELLER",
         "referenced-only",
-        "no dialog character, no dedicated ship, no Firefly portrait, no homeworld",
+        "no dialog character, no dedicated ship, no homeworld. Faction insignia COMPLETE 2026-05-17 (tier1_faction_insignia/insignia_compeller.png; v1 had human hands and was rerolled). Furling reference plate already existed.",
     ),
     (
         "CURIOUS",
@@ -304,7 +578,7 @@ ROWS = [
         "full-sentient (player species)",
         "precursor (Persuader-aligned for the player's home cluster)",
         "Mh-Lai (the Hearth)",
-        "The player's species. 5-8 meter shaggy mammoth-furred bipeds; slow-breeding; long-lived; value memory above all; gardeners of the galaxy. Steward = player class; Commander Halia is the home-base authority figure.",
+        "The player's species. Wookiee-tall (~2.0-2.4m) mono-pedal creatures: humanoid torso and two arms on top, but BELOW the waist a single muscular fur-covered pedestal-stalk ending in a wide disc-foot ringed by twelve large toes (snail-glide locomotion). Entirely covered in dense fur — exotic colors, stripes, gradients; no two coats alike. Big fennec-fox-like ears, long bushy tail, wide Cheshire-cat grin. Androgynous body (no genitalia, no breasts, no sex dimorphism). No clothes — only a vest-harness for tools and instruments. Vain about their fur, talk about it constantly. Slow-breeding, long-lived; value memory above all; gardeners of the galaxy. Steward = player class; Commander Halia is the home-base authority figure.",
         "references/lore/the-furlings-and-the-others.md; species-precursor-era.md",
         "commander_halia",
         "furling_scout",
@@ -312,7 +586,7 @@ ROWS = [
         "assets/comm/commander/ (SC2 lift)",
         "FURLING_SCOUT",
         "yes (player + home base)",
-        "no Firefly portrait for Halia yet; the Scout ship sprite is procedural-only in code",
+        "Halia avatar exists at tier1_avatars/avatar_commander_halia.png; the Scout ship sprite is procedural-only in code; CANON-ART MISMATCH: avatars currently render bipedal stand-in, canon body is mono-pedal pedestal-stalk + 12-toe disc-foot (see the-furlings-and-the-others.md §1 note). Lander REDESIGNED 2026-05-17 to hovering drone (no legs; terrain-immune; weather-killed); canonical sprite at tier1_lander/lander_furling.png. Lander destroyed/descending/ascending sprite prompts authored, awaiting next Firefly credit window.",
     ),
     (
         "HIDER_FACTION",
@@ -345,6 +619,22 @@ ROWS = [
         "—",
         "no",
         "no ship, no dialog (correctly — pre-sentient observation only)",
+    ),
+    (
+        "LEMMKIN",
+        "Lemmkin Curator",
+        "full-sentient",
+        "homesteader (by choice — to SEE)",
+        "TBD (slice cluster)",
+        "Anthropomorphic squirrel species with vestigial amygdala (no fear response). Lemming-clade troupe behavior: when one investigates, the rest follow off cliffs. Homesteader-by-CHOICE; the Furlings offered them a Migration lift, the Lemmkin declined cheerfully 'to see what happens' with the Others. They will be ELIMINATED — dying LEARNING (Burvixese died believing they'd live; Lemmkin die curious). Their archives survive into the SC2 era as misattributed 'Precursor caches.' Ship: Lemmkin Skitter glass-cannon scout with Burst-Scatter Probe (front-arc shrapnel) + Tail-Drop 180-pivot (snap-reverse explosive drop).",
+        "references/lore/species-content-backlog.md §Lemmkin; tools/firefly_prompts/tier1_avatars/avatar_lemmkin_curator.txt",
+        "lemmkin_curator",
+        "lemmkin_skitter",
+        "Lemmkin Skitter",
+        "assets/generated_drafts/firefly/tier1_avatars/avatar_lemmkin_curator.png",
+        "LEMMKIN",
+        "yes (slice species — Homesteader by choice path)",
+        "no dialog character implementation yet; ship not yet in src/scz/combat/ships.py",
     ),
     (
         "MAEL_NUM",
@@ -408,7 +698,7 @@ ROWS = [
         "assets/comm/mycon/ (SC2 lift) + assets/generated_drafts/firefly/tier1_portraits/species_mycon_biot_portrait.png",
         "MYCON_BIOT",
         "yes (active Council decision)",
-        "no dedicated DialogCharacter (non-verbal by design); no Deep Child voice prompt yet",
+        "no dedicated DialogCharacter (non-verbal by design); no Deep Child voice prompt yet. Xylos Prime homeworld imagery COMPLETE 2026-05-17 (tier1_planets/planet_xylos_prime.png — half-cratered/half-blooming).",
     ),
     (
         "ORZ_RIFTS",
@@ -440,7 +730,7 @@ ROWS = [
         "—",
         "OTHERS",
         "yes (slice climax threat)",
-        "no Others ship class in ships.py yet; no Decursion weapon implementation; non-interactive except in hijack quest (future)",
+        "no Others ship class in ships.py yet; no Decursion weapon implementation; non-interactive except in hijack quest (future). Others' Vessel sprite COMPLETE 2026-05-17 (tier1_ships/ship_others_vessel.png — incomprehensible inverted-geometry tangle with spacetime lensing halo).",
     ),
     (
         "PERSUADER_FACTION",
@@ -488,7 +778,7 @@ ROWS = [
         "assets/generated_drafts/firefly/tier1_portraits/species_planar_blade_portrait.png",
         "—",
         "optional (mid-game encounter)",
-        "no dialog character; no Planar Blade ShipClass in code; no warp-pod entry; no encounter system",
+        "no dialog character; no Planar Blade ShipClass in code; no warp-pod entry; no encounter system. SPECIES RENAMED 2026-05-17 Planar -> Thinn (Lore-chat) — visuals are canonically salvageable but filenames + species_id pending Lore commit of species-the-thinn.md. Manifest entries flagged reroll_requested with rename notes.",
     ),
     (
         "PROTO_HUMANS",
@@ -520,7 +810,7 @@ ROWS = [
         "—",
         "PROTO_QORAH",
         "yes (optional encounter / combat)",
-        "no homeworld name; no dialog character (acceptable — non-verbal); no Firefly portrait",
+        "no dialog character (acceptable — non-verbal). Avatar + portrait + tidal-locked moon homeworld COMPLETE 2026-05-17 (tier1_avatars/avatar_proto_qor_ah.png + tier1_portraits/species_proto_qor_ah_portrait.png + tier1_planets/planet_proto_urquan_moon.png — shared with Proto-Ur-Quan).",
     ),
     (
         "PROTO_SPATHI",
@@ -604,24 +894,39 @@ ROWS = [
         "—",
         "PROTO_URQUAN",
         "yes (active Council debate is the slice's moral spine)",
-        "no homeworld name; no Firefly portrait; non-verbal LLM voice prompt not yet authored",
+        "non-verbal LLM voice prompt not yet authored. Avatar + portrait + tidal-locked moon homeworld COMPLETE 2026-05-17 (tier1_avatars/avatar_proto_urquan.png + tier1_portraits/species_proto_urquan_portrait.png + tier1_planets/planet_proto_urquan_moon.png).",
     ),
     (
         "PROTO_UTWIG",
-        "Proto-Utwig",
-        "pre-sentient (proto)",
-        "neither",
-        "Gorno region",
-        "Armored bipedal grazers with expressive facial musculature; hyper-developed shame response; hide faces when rebuked. Trauma-response archetype already encoded.",
-        "references/lore/proto-species-observations.md",
+        "Proto-Utwig (SUPERSEDED — see UTWIG row)",
+        "PROMOTED 2026-05-17 to full sentient",
+        "see UTWIG",
+        "Gorno III (moon of Long-Hold; slice cluster outer rim)",
+        "Promoted to a full-sentient Homesteader-Hider species; see the UTWIG row below. The shame-response from proto-era survives into sentience as the 'long shame' — a literal cognitive cloak that drops the individual below the Others' detection threshold.",
+        "references/lore/species-the-utwig.md",
+        "see UTWIG",
+        "see UTWIG",
+        "see UTWIG",
+        "see UTWIG",
+        "UTWIG",
+        "REPLACED by UTWIG row",
+        "row preserved for diff traceability; canonical row is now UTWIG",
+    ),
+    (
+        "UTWIG",
+        "Utwig / Elder Quor-Voh-Listening",
+        "full-sentient (newly emergent)",
+        "homesteader (Hider sub-strategy via 'long shame' cognitive cloak)",
+        "Gorno III (moon of the gas giant Long-Hold; slice cluster outer rim)",
+        "Armored bipedal grazers, ~1.8m, slate-gray bone-keratin plates with cream throat and ochre flank stripes. Hyper-developed shame response that physically buries their face under a cranial brow-fold — and in our slice's era they have just become sentient and discovered the trait drops their cognitive emission below the Others' detection threshold. They are tragically the species closest to solving their own survival, at the cost of a civilization sustained on shame.",
+        "references/lore/species-the-utwig.md",
+        "— (elder shame-orator dialog character to be authored)",
+        "— (no Utwig ships in our era; SC2-era Jugger is post-Migration)",
         "—",
         "—",
-        "—",
-        "—",
-        "assets/comm/utwig/ (SC2 lift)",
-        "—",
-        "no",
-        "no ship, no dialog (correctly — pre-sentient)",
+        "UTWIG",
+        "yes (Act 2-3 Homesteader decision)",
+        "no DialogCharacter for Elder Quor-Voh-Listening yet; no voice profile; no Utwig Cloaking Satellite variant. Species portrait + Gorno III homeworld COMPLETE 2026-05-17 (tier1_portraits/species_utwig_portrait.png + tier1_planets/planet_gorno_iii.png). Avatar already existed at tier1_avatars/avatar_utwig_elder.png.",
     ),
     (
         "PROTO_VUX",
@@ -737,7 +1042,7 @@ ROWS = [
         "—",
         "TAALO",
         "no",
-        "no lore doc, no homeworld, no ship, no dialog, no Firefly portrait — almost entirely a stub",
+        "no lore doc, no homeworld, no ship, no dialog. AVATAR + PORTRAIT FLAGGED FOR RE-ROLL 2026-05-17 — generated visuals are wrong species (peaceful amphibian) per canon drift. New canon: Horta-lineage rock-shamblers, acid-eats-rock, calcify on death; the species IS the landscape; Taalo Shield fails; Eliminated. Manifest reroll_requested + detailed prompt notes captured for next Firefly credit window.",
     ),
     (
         "TALOS",
@@ -753,7 +1058,7 @@ ROWS = [
         "—",
         "—",
         "yes (mid-game system-erasure event)",
-        "no dialog character for a Talos emissary; no Resonator artifact illustration yet; cinematic for the system erasure not yet generated",
+        "no dialog character for a Talos emissary. Talos planet sphere + system-erasure cutscene + Resonator artifact COMPLETE 2026-05-17 (tier1_planets/planet_talos_system.png + tier1_cutscenes/cutscene_talos_erasure.png + tier1_artifacts/artifact_talos_resonator.png).",
     ),
     (
         "THE_BARGAINERS",
@@ -865,7 +1170,8 @@ def main() -> int:
             continue
         species_id = row[0]
         layered = LAYERED_INFO.get(species_id, ("", "", "", ""))
-        writer.writerow(tuple(row) + layered)
+        audio = AUDIO_INFO.get(species_id, ("", "", "", "", ""))
+        writer.writerow(tuple(row) + layered + audio)
     if close_after:
         out.close()
         print(f"wrote {args.output}", file=sys.stderr)

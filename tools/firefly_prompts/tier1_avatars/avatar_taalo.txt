@@ -1,0 +1,49 @@
+# aspect: 2:3
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "Taalo are like
+# lumps of shambling rock with a frilly bottom curtain". Combined with
+# the 2026-05-17 canon update: Taalo are Horta-lineage rock-shamblers
+# (acid-eats-rock, calcify on death, the species IS the landscape;
+# Taalo Shield fails; Eliminated in the slice).
+#
+# v2 direction: a LUMP OF MOSSY-SLATE ROCK with a CRENELLATED FRILLY
+# MINERAL-CURTAIN around the bottom for shambling locomotion. NO
+# humanoid form, NO eyes (or near-invisible compound geo-sensors), NO
+# clear arms. The creature should LOOK like a chunk of geology that
+# decided to move. The frilly bottom skirt — like the kelp-ruffle of a
+# stingray or the foot-fringe of a slug — is the movement organ.
+
+A full-body avatar painting of a Taalo. Body plan: a ROUGHLY-OVOID
+LUMP of mossy slate-and-quartz rock, ~1.3m tall and 1m wide at
+its broadest, with a wide curtain-frill of FINER MINERAL FRINGES
+around the entire BOTTOM edge — like a frilled stone skirt
+extending downward to ground level, the locomotion organ that
+ripples and shambles the body forward. The main mass: layered
+slate-gray basalt with veins of pale rose-quartz and patches of
+moss-green silicate lichen. Surface is rough and natural, NOT
+smooth, NOT polished — this looks like a piece of mountainside
+that decided to walk. Near the top: a SLIT MOUTH that hangs
+slightly open, faintly drooling a clear acid bead (they eat rock
+chemically). NO eyes are obvious — only a horizontal band of
+matte compound geo-sensor patches just above the mouth, almost
+the same color as the surrounding stone (you have to look for
+them). NO arms, NO limbs above the curtain — manipulation, if
+needed, happens by extruding small mineral pseudopod-buds from
+the side. A simple woven-fiber sash crosses the upper third of
+the body, hung with small smooth pebble-tools. Pose: standing
+upright (centered, slightly tilted to one side as if balanced
+mid-shamble), the bottom curtain fringes visibly rippling in a
+slow forward-wave. Background: SOLID MATTE DARK NAVY (#0a0e1a),
+edge-to-edge. Lighting: even soft three-point with a faint moss-
+green rim from the lichen, faint warm rim from the acid bead.
+Style: stylized 1990s sci-fi game character portrait, painterly.
+Tone: A LUMP OF MOUNTAINSIDE WITH AGENCY — ancient, geological,
+shambling, doomed (they will calcify into ordinary rock in the
+slice; the Shield will fail).
+
+ARTICULATION BRIEF (rig: rock_shambler — replaces bipedal_humanoid):
+- BODY LUMP: the entire main mass, articulates by leaning + bobbing
+- CURTAIN FRILLS: the bottom fringe ripples for locomotion
+- MOUTH: slit, can open wider for talk; acid drip is animated
+- PSEUDOPOD-BUDS: optional small extrusions from the sides
+- Avoid: humanoid silhouette, arms, legs, prominent eyes, smooth
+  polished surface — this is rough WALKING ROCK

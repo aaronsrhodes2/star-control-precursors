@@ -1,0 +1,31 @@
+{
+  "context": "ending_compeller",
+  "category": "ending",
+  "description": "Ending \u2014 Compeller path; survival by force",
+  "key": "E minor",
+  "bpm": 68,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "drone": {
+      "path": "assets/music/ending_compeller/drone.wav",
+      "prompt": "Isolated DRONE BASS STEM for layered production: hard metallic minor-key low drone with restrained tension, the sound of force having won, in E minor at 68 bpm, Compeller-path ending \u2014 civilizations migrated under duress, saved but resentful, the cost of certainty, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pulse": {
+      "path": "assets/music/ending_compeller/pulse.wav",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: slow heavy chain-tightening pulse, mechanical authority, in E minor at 68 bpm, Compeller-path ending \u2014 civilizations migrated under duress, saved but resentful, the cost of certainty, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "texture": {
+      "path": "assets/music/ending_compeller/texture.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant alien voices in murmured complaint, controlled compliance, restrained acceptance, in E minor at 68 bpm, Compeller-path ending \u2014 civilizations migrated under duress, saved but resentful, the cost of certainty, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T01:48:23Z",
+  "notes": ""
+}

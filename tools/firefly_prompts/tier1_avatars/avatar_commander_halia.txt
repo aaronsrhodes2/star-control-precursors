@@ -1,30 +1,36 @@
 # aspect: 2:3
-# notes: Articulated avatar for Commander Halia — bipedal Furling on a
-# solid matte dark navy background, so the future PortraitAnimator (and
-# manual alpha extraction) can decompose her body into moveable parts.
-# Pose is neutral standing with limbs visible — NOT a portrait crop.
-# This replaces the legacy portrait for layered render mode.
+# notes: REWRITTEN 2026-05-17 per Aaron review (PASS 2): the v6 rewrite
+# brought us to "Cheshire-cat Furling" but the rendered result still
+# read wookiee. Aaron clarified in pass 2: "I saw one like a wookie,
+# but we want more like a cat or a mynx". v7 explicitly emphasizes
+# CAT/MYNX silhouette — short-snouted, broad-cheeked, full whiskers,
+# round face NOT muzzle-pointed. Wookiee suggests tall + apelike-arms
+# + tube-shaped torso; this needs to be CAT — wide-cheeked, big head
+# on a relatively short body, eyes prominent.
 
-A full-body avatar painting of Commander Halia, a Furling officer in her
-prime. Furred humanoid, ~1.6 m tall, slate-gray fur with cream throat
-and chestnut highlights, expressive amber eyes, attentive ears erect.
-She wears a sober Furling Steward officer's tunic — turquoise body
-with copper trim, a single Migration Council sigil on the left chest,
-sleeves ending at the wrist. Standing in a neutral three-quarter
-pose, weight slightly on left leg, both arms relaxed at her sides
-with hands visible, fingers gently curled (not clenched, not crossed).
-Head facing the viewer with a calm, weighted gaze. Background: SOLID
-MATTE DARK NAVY (#0a0e1a), edge-to-edge, no scene elements, no stars,
-no glow — the avatar will be composited onto separate background art
-at runtime. Lighting: even soft three-point, no dramatic cast shadows
-on the body itself, clean silhouette for easy alpha extraction.
-
-ARTICULATION BRIEF (rig: bipedal_humanoid):
-- HEAD on NECK: neck visible from collar to jaw, ears legible
-- SHOULDERS L/R: tunic seams clearly visible at each shoulder
-- ELBOWS L/R: arms bent gently, elbows in clear profile
-- WRISTS L/R: hands away from body, fingers separable
-- TORSO: clear waistline, body symmetry
-- Avoid: crossed arms, hands behind back, occluded face
-- Style: stylized 1990s sci-fi game character portrait, painterly,
-  crisp silhouette readable at 400x600 pixels in-game.
+ONE alien character: a LARGE CAT-LIKE FURLING in the manner of a
+CHESHIRE CAT from Alice in Wonderland. Body plan: round and broad,
+NOT tall — a wider-than-tall silhouette in a relaxed seated pose.
+The HEAD is the dominant feature: BIG WIDE-CHEEKED CAT FACE with
+short rounded muzzle (NOT a dog-like or wolf-like snout), full
+whiskers, half-lidded forward-facing eyes glowing warm gold,
+dominated by a slightly-too-wide CHESHIRE-CAT GRIN with even
+white teeth visible. The face reads as A LARGE CAT, not as an
+ape, not as a wookiee. The body: stocky and rounded, plush fur
+in WARM TABBY STRIPES (cinnamon ground with darker mahogany
+ringed stripes, silver-tipped guard hairs at cheek and chest).
+Compact upright posture in a seated pose with a SHORT TORSO —
+this is a CAT shape, not a tall furred humanoid. Two arms folded
+loosely across the round belly. Long bushy fox-tail curling
+forward into the lower frame. Big fennec-fox-like ears held
+perked alert ATOP the rounded head. Naked under the fur except
+for ONE copper-trimmed amber sash crossed over the shoulder
+bearing a small Migration Council sigil pendant at the throat.
+Pose: seated upright, big-cat sphinx-like posture, head
+overlarge and grinning. Background: solid matte dark navy.
+Style: painted stylized 1990s sci-fi character portrait, single
+subject. Tone: BIG FRIENDLY CAT COMMANDER — warmth and grin
+first, authority just under. Avoid: tall wookiee/ape silhouette,
+long arms, narrow muzzle, lean torso — Halia is a CAT, not a
+biped-with-fur. Round face, short body, wide cheeks, big eyes,
+wide grin.

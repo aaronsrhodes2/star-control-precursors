@@ -1,0 +1,10 @@
+# aspect: 1:1
+# notes: Melnorme plasma cannon projectile, 15 dmg, slow but heavy.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above. Subject: a chunky orange plasma ball, a glowing
+spherical mass of molten-orange plasma with a deeper red core and a
+yellow-white outer edge. Roughly circular footprint with a slight
+forward-leaning teardrop point. Small plasma sparks trailing behind.
+Bright orange-red core, vivid. Pure black void background, isolated.
+Stylized 1990s sci-fi painterly game art, crisp silhouette.

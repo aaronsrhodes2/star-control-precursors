@@ -1,0 +1,47 @@
+# aspect: 1:1
+# notes: Sprite for the Proto-Ur-Quan Warship — mid-uplift molluscoid
+# species, ramming-capable aggressive. Weapon per ship-roster:
+# Crushing-Claw Burst (forward arc, 14 dmg, 200 range — short!) + Ram
+# Charge special. Visually: heavy warship with FORWARD-MOUNTED CLAW
+# CLUSTER weapon emplacement.
+
+Top-down 2D game sprite of a PROTO-UR-QUAN WARSHIP.
+
+SHAPE: HEAVY AGGRESSIVE WARSHIP, ~1.7:1 aspect, oriented
+vertically with a brutal armored prow at the top. Broad
+across the beam. Thick segmented armor plates with dark
+panel lines suggesting a primitive-but-effective build (mid-
+uplift; the species has weapons but their refinement is
+crude). Twin heavy thruster nacelles at the rear flanking a
+broad keel.
+
+WEAPONS: at the very prow, a CRUSHING CLAW CLUSTER — an
+arrangement of 3 to 5 dark-bronze crusher-pincers arrayed in
+a forward-facing cluster around a central cannon-bore (the
+Crushing-Claw Burst projector). Each pincer has visible
+hydraulic-style musculature, like a primitive shellfish-claw
+mechanism scaled up to warship size. A faint deep-blue glow
+emanates from the central bore (matches the projectile
+color). The ship's MASS itself is its Ram Charge weapon —
+the prow is reinforced with a heavy battering ram plate.
+
+COLOR: deep dark-blue hull (Proto-Ur-Quan species color
+indicating this is the pre-Ur-Quan lineage) with bronze
+crusher-pincers and faint blue weapon-glow. Brass detailing
+at structural seams.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric.
+Subject centered, ~75% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: BRUTAL, RAMMING, the
+species that will become the Ur-Quan — but here, mid-uplift,
+not yet at full doctrine.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, refined elegant aesthetic, defensive
+shield generators, light-weight scout silhouette.

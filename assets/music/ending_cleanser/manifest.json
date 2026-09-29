@@ -1,0 +1,31 @@
+{
+  "context": "ending_cleanser",
+  "category": "ending",
+  "description": "Ending \u2014 Cleanser path; purification accomplished",
+  "key": "E flat minor",
+  "bpm": 60,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "drone": {
+      "path": "assets/music/ending_cleanser/drone.wav",
+      "prompt": "Isolated DRONE BASS STEM for layered production: cathedral organ low drone in minor key, monolithic conviction sustaining, in E flat minor at 60 bpm, Cleanser-path ending \u2014 purification accomplished, religious certainty rendered as sound, ending in a silence that costs, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pulse": {
+      "path": "assets/music/ending_cleanser/pulse.wav",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: slow ceremonial toll, hangman's bell at memorial-march tempo, in E flat minor at 60 bpm, Cleanser-path ending \u2014 purification accomplished, religious certainty rendered as sound, ending in a silence that costs, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "texture": {
+      "path": "assets/music/ending_cleanser/texture.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant Furling chant fragments fading into silence, the empty cluster after, the cost, in E flat minor at 60 bpm, Cleanser-path ending \u2014 purification accomplished, religious certainty rendered as sound, ending in a silence that costs, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T13:49:42Z",
+  "notes": "The hardest ending tonally \u2014 the player chose to euthanize holdout species. Religious certainty + monolithic dread + a tiny silence at the end for the cost."
+}

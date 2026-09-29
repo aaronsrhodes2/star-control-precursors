@@ -89,9 +89,28 @@ Each entry is the species' SC2 identity → what they look like in our era. Slic
 *SC2 race*: Beautiful psychic women; their world destroyed by Mycon (in SC2's future).
 *In our era*: humanoid sea-dwellers with bioluminescent skin patterns. Their colonies coordinate through a low-frequency vibrational communication that propagates kilometers underwater. They are NOT psychic yet — their cognitive substrate is just unusually *resonant* with electromagnetic patterns. The Furling archive notes "long-range coherent communication; if this evolves into telepathy as we suspect, this species is a future asset."
 
-### Proto-Utwig (Gorno region)
-*SC2 race*: Depressed warriors who wear masks to hide their faces.
-*In our era*: armored bipedal grazers with extremely expressive facial musculature *and* a hyper-developed shame response. When threatened or rebuked by their herd-mates, they bury their faces. **The face-hiding is already the trauma response.** The Furling archive notes this with sympathy.
+### ~~Proto-Utwig~~ — PROMOTED to a main Homesteader species (2026-05-17)
+
+> **Status change:** the Utwig are no longer a proto-species observation in
+> our slice's era. They are now a **full-sentient Homesteader species**
+> with their own arc. See [species-the-utwig.md](species-the-utwig.md)
+> for the canonical sheet.
+
+The promotion preserves the proto-era trait that made them interesting:
+the hyper-developed shame response that physically buries their face
+when threatened. In our era that response has become the **"long
+shame"** — a culturally-developed cognitive cloak that drops their
+mental signature below the Others' detection threshold. The Utwig
+are the slice's example of a species that *accidentally* evolved the
+perfect defense against the Others, at terrible cultural cost.
+
+Original proto-observation, preserved for reference:
+> *SC2 race*: Depressed warriors who wear masks to hide their faces.
+> *In our era*: armored bipedal grazers with extremely expressive facial
+> musculature *and* a hyper-developed shame response. When threatened or
+> rebuked by their herd-mates, they bury their faces. **The face-hiding
+> is already the trauma response.** The Furling archive notes this with
+> sympathy.
 
 ### Proto-Supox (Libris area)
 *SC2 race*: Plant-people; gentle botanists.

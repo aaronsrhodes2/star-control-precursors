@@ -1,0 +1,45 @@
+# aspect: 1:1
+# notes: Sprite for the Proto-Qor-Ah Marauder — fanatic mid-uplift
+# species. Weapon per ship-roster: SPIN BLADE (whirring blade-segments
+# deploy in a halo, AOE 80-radius around the ship, suicidal close
+# range). Glass-cannon stats. Visually: a vivid cream/ivory blade-form
+# with deployable cutting ribs.
+
+Top-down 2D game sprite of a PROTO-QOR-AH MARAUDER starship.
+
+SHAPE: a BLADE-FORM hull — slim, aggressive, ~2.5:1 aspect,
+oriented vertically with a sharp piercing nose at the top.
+The body is a tapered ivory-and-black blade with sharp
+edges. Surrounding the central hull: a HALO OF 4-6
+DEPLOYABLE CUTTING RIB-SEGMENTS arrayed radially in a 360°
+ring just outside the ship's silhouette, like a circular
+saw frozen mid-swing. The blade-segments are extended
+outward in this view (the Spin Blade is canonically
+deployed when in combat).
+
+WEAPON: the SPIN BLADE halo IS the weapon — its purpose is
+to chew anything close. Each blade-segment has a sharpened
+leading edge with a faint amber-orange glow at the tip. No
+forward turrets; the whole ship is the weapon.
+
+COLOR: cream-ivory hull plates with deep-black structural
+accents and bronze internal hardware visible through cutaway
+panels. The blade-segments are darker bronze-black with
+amber edge-glow. A single small viewport amidships (the Qor-
+Ah pilot's bubble) gleams red.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Symmetric
+across vertical axis. Subject centered, ~75% of frame
+(the spin-blade halo fills the wider radius).
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: FANATIC, LETHAL-PURE,
+SUICIDAL-AGGRESSIVE, a ship that exists ONLY to kill.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, friendly aesthetic, defensive armor focus,
+shielded hull.

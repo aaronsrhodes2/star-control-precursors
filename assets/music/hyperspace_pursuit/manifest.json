@@ -1,0 +1,43 @@
+{
+  "context": "hyperspace_pursuit",
+  "category": "travel",
+  "description": "Hyperspace travel \u2014 chased; danger stalking, must escape",
+  "key": "C minor",
+  "bpm": 140,
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
+  "stems": {
+    "ambient": {
+      "path": "assets/music/hyperspace_pursuit/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: alarm-siren texture and panicked radio chatter, no melody no drums no bass, in C minor at 140 bpm, tense pursuit, fast-paced sci-fi flight, danger stalking, must escape, in the spirit of 1990s space-game pursuit \u2014 tense cousin of the peaceful hyperspace theme, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "bass": {
+      "path": "assets/music/hyperspace_pursuit/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: fast pulsing distorted synth bass with eighth-note urgency, no drums no melody no pads, in C minor at 140 bpm, tense pursuit, fast-paced sci-fi flight, danger stalking, must escape, in the spirit of 1990s space-game pursuit \u2014 tense cousin of the peaceful hyperspace theme, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/hyperspace_pursuit/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: urgent staccato synth riff, fearful melodic figure that climbs and falls, no drums no bass no pads, in C minor at 140 bpm, tense pursuit, fast-paced sci-fi flight, danger stalking, must escape, in the spirit of 1990s space-game pursuit \u2014 tense cousin of the peaceful hyperspace theme, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "pad": {
+      "path": "assets/music/hyperspace_pursuit/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: dissonant minor-key brass stab pads, repeating tense rhythmic figure, no melody no drums no bass, in C minor at 140 bpm, tense pursuit, fast-paced sci-fi flight, danger stalking, must escape, in the spirit of 1990s space-game pursuit \u2014 tense cousin of the peaceful hyperspace theme, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "percussion": {
+      "path": "assets/music/hyperspace_pursuit/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: driving four-on-the-floor with double-time hihats and occasional crash, anxious tom fills, no melody no bass no pads, in C minor at 140 bpm, tense pursuit, fast-paced sci-fi flight, danger stalking, must escape, in the spirit of 1990s space-game pursuit \u2014 tense cousin of the peaceful hyperspace theme, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    }
+  },
+  "generated_at": "2026-05-17T23:12:24Z",
+  "notes": "Should sound like the peaceful Hyperspace theme's tense cousin \u2014 same key (C minor) for continuity, but +32 bpm and shifted to a 'something is wrong' register so context transitions feel related."
+}

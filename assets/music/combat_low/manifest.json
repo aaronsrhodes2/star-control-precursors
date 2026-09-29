@@ -1,0 +1,38 @@
+{
+  "context": "combat_low",
+  "category": "combat",
+  "description": "Low-risk skirmish \u2014 engaged but not in real danger (heavy-metal pivot 2026-05-17)",
+  "key": "D minor",
+  "bpm": 132,
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
+  "stems": {
+    "bass": {
+      "path": "assets/music/combat_low/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: galloping palm-muted distorted electric bass guitar riff, eighth-note motion, no drums no melody no pads, in D minor at 132 bpm, heavy-metal sci-fi combat, driving aggressive but musical, never harsh-for-the-sake-of-harsh, in the spirit of 1990s sci-fi combat-game battle crossed with classic heavy-metal \u2014 galloping distorted bass, double-kick drums, palm-muted electric guitars, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "percussion": {
+      "path": "assets/music/combat_low/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: thrash-metal kit with double-kick gallop on bass drum, crash and ride cymbals, tight snare backbeat, no melody no bass no pads, in D minor at 132 bpm, heavy-metal sci-fi combat, driving aggressive but musical, never harsh-for-the-sake-of-harsh, in the spirit of 1990s sci-fi combat-game battle crossed with classic heavy-metal \u2014 galloping distorted bass, double-kick drums, palm-muted electric guitars, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "pad": {
+      "path": "assets/music/combat_low/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: sustained distorted electric-guitar power chord stabs on the downbeats, no melody no drums no bass, in D minor at 132 bpm, heavy-metal sci-fi combat, driving aggressive but musical, never harsh-for-the-sake-of-harsh, in the spirit of 1990s sci-fi combat-game battle crossed with classic heavy-metal \u2014 galloping distorted bass, double-kick drums, palm-muted electric guitars, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/combat_low/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: screaming distorted lead electric-guitar melody with confident bluesy phrasing, hero-on-the-attack feel, no drums no bass no pads, in D minor at 132 bpm, heavy-metal sci-fi combat, driving aggressive but musical, never harsh-for-the-sake-of-harsh, in the spirit of 1990s sci-fi combat-game battle crossed with classic heavy-metal \u2014 galloping distorted bass, double-kick drums, palm-muted electric guitars, stems-only mix",
+      "format": "mp3_44100_192"
+    },
+    "ambient": {
+      "path": "assets/music/combat_low/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: industrial machine-room hum and amp-feedback texture, no melody no drums no bass, in D minor at 132 bpm, heavy-metal sci-fi combat, driving aggressive but musical, never harsh-for-the-sake-of-harsh, in the spirit of 1990s sci-fi combat-game battle crossed with classic heavy-metal \u2014 galloping distorted bass, double-kick drums, palm-muted electric guitars, stems-only mix",
+      "format": "mp3_44100_192"
+    }
+  },
+  "generated_at": "2026-05-17T19:42:42Z",
+  "notes": ""
+}

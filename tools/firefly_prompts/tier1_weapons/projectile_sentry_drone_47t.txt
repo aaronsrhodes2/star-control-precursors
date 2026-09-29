@@ -1,0 +1,11 @@
+# aspect: 1:1
+# notes: Sentry Drone basic gun projectile. 2 dmg, slow. Light-duty
+# labor-grade weapon.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above. Subject: a small simple bullet-shaped pellet,
+yellow-amber, oriented vertically (point forward). Light-duty
+industrial weapon round, not flashy — a tarnished brass-colored
+short cylindrical projectile with a faint amber muzzle-glow trail.
+Pure black void background, isolated. Stylized 1990s sci-fi
+painterly game art, crisp silhouette.

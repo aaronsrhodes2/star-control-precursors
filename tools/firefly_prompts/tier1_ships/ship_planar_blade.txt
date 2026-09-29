@@ -1,0 +1,24 @@
+# aspect: 1:1
+# notes: top-down combat sprite of the Planar Blade — the Planar's
+# unique two-dimensional ship. Its trick is that it is literally
+# PLANAR — zero thickness along its perpendicular axis. From above
+# (the gameplay camera) it should look like a vivid iridescent ribbon
+# stretched out — but with the implicit suggestion that EDGE-ON it
+# would VANISH. Front-facing immunity via Edge-Align special.
+
+A top-down orthographic view of a Planar Blade starship. Shape:
+a long narrow ribbon-bodied ship, ~6:1 aspect, oriented vertically
+in the frame (nose to top), tapered to a fine point at both ends.
+The hull is a single thin sheet of iridescent material — deep
+teal in the center shifting to royal violet at one edge and
+gold-leaf yellow at the other, like an oil-slick on water or a
+hummingbird feather, the colors shifting in bands along the
+length. Faint refractive shimmer suggests the planar nature of
+the body. Two small thruster nodes glow soft cyan at the rear
+end, casting a thin vapor-wake. At the center-of-mass: a single
+small dark optical pip — the Planar individual piloting it. No
+"hull thickness" markings — the ship should look flat as a knife
+blade from this top-down view. Background: deep starfield, near
+black. Style: stylized 1990s sci-fi game art, painterly with
+crisp silhouette, vivid saturated iridescence. The ship must read
+INSTANTLY as a flat blade, not as a slender SC2-style ship.

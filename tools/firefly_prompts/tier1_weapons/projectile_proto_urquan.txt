@@ -1,0 +1,12 @@
+# aspect: 1:1
+# notes: Proto-Ur-Quan Crushing Claw Burst projectile. Deep blue,
+# 14 dmg, short range. Visualized as a clawed energy burst.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above. Subject: a deep-blue energy CLAW-BURST, a
+short stubby projectile-mass with multiple curved pincer-tendrils
+extending forward, like a primitive shellfish claw made of crackling
+energy. Bright cobalt-blue glow with darker navy core. Brutal,
+crushing aesthetic. Faint electrical sparks at the tendril tips.
+Pure black void background, isolated. Stylized 1990s sci-fi
+painterly game art, crisp silhouette.

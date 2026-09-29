@@ -1,0 +1,19 @@
+.venv/
+__pycache__/
+*.pyc
+models/
+outputs/
+install.log
+server.log
+first_call.log
+hyperspace_*.wav
+# Generation logs from tools/audio_generate_*.py runs
+hyperspace_gen*.log
+*_gen*.log
+round*.log
+*_eleven.log
+http_server.log
+# Transient per-run logs + test artifacts (regen_*, sao_*, mg_*, sfx_*)
+*.log
+*_test.wav
+sao_warmup_test.wav

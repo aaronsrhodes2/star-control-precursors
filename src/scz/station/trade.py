@@ -38,6 +38,9 @@ ACTION_TO_TYPE: dict[str, str] = {
 class TradeScene(Scene):
     """Trade-in counter at Mh-Lai Station."""
 
+    # Furling Mh-Lai theme carries through trade-counter scenes too.
+    music_context: str | None = "furling_home"
+
     def __init__(self) -> None:
         super().__init__()
         self.selected: int = 0
@@ -60,7 +63,12 @@ class TradeScene(Scene):
             if self.last_sale_age > 2.5:
                 self.last_sale_msg = ""
 
+        def _click(kind: str = "select") -> None:
+            if self.game is not None and hasattr(self.game, "sfx"):
+                self.game.sfx.play(f"ui/menu_{kind}")
+
         if inp.cancel and self.game is not None:
+            _click("cancel")
             from scz.station.scene import StationScene
             self.game.set_scene(StationScene())
             return
@@ -68,10 +76,13 @@ class TradeScene(Scene):
         n = len(ACTIONS)
         if inp.menu_up:
             self.selected = (self.selected - 1) % n
+            _click()
         elif inp.menu_down:
             self.selected = (self.selected + 1) % n
+            _click()
 
         if inp.confirm and self.game is not None:
+            _click("confirm")
             _, action = ACTIONS[self.selected]
             if action == "back":
                 from scz.station.scene import StationScene
@@ -91,6 +102,7 @@ class TradeScene(Scene):
                 else:
                     self.last_sale_msg = "nothing to sell"
                     self.last_sale_age = 0.0
+                    _click("invalid")
                 return
             # Sell one mineral type
             t = ACTION_TO_TYPE[action]
@@ -98,6 +110,7 @@ class TradeScene(Scene):
             if qty <= 0:
                 self.last_sale_msg = f"no {t.lower()} to sell"
                 self.last_sale_age = 0.0
+                _click("invalid")
                 return
             value = qty * MINERAL_PRICES[t]
             self.game.cargo[t] = 0

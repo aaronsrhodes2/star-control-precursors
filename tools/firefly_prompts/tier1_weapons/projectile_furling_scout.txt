@@ -1,0 +1,13 @@
+# aspect: 1:1
+# notes: Furling Beam projectile sprite. Per ship-roster canon: slim
+# coherent warm-gold beam, 8 dmg, fast (near-hitscan). Visual element
+# is the BEAM SEGMENT itself, not the ship firing it.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically (top of the frame is forward).
+Subject: a slim coherent warm-gold energy BEAM SEGMENT, narrow and
+elongated, ~5:1 aspect ratio, oriented vertically with a brighter
+core and softer edges. Glowing warm yellow-gold with a hint of amber
+in the core. Faint particle haze along the trailing edge. Centered.
+Pure black void background, isolated. Stylized 1990s sci-fi painterly
+game art, crisp projectile silhouette readable at small sizes.

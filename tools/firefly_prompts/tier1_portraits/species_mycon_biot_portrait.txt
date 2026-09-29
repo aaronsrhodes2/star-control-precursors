@@ -1,25 +1,52 @@
 # aspect: 1:1
-# notes: dialog portrait for a Mycon biot in the early Deep Child
-# awakening stage. Note that SC2's Mycon were red-and-purple
-# pustule-blobs; ours are FURLING ENGINEERED terraforming biots
-# 250,000 years before SC2 — looser, less menacing, more "tool that
-# is starting to dream." If the first generation is too SC2-Mycon,
-# add "less menacing, more biological-laboratory specimen, NOT a
-# horror creature".
+# notes: REWRITTEN 2026-05-18 per Aaron review on the second-burst
+# reroll: "Mycon look like a giant mushroom stalk grown onto the floor
+# of their ship." This REPLACES the earlier "single biot torso-sized
+# creature with motile spore-tendrils" framing. Canon now: a Mycon
+# biot is a TALL MUSHROOM STALK that has GROWN INTO/ONTO THE FLOOR
+# of a Mycon ship's interior — bio-fused to the deck plating, with
+# mycelium roots spreading visibly into the floor panels around the
+# base. The biot is the WHOLE COLUMN; no face, no humanoid bust
+# composition, no creature-portrait framing.
 
-A close-up portrait of a "Mycon Biot" — a Star-Control-universe
-fungal terraforming worker engineered by an ancient civilization.
-A bulbous mass of pale ochre and warm-grey fungal tissue, the size
-of a torso, asymmetric and slowly pulsing. From its sides extrude
-3-5 thin motile spore-tendrils that float as if in liquid, each
-tipped with a tiny chitinous sensor-bud. At its center, a soft
-internal glow — a bioluminescent centroid in cool teal-cyan — is
-just beginning to manifest, suggesting a nascent consciousness
-("the Deep Child") waking up inside the tool. Visible fine spore-
-dust drifts around the figure, gold-flecked motes against the dark.
-Lighting: warm low-angle illumination, deep shadow above, set
-against a near-black volcanic mantle-vent backdrop with a faint
-glow of magma below. Style: stylized 1990s sci-fi game portrait,
-painterly, crisp silhouette. The biot should look strange and
-biological but not horror — it is a worker, not a monster, in this
-era. Subtle uncanny quality from the central glow.
+A vertical full-figure painting of a single Mycon Biot — a
+GIANT MUSHROOM STALK grown onto the interior floor of a Mycon
+ship. The biot occupies the center of the frame as a tall,
+columnar fungal stalk roughly 2m to 2.5m tall, NOT a creature-
+portrait of a face. STALK ANATOMY: a thick living fungal column
+in warm ochre and pale-grey-cream tones, slightly bulbous-
+topped (the upper crown is a soft asymmetric dome, NOT a
+clean mushroom cap), tapering toward a wider rooted base. The
+upper crown carries a SOFT INTERNAL TEAL-CYAN GLOW — a
+bioluminescent centroid visible through the translucent flesh,
+suggesting the nascent Deep Child consciousness awakening
+inside. Subtle gill-like fluting wreathes the upper third. NO
+FACE, NO HUMANOID BUST, NO EYES, NO ARMS.
+
+ROOTED TO THE SHIP FLOOR: at the biot's base, the stalk fuses
+INTO the deck plating of a Mycon vessel's interior — bio-fused
+flesh grading into hexagonal mycelial root-traceries that
+spread visibly across the metal floor panels in a 1.5m radius
+around the base, like the column was GROWN there over years.
+A faint groove-pattern in the floor radiates outward (older
+growth-rings).
+
+INTERIOR SETTING: behind the biot, the dim warm-orange-lit
+INTERIOR of a Mycon ship — rusted-organic bulkheads, hex-pattern
+deck plating extending into the soft-focus distance, a few small
+warm amber pilot-lights mounted at low height. NO planet, NO
+starfield, NO horizon, NO wilderness, NO microscopic-foreground-
+spore-dust. The scale reads as a HALL OF GROWN BIOTS, intimate
+but not close-up — the camera frames the single column in its
+ship-interior context.
+
+Lighting: warm amber low-key from below (the ship's mantle-
+vent floor lights catching the rooted base), with a cool cyan
+secondary from the biot's internal glow. Style: stylized 1990s
+sci-fi game art, painterly, crisp silhouette, BOTANICAL-
+ARCHITECTURAL, the tool that is starting to dream.
+
+NEGATIVE: torso-sized creature, humanoid bust portrait,
+floating spore-tendrils unattached to floor, face, eyes, arms,
+hands, basketball-sized small biot, planet, moon, starfield,
+horizon, wilderness, exterior setting, hyphae-afro hair.

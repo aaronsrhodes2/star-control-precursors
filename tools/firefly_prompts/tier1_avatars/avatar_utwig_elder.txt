@@ -1,0 +1,46 @@
+# aspect: 2:3
+# notes: REWRITTEN 2026-05-17 per Aaron review on v1: "Cool, but I
+# think we need skin. Make them totally goth and skinny though." The
+# v1 was fully armored bone-keratin plates; new direction is SKIN
+# VISIBLE under/instead of the plates, GOTH aesthetic (pale-cold tones,
+# severe robes, dark theatrical bearing), and a SKINNY/GAUNT build
+# rather than the previous stout-grazer silhouette. The brow-fold
+# shame mechanism stays; the Utwig "long shame" cognitive cloak is
+# canonical. Visual mood: a creature whose civilization has DECIDED
+# to mourn itself into invisibility.
+
+A full-body painted portrait of Elder Quor-Voh-Listening, an
+Utwig shame-orator. Body plan: tall ~2.0m bipedal alien, GAUNT
+AND SKINNY — long-limbed, narrow-chested, fingerbones visible
+at the knuckles, ribs faintly evident under the skin. SKIN is
+the dominant surface texture (NOT armor plates) — pale ashen
+slate-gray with cool blue-violet undertones, smooth and slightly
+translucent over the underlying anatomy, with subtle DARKER VEIN
+patterns tracing down the neck and arms. A residual ridge of
+darker keratin runs along the spine, the shoulders, and across
+the brow — a vestigial echo of the old plate-armor, not full
+coverage. HEAVY CRANIAL BROW-FOLD droops halfway over the face
+(the "long shame" pose), large dark wet eyes still visible
+beneath the hood — eyes are too big for the gaunt face, sad and
+emotive. Wears a SEVERE BLACK ROBE in heavy fabric draped close
+to the thin body, with charcoal-gray under-vestments, a wide
+mourning-collar of black-on-black brocade rising at the neck,
+and long open sleeves that hang past the wrists. A single carved
+bone-keratin shame-mask hangs at the belt on a black leather
+cord. Pose: standing tall but with shoulders slightly inward and
+head bowed, weight even, hands clasped loosely at the waist —
+the body language of someone who has been quiet for a very long
+time. Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge.
+Lighting: cool moonlight key from one side, single warm amber
+rim from a candle offscreen catching the cheekbone. Style:
+stylized 1990s sci-fi game character portrait, painterly, GOTH-
+MELANCHOLIC, theatrical, severe. Tone: DIGNIFIED SADNESS,
+gaunt, ritual, a civilization that has chosen mourning as a
+survival strategy.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid + gaunt_goth):
+- HEAD: separable, brow-fold can lower fully to bury the face
+- ARMS L/R: long sleeves, hands clasped at waist (separable)
+- TORSO: narrow, robe draped close
+- Avoid: heavy plate armor coverage, stout grazer build, bright
+  colors, any sense of brightness — this is goth and skinny

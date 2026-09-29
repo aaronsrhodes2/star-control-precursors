@@ -1,0 +1,34 @@
+# aspect: 2:3
+# notes: Articulated avatar for a Proto-Ur-Quan. Active Furling uplift
+# subspecies. Hierarchical, territorial, dominating; speaks pheromone-
+# chord language; developing language, weapons, stellar travel.
+# CURRENTLY JUST BELOW the Others' detection threshold — the slice's
+# central uplift-dilemma. In our era they are NOT YET the green-
+# armored galactic conquerors of SC2; they are something more BIOLOGICAL,
+# half-formed, still being shaped by the Furling uplift program.
+
+A full-body avatar painting of a Proto-Ur-Quan. Body plan: ~2.6 m
+tall powerful caterpillar-like creature standing semi-upright on
+six muscular lower limbs (think SC2 Ur-Quan but stripped of the
+green armored carapace — earlier-stage biology showing through).
+Body surface is olive-green chitin shading to dark forest-green
+along the dorsal ridge; underbelly is a paler khaki. Head: a
+broad heavy plate-like skull crowned by a single rank-marked
+flesh-ridge (proto-version of the SC2 Ur-Quan rank crest), with
+two large hooded eyes glowing pale amber. Mandibled mouth set
+forward. Two upper limbs end in three-clawed grasping hands held
+in a guarded combat-ready posture, claws partially extended. A
+crude leather-cord harness across the torso carrying a primitive
+stone-edged weapon. Pose: forward lean, head down and slightly
+forward (dominant-aggressive stance, READY TO ENFORCE). Background:
+SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge. Lighting: even
+soft three-point with a deep green rim. Style: stylized 1990s
+sci-fi game character portrait, painterly. Tone: PROTO-PREDATOR,
+DOMINANCE-ORIENTED, on the cusp of language and war.
+
+ARTICULATION BRIEF (rig: insectoid_hierarch):
+- HEAD: separable, rank-crest visible from front
+- UPPER LIMBS L/R: clawed, mid-guard pose, separate animation
+- LOWER LIMBS (six): visible row of segmented legs
+- HARNESS + WEAPON: visible, distinct from body silhouette
+- Avoid: SC2-era green armor (it doesn't exist yet), bipedal stance

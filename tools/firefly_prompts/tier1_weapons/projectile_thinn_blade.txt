@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Thinn lateral cut — slim iridescent slicing beam.
+# Anchor against celestial-body failure mode.
+
+A flat 2D HUD VFX icon for a video-game weapon effect. THIS IS NOT
+A CELESTIAL BODY. NOT AN ASTEROID. NOT A PLANET. Abstract glowing
+energy graphic on pure black.
+
+Subject: an extremely slender LATERAL CUT BEAM — almost a knife-edge
+of pure coherent light, ~12:1 aspect ratio, oriented vertically.
+White-hot core, with iridescent shifting bands of TEAL-VIOLET-GOLD
+running along its length like hummingbird feather refraction.
+Brightest at center, tapering to fine points at both ends. Subtle
+refractive shimmer at the edges.
+
+COLOR: iridescent TEAL-VIOLET-GOLD shifting bands. White-hot core.
+
+COMPOSITION: flat 2D iconography. Beam centered, vertical, occupies
+~80% of frame height but only ~6-10% of frame width (knife-thin).
+Pure black background. NO 3D rendering. NO stone. NO stars.
+
+STYLE: arcade-shooter coherent-beam VFX. Iridescent refractive
+glowing slicer.

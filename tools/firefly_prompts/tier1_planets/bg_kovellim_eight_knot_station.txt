@@ -1,0 +1,34 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. The Eight-Knot Station is the
+# Kovellim deep-space coordination hub for the upcoming Migration.
+# It orbits in a halo of small asteroids. The station itself has EIGHT
+# VISIBLE STRUCTURAL RINGS (one per prior crossing), each ring showing
+# wear-patterns from prior use. Style: weathered umber-bronze, weighty
+# archaeological. Stored under tier1_planets/ but it's a station
+# exterior, not a planet sphere.
+
+A 1:1 view of the Kovellim Eight-Knot Station — a deep-space
+station floating in open space. Composition: the station fills
+the center of the frame, viewed from a slight three-quarter angle.
+Structure: a vertical SPINE of weathered umber-bronze metal forms
+the core, with EIGHT VISIBLE STRUCTURAL RINGS arranged in a
+stack along the spine (one ring per prior galactic crossing the
+Kovellim have survived). The rings are not identical: the LOWEST
+(oldest) is heavily scarred, dented, multiple visible patch-welds
+in lighter alloys (the wear-patterns of seven prior uses); each
+ring upward is progressively cleaner, fresher, until the TOPMOST
+RING (newest, the upcoming Migration) is barely-finished, bright
+umber-bronze, freshly assembled, glowing faint pale-gold on its
+inner edge. The rings are connected by visible braided spar-cords
+along the spine (echoing the Kovellim knot-scar motif at station
+scale). Asteroid-halo: the station is wrapped in a slow orbit of
+50-100 small asteroids, fragments of debris from prior crossing-
+operations, orbiting in synchronized slow drift around the rings.
+Background: deep starfield, no parent star visible (this station
+orbits between systems), a faint distant cluster of small dim
+stars in the upper-right. Lighting: cool key from above-left,
+warm amber rim from the topmost ring's fresh metal. Style:
+stylized 1990s sci-fi game asset, painterly, WEIGHTY-ARCHAEOLOGICAL
+composition. Tone: PREPARED, WEATHERED, CALM — a station built
+and rebuilt over a thousand years by people who know exactly what
+they're doing.

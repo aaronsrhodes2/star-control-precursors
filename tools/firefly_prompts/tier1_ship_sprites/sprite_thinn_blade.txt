@@ -1,0 +1,49 @@
+# aspect: 1:1
+# notes: Sprite for the Thinn (formerly "Planar") Blade — wholly
+# invented 2D-ribbon species. The trick: edge-on invisible. From the
+# top-down gameplay camera the ship looks like a vivid iridescent
+# ribbon. Weapon: Edge-Align dodging + a forward Lateral Cut (slim
+# slicing beam emitted along the ribbon's plane).
+
+Top-down 2D game sprite of a THINN BLADE starship (formerly
+called "Planar Blade").
+
+SHAPE: a LONG NARROW RIBBON-BODIED ship, ~6:1 aspect,
+oriented vertically in the frame (nose to top), tapered to
+a fine point at BOTH ends. The hull is a single thin sheet
+of iridescent material — DEEP TEAL in the center shifting
+to ROYAL VIOLET at one long edge and GOLD-LEAF YELLOW at
+the other, like an oil-slick on water or a hummingbird
+feather. Faint refractive shimmer suggests the planar
+nature of the body — the ship has ZERO thickness along its
+perpendicular axis. From this top-down view, the ship looks
+flat as a knife blade.
+
+WEAPON: a small forward LATERAL-CUT EMITTER at the top tip
+of the ribbon — a tiny dark optical pip behind a thin
+opening, hinting at a slim coherent slicing beam that
+propagates along the ribbon's plane. The Thinn's defensive
+trick (Edge-Align dodging) is implied by the ship's
+flatness; no special weapon ornament is needed.
+
+COLOR: iridescent teal-violet-gold ribbon shifting in bands
+along its length. Two small thruster nodes glow soft cyan at
+the rear, casting a thin vapor-wake. At the center-of-mass:
+a single small dark optical pip — the Thinn individual
+piloting.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Subject
+centered, vertically oriented, ~6:1 aspect.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO clouds, NO horizon, NO nebula, NO ground.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Crisp readable silhouette. Tone: ELEGANT, FLAT, the ship
+must read INSTANTLY as a 2D ribbon, not as a slender SC2-
+style ship.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, painterly
+background bleed, three-dimensional hull, thick body,
+visible side panels, wings.

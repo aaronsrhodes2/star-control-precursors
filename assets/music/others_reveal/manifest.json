@@ -1,0 +1,31 @@
+{
+  "context": "others_reveal",
+  "category": "cinematic",
+  "description": "Others reveal stinger \u2014 the Distress Beacon proof moment; never-funny dread",
+  "key": "E flat minor",
+  "bpm": 58,
+  "duration_s": 45,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "drone": {
+      "path": "assets/music/others_reveal/drone.wav",
+      "prompt": "Isolated DRONE BASS STEM for layered production: subharmonic hum below normal hearing range, slowly modulating, the sound of attention focusing on you, in E flat minor at 58 bpm, the Others reveal \u2014 never-funny dread, the sound of being seen, trans-dimensional predator presence, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pulse": {
+      "path": "assets/music/others_reveal/pulse.wav",
+      "prompt": "Isolated RHYTHMIC PULSE STEM for layered production: irregular reality-tearing pulse, like radio static between dimensions, no rhythmic predictability, in E flat minor at 58 bpm, the Others reveal \u2014 never-funny dread, the sound of being seen, trans-dimensional predator presence, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "texture": {
+      "path": "assets/music/others_reveal/texture.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: broken radio of voices speaking in reverse, distorted human speech played backwards at various pitches, the SOUND OF BEING SEEN, in E flat minor at 58 bpm, the Others reveal \u2014 never-funny dread, the sound of being seen, trans-dimensional predator presence, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T12:54:13Z",
+  "notes": "Per the humor doctrine: the Others are NEVER funny. This stinger is the tonal break \u2014 broken radio of voices speaking in reverse, subharmonic hum below hearing, the sound of being SEEN."
+}

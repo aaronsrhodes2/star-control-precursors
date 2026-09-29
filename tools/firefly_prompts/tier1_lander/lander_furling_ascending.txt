@@ -1,0 +1,27 @@
+# aspect: 1:1
+# notes: 3/4 perspective ASCENDING variant of the Furling lander
+# drone. Shown during the surface→orbit lift-off transition after a
+# successful resource haul. The drone is rising, hover-thrusters
+# firing HARDER than idle, tractor-beam aperture now CLOSED with
+# collected samples visible in the dorsal cargo bay glow. Should
+# read as a HAUL-COMPLETE mood, contrasted with the descending
+# variant's PURPOSEFUL DELIVERY mood.
+
+A three-quarter perspective view of a Furling lander drone
+ASCENDING away from an alien planet surface, nose tilted slightly
+upward, viewer positioned at a low angle looking up at it. Same
+compact rounded copper-and-cream body and four downward-facing
+hover-thrusters as the canonical lander. The hover-thrusters are
+FIRING HARDER than idle — violet ion glow extended into a long
+downward jet, ~3x idle length, casting a soft violet
+backlight on the dust beneath. The tractor-beam aperture on the
+underbelly is CLOSED — a flat dark disc, the haul is complete. On
+the dorsal surface the small instrument cluster now has TWO SMALL
+GLOWING WINDOWS (gold for mineral cargo, soft green for biological
+cargo) suggesting the cargo bay is full. A faint trail of
+cooling dust drifts BELOW the drone where the hover-thrusters
+have scoured the surface. Above the drone (in the upper edge of
+the frame): the cool indigo of upper atmosphere transitioning to
+starfield. NO LEGS, NO LANDING STRUTS. Style: stylized 1990s
+sci-fi game art, painterly with crisp silhouette. Tone: HAUL
+COMPLETE — the drone is RETURNING with success.

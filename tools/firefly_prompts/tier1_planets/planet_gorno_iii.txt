@@ -1,0 +1,25 @@
+# aspect: 1:1
+# notes: planet sphere for Gorno III — moon of the gas giant
+# "Long-Hold". Utwig homeworld on the slice cluster's outer rim. A
+# cold dignified world; the Utwig are HIDING here behind ritual.
+
+A planet sphere viewed from medium orbit, filling the frame. World
+name: Gorno III, a moon of the gas giant Long-Hold. Surface is
+dominated by vast windswept plains of slate-gray rock dusted with
+pale ochre lichen-equivalent. Several long highland ridges form
+parallel scars across the equator suggesting ancient tectonic
+folding. Scattered across the surface: a sparse network of small
+mineral-built ritual sites — round arenas of standing stones
+visible as tiny dark dots, equally spaced (the Utwig ceremonial
+network). A thin pale-violet atmosphere creates a soft halo at
+the limb. Most of the world is in cold low-angle light — the
+parent gas giant Long-Hold hangs huge in the background sky
+behind the moon (banded ochre-and-pearl gas-bands, visible at
+the upper-right of the frame). Lit by a distant white-blue sun
+from the upper left, giving the world a cold high-noon quality.
+The terminator falls across the right quarter, with the ritual-
+site dots glowing faintly amber on the nightside (ceremonial fires
+still tended). Style: stylized 1990s sci-fi game asset, painterly,
+crisp circular silhouette suitable as a sprite. Tone: A WORLD
+THAT HAS DECIDED TO HIDE — austere, dignified, structurally
+hopeful in its quiet way.

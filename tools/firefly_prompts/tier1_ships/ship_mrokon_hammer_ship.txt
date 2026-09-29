@@ -1,0 +1,31 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. The Mrokon Hammer-Ship is a
+# heavy battleship — primary armament is a Kinetic Cannon, special is
+# the single-use Hammer-Round. The Hammer-Round is canonically what
+# leaves the dimples in the SC2-era Others' Vessel; this ship is the
+# instrument of the slice's defining defiance moment. Style: stark
+# grey + pale-blue accent, blocky purposeful, ledger-mark motif on
+# the ship (matching the puppet's chest-ledger).
+
+A top-down orthographic view of a Mrokon Hammer-Ship — a heavy
+warrior-battleship. Shape: a STARK BLOCKY HULL, ~2:1 aspect with
+the long axis vertical in the frame, deliberately UTILITARIAN
+silhouette — wide flat foredeck tapering to a narrower rear, no
+graceful curves, no ornamentation. The hull is built around the
+forward-facing PRIMARY KINETIC CANNON: a single enormous bore-
+weapon barrel ~30% of the ship's total length protruding straight
+out of the nose, with a chamfered armored shield-plate at the
+muzzle (the Hammer-Round battery). Smaller secondary kinetic
+turrets at the corners. The hull SURFACE is etched with LEDGER
+MARKS — rows of small tally-glyphs along the dorsal flanks
+recording every prior puppet-mission flown from this ship, the
+same ledger-mark motif as the Mrokon puppets' chest plates.
+Color: cold STEEL-GREY plates dominant, gunmetal-black recesses,
+with a single PALE-BLUE GLOWING STRIP down the dorsal centerline
+(the Operator deep-link power conduit). Two stout main thruster
+nozzles at the rear glow soft cool-white. NO faction flag, NO
+decoration. Background: deep starfield, near-black. Style:
+stylized 1990s sci-fi game art, painterly with crisp silhouette,
+BLOCKY-PURPOSEFUL composition. Tone: AN INSTRUMENT, not a vehicle
+— this ship exists to deliver the Hammer-Round, and nothing else.
+The defiance is in the geometry.

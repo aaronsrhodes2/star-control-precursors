@@ -1,0 +1,22 @@
+# aspect: 1:1
+# notes: Star sprite for ORANGE_BODY stars — K-class cooler stars. Wiring
+# target: assets/stars/star_orange.png
+
+A gorgeous 2D game sprite of an ORANGE GIANT STAR, viewed from a
+great distance. Warm orange-amber core with visible surface
+granulation and a few large dark sunspots. Soft orange-red corona
+radiating outward in long delicate streamers. Several visible solar
+prominences arcing off the limb. The star feels OLDER and COOLER
+than our Sun — a K-class body in middle age.
+
+COLOR: warm AMBER center (RGB ~255,200,120), surrounding ORANGE-RED
+corona (RGB ~255,180,100), with darker rust-amber prominences,
+fading to deep black at the perimeter.
+
+VIEW: head-on, sphere-disc centered, ~70% of frame diameter. Pure
+black starless background outside the corona.
+
+STYLE: painterly with photoreal stellar texture. Visible surface
+granulation and sunspots. Crisp, gorgeous, suitable as a hero
+element in a sci-fi space game. NO stars in the background, NO
+planets, NO orbiting bodies. Just the star, alone, in the void.

@@ -1,0 +1,28 @@
+# aspect: 2:3
+# notes: REWRITTEN 2026-05-17 per Aaron review on v5: "missing an arm".
+# v5 had an arm cropped or absent in the render. v6 adds explicit
+# emphasis on BOTH ARMS VISIBLE, one holding the sedation rifle across
+# the body, the other holding a sedative vial out as if offering. Keep
+# the rest of the v5 design (rust-brown fur, ochre stripes, tired-care
+# expression, wire-coil at hip) — those reads as right.
+
+ONE single anthropomorphic alien character, BIPEDAL HUMANOID,
+STANDING UPRIGHT on TWO LEGS, NAKED with no clothes, body covered
+ENTIRELY in dense fur. Rust-brown fur, cream chest, ochre tiger-
+stripes along the flanks. BIG tall fennec-fox ears (one slightly
+notched), long bushy fox-tail tied practical and short, WIDE
+friendly Cheshire-cat grin (eyes tired), ANDROGYNOUS flat chest no
+genitalia, hazel eyes, head-mane shaved short (work-style). ONE
+olive leather strap-harness across the shoulder carrying two
+sedative-vials, a wire-coil at the hip. BOTH ARMS MUST BE FULLY
+VISIBLE AND COMPLETE: LEFT arm holds a compact sedation-rifle
+across the body at chest-level (rifle visible, hand gripping
+the stock); RIGHT arm extended slightly forward and outward
+holding a single small glass sedative-vial OUT in the gloved
+palm, an OFFERING gesture (firm but gentle compulsion). Both
+hands gloved in bronze leather. Slightly stooped posture, weight
+even, head slightly bowed. Background SOLID MATTE DARK NAVY
+#0a0e1a. Painted stylized 1990s sci-fi character portrait,
+single subject. Tone: TIRED CARE — a creature who has done this
+work too many times. Avoid: missing arms, occluded arms, arms
+crossed behind the back, an empty offering hand.

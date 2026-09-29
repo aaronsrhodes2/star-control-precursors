@@ -1,0 +1,307 @@
+"""Review HTTP server — drop-in replacement for `python -m http.server`.
+
+Serves project files identically to `python -m http.server 8770` AND exposes
+POST endpoints that write Aaron's approve/reroll/reject decisions back into
+two persistent manifests:
+
+  - `assets/generated_drafts/firefly/_manifest.json` (image reviews)
+  - `assets/_audio_review.json` (music + SFX reviews, 2026-05-17 add)
+
+Filename is still `image_review_server.py` for back-compat with everything
+that already invokes it; the file now powers both reviewers.
+
+Standard-library only — no Flask, no requirements.txt entry needed. Just:
+
+    cd D:/Aaron/development/star-control-precursors
+    .venv/Scripts/python.exe tools/image_review_server.py
+
+Then open EITHER:
+  http://localhost:8770/tools/image_review.html   -- images
+  http://localhost:8770/tools/audio_player.html   -- music + SFX
+
+And click the Approve / Re-roll / Reject buttons on each card. Notes save
+per-card.
+
+API (POST application/json):
+
+  IMAGES
+    POST /api/review/<image_key>
+      body: { "status"?: "keep"|"reroll_requested"|"reject"|"wired", "notes"?: str }
+      effect: updates image manifest[<image_key>] in place
+      response: { "ok": true, "entry": { ... }, "key": "..." }
+
+    POST /api/review-all
+      body: { "<key1>": {"status":..., "notes":...}, ... }
+      response: { "ok": true, "updated": [keys...] }
+
+    GET /api/manifest
+      returns the image manifest as JSON
+
+  AUDIO  (2026-05-17 add)
+    POST /api/audio-review/<key>
+      key shapes:
+        music/<context>            -- per-music-context (granularity:
+                                      whole context, not per stem)
+        sfx/<out_subdir>/<name>    -- per-SFX file
+      body / response: same shape as the image endpoint
+      Auto-creates the entry if not present (audio review manifest
+      starts empty; entries materialize on first Aaron action).
+
+    GET /api/audio-manifest
+      returns the audio review manifest as JSON
+"""
+
+from __future__ import annotations
+
+import http.server
+import json
+import socketserver
+import sys
+import threading
+from datetime import datetime, timezone
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+MANIFEST = ROOT / "assets" / "generated_drafts" / "firefly" / "_manifest.json"
+AUDIO_MANIFEST = ROOT / "assets" / "_audio_review.json"
+
+PORT = 8770
+
+# Two locks so image + audio writes don't block each other; each lock
+# serializes the load→modify→save read-modify-write on its own manifest.
+# Without this, fast Aaron clicks race — two POSTs both load the same
+# baseline, both save back their own diff, the second write clobbers the
+# first and the first click appears "undone" (the bug Aaron reported on
+# 2026-05-17).
+IMAGE_MANIFEST_LOCK = threading.Lock()
+AUDIO_MANIFEST_LOCK = threading.Lock()
+
+VALID_STATUSES = {"pending", "provisional", "keep", "reroll_requested", "reject", "wired"}
+# `provisional`: auto-approved for ship-readiness without a real review.
+# Visually distinct from `keep` (which means Aaron listened/looked and said yes).
+# A signal to "revisit this one when there's time to filter the noise."
+
+
+def _load_manifest() -> dict:
+    if not MANIFEST.exists():
+        return {}
+    return json.loads(MANIFEST.read_text(encoding="utf-8"))
+
+
+def _save_manifest(manifest: dict) -> None:
+    # Write atomically to avoid corrupting the file mid-write
+    tmp = MANIFEST.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(MANIFEST)
+
+
+def _load_audio_manifest() -> dict:
+    if not AUDIO_MANIFEST.exists():
+        return {}
+    return json.loads(AUDIO_MANIFEST.read_text(encoding="utf-8"))
+
+
+def _save_audio_manifest(manifest: dict) -> None:
+    AUDIO_MANIFEST.parent.mkdir(parents=True, exist_ok=True)
+    tmp = AUDIO_MANIFEST.with_suffix(".json.tmp")
+    tmp.write_text(json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8")
+    tmp.replace(AUDIO_MANIFEST)
+
+
+class ReviewHandler(http.server.SimpleHTTPRequestHandler):
+    """Serves project files like SimpleHTTPRequestHandler + adds /api routes."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(ROOT), **kwargs)
+
+    def end_headers(self) -> None:  # noqa: N802
+        # Disable browser caching for image/audio static assets so Aaron's
+        # review tool always sees the LATEST file content even when a
+        # filename was reused (e.g. ship_X.png replaced in-place by a
+        # reroll). Without this, Firefox/Chrome happily showed the stale
+        # cached image at the same URL — making it look like the manifest
+        # was mislabeled. 2026-05-17 fix for the ~5% mislabel rate.
+        path_l = (self.path or "").lower()
+        if path_l.endswith((".png", ".jpg", ".jpeg", ".webp", ".gif",
+                            ".wav", ".mp3", ".ogg", ".flac")):
+            self.send_header("Cache-Control", "no-cache, must-revalidate")
+        super().end_headers()
+
+    def _send_json(self, status: int, payload: dict) -> None:
+        body = json.dumps(payload).encode("utf-8")
+        self.send_response(status)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers()
+        self.wfile.write(body)
+
+    def _read_json_body(self) -> dict:
+        length = int(self.headers.get("Content-Length", 0))
+        if length == 0:
+            return {}
+        raw = self.rfile.read(length).decode("utf-8")
+        try:
+            return json.loads(raw)
+        except json.JSONDecodeError:
+            return {}
+
+    def do_GET(self):  # noqa: N802
+        if self.path == "/api/manifest":
+            self._send_json(200, _load_manifest())
+            return
+        if self.path == "/api/audio-manifest":
+            self._send_json(200, _load_audio_manifest())
+            return
+        # Everything else: static file serving
+        super().do_GET()
+
+    def do_POST(self):  # noqa: N802
+        # --- AUDIO REVIEW (2026-05-17) ---
+        if self.path.startswith("/api/audio-review/"):
+            from urllib.parse import unquote
+            key = unquote(self.path[len("/api/audio-review/"):])
+            data = self._read_json_body()
+            if "status" in data and data["status"] not in VALID_STATUSES:
+                self._send_json(400, {
+                    "error": f"invalid status {data['status']!r}, "
+                             f"want one of {sorted(VALID_STATUSES)}"})
+                return
+            with AUDIO_MANIFEST_LOCK:
+                manifest = _load_audio_manifest()
+                # Auto-create entry on first action (unlike image review,
+                # which requires the entry to be pre-indexed).
+                entry = manifest.setdefault(key, {
+                    "status": "pending",
+                    "notes": "",
+                    "reviewed_at": None,
+                })
+                if "status" in data:
+                    entry["status"] = data["status"]
+                if "notes" in data:
+                    entry["notes"] = data["notes"]
+                entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+                _save_audio_manifest(manifest)
+            self._send_json(200, {"ok": True, "entry": entry, "key": key})
+            return
+
+        if self.path == "/api/audio-review-all":
+            data = self._read_json_body()
+            if not isinstance(data, dict):
+                self._send_json(400, {"error": "body must be a JSON object"})
+                return
+            with AUDIO_MANIFEST_LOCK:
+                manifest = _load_audio_manifest()
+                now = datetime.now(timezone.utc).isoformat()
+                updated = []
+                for key, patch in data.items():
+                    if not isinstance(patch, dict):
+                        continue
+                    entry = manifest.setdefault(key, {
+                        "status": "pending", "notes": "", "reviewed_at": None,
+                    })
+                    if "status" in patch and patch["status"] in VALID_STATUSES:
+                        entry["status"] = patch["status"]
+                    if "notes" in patch:
+                        entry["notes"] = patch["notes"]
+                    entry["reviewed_at"] = now
+                    updated.append(key)
+                _save_audio_manifest(manifest)
+            self._send_json(200, {"ok": True, "updated": updated})
+            return
+
+        # --- IMAGE REVIEW (original) ---
+        if self.path.startswith("/api/review/"):
+            from urllib.parse import unquote
+            key = unquote(self.path[len("/api/review/"):])
+            data = self._read_json_body()
+            with IMAGE_MANIFEST_LOCK:
+                manifest = _load_manifest()
+                if key not in manifest:
+                    self._send_json(404, {"error": f"unknown image key: {key}"})
+                    return
+                entry = manifest[key]
+                if "status" in data:
+                    if data["status"] not in VALID_STATUSES:
+                        self._send_json(400, {
+                            "error": f"invalid status {data['status']!r}, "
+                                     f"want one of {sorted(VALID_STATUSES)}"})
+                        return
+                    entry["status"] = data["status"]
+                if "notes" in data:
+                    entry["notes"] = data["notes"]
+                entry["reviewed_at"] = datetime.now(timezone.utc).isoformat()
+                _save_manifest(manifest)
+            self._send_json(200, {"ok": True, "entry": entry, "key": key})
+            return
+
+        if self.path == "/api/review-all":
+            data = self._read_json_body()
+            if not isinstance(data, dict):
+                self._send_json(400, {"error": "body must be a JSON object"})
+                return
+            with IMAGE_MANIFEST_LOCK:
+                manifest = _load_manifest()
+                now = datetime.now(timezone.utc).isoformat()
+                updated = []
+                for key, patch in data.items():
+                    if key not in manifest or not isinstance(patch, dict):
+                        continue
+                    entry = manifest[key]
+                    if "status" in patch and patch["status"] in VALID_STATUSES:
+                        entry["status"] = patch["status"]
+                    if "notes" in patch:
+                        entry["notes"] = patch["notes"]
+                    entry["reviewed_at"] = now
+                    updated.append(key)
+                _save_manifest(manifest)
+            self._send_json(200, {"ok": True, "updated": updated})
+            return
+
+        self._send_json(405, {"error": "method not allowed"})
+
+    # Quieter logs (the build serves a lot of PNGs)
+    def log_message(self, fmt, *args):  # noqa: N802
+        if not self.path.startswith("/api/"):
+            return
+        sys.stderr.write(f"[review] {fmt % args}\n")
+
+
+class ReuseAddrServer(socketserver.ThreadingTCPServer):
+    """Set SO_REUSEADDR at the class level so the bind() in __init__ picks
+    it up. Without this the flag-after-construction was a no-op and a
+    fast restart of the server raised 'address already in use'."""
+    allow_reuse_address = True
+
+
+def main() -> int:
+    if not MANIFEST.exists():
+        sys.stderr.write(
+            f"[review] WARNING: manifest not found at {MANIFEST}\n"
+            f"[review] approve/reject buttons will 404 until images are indexed.\n"
+        )
+    try:
+        srv = ReuseAddrServer(("127.0.0.1", PORT), ReviewHandler)
+    except OSError as e:
+        sys.stderr.write(
+            f"[review] FAILED to bind 127.0.0.1:{PORT} ({e}).\n"
+            f"[review] Another server is already on that port (likely\n"
+            f"[review] `python -m http.server {PORT}`). Stop it first:\n"
+            f"[review]   netstat -ano | grep :{PORT}   # find PID\n"
+            f"[review]   taskkill /F /PID <pid>\n"
+        )
+        return 1
+    with srv:
+        print(f"[review] serving project at http://localhost:{PORT}/")
+        print(f"[review] open http://localhost:{PORT}/tools/image_review.html")
+        print(f"[review] manifest: {MANIFEST}")
+        print("[review] press Ctrl-C to stop")
+        try:
+            srv.serve_forever()
+        except KeyboardInterrupt:
+            print("\n[review] shutting down")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

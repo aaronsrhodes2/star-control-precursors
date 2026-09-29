@@ -1,0 +1,43 @@
+{
+  "context": "council_compeller",
+  "category": "furling_faction",
+  "description": "Council \u2014 Compeller faction; coercive, restrained menace under calm",
+  "key": "G minor",
+  "bpm": 78,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/council_compeller/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: taut low strings with metallic mechanical undertones, restrained tension, no drums no melody no pads, in G minor at 78 bpm, Compeller Furling Council theme \u2014 hard mechanical clicks under apparent calm, tightened cables, restrained menace, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/council_compeller/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: hard mechanical clicks and chain-tightening sounds at slow rhythmic intervals, no melody no bass no pads, in G minor at 78 bpm, Compeller Furling Council theme \u2014 hard mechanical clicks under apparent calm, tightened cables, restrained menace, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pad": {
+      "path": "assets/music/council_compeller/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: cold minor-key pad with subtle dissonant interval, calm exterior over menace, no melody no drums no bass, in G minor at 78 bpm, Compeller Furling Council theme \u2014 hard mechanical clicks under apparent calm, tightened cables, restrained menace, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "lead": {
+      "path": "assets/music/council_compeller/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: solo bassoon melody phrasing veiled threat with diplomatic surface, no drums no bass no pads, in G minor at 78 bpm, Compeller Furling Council theme \u2014 hard mechanical clicks under apparent calm, tightened cables, restrained menace, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/council_compeller/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant cable-tightening creaks, restrained breathing, Council chamber's colder side, no melody no drums no bass, in G minor at 78 bpm, Compeller Furling Council theme \u2014 hard mechanical clicks under apparent calm, tightened cables, restrained menace, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T11:06:36Z",
+  "notes": ""
+}

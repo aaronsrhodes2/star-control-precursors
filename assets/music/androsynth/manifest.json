@@ -1,0 +1,43 @@
+{
+  "context": "androsynth",
+  "category": "species_peace",
+  "description": "Androsynth Refugees \u2014 human-improvised retro-Atari with warm analog underneath",
+  "key": "A minor",
+  "bpm": 116,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/androsynth/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: warm analog synth bassline with chunky low-end, retro-but-grounded, no drums no melody no pads, in A minor at 116 bpm, human-improvised refugee species theme, retro-Atari-on-warm-analog, making-do-with-what-you-have, slightly melancholy but determined, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/androsynth/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: mid-tempo kit with retro-PCM-style snare and hihat, slightly lo-fi, no melody no bass no pads, in A minor at 116 bpm, human-improvised refugee species theme, retro-Atari-on-warm-analog, making-do-with-what-you-have, slightly melancholy but determined, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pad": {
+      "path": "assets/music/androsynth/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: warm analog string-pad sustained chords with subtle vibrato, minor-key melancholy, no melody no drums no bass, in A minor at 116 bpm, human-improvised refugee species theme, retro-Atari-on-warm-analog, making-do-with-what-you-have, slightly melancholy but determined, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "lead": {
+      "path": "assets/music/androsynth/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: bright Atari-era PCM lead melody, brave little tune, slightly off-tuning that reads as 'jury-rigged', no drums no bass no pads, in A minor at 116 bpm, human-improvised refugee species theme, retro-Atari-on-warm-analog, making-do-with-what-you-have, slightly melancholy but determined, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/androsynth/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: background ship-hum, distant Atari-blip indicators, warm tape hiss texture, no melody no drums no bass, in A minor at 116 bpm, human-improvised refugee species theme, retro-Atari-on-warm-analog, making-do-with-what-you-have, slightly melancholy but determined, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T05:13:00Z",
+  "notes": "Androsynth = clone-humans from 250,000 years in OUR future, thrown into the past by an Other 'decursion.' Their sonic identity is REFUGEE-IMPROVISED: retro-Atari-style PCM blips and warm analog synth foundations under it. Sounds like humans making do."
+}

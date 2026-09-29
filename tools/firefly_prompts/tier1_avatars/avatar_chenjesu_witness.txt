@@ -1,0 +1,33 @@
+# aspect: 2:3
+# notes: Articulated avatar for a Chenjesu Witness — crystalline
+# lattice-sentient collective rooted to growing stone. They cannot
+# move; their cognition is so geological the Others' detector reads
+# them as a planetary process — effectively immune. They REMEMBER a
+# prior Culling. Pre-merger version (this is BEFORE they merge with
+# Mmrnmhrm to form Chmmr in SC2 era). They speak by emitting tone
+# resonances through the crystal lattice.
+
+A full-body avatar painting of a Chenjesu Witness. Body plan: a
+~2.5 m tall vertically-oriented crystalline lattice — a rooted
+faceted-crystal structure, NOT a humanoid. The "body" is a
+clustered growth of large translucent prismatic crystals in
+opalescent blue-white and pale aquamarine, internally illuminated
+by a slow shifting cool-white inner light (cognition made visible).
+At its broad base, a thick mineral pedestal where the crystal
+roots fuse with native bedrock — the figure is ANCHORED, cannot
+walk. Mid-height: two thinner crystal branches extend laterally as
+articulating "arm-analogues" with fine prismatic facets at their
+tips (cognition-gesture organs). No face, no eyes — sentience
+expressed entirely through the luminescent internal flow. Pose:
+stationary upright, branches mid-gesture in a slow expressive
+sweep. Background: SOLID MATTE DARK NAVY (#0a0e1a), edge-to-edge,
+NO landscape, NO sky. Lighting: even soft three-point with cool
+sapphire rim from the internal glow. Style: stylized 1990s sci-fi
+game character portrait, painterly, contemplative, ancient.
+
+ARTICULATION BRIEF (rig: crystalline_rooted):
+- CRYSTAL CROWN (upper third): visible separately, the "head"
+- BRANCH L/R (mid-height): articulating arm-analogues, distinct
+- BASE PEDESTAL: rooted, no leg motion possible
+- INTERNAL GLOW: visible cognition flow that can pulse on dialog
+- Avoid: humanoid pose, faces in the crystal, mobile feet

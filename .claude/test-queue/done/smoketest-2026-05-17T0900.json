@@ -1,0 +1,31 @@
+{
+  "id": "smoketest-2026-05-17T0900",
+  "status": "passed",
+  "summary": "5 passed, 0 failed across 1 test(s)",
+  "tests_run": [
+    "walk_bio_archive"
+  ],
+  "details": [
+    {
+      "test": "walk_bio_archive",
+      "passed": 5,
+      "failed": 0,
+      "ok": true,
+      "timed_out": false,
+      "exit_code": 0,
+      "summary_line": "Test complete: 5 passed, 0 failed."
+    }
+  ],
+  "log": ".claude/test-queue/logs/smoketest-2026-05-17T0900.log",
+  "started_at": "2026-05-17T15:54:31.148089+00:00",
+  "completed_at": "2026-05-17T15:54:33.508258+00:00",
+  "request": {
+    "id": "smoketest-2026-05-17T0900",
+    "tests": [
+      "walk_bio_archive"
+    ],
+    "worktree": "elegant-bartik-733a37",
+    "requester": "testing-chat-self",
+    "note": "queue runner smoke test"
+  }
+}

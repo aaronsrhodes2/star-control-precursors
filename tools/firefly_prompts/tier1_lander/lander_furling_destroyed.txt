@@ -1,0 +1,26 @@
+# aspect: 1:1
+# notes: top-down DESTROYED variant of the Furling lander drone.
+# Shown the moment the weather-damage kill condition has triggered:
+# the drone is mid-tumble, hover-thrusters offline, body cracked
+# open from a lightning strike or acid-rain burn, tractor-beam
+# disabled. Brief explosion plume around it. This sprite is shown
+# for ~0.5s before the lander vanishes (the fabricator will print
+# a replacement). Same compact rounded body as the live drone but
+# with damage decals.
+
+A top-down orthographic view of a small Furling lander drone in
+the MOMENT OF DESTRUCTION above an alien planet surface. Same
+compact rounded copper-and-cream body as the canonical lander,
+same four downward-facing hover-thruster nodes — but the body
+is now CRACKED OPEN along one side with a jagged dark scar of
+burned-through metal, the hover-thrusters are MISFIRING (one
+nozzle dark, one sputtering a stunted violet flare, the other
+two giving uneven gimbal twitches), and a brief OVERLAY of
+yellow-white explosion plume blooms around the breach (small, not
+catastrophic — the drone is wounded, not vaporized). The tractor-
+beam aperture below is OFFLINE, dark. The drone is mid-tumble —
+it has rotated ~15° off horizontal. Tiny debris fragments are
+flung outward. NO LEGS, NO LANDING STRUTS — still a pure
+hovering form. Background: deep black with a faint hint of the
+planet surface below. Style: stylized 1990s sci-fi game art,
+painterly with crisp silhouette, vivid contrast.

@@ -1,0 +1,37 @@
+# aspect: 1:1
+# notes: Sprite for the Mycon Podship. Organic pod aesthetic — bulbous,
+# *grown* not built. Dark purple-red hull. Fibrous surface texture;
+# bio-luminescent veins; central plasmoid-emission aperture forward;
+# defensive pod-spikes around the perimeter.
+
+Top-down 2D game ship sprite of a MYCON PODSHIP.
+
+SHAPE: a bulbous ORGANIC POD-SHIP, *grown* not built. Round
+asymmetric body shaped like an irregular seed pod. Fibrous
+surface texture with deep grooves. Bio-luminescent veins of
+soft pink-red pulse across the hull. A central PLASMOID-
+EMISSION APERTURE faces forward — visible as a dark mouth
+ringed with bright bioluminescent glow. Around the perimeter:
+defensive POD-SPIKES (~6) jutting outward, also bioluminescent
+at their tips.
+
+COLOR: dark purple-red hull base (RGB ~200,90,130 — like
+dried blood with a hint of fungal pink). Bright magenta-red
+glow at apertures and vein tips. Surface texture suggests
+chitin-and-flesh hybrid.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Plasmoid
+aperture facing TOP of frame. Subject centered, ~70% of
+frame. Slightly asymmetric is OK — it's organic.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO nebula, NO horizon.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+The ship reads as ALIVE, not built. Mycon-canon (SC2) look
+but in our era — not yet fully awakened to sentience but the
+biots are organizing into vessels.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, metallic
+hull plates, geometric symmetry, manufactured aesthetic.

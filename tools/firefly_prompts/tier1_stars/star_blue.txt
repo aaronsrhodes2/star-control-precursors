@@ -1,0 +1,31 @@
+# aspect: 1:1
+# notes: Star sprite for BLUE_BODY stars — hot massive blue stellar
+# bodies. Used in hyperspace (small, ~14px), solar system view (medium,
+# ~150px), and combat (small background star). Engine scales the sprite
+# per-context.
+#
+# Wiring target: assets/stars/star_blue.png
+#   Loaded by hyperspace/starmap.py (replace draw.circle path),
+#   system/scene.py:_draw_star (replace layered-circle path), and
+#   combat/scene.py starfield backdrop.
+
+A gorgeous 2D game sprite of a HOT BLUE STAR, viewed from a great
+distance. Brilliant white-hot core with surrounding bright AZURE-BLUE
+halo. Visible solar corona radiating outward in soft delicate streamers.
+Faint glimmering sparks of plasma at the edges. The star feels ALIVE
+and IMMENSE — a hot O-class or B-class stellar body. The white core
+is so bright it overexposes; the blue halo fades smoothly into deep
+black space at the edges. Soft radial bloom suggesting motion of
+fusion at the surface.
+
+COLOR: brilliant WHITE-HOT center (RGB ~255,255,255), surrounding
+bright AZURE-BLUE corona (RGB ~120,160,255), fading to deep black at
+the perimeter.
+
+VIEW: head-on, sphere-disc centered in the frame, ~70% of frame
+diameter. Pure black starless background outside the corona.
+
+STYLE: painterly with photoreal stellar texture. Crisp, gorgeous,
+suitable as a hero element in a sci-fi space game. NO stars in the
+background, NO planets, NO orbiting bodies, NO horizon, NO motion
+lines. Just the star, alone, in the void.

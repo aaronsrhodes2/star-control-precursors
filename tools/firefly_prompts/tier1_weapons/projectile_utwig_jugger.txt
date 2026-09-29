@@ -1,0 +1,26 @@
+# aspect: 1:1
+# notes: Utwig Jugger heavy beam — pre-doctrine ceremonial round.
+# Anchor against celestial-body failure mode.
+
+A flat 2D HUD VFX icon for a video-game weapon effect. THIS IS NOT
+A CELESTIAL BODY. NOT AN ASTEROID. NOT A PLANET. Abstract glowing
+energy graphic on pure black.
+
+Subject: a thick CEREMONIAL HEAVY-BEAM ROUND — broad solid bolt
+shape, ~3:1 aspect, oriented vertically (top of frame is forward).
+Heavy AMBER core wrapped in a thick warm-cream outer sheath. A
+faint GREEN-TINGED halo at the trailing edge (shield-emitter
+signature). Ornamental engraved cap glyphs visible at the leading
+edge — hints of the Utwig ritual aesthetic baked into even their
+weapon design.
+
+COLOR: warm AMBER core (RGB ~255,180,80) with CREAM-WHITE outer
+sheath. Subtle GREEN-TINGED trailing halo.
+
+COMPOSITION: flat 2D iconography, viewed head-on. Bolt centered,
+vertical, occupies ~70% of frame height. Pure black background
+edge to edge. NO 3D rendering. NO stone surface. NO stars. NO
+planet.
+
+STYLE: arcade-shooter heavy-bolt VFX. Glowing painterly energy
+with ceremonial engraved ornaments.

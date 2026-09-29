@@ -1,0 +1,11 @@
+# aspect: 1:1
+# notes: Defender Heavy Beam projectile. Wide amber lance, 12 dmg,
+# hitscan. Brighter and thicker than the Furling Scout's beam.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically. Subject: a WIDE amber
+beam-lance, thick and intense, ~4:1 aspect, oriented vertically with
+a brilliant yellow-orange core fading to amber at the edges. Brighter
+and chunkier than a scout beam — clearly a heavy warship weapon.
+Faint amber sparks at the edges. Pure black void background,
+isolated. Stylized 1990s sci-fi painterly game art, crisp silhouette.

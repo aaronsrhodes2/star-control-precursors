@@ -11,12 +11,58 @@ as RNG seed (UQM convention). Same star → same planets always.
 from __future__ import annotations
 
 import math
+import os
 
 import pygame
 
 from scz.engine.scene import Scene
 from scz.hyperspace.starmap import STAR_COLOR_RGB, STAR_TYPE_RADIUS
 from scz.system.planet import Planet  # generate_system kept for legacy/test paths
+
+
+# Painted-star sprite cache. Maps STAR_COLOR_RGB key (e.g. "BLUE_BODY") to
+# a loaded surface, or False if we've tried and the PNG is missing.
+# Populated lazily by _load_star_sprite at first use; survives across
+# SystemScene instances since stars are static art.
+_STAR_SPRITE_CACHE: dict[str, "pygame.Surface | bool"] = {}
+
+# Maps the UQM-style color name to the painted star sprite filename. Files
+# live at assets/stars/star_<color>.png and are 1024×1024 painted disc +
+# corona sprites authored from tools/firefly_prompts/tier1_stars/.
+_STAR_SPRITE_FILENAMES: dict[str, str] = {
+    "BLUE_BODY":   "star_blue.png",
+    "WHITE_BODY":  "star_white.png",
+    "YELLOW_BODY": "star_yellow.png",
+    "GREEN_BODY":  "star_green.png",
+    "ORANGE_BODY": "star_orange.png",
+    "RED_BODY":    "star_red.png",
+}
+
+
+def _load_star_sprite(color_name: str) -> "pygame.Surface | None":
+    """Return the painted star sprite for a STAR_COLOR_RGB key, or None
+    if the PNG is missing / failed to load. Result is cached forever.
+    """
+    cached = _STAR_SPRITE_CACHE.get(color_name)
+    if cached is False:
+        return None
+    if isinstance(cached, pygame.Surface):
+        return cached
+    fname = _STAR_SPRITE_FILENAMES.get(color_name)
+    if fname is None:
+        _STAR_SPRITE_CACHE[color_name] = False
+        return None
+    path = os.path.join("assets", "stars", fname)
+    if not os.path.isfile(path):
+        _STAR_SPRITE_CACHE[color_name] = False
+        return None
+    try:
+        surf = pygame.image.load(path).convert_alpha()
+        _STAR_SPRITE_CACHE[color_name] = surf
+        return surf
+    except (pygame.error, OSError):
+        _STAR_SPRITE_CACHE[color_name] = False
+        return None
 
 
 # How big the system is in system-local coords; the scene auto-fits to window
@@ -50,6 +96,8 @@ SYSTEM_BOUNDARY_PAD = 220.0
 
 class SystemScene(Scene):
     """View of a single star system with orbiting planets."""
+
+    music_context = "system_travel"  # assets/music/system_travel/
 
     def __init__(
         self,
@@ -384,7 +432,27 @@ class SystemScene(Scene):
         z = max(0.7, min(1.6, self.zoom * 0.7))
         base_radius = int((STAR_TYPE_RADIUS.get(self.star["type"], 2) * 8 + 14) * z)
         cx, cy = self._system_to_screen(0.0, 0.0)
-        # Outer glow
+
+        # Painted-star sprite path — if assets/stars/star_<color>.png
+        # exists, blit the painted disc+corona scaled to the same overall
+        # size as the procedural render would produce. The sprite's
+        # corona extends ~2× the disc radius, so we scale by base_radius*2.
+        star_surf = _load_star_sprite(self.star.get("color", ""))
+        if star_surf is not None:
+            target_diam = base_radius * 4  # disc + corona
+            sw, sh = star_surf.get_size()
+            longest = max(sw, sh)
+            if longest != target_diam and longest > 0:
+                f = target_diam / longest
+                star_surf = pygame.transform.smoothscale(
+                    star_surf, (max(1, int(sw * f)), max(1, int(sh * f))),
+                )
+            rect = star_surf.get_rect(center=(int(cx), int(cy)))
+            screen.blit(star_surf, rect)
+            return
+
+        # Procedural fallback — layered concentric circles, used when the
+        # painted star sprite isn't installed yet.
         for i in range(4):
             r = base_radius + i * 8
             alpha_color = (color[0] // (i + 2), color[1] // (i + 2), color[2] // (i + 2))
@@ -412,17 +480,25 @@ class SystemScene(Scene):
         # Try the canonical UQM sprite. Use "med" at moderate zoom, "big"
         # when zoomed in (size * 2 is the rendered diameter; the sprite
         # gets nearest-neighbor scaled to that).
-        from scz.content.planet_sprites import (
-            scaled_sprite, scaled_sprite_for_legacy,
-        )
         diam = size * 2
-        which_size = "sml" if diam <= 24 else ("med" if diam <= 48 else "big")
-        uqm_type = getattr(planet, "uqm_type", None)
         sprite = None
-        if uqm_type:
-            sprite = scaled_sprite(uqm_type, diam, size=which_size)
+        # 1. Animated rotation sphere (named planets) — same texture as
+        #    orbit + combat view so the planet IS consistent across
+        #    view transitions
+        from scz.content.planet_sphere import has_sphere, get_frame
+        planet_id = getattr(planet, "id", None) or planet.name.lower().replace(" ", "_")
+        if has_sphere(planet_id):
+            sprite = get_frame(planet_id, self.time_in_scene, diameter=diam)
         if sprite is None:
-            sprite = scaled_sprite_for_legacy(planet.type, diam, size=which_size)
+            from scz.content.planet_sprites import (
+                scaled_sprite, scaled_sprite_for_legacy,
+            )
+            which_size = "sml" if diam <= 24 else ("med" if diam <= 48 else "big")
+            uqm_type = getattr(planet, "uqm_type", None)
+            if uqm_type:
+                sprite = scaled_sprite(uqm_type, diam, size=which_size)
+            if sprite is None:
+                sprite = scaled_sprite_for_legacy(planet.type, diam, size=which_size)
 
         if sprite is not None:
             ssw, ssh = sprite.get_size()

@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Lemmkin Skitter tracer pulse — cheerful small fragile ship.
+# Anchor against celestial-body failure mode.
+
+A flat 2D HUD VFX icon for a video-game weapon effect. THIS IS NOT
+A CELESTIAL BODY. NOT AN ASTEROID. NOT A PLANET. Abstract glowing
+energy graphic on pure black.
+
+Subject: a small bright TRACER BOLT — teardrop-shaped pulse of
+yellow-orange energy with a brighter cream-white core, trailing a
+short comet-glow tail. Cheerful, fast, lightweight — reads as a
+TRACER PULSE from a small fragile scout, not a heavy round.
+
+COLOR: warm SUNSHINE-YELLOW core with ORANGE rim, white-hot bright
+center. Bright optimistic palette (Lemmkin are canonically cheerful).
+No menacing red.
+
+COMPOSITION: flat 2D iconography. Bolt centered, vertical
+orientation (nose toward TOP of frame), occupies ~50% of frame.
+Pure black background edge to edge. NO 3D rendering. NO stone.
+NO stars. NO planet.
+
+STYLE: arcade-shooter tracer VFX. Glowing translucent energy.

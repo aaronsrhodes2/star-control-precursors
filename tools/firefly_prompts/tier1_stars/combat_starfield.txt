@@ -1,0 +1,32 @@
+# aspect: 16:10
+# notes: Atmospheric starfield backdrop for the combat arena. Currently
+# rendered as 180 procedural dots; this replaces it with a gorgeous
+# painted starfield with depth, occasional bright stars, and faint
+# nebula tinting at the edges.
+#
+# Wiring target: assets/combat/starfield.png (1600x1000 or 3200x2000).
+# Loaded by combat/scene.py — blit once as background, then ships +
+# asteroids + planet render over the top.
+
+A gorgeous DEEP-SPACE STARFIELD backdrop for a 2D top-down space
+combat game. View: looking out into deep interstellar space. Hundreds
+of stars at varying brightness and color (mostly white-cream with
+occasional warm-amber and cool-blue accent stars). 4-6 BRIGHT
+HERO STARS scattered across the frame, each with a soft diffraction
+spike. Subtle faint NEBULAR HAZE at the corners — barely visible
+soft purple and dusty teal cloud tints, mostly transparent. The
+overall feeling is DEEP, QUIET, COSMIC — a peaceful void in which
+two ships are about to fight.
+
+COMPOSITION: starfield evenly distributed but not uniform — natural
+clusters and quiet patches. Brightest stars sized small but visible.
+Background is mostly very-dark-navy black, NOT pure black — a tiny
+amount of ambient star-glow makes it feel like real deep space.
+
+VIEW: 16:10 aspect ratio, fills entire frame. Suitable as a tiled
+background that ships render over the top of.
+
+STYLE: painterly with photoreal star fidelity. Hubble-like.
+Atmospheric and immersive. NO ships, NO planets, NO ground, NO
+horizon, NO motion lines, NO text, NO HUD elements. Just gorgeous
+deep space.

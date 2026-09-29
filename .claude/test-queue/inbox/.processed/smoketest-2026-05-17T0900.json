@@ -1,0 +1,7 @@
+{
+  "id": "smoketest-2026-05-17T0900",
+  "tests": ["walk_bio_archive"],
+  "worktree": "elegant-bartik-733a37",
+  "requester": "testing-chat-self",
+  "note": "queue runner smoke test"
+}

@@ -1,0 +1,41 @@
+# aspect: 1:1
+# notes: NEW 2026-05-17 per HANDOFF. The Three-Voice Arc is the
+# Stelloth chord-vessel — a trader vessel with medium combat
+# capability. Carries the Stelloth's artifact-trade collection. The
+# vessel's silhouette should echo the three-body chord nature of its
+# pilots: THREE coordinated hull-sections linked by visible structural
+# spans, NOT a single monolithic ship. Style: cool pearl-grey + green-
+# violet, precise composition.
+
+A top-down orthographic view of a Stelloth Three-Voice Arc — a
+chord-vessel trader-warship with TRIPLE HULL composition (visible
+homage to the species's three-body biology). Shape: three
+distinct hull-sections arranged in a Y-chord configuration along
+the longitudinal axis, with visible structural SPANS (parallel
+ribbed members in dark plum, evoking the murrer-cord motif)
+linking them at the joints:
+
+  - FORWARD hull (Speaker section): the smallest hull, ~1:2
+    proportion, with a single forward-facing optical-cluster lens
+    and a thin Contract-Resonance Lance barrel protruding from
+    the nose.
+  - MID hull (Witness section): the largest hull, ~1:1.5, with
+    a translucent prismatic dorsal SCANNER-DOME mounted topside
+    (the Chord-Witness Scanner special); the dome catches starlight
+    in many directions, a crystalline jewel on the spine.
+  - AFT hull (Counter section): a thicker, slower-looking hull
+    with broad armored flanks; its skin is COVERED IN LEDGER-
+    MARK ETCHINGS (tiny tally-glyph carvings in rows down the
+    flanks, a record of every contract the ship has executed).
+    Two stout main thruster nozzles at the rear glow soft
+    green-violet.
+
+Hull color: cool pearl-grey across all three sections, with
+green-violet piping along the structural spans + plum highlights
+in the murrer-evoking ribs. NO faction-emblem (Stelloth don't
+display flags). Background: deep starfield, near-black. Style:
+stylized 1990s sci-fi game art, painterly with crisp silhouette,
+PRECISE ARCHITECTURAL COMPOSITION (echoes the chord-being's
+precise composition). Tone: A TRADER WHO REMEMBERS EVERY DEAL,
+methodical, capable of defending its cargo but not eager to.
+The triple-hull silhouette is non-negotiable.

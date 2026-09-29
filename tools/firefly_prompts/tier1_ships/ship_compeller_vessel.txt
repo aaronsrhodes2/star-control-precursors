@@ -1,0 +1,34 @@
+# aspect: 1:1
+# notes: HERO portrait of the Compeller Vessel — Furling sub-faction
+# ship for the sedation/deception faction. We have sprite_compeller_vessel
+# at top-down sprite resolution but no hero portrait yet. Mirrors the
+# framing of ship_persuader_vessel.png and ship_cleanser_cruiser.png.
+
+A hero portrait of a COMPELLER VESSEL — a Furling sub-faction starship
+designed for SEDATION and TRACTOR-RESTRAINT operations. Three-quarter
+view from above and slightly to the side, showing the ship's full
+silhouette suspended in deep space. Mid-weight Furling design
+language — heavier than the Persuader but lighter than the
+Cleanser. Symmetric blocky hull with rounded panel edges.
+
+DISTINCTIVE FEATURES (Compeller-specific):
+- Prominent forward TRACTOR-ARRAY ANTENNAE and SEDATION-PRONG
+  PROTRUSIONS at the bow, slender forward-projecting prongs.
+- Side-mounted manipulator arms folded close to the body —
+  implying the ship carries tools, not weapons-first.
+- A central crystalline-blue sedation-emitter visible on the
+  ventral surface.
+
+COLOR: SLATE-GREY hull with bright GREEN accent stripes along
+the prongs and tractor-array tips. Engine glow soft cyan at the
+rear nozzles. Pre-Cleanser-era Furling palette — "we're here to
+help" but with restraints visible.
+
+BACKGROUND: deep black space with subtle dim starfield in the far
+distance. NO planet, NO nebula, NO motion lines.
+
+STYLE: painterly sci-fi ship portrait, museum-quality presentation
+shot. Crisp readable silhouette. Cinematic side lighting from the
+upper left. NO menacing-warship aesthetic (that's the Cleanser),
+NO clean military-spec rendering (these ships carry restraints,
+not weapons-first), NO water (this is a SPACECRAFT not a boat).

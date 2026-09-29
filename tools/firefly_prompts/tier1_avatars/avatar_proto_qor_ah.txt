@@ -1,0 +1,35 @@
+# aspect: 2:3
+# notes: Articulated avatar for a Proto-Qor-Ah. Purifying offshoot of
+# the active Furling uplift project. White-yellow when pure, BLACK
+# when 'impure'; self-amputate impurity. Above-threshold cognitively
+# (more lethal than their proto-Ur-Quan cousins). Hard-coded
+# ritualism. In our era they are infant-sentient — language is just
+# emerging — but already developing their own moral code.
+
+A full-body avatar painting of a Proto-Qor-Ah. Body plan: ~2.4 m
+tall hierarchical caterpillar-like creature standing semi-upright
+on six powerful lower limbs (insectoid-mammalian hybrid). Body
+surface is divided into clear color zones: most of the body is
+pristine bone-white shading to soft pale-yellow at the segment
+joints (the "pure" coloration), but ONE shoulder segment is
+shadow-black with a fresh self-amputation scar at its edge (the
+"impure" portion already cut away). Head: a horizontal column of
+six glossy emerald eyes arranged in a single row above a quiet
+mandibled mouth. Two upper grasping arms with three-fingered
+hands held in a stiff ritual cross-arm pose. A simple ceremonial
+white-cloth sash crosses one shoulder. Pose: erect, formal,
+fingers laced in a self-disciplined wait. Background: SOLID MATTE
+DARK NAVY (#0a0e1a), edge-to-edge. Lighting: even soft
+three-point with a cool ivory rim. Style: stylized 1990s sci-fi
+game character portrait, painterly. Tone: RITUAL, FORMAL,
+DANGEROUS — should read as a creature with a strict code that
+WILL be enforced, on others and itself.
+
+ARTICULATION BRIEF (rig: insectoid_hierarch):
+- HEAD: separable, eye-row pulsable
+- UPPER ARMS L/R: distinct, can uncross for gesture
+- LOWER LIMBS (six): visible as a vertical row of articulating leg
+  segments holding the body upright
+- IMPURE BLACK SEGMENT: visible as a visual cue for the species'
+  central moral mechanic
+- Avoid: full-black body (lore says majority pure), no scar

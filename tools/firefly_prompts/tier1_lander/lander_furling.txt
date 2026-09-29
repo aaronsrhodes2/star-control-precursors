@@ -1,21 +1,31 @@
 # aspect: 1:1
-# notes: top-down lander sprite. The Furling lander is a small descent
-# vehicle that drops from orbit, autonomously collects minerals/bio via
-# a tractor beam, and lifts off. Per the lore, Furlings tend the galaxy
-# rather than harvest it, so the lander should look gentle/curious,
-# NOT military. Tractor beam visualized as a cone/circle of pale gold
-# light underneath. Single craft, slightly larger than the resources
-# it collects.
+# notes: top-down lander sprite. CANONICAL REDESIGN 2026-05-17: the
+# Furling lander is an UNMANNED HOVERING DRONE with a tractor beam.
+# It does NOT touch the ground (no legs, no landing struts, no
+# wheels). It floats a few meters above the surface, immune to
+# terrain (no trips, falls, earthquakes), damaged only by weather
+# and atmosphere (heat, ice, acid rain, lightning). Per lore the
+# Furlings tend the galaxy rather than harvest it, so the drone
+# should look GENTLE-CURIOUS, NOT military. Tractor beam visualized
+# as a cone/circle of pale gold light underneath. Single drone,
+# slightly larger than the resources it collects.
 
-A top-down orthographic view of a small Furling lander descent vehicle
-hovering above an alien planet surface. The lander is a compact
-rounded craft with four bracing legs splayed downward, central body
-in a warm copper-and-cream metallic finish with a subtle Furling
-glyph on top. A faint translucent halo of pale gold light surrounds
-it (the tractor-beam collection radius, drawn as a soft glowing
-ring). Two small thruster nozzles glow gentle cyan at the rear.
-The craft looks more like a botanist's drone than a war machine —
-curious, gentle, careful. Style: stylized 1990s sci-fi game art,
-painterly with crisp silhouette, deep black background. Should read
-clearly at 32px game-resolution as well as the full-res draft. No
-weapons visible. No human-style cockpit.
+A top-down orthographic view of a small Furling lander drone
+HOVERING above an alien planet surface. The drone is a compact
+rounded craft with NO LEGS and NO LANDING STRUTS — it floats on
+four downward-facing gimbal-mounted hover-thrusters (gentle
+violet ion glow) arranged around its underside in a cross pattern.
+Central body: warm copper-and-cream metallic finish with a subtle
+Furling glyph on top and a small instrument cluster (sensors,
+sample analyzers) on the dorsal surface. Underbelly: a translucent
+amber LENS APERTURE projecting a soft cone of pale gold tractor-
+beam light downward to the planet surface, with a visible
+collection halo (a soft glowing ring on the ground where the
+beam terminates). A few small specks of mineral/bio sample are
+visibly being pulled UP into the lens. The craft looks more like
+a botanist's drone than a war machine — curious, gentle, careful.
+No human-style cockpit, no weapons. The hover-thrusters and
+absence of legs must read INSTANTLY — this is a thing that does
+not touch the ground. Style: stylized 1990s sci-fi game art,
+painterly with crisp silhouette, deep black background. Should
+read clearly at 32px game-resolution as well as the full-res draft.

@@ -1,0 +1,33 @@
+# aspect: 1:1
+# notes: Sprite for the Burv Broadcaster — Burvixese four-armed engineering
+# vessel. Hull: copper-brass + crystalline. Four prominent antenna arrays
+# and harmonic-resonator dishes on the leading edge — projects the Be-Loud
+# cognition pulse. Compact but bristling with broadcasters.
+
+Top-down 2D game ship sprite of a BURV BROADCASTER vessel.
+
+SHAPE: compact symmetric four-armed hull, copper-brass body
+with crystalline blue accents. Four prominent forward-facing
+ANTENNA ARRAYS at the bow forming a cross-shape, each topped
+with a harmonic-resonator dish. The body has a central core
+visible as a bright crystalline reactor. Engine block at the
+rear with two thruster nozzles. Compact, dense, machined.
+
+COLOR: copper-brass hull, bright crystalline blue power
+veins, polished metallic accents. Antenna dishes have a
+slight cyan resonance glow at the cup.
+
+TOP-DOWN ORTHOGRAPHIC VIEW: camera directly above. Nose
+pointing toward TOP of frame. Symmetric across vertical axis.
+Subject centered, ~70% of frame.
+
+BACKGROUND: solid pure black (#000000), edge to edge. NO
+starfield, NO nebula, NO horizon.
+
+STYLE: stylized 1990s sci-fi game sprite at modern fidelity.
+Engineered-utility aesthetic. Reads as a four-armed
+engineering broadcaster, not a warship.
+
+NEGATIVE: starfield, stars, nebula, perspective view,
+three-quarter view, side profile, ground, horizon, organic
+shapes, asymmetric design.

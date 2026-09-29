@@ -51,6 +51,8 @@ ORBIT_BACKDROP: dict[str, tuple[int, int, int]] = {
 class PlanetOrbitScene(Scene):
     """Cloaked orbital view of a single planet."""
 
+    music_context = "planet_orbit_cloaked"  # assets/music/planet_orbit_cloaked/
+
     def __init__(
         self,
         planet: Planet,
@@ -89,12 +91,22 @@ class PlanetOrbitScene(Scene):
         self.font = pygame.font.SysFont("consolas", 18)
         self.title_font = pygame.font.SysFont("consolas", 32, bold=True)
         self.small_font = pygame.font.SysFont("consolas", 14)
+        # Orbital insertion + cloak-field engagement (Furling stealth
+        # is automatic in orbit per design canon — see scene docstring).
+        # The two SFX play together: insertion success chime → fade
+        # straight into the cloak phase-shift whoosh, ~3 s total.
+        if self.game is not None and hasattr(self.game, "sfx"):
+            self.game.sfx.play("scan/enter_orbit")
+            self.game.sfx.play("scan/cloak_engage")
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
 
         # B → leave orbit, back to system view
         if inp.cancel and self.game is not None and self.parent_scene_cls is not None:
+            if hasattr(self.game, "sfx"):
+                # Cloak field disengaging on departure (vulnerable).
+                self.game.sfx.play("scan/cloak_disengage")
             sys_scene = self.parent_scene_cls(self.star)
             self.game.set_scene(sys_scene)
             return
@@ -248,9 +260,17 @@ class PlanetOrbitScene(Scene):
             screen.blit(ring, (p_center_x - r - 2, p_center_y - r - 2))
 
     def _planet_sprite(self, target_diameter: int) -> "pygame.Surface | None":
-        """Resolve the planet's UQM sprite. UQM-procgen planets carry
-        their `uqm_type`; hand-built systems fall back to mapping our
-        8-bucket type to a representative UQM type."""
+        """Resolve the planet's sprite. Priority order:
+        1. Animated rotation sphere (named planets with rotation frames)
+        2. UQM-procgen sprite by uqm_type
+        3. Legacy-type fallback
+        """
+        # 1. Try animated rotation sphere (named planets)
+        from scz.content.planet_sphere import has_sphere, get_frame
+        planet_id = getattr(self.planet, "id", None) or self.planet.name.lower().replace(" ", "_")
+        if has_sphere(planet_id):
+            return get_frame(planet_id, self.time_in_scene, diameter=target_diameter)
+        # 2/3. UQM static sprite fallback
         from scz.content.planet_sprites import (
             scaled_sprite, scaled_sprite_for_legacy,
         )

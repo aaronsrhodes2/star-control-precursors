@@ -1,0 +1,49 @@
+{
+  "context": "arilou",
+  "category": "species_peace",
+  "description": "Arilou Lalee'lay \u2014 gentle quasi-space whisper; state stem = patience",
+  "key": "B flat major",
+  "bpm": 90,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/arilou/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: warm low sine-wave pulse with subtle pitch-bend modulation, no drums no melody no pads, in B flat major at 90 bpm, alien mystical species theme, gentle phase-shifted chimes, dimensional whisper, in the spirit of 1990s alien-mystical idiom \u2014 phase-shifted chimes, multitracker chiptune, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/arilou/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: soft mallet hits with long reverb tails, very sparse, no melody no bass no pads, in B flat major at 90 bpm, alien mystical species theme, gentle phase-shifted chimes, dimensional whisper, in the spirit of 1990s alien-mystical idiom \u2014 phase-shifted chimes, multitracker chiptune, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pad": {
+      "path": "assets/music/arilou/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: airy major-key choral synth pad with phase-shifting filter motion, no melody no drums no bass, in B flat major at 90 bpm, alien mystical species theme, gentle phase-shifted chimes, dimensional whisper, in the spirit of 1990s alien-mystical idiom \u2014 phase-shifted chimes, multitracker chiptune, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "lead": {
+      "path": "assets/music/arilou/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: floating bell-tone melody with bent pitches, contemplative and ethereal, no drums no bass no pads, in B flat major at 90 bpm, alien mystical species theme, gentle phase-shifted chimes, dimensional whisper, in the spirit of 1990s alien-mystical idiom \u2014 phase-shifted chimes, multitracker chiptune, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/arilou/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: time-stretched shimmer and quasi-space whisper textures, no melody no drums no bass, in B flat major at 90 bpm, alien mystical species theme, gentle phase-shifted chimes, dimensional whisper, in the spirit of 1990s alien-mystical idiom \u2014 phase-shifted chimes, multitracker chiptune, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "patience": {
+      "path": "assets/music/arilou/patience.wav",
+      "prompt": "Isolated PATIENCE-TEXTURE STEM for layered production: warm sustained major-7 string pad with gentle calming resonance, soft choral hum underneath, the sound of waiting indefinitely without irritation, a presence that has been patient for centuries, in B flat major at 90 bpm, patient, calming, indefinitely-waiting, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-18T06:08:26Z",
+  "notes": "State stem 'patience' is read by src/scz/audio/state_layers.py from game.flags['arilou_patience']. Starts at 1.0 and only decreases as the Sage gives up on the Steward."
+}

@@ -1,0 +1,59 @@
+# aspect: 1:1
+# notes: REWRITTEN 2026-05-18 per Aaron review on the second-burst
+# reroll: "Mmrnhrm are more like the shape of a F-11A or a F-14 Tomcat
+# with wings that sweep in and out in its two different modes." The
+# prior prompt described an octagonal blocky utilitarian hull — that
+# was wrong. The Mmrnmhrm Sentinel's TWO-MODE COMBAT mechanic (SC2
+# X-Form lineage) is realized as a SWING-WING JET FIGHTER silhouette
+# — variable-geometry wings that sweep forward (one mode) and back
+# (the other mode). Maintain the "ancient self-modifying robot, never-
+# rebuilt-only-maintained" patchwork-alloy aesthetic from the avatar
+# canon.
+
+A top-down orthographic view of an Mmrnmhrm Sentinel starship.
+Shape: a VARIABLE-GEOMETRY SWING-WING JET FIGHTER silhouette,
+inspired by the Grumman F-14 Tomcat and the General Dynamics
+F-111 Aardvark. A long slender central fuselage extends
+vertically in the frame (~5:1 aspect, nose to top), with a
+tapered teardrop nose forward and twin engine nacelles flanking
+the rear. WINGS: large variable-geometry swing-wings extending
+laterally from the mid-fuselage; in this view show them in the
+INTERMEDIATE / SPREAD position (forward-swept ~25° from
+perpendicular), with clear wing-pivot hinges visible at the
+fuselage root suggesting they can rotate further back. Wing
+leading-edge slats and trailing-edge flaps clearly delineated.
+
+The two combat modes are CANONICAL: wings forward (intercept
+mode) and wings swept-back (bombard mode); this image shows
+wings between the two extremes — visible variable geometry, not
+a static fixed-wing.
+
+WEATHERED PATCHWORK PLATING: the hull surface is a quilt of
+three distinct alloys welded together — brushed silver-titanium
+dominant, panels of tarnished copper-bronze (older repairs),
+matte gunmetal-gray (newer grafts) — clearly visible seams
+between alloys, like the ship has been continuously
+self-maintained for millions of years. ASYMMETRIC details: one
+side has a slightly different sensor cluster than the other,
+one wing-pylon is fractionally thicker than its mirror (eons
+of independent module repair).
+
+Forward end (nose): a long horizontal OPTICAL-CLUSTER BAND of
+small white-light lenses across the front face (the sensor
+band matching the Mmrnmhrm Sentinel avatar's head). NO organic
+cockpit canopy — the Mmrnmhrm are robots, the "canopy" is a
+sensor strip. At the rear: twin asymmetric thruster nozzles
+glow soft cool-white. Subtle geometric Mmrnmhrm glyphs etched
+into one of the dorsal panels in cool platinum (one glyph
+notably newer/brighter — a recent self-repair signature). NO
+flag, NO faction-emblem, NO biological decoration.
+
+Background: deep starfield, near-black. Style: stylized 1990s
+sci-fi game art, painterly with crisp silhouette, melancholy,
+ancient, mathematical. Tone: A SHIP MAINTAINED BY ITSELF FOR
+MILLIONS OF YEARS — the swing-wings just one more set of
+hinges among the eons of repairs.
+
+NEGATIVE: octagonal hull, dome shape, sphere, blocky cube, no
+visible wings, fixed-wing only, organic biological details,
+shiny new finish, symmetric pristine military aesthetic.

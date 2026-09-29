@@ -1,0 +1,47 @@
+# aspect: 2:3
+# notes: Full-body portrait of Vael-Souren, the slice's Cleanser
+# commander (Furling sub-faction antagonist). Matches the framing of
+# the existing species_commander_halia_portrait. Vael-Souren is the
+# Furling who decided low-threshold species should be eliminated;
+# she carries that decision visibly.
+#
+# Canon (memory: project_furling_anatomy + Cleanser sub-faction):
+# Furlings are TALL SHAGGY FUR-LUMPS — so shaggy you can't count their
+# legs. Two furry arms, two big ears, face mostly hidden behind fur
+# (Snuffleupagus / Cousin Itt). Faction = fur color + accessory.
+# Cleanser color = deep blood-red and charcoal-grey. Cleanser
+# accessory = red leather sash + iron weapon harness.
+
+PORTRAIT of VAEL-SOUREN, the Cleanser commander. ONE single TALL
+SHAGGY FUR-LUMP alien character, standing upright, photographed
+full-body in dramatic museum-portrait lighting against a dark
+red-tinged backdrop. So densely covered in long matted fur that
+you cannot count her legs — the silhouette is a heavy furred
+TEARDROP from shoulders to the floor, like a Snuffleupagus or
+Cousin Itt.
+
+FUR COLOR (Cleanser): deep blood-red and charcoal-grey matted
+shag, darker red highlights along the shoulders and down the
+back. Several long fur-strands knotted with small dark iron
+rings as a mark of rank (a Cleanser commander's braids).
+
+ACCESSORY (Cleanser commander): a thick RED LEATHER SASH crossing
+the chest diagonally, embroidered with a darker red Cleanser
+sigil (a stylized purifying-flame glyph). Underneath: a dark iron
+weapon harness with a sheathed BLADE visible at the hip. Two
+heavy iron bracers on the forearms. Around the neck: a heavy
+ceremonial chain of office bearing a single dark-iron faction
+seal.
+
+POSE: standing fully facing the camera, head slightly tilted to
+show the partial face behind the fur curtain. Both clawed hands
+visible at the sides — relaxed but ready. A small red light
+glints in one barely-visible eye.
+
+STYLE: painterly stylized sci-fi character portrait, single
+subject, museum-portrait gravitas. Vael-Souren is a TRAGIC
+ANTAGONIST — competent, committed to her doctrine, not cackling-
+villain. The portrait should read as someone who has decided
+something terrible because she believed it was duty. NO bipedal
+humanoid silhouette, NO visible feet, NO short fur, NO clean
+sci-fi armor, NO cartoonish menace.

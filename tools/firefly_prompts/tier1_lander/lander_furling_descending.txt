@@ -1,0 +1,27 @@
+# aspect: 1:1
+# notes: 3/4 perspective DESCENDING variant of the Furling lander
+# drone. Shown during the orbit→surface deployment transition: the
+# drone has just been printed by the ship's fabricator, has entered
+# atmospheric descent, hover-thrusters now firing harder against
+# the planet's gravity, a re-entry plasma sheath glows around the
+# nose. Tractor-beam aperture is closed/dormant for the descent.
+# Same body and thruster layout as the live lander.
+
+A three-quarter perspective view of a Furling lander drone
+DESCENDING through alien atmosphere, nose tilted slightly
+downward, viewer slightly above looking down at it. Same compact
+rounded copper-and-cream body and four downward-facing hover-
+thrusters as the canonical lander. The hover-thrusters are NOW
+FIRING HARDER — violet ion glow extended into a downward jet of
+~2-3x the idle length, gimbal nozzles fully extended. Around the
+drone's leading edge: a faint salmon-orange re-entry plasma
+sheath glows from compression of the alien atmosphere, with two
+thin vapor trails curling backward off the upper edge. The
+tractor-beam aperture on the underbelly is CLOSED — a flat dark
+disc, not yet activated. Below the drone: a stylized abstract
+ground-haze of dust and rock visible far below, suggesting
+altitude. Above the drone (in the upper edge of the frame): a
+hint of starfield bleeding through the upper atmosphere. NO LEGS,
+NO LANDING STRUTS. Style: stylized 1990s sci-fi game art,
+painterly with crisp silhouette. Tone: PURPOSEFUL DELIVERY — the
+drone is on a mission, not falling.

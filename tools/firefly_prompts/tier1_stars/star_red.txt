@@ -1,0 +1,23 @@
+# aspect: 1:1
+# notes: Star sprite for RED_BODY stars — M-class red dwarfs and red
+# giants. Wiring target: assets/stars/star_red.png
+
+A gorgeous 2D game sprite of a RED STAR, viewed from a great
+distance. Deep red core with visible surface granulation and prominent
+dark sunspots. Crimson corona radiating outward in long delicate
+streamers. Several dramatic solar prominences arcing off the limb in
+glowing rust-orange. The star feels ANCIENT — a slow-burning M-class
+red body, late in its life cycle.
+
+COLOR: dark CRIMSON center (RGB ~220,80,80), surrounding RUST-RED
+corona (RGB ~255,110,100), with darker burgundy prominences and
+near-black sunspots, fading to deep black at the perimeter.
+
+VIEW: head-on, sphere-disc centered, ~70% of frame diameter. Pure
+black starless background outside the corona.
+
+STYLE: painterly with photoreal stellar texture. Visible surface
+granulation, sunspots, dramatic prominences. Crisp, gorgeous,
+suitable as a hero element in a sci-fi space game. NO stars in the
+background, NO planets, NO orbiting bodies. Just the star, alone, in
+the void.

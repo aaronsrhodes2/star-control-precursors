@@ -1,0 +1,43 @@
+{
+  "context": "chenjesu",
+  "category": "species_peace",
+  "description": "Chenjesu \u2014 crystalline-resonant, rooted, ancient stillness",
+  "key": "D major",
+  "bpm": 58,
+  "duration_s": 180,
+  "backend": "musicgen-stereo-medium/local-server",
+  "stems": {
+    "bass": {
+      "path": "assets/music/chenjesu/bass.wav",
+      "prompt": "Isolated BASS STEM for layered production: low resonant crystal-bowl drone with slow harmonic beating, no drums no melody no pads, in D major at 58 bpm, crystalline meditative species theme, struck-quartz harmonics, ancient stillness, inward-facing, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "percussion": {
+      "path": "assets/music/chenjesu/percussion.wav",
+      "prompt": "Isolated DRUMS STEM for layered production: very sparse struck-glass percussion with long sympathetic ring-tails, no melody no bass no pads, in D major at 58 bpm, crystalline meditative species theme, struck-quartz harmonics, ancient stillness, inward-facing, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "pad": {
+      "path": "assets/music/chenjesu/pad.wav",
+      "prompt": "Isolated PAD STEM for layered production: sustained pure sine-wave chord beds in just-intonation harmony, crystalline cold but not unfeeling, no melody no drums no bass, in D major at 58 bpm, crystalline meditative species theme, struck-quartz harmonics, ancient stillness, inward-facing, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "lead": {
+      "path": "assets/music/chenjesu/lead.wav",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: solo struck-crystal melody phrasing slow harmonic-overtone series, ancient meditative, no drums no bass no pads, in D major at 58 bpm, crystalline meditative species theme, struck-quartz harmonics, ancient stillness, inward-facing, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    },
+    "ambient": {
+      "path": "assets/music/chenjesu/ambient.wav",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: distant crystal-cave reverberation, sympathetic harmonic shimmer, no wind no warmth, no melody no drums no bass, in D major at 58 bpm, crystalline meditative species theme, struck-quartz harmonics, ancient stillness, inward-facing, stems-only mix",
+      "sample_rate": 32000,
+      "backend": "musicgen-stereo-medium/local-server"
+    }
+  },
+  "generated_at": "2026-05-19T00:32:08Z",
+  "notes": "Crystalline-resonant. Sympathetic harmonic overtones of struck quartz. The Chenjesu are below the Others' threshold because they don't broadcast \u2014 the music should sound INWARD."
+}

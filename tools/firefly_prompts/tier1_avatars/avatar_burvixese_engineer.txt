@@ -1,0 +1,33 @@
+# aspect: 2:3
+# notes: Articulated avatar for a Burvixese engineer — SC2-canonical
+# four-armed broadcaster-engineer species. In our era they are alive,
+# proud, and DOOMED: they believe their Burv Caster broadcasting array
+# will make the Others recognize them as worthy peers. (It won't —
+# the Others eat the loud first.) Their body language should read as
+# CONFIDENT-MILITANT, the doomed-optimistic posture of a species who
+# has bet its survival on a bad theory.
+
+A full-body avatar painting of a Burvixese engineer. Body plan:
+~1.8 m tall bipedal mammalian humanoid with FOUR ARMS — primary
+upper arms with broad shoulders, secondary lower arms emerging at
+the ribs. Dense cinnamon-brown plush fur covers the body; pale
+ivory throat and chest mane. Head: blunt-muzzled with a large
+forward-facing pair of golden eyes, prominent dark-lipped mouth,
+two short upright tufted ear-tufts. Dressed in a sleeveless
+copper-mesh engineer's vest carrying small instruments and a
+shoulder-mounted broadcaster transponder (a brass cone with
+copper coil windings). Lower arms hold a calibration wand; upper
+arms held wide in a confident gesture of welcome — palm-up open
+hands. Pose: standing upright, feet shoulder-width, chest raised,
+slight forward lean (proud-orator posture). Background: SOLID
+MATTE DARK NAVY (#0a0e1a), edge-to-edge. Lighting: even soft
+three-point with a faint warm copper rim from the transponder.
+Style: stylized 1990s sci-fi game character portrait, painterly.
+
+ARTICULATION BRIEF (rig: bipedal_humanoid + secondary_arms):
+- HEAD: separable above shoulders for talk animation
+- UPPER ARMS L/R: clear separation, raised in greeting
+- LOWER ARMS L/R: distinct from upper arms, holding wand
+- TORSO/HIPS: visible, no occluding cape
+- Avoid: arms tangled, transponder occluding face, doomed mood
+  (their POSTURE should NOT yet know they're doomed)

@@ -1,0 +1,22 @@
+# aspect: 1:1
+# notes: Star sprite for WHITE_BODY stars — luminous white stellar
+# bodies (often A-class or unstable/old systems). Wiring target:
+# assets/stars/star_white.png
+
+A gorgeous 2D game sprite of a LUMINOUS WHITE STAR, viewed from a
+great distance. Brilliant pure-white core with a softly bluish-white
+corona radiating outward in delicate streamers. The surface glints
+with subtle warm cream highlights. Smooth fade from white-hot center
+through soft platinum to deep black at the perimeter.
+
+COLOR: pure WHITE-HOT center (RGB ~255,255,255), surrounding cool
+WHITE-BLUE corona (RGB ~240,240,255), fading to deep black at the
+perimeter.
+
+VIEW: head-on, sphere-disc centered, ~70% of frame diameter. Pure
+black starless background outside the corona.
+
+STYLE: painterly with photoreal stellar texture. Crisp, gorgeous,
+suitable as a hero element in a sci-fi space game. NO stars in the
+background, NO planets, NO orbiting bodies. Just the star, alone, in
+the void.

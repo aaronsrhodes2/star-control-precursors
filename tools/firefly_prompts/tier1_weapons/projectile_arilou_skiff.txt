@@ -1,0 +1,11 @@
+# aspect: 1:1
+# notes: Arilou Pulse Caster projectile. Fast teal pulses, 4 dmg.
+# Quick fading orb-shape, not a beam.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above. Subject: a bright cyan-teal energy pulse, a
+small luminous teal orb with a soft fading halo and a thin motion
+trail behind it. Roughly egg-shaped, oriented vertically (point
+forward / toward the top of the frame). Glowing pearlescent teal
+with deeper cyan core. Pure black void background, isolated.
+Stylized 1990s sci-fi painterly game art, crisp silhouette.

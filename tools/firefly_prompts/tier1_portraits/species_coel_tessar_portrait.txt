@@ -1,0 +1,43 @@
+# aspect: 1:1
+# notes: REWRITTEN 2026-05-18 per Aaron review on v1: "its skin needs to
+# be blue/green". The prior prompt asked for "greyish-blue" but Firefly's
+# v1 generated human-tan skin (a darker brown human face). Aaron's update
+# clarifies the canon: Androsynth skin in our era is BLUE-GREEN, not
+# greyish-blue. This is a stronger color shift — the green tinting must
+# be CLEARLY visible, not a subtle wash. The Androsynth in this era are
+# time-displaced clones from SC2's future, designed by humans 250kya in
+# the player's future; SC2-canonical Androsynth were green-skinned, and
+# this prompt aligns to that. Coel Tessar is the slice's Engineer who
+# leads the refugee group and carries the Distress Beacon cartridge.
+
+A close-up bust portrait of Coel Tessar, an Androsynth Refugee
+Engineer. Body plan: humanoid form (the Androsynth are clone-
+humans from 250,000 years in the player's future). SKIN COLOR
+IS UNIFORMLY BLUE-GREEN — a clear cool teal-aquamarine across
+the face, throat, and visible upper chest. The green channel
+must be obvious (think SC2-canonical Androsynth skin, jade-
+seafoam-teal), with cool blue undertones in the recesses. NOT
+human-tan, NOT human-pink, NOT human-brown, NOT pale-grey.
+The skin reads INSTANTLY as alien/synthetic-green. Hair is
+sleek and short, gunmetal-grey shot with silver at the temples.
+Eyes: pale violet, calm and analytical, with subtle horizontal
+scoring at the iris hinting at engineered optics. The face is
+angular and deliberately slightly-asymmetric (Aaron clone-batch
+markers — each refugee is a different clone-iteration). MAGENTA
+UNIFORM: a high-collar Androsynth Engineer's tunic in deep
+magenta with cool gunmetal piping and a small Andromedan-spiral
+patch at the throat. In one gloved hand (visible at the bottom
+edge of the frame) Coel holds the DISTRESS BEACON CARTRIDGE — a
+brass-and-glass cylinder roughly hand-sized, with a tiny green
+telemetry LED visible — the artifact that proves the Others
+exist. Behind the figure: soft-focus interior of the wrecked
+Vulpeculae III refugee shuttle — rusted bulkheads, dim emergency
+lighting in cool sodium amber. Lighting: cool sodium-amber key
+from the wreck's lights, faint cyan rim from a console offscreen.
+Style: stylized 1990s sci-fi game portrait, painterly, dignified,
+weary-determined. Tone: a survivor who has WITNESSED the
+impossible and is now the messenger.
+
+NEGATIVE: human-tan skin, human-brown skin, pink complexion,
+realistic Earth-human skin tones, peach undertones. The
+Androsynth-green palette is NON-NEGOTIABLE.

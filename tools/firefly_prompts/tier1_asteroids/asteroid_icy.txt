@@ -1,0 +1,13 @@
+# aspect: 1:1
+# notes: Icy crystalline asteroid sprite — pale-cyan ice with crystalline
+# refractive surface. Spawn 4 variants (v1..v4). Alpha-extracted via
+# tools/extract_asteroid_alpha.py (rembg + binary 160-threshold).
+
+Top-down view of an irregular icy crystalline asteroid,
+pale cyan-white ice with crystalline refractive surface,
+shattered angular shape with embedded ice crystals catching
+faint glints, sharp shadow contrast, asteroid alone centered
+floating in deep black void of outer space. Pure black
+starless space background. NO stars, NO nebula, NO
+spacecraft, NO planet, NO water, NO boat. Photoreal ice
+texture. Video-game sprite asset on black background.

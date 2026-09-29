@@ -95,6 +95,8 @@ def _trigger_coel_tessar(scene: "HyperspaceScene") -> None:
 class HyperspaceScene(Scene):
     """The galactic map view with a movable player ship."""
 
+    music_context = "hyperspace"  # assets/music/hyperspace/
+
     def __init__(self) -> None:
         super().__init__()
         self.starmap = Starmap(STARMAP_JSON)

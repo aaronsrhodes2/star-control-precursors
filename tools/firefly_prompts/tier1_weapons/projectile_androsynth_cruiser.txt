@@ -1,0 +1,12 @@
+# aspect: 1:1
+# notes: Androsynth Twin Rail projectile. Two thin tracers from forward
+# rails, 10 dmg, fast.
+
+A glowing projectile sprite for a sci-fi video game weapon, viewed
+from directly above, oriented vertically. Subject: TWO parallel thin
+energy tracer lines, magenta-violet glowing, side by side with a
+small gap between them, both pointing forward (toward the top of the
+frame). Each tracer is a slim bright line with a faint trailing
+haze. Magenta-purple glow with a brighter pink core. Pure black void
+background, isolated. Stylized 1990s sci-fi painterly game art,
+crisp silhouette.

@@ -1,0 +1,43 @@
+{
+  "context": "quasispace_travel",
+  "category": "travel",
+  "description": "Quasi-Space travel via Arilou portal \u2014 otherworldly, time-detached",
+  "key": "D flat major",
+  "bpm": 70,
+  "duration_s": 90,
+  "backend": "elevenlabs-music_v1/mp3_44100_192",
+  "stems": {
+    "ambient": {
+      "path": "assets/music/quasispace_travel/ambient.mp3",
+      "prompt": "Isolated AMBIENT TEXTURE STEM for layered production: reversed shimmer textures, subtle dimensional-echo aftertones, no melody no drums no bass, in D flat major at 70 bpm, otherworldly drifting through a non-Euclidean pocket dimension, time-detached, in the spirit of 1990s alien-dimensional-pocket idiom \u2014 drifting, time-stretched, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "bass": {
+      "path": "assets/music/quasispace_travel/bass.mp3",
+      "prompt": "Isolated BASS STEM for layered production: slow detuned synth drone, gentle phase-shifting low frequencies, no drums no melody no pads, in D flat major at 70 bpm, otherworldly drifting through a non-Euclidean pocket dimension, time-detached, in the spirit of 1990s alien-dimensional-pocket idiom \u2014 drifting, time-stretched, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "lead": {
+      "path": "assets/music/quasispace_travel/lead.mp3",
+      "prompt": "Isolated LEAD MELODY STEM for layered production: distant phase-shifted bell-tone melody, dreamy and detached, no drums no bass no pads, in D flat major at 70 bpm, otherworldly drifting through a non-Euclidean pocket dimension, time-detached, in the spirit of 1990s alien-dimensional-pocket idiom \u2014 drifting, time-stretched, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "pad": {
+      "path": "assets/music/quasispace_travel/pad.mp3",
+      "prompt": "Isolated PAD STEM for layered production: airy choral synth pad with subtle pitch-bend modulation, time-stretched quality, no melody no drums no bass, in D flat major at 70 bpm, otherworldly drifting through a non-Euclidean pocket dimension, time-detached, in the spirit of 1990s alien-dimensional-pocket idiom \u2014 drifting, time-stretched, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    },
+    "percussion": {
+      "path": "assets/music/quasispace_travel/percussion.mp3",
+      "prompt": "Isolated DRUMS STEM for layered production: very sparse soft mallet percussion with long reverb tails, almost ambient, no melody no bass no pads, in D flat major at 70 bpm, otherworldly drifting through a non-Euclidean pocket dimension, time-detached, in the spirit of 1990s alien-dimensional-pocket idiom \u2014 drifting, time-stretched, ProTracker-derived, stems-only mix",
+      "sample_rate": 44100,
+      "backend": "elevenlabs-music_v1/mp3_44100_192"
+    }
+  },
+  "generated_at": "2026-05-17T23:12:24Z",
+  "notes": ""
+}

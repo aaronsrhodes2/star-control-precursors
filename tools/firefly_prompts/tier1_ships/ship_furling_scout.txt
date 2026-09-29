@@ -1,0 +1,47 @@
+# aspect: 1:1
+# notes: STRENGTHENED 2026-05-18 per Aaron review on the second-burst
+# reroll: "Make the hull longer so you can see the front part of the
+# hull go through the ring." The v1 produced a short hull with the ring
+# around the middle and no nose-protrusion. v2 must explicitly require
+# the hull to extend FORWARD of the ring, with the nose visible past
+# the front edge of the ring. Star Trek Vulcan D'Kyr reference still
+# applies — long slender yacht with a forward-axis ring.
+
+A top-down orthographic view of a Furling Scout starship — the
+player's vessel. Silhouette inspired by the Vulcan D'Kyr-class
+cruiser from Star Trek: a LONG SLENDER YACHT-LIKE MAIN HULL
+oriented vertically in the frame (nose to top), ~4:1 aspect.
+The hull is LONG — the nose tapers to a teardrop point and
+extends well forward into the upper third of the frame; the
+rear thruster fluting fills the lower section.
+
+THE RING: AROUND THE FORWARD-MIDDLE AXIS of the hull, a LARGE
+RING-SHAPED NACELLE sits concentric with the hull, slightly
+larger in diameter than the hull's beam. The hull is LONG
+ENOUGH THAT THE NOSE PROTRUDES FORWARD OF THE RING — at least
+20–30% of the hull is visible AHEAD of the front edge of the
+ring (the nose pokes through and continues forward). Roughly
+half of the hull (the body and rear) is visible BEHIND the ring
+as well. This is the visual hook: the long slender hull THREADS
+THROUGH the ring, with hull visible both forward and behind.
+
+The ring's inner rim glows soft red-amber (the warp halo). The
+ring is held in place by 2–4 slender support pylons connecting
+it to the hull. Hull color: warm copper-cream with brass
+bracketing at the seams and a Furling glyph etched at the
+ring-support junction. Main thruster array at the rear glows
+soft cyan-violet, with 2-3 secondary maneuvering jets at the
+hull's mid-section. A small central optical pip / bridge-canopy
+on the dorsal centerline (the Steward's bridge).
+
+Background: deep starfield, near-black. Style: stylized 1990s
+sci-fi game art, painterly with crisp silhouette, vivid
+contrast. Tone: ELEGANT-EXPLORER, the ship of a careful
+gardener-civilization, NOT a warship. Reference rhyme: Vulcan
+D'Kyr, but warmer (copper instead of bronze, organic curves
+instead of strict geometry).
+
+NEGATIVE: ring around the rear of the hull, ring obscuring the
+nose, ring surrounding the whole hull as a halo, short stubby
+hull, hull entirely inside the ring's footprint. The nose MUST
+be visible forward of the ring.
