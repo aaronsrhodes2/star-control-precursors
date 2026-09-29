@@ -37,6 +37,32 @@ class EncounterPoint:
     fired: bool = False
 
 
+@dataclass
+class HyperspaceBroadcast:
+    """An incoming hail rendered as a text crawl across the hyperspace
+    HUD before an encounter dialog auto-launches.
+
+    Per the Cleanser climax design doc (`references/lore/cleanser-encounter-design.md`
+    §Encounter Flow Step 1), big interceptions broadcast a first-hail
+    *before* materialization — building anticipation between sensor
+    detection and dialog launch. Currently those transitions are
+    instantaneous; this overlay fixes that.
+
+    The player can keep flying during the broadcast; the on_complete
+    callback fires after `duration` game-seconds and typically opens a
+    DialogScene. Cancel (B) is intentionally NOT intercepted — if the
+    player needs to flee, the broadcast just keeps playing while they
+    move; the callback fires when the timer expires regardless.
+    """
+    sender: str        # short banner (e.g. "INCOMING HAIL · CLEANSER VESSEL")
+    text: str          # body — multi-paragraph crawl, \n separates lines
+    color: tuple[int, int, int]
+    on_complete: Callable[["HyperspaceScene"], None]
+    duration: float = 5.0
+    elapsed: float = 0.0
+    fired: bool = False
+
+
 # Where the package finds its content files
 _CONTENT_ROOT = Path(__file__).resolve().parent.parent / "content"
 STARMAP_JSON = _CONTENT_ROOT / "universe" / "stars.json"
@@ -92,6 +118,239 @@ def _trigger_coel_tessar(scene: "HyperspaceScene") -> None:
     )
 
 
+def _trigger_cleanser_climax(scene: "HyperspaceScene") -> None:
+    """Cleanser climax encounter — broadcast incoming hail, then open
+    dialog with Vael-Souren. The hail crawl plays across the
+    hyperspace HUD for ~5 game-seconds before the dialog scene
+    actually opens (per `references/lore/cleanser-encounter-design.md`
+    §Encounter Flow Step 1).
+
+    The decision tree handles all branches (cooperate, negotiate,
+    refuse). The refuse branch's side-effect launches combat directly
+    via `_cleanser_engage_combat` in dialog/characters.py.
+
+    Parent factory restores hyperspace at the encounter location after
+    dialog ends (cooperate / negotiate paths). The combat path's own
+    on_finish does the hyperspace return.
+    """
+    from scz.dialog.characters import cleanser_vael_souren
+    from scz.dialog.scene import DialogScene
+    assert scene.game is not None
+    px, py = scene.player_x, scene.player_y
+
+    def _back_to_hyperspace() -> "HyperspaceScene":
+        h = HyperspaceScene()
+        h.player_x = px
+        h.player_y = py
+        return h
+
+    def _open_dialog(scn: "HyperspaceScene") -> None:
+        scn.game.set_scene(
+            DialogScene(
+                character=cleanser_vael_souren(),
+                parent_factory=_back_to_hyperspace,
+            )
+        )
+
+    # Cleanser hail: gentle, sorrowful, certain — never triumphant.
+    # Voice notes per Vael-Souren's design doc.
+    scene.start_broadcast(
+        sender="INCOMING HAIL  ·  CLEANSER VESSEL  ·  THE BELL OF THE QUIET LEDGER",
+        text=(
+            "Steward of Mh-Lai. I am Vael-Souren, captain of the "
+            "Bell of the Quiet Ledger. Hold your course; I am "
+            "matching velocity.\n\n"
+            "I have come because your cluster has not concluded. We "
+            "will speak."
+        ),
+        color=(200, 180, 240),     # Cleanser cold violet — per species_visual canon
+        on_complete=_open_dialog,
+        duration=5.0,
+    )
+
+
+def _make_salvage_trigger(
+    flag_suffix: str,
+    common: int = 8,
+    useful: int = 4,
+) -> "Callable[[HyperspaceScene], None]":
+    """Build a salvage-wreck trigger callback. On proximity, awards
+    `common` COMMON + `useful` USEFUL cargo, sets `salvaged_<suffix>`
+    flag (which the encounter spec's `not_flag` reads to retire), and
+    returns the player to HyperspaceScene at the encounter location.
+
+    Each salvage gives a single small bundle — the wrecks aren't a
+    grind loop. Visiting all four nets ~32 COMMON + 16 USEFUL, less
+    than a single good lander run.
+    """
+    def trigger(scene: "HyperspaceScene") -> None:
+        assert scene.game is not None
+        game = scene.game
+        flag = f"salvaged_{flag_suffix}"
+        if game.flags.get(flag):
+            return   # already salvaged; encounter should have retired
+        game.flags[flag] = True
+        game.cargo["COMMON"] = game.cargo.get("COMMON", 0) + common
+        game.cargo["USEFUL"] = game.cargo.get("USEFUL", 0) + useful
+        # No scene transition — we stay in hyperspace. The encounter
+        # auto-retires next frame via not_flag, removing the
+        # EncounterPoint so collision doesn't re-fire on the same tick.
+        # But the existing EncounterPoint in this scene's list is
+        # already marked `fired=True` by the proximity-check caller,
+        # so re-fire is also guarded there.
+    return trigger
+
+
+def _trigger_cleanser_patrol(scene: "HyperspaceScene") -> None:
+    """Cleanser patrol encounter — flying close auto-starts combat
+    against a Cleanser Furling Cruiser. First taste of the slice's
+    central faction conflict (Furling-vs-Furling, Cleansers enforcing
+    kill orders against species the Steward is trying to save).
+
+    Outcome: regardless of winner, sets `met_cleanser_patrol` so the
+    encounter retires from the registry. Win/loss is captured in
+    `last_combat_winner_side` for the harness. Returns to hyperspace
+    at the same player position on combat finish.
+    """
+    from scz.combat.scene import (
+        ARENA_STYLE_HYPERSPACE,
+        MeleeCombatScene,
+    )
+    from scz.combat.ships import CLEANSER_CRUISER, FURLING_SCOUT
+    assert scene.game is not None
+    game = scene.game
+    px, py = scene.player_x, scene.player_y
+
+    def _on_finish(result) -> None:  # type: ignore[no-untyped-def]
+        game.flags["met_cleanser_patrol"] = True
+        game.flags["last_combat_winner_side"] = result.winner_side
+        game.flags["last_combat_timed_out"] = result.timed_out
+        h = HyperspaceScene()
+        h.player_x = px
+        h.player_y = py
+        game.set_scene(h)
+
+    # arena_style=hyperspace — the central body is the coaxial
+    # interference tunnel that forms between two hyperspace bubbles
+    # closing for combat (diegetically: not a planet, mechanically:
+    # same gravity well + collision). No moon — the tunnel is a
+    # singular phenomenon.
+    game.set_scene(
+        MeleeCombatScene(
+            precursor_ship=FURLING_SCOUT,
+            homesteader_ship=CLEANSER_CRUISER,
+            max_duration=60.0,
+            on_finish=_on_finish,
+            arena_style=ARENA_STYLE_HYPERSPACE,
+        )
+    )
+
+
+# Lookup table for the canonical ship classes a SpeciesDomain might
+# reference. Kept inside the scene module so the content layer stays
+# free of combat imports. New domain ship_class_ids land here.
+def _resolve_domain_ship_class(ship_class_id: str):  # type: ignore[no-untyped-def]
+    from scz.combat.ships import (
+        CLEANSER_CRUISER,
+        MELNORME_TRADER,
+        MYCON_PODSHIP,
+    )
+    table = {
+        "CLEANSER_CRUISER": CLEANSER_CRUISER,
+        "MELNORME_TRADER":  MELNORME_TRADER,
+        "MYCON_PODSHIP":    MYCON_PODSHIP,
+    }
+    return table.get(ship_class_id)
+
+
+def _make_domain_patrol_trigger(
+    domain_id: str, patrol_index: int,
+):  # type: ignore[no-untyped-def]
+    """Build a patrol trigger callback for one (domain, index) pair.
+
+    Behavior depends on the domain's `friendly` flag:
+    - friendly=False → combat encounter vs. the domain's canonical ship
+    - friendly=True  → peaceful contact (just sets the met flag and
+      returns to hyperspace; future iterations can wire dialog here)
+
+    Either way: sets `patrol_<domain>_<index>_met` so the encounter
+    retires next time hyperspace re-spawns.
+    """
+    def trigger(scene: "HyperspaceScene") -> None:
+        from scz.content.species_domains import DOMAINS
+        domain = next((d for d in DOMAINS if d.id == domain_id), None)
+        assert scene.game is not None and domain is not None
+        game = scene.game
+        met_flag = f"patrol_{domain_id}_{patrol_index}_met"
+        game.flags[met_flag] = True
+
+        if domain.friendly or domain.ship_class_id is None:
+            # Peaceful: no combat. Future work can route to a dialog
+            # scene per species. For now just stay in hyperspace at the
+            # same position; the encounter retires via the met flag.
+            return
+
+        ship_class = _resolve_domain_ship_class(domain.ship_class_id)
+        if ship_class is None:
+            # Unknown ship — fail quiet rather than crash
+            return
+
+        from scz.combat.scene import (
+            ARENA_STYLE_HYPERSPACE,
+            MeleeCombatScene,
+        )
+        from scz.combat.ships import FURLING_SCOUT
+        px, py = scene.player_x, scene.player_y
+
+        def _on_finish(result) -> None:  # type: ignore[no-untyped-def]
+            game.flags["last_combat_winner_side"] = result.winner_side
+            game.flags["last_combat_timed_out"] = result.timed_out
+            h = HyperspaceScene()
+            h.player_x = px
+            h.player_y = py
+            game.set_scene(h)
+
+        game.set_scene(
+            MeleeCombatScene(
+                precursor_ship=FURLING_SCOUT,
+                homesteader_ship=ship_class,
+                max_duration=60.0,
+                on_finish=_on_finish,
+                arena_style=ARENA_STYLE_HYPERSPACE,
+            )
+        )
+    return trigger
+
+
+# Register encounter triggers with the content layer. The content
+# registry stores `trigger_id` strings and resolves them at spawn time
+# via `get_trigger`. This indirection keeps content/engine decoupled.
+def _register_encounter_triggers() -> None:
+    from scz.content.hyperspace_encounters import register_trigger
+    register_trigger("cleanser_patrol_alpha", _trigger_cleanser_patrol)
+    register_trigger("cleanser_climax_alpha", _trigger_cleanser_climax)
+    # Salvage wrecks — 4 fixed-location interactives across deep space.
+    # Each gives a unique cargo bundle and retires via not_flag.
+    register_trigger("salvage_wreck_alpha", _make_salvage_trigger("alpha"))
+    register_trigger("salvage_wreck_beta",  _make_salvage_trigger("beta"))
+    register_trigger("salvage_wreck_gamma", _make_salvage_trigger("gamma"))
+    register_trigger("salvage_wreck_delta", _make_salvage_trigger("delta"))
+
+    # Domain-patrol triggers — one per (domain, patrol_index) pair.
+    # The trigger_id format is `domain_patrol_<id>_<n>`, matching the
+    # spawning code in `_maybe_spawn_encounters`.
+    from scz.content.species_domains import DOMAINS
+    for d in DOMAINS:
+        for i in range(d.encounter_density):
+            register_trigger(
+                f"domain_patrol_{d.id}_{i}",
+                _make_domain_patrol_trigger(d.id, i),
+            )
+
+
+_register_encounter_triggers()
+
+
 class HyperspaceScene(Scene):
     """The galactic map view with a movable player ship."""
 
@@ -129,6 +388,13 @@ class HyperspaceScene(Scene):
         # Beat 4 Androsynth, the Cleanser climax intercept, and any
         # future "you ran into someone in hyperspace" beats.
         self.encounter_points: list[EncounterPoint] = []
+
+        # Active incoming-hail broadcast (the text-crawl overlay before
+        # a big interception). None when no hail is in flight. Set by
+        # encounter triggers via `start_broadcast()`; advanced in
+        # update(); rendered each frame; on_complete fires when elapsed
+        # exceeds duration.
+        self.broadcast: HyperspaceBroadcast | None = None
 
         # SC2 starmap backdrop image + a (target_w, target_h) → scaled
         # Surface cache so we don't pygame.transform.scale every frame
@@ -181,6 +447,38 @@ class HyperspaceScene(Scene):
         # render ON TOP of this image so the player can autopilot to them.
         self._load_starmap_image()
 
+        # The Fall of Mh-Lai — slice-critical forced beat. Checked
+        # before encounter spawning so a fall-trigger doesn't compete
+        # with a routine encounter. When all prereqs are met (per
+        # `fall_of_mhlai.should_fire_fall`), the scene auto-fires
+        # *immediately* on hyperspace entry; encounter spawning is
+        # skipped (the Fall scene returns to a fresh hyperspace on
+        # completion, which re-runs on_enter).
+        from scz.content.fall_of_mhlai import should_fire_fall
+        if should_fire_fall(self.game):
+            from scz.scenes.fall_of_mhlai import FallOfMhLaiScene
+            self.game.set_scene(FallOfMhLaiScene())
+            return
+
+        # The Final Conflict — slice climax. Auto-fires once the Fall
+        # has resolved AND the Rainbow Resonator is in the player's
+        # possession. Captures current hyperspace coords so the loss
+        # path (Time Drive restore) can return the player here. After
+        # a loss-rewind, `final_conflict_just_rewound` is set; we clear
+        # it without re-firing so the player gets a chance to
+        # re-engage on their next hyperspace entry instead of an
+        # infinite-loop bounce.
+        if self.game.flags.pop("final_conflict_just_rewound", False):
+            pass
+        else:
+            from scz.content.final_conflict import should_fire_final_conflict
+            if should_fire_final_conflict(self.game):
+                from scz.scenes.final_conflict import FinalConflictScene
+                scene = FinalConflictScene()
+                scene.set_restore_position(self.player_x, self.player_y)
+                self.game.set_scene(scene)
+                return
+
         # Spawn any encounter points whose triggers fire on this entry
         self._maybe_spawn_encounters()
 
@@ -229,31 +527,88 @@ class HyperspaceScene(Scene):
         """Check game.flags and spawn transient encounter points based on
         story progress. Called on hyperspace-scene entry.
 
-        Currently handles:
-        - Beat 4 Androsynth (Coel Tessar) — once scanner_mk3 is installed
-          AND we haven't met the Androsynth yet, spawn an encounter point
-          ahead of the player along the +x heading.
+        Two sources, in order:
+        1. **Hardcoded beat-specific encounters** — Beat 4 Coel Tessar.
+           Lives here because the spawn position depends on the player's
+           current heading (placed ahead of them, not at a fixed coord).
+        2. **Content registry** — `hyperspace_encounters.ENCOUNTERS`.
+           Fixed-coord encounters (Cleanser patrols, future story beats)
+           with flag-gated visibility.
         """
         if self.game is None:
             return
         flags = self.game.flags
 
-        # Beat 4 — Coel Tessar arrival
+        # Beat 4 — Coel Tessar arrival (heading-relative placement
+        # warrants the special case here, not in the registry).
         if (
             flags.get("scanner_mk3_installed")
             and not flags.get("met_androsynth")
             and not any(ep.label == "Coel Tessar" for ep in self.encounter_points)
         ):
-            # Place the encounter ~600 units ahead of the player at scene-
-            # entry. Direction = +x by default (Mh-Lai is at 1900,1600;
-            # Sol is at 1793,1450 so +x heads away from home which feels
-            # right for a "found her on the way out" beat).
+            # Place the encounter ~600 units ahead of the player at
+            # scene-entry. Direction = +x by default (Mh-Lai is at
+            # 1900,1600; Sol is at 1793,1450 so +x heads away from home
+            # which feels right for a "found her on the way out" beat).
             self.encounter_points.append(EncounterPoint(
                 x=self.player_x + 600.0,
                 y=self.player_y + 200.0,
                 label="Coel Tessar",
                 color=(220, 130, 220),
                 on_trigger=_trigger_coel_tessar,
+            ))
+
+        # Registry-driven encounters — fixed coordinates, flag-gated.
+        # Only spawn interactive ones as EncounterPoints (ambient ripples
+        # only render via the Echo Sensor; they have no collision body).
+        from scz.content.hyperspace_encounters import (
+            encounters_visible,
+            get_trigger,
+        )
+        from scz.content.hyperspace_ripples import RIPPLE_COLORS
+        already = {ep.label for ep in self.encounter_points}
+        for spec in encounters_visible(self.game):
+            if not spec.interactive:
+                continue
+            if spec.label in already:
+                continue
+            if spec.trigger_id is None:
+                continue
+            trigger = get_trigger(spec.trigger_id)
+            if trigger is None:
+                # No callback registered for this id — skip rather than
+                # crash. Lets content land before engine wiring.
+                continue
+            self.encounter_points.append(EncounterPoint(
+                x=spec.x, y=spec.y,
+                label=spec.label,
+                color=RIPPLE_COLORS.get(spec.kind, (200, 200, 200)),
+                on_trigger=trigger,
+            ))
+
+        # Species-domain patrols — per-domain, per-index spawning.
+        # Deterministic positions from `patrol_positions(domain)`;
+        # retired per-patrol via `patrol_<id>_<n>_met` flags.
+        from scz.content.species_domains import active_patrols
+        for domain, dx, dy, idx in active_patrols(self.game):
+            label = f"{domain.name} patrol"
+            # Dedupe by exact label-and-position so re-entering hyperspace
+            # mid-scene doesn't accumulate duplicates
+            if any(
+                ep.label == label
+                and abs(ep.x - dx) < 1.0
+                and abs(ep.y - dy) < 1.0
+                for ep in self.encounter_points
+            ):
+                continue
+            trigger = get_trigger(f"domain_patrol_{domain.id}_{idx}")
+            if trigger is None:
+                continue
+            self.encounter_points.append(EncounterPoint(
+                x=dx, y=dy,
+                label=label,
+                color=domain.color,
+                on_trigger=trigger,
             ))
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
@@ -348,6 +703,22 @@ class HyperspaceScene(Scene):
         # --- Camera follows ship (with map-edge clamp) ---
         self._update_camera()
 
+        # --- Hyperspace broadcast crawl (incoming-hail overlay) ---
+        # Advances if a broadcast is active; fires its on_complete when
+        # the duration elapses. The callback typically opens a dialog,
+        # which is why we return immediately after firing.
+        if self.broadcast is not None and not self.broadcast.fired:
+            self.broadcast.elapsed += dt
+            if self.broadcast.elapsed >= self.broadcast.duration:
+                self.broadcast.fired = True
+                cb = self.broadcast.on_complete
+                # Clear broadcast BEFORE firing — the callback typically
+                # set_scene's away, but if it doesn't, the overlay
+                # shouldn't keep rendering on top of the new scene state.
+                self.broadcast = None
+                cb(self)
+                return
+
         # --- Encounter proximity check (auto-trigger on collision) ---
         for ep in self.encounter_points:
             if ep.fired:
@@ -384,9 +755,13 @@ class HyperspaceScene(Scene):
                 self.game.set_scene(QuasiSpaceScene(entry_portal_index=best_i))
                 return
 
-        # Esc/cancel at top-level scene → quit game (no parent to back to)
-        if inp.cancel and self.game is not None:
-            self.game.quit()
+        # Cancel at top-level scene → open the pause menu overlay
+        # (replaces the legacy "cancel quits" behavior per the
+        # 2026-05-18 UX bug dispatch). Underlying scene stays loaded;
+        # selecting Resume in the overlay returns control here.
+        if inp.cancel and self.game is not None and self.game.overlay_scene is None:
+            from scz.scenes.pause_menu import PauseMenuScene
+            self.game.open_overlay(PauseMenuScene())
             return
 
         # Note: pressing A near a star engages autopilot (handled above);
@@ -487,12 +862,13 @@ class HyperspaceScene(Scene):
             screen, (30, 30, 60), (ux0, uy0, ux1 - ux0, uy1 - uy0), 1
         )
 
-        # Species control zones (Z to toggle). Render BEFORE stars so the
-        # tint sits behind star sprites but the names on top still read.
-        self.zone_renderer.render(screen, self.universe_to_screen, self.zoom)
+        # Species-domain boundaries — drawn AFTER backdrop, BEFORE stars
+        # so star sprites and labels read on top of the faint territory
+        # rings.
+        self._draw_species_domains(screen)
 
-        # Stars
-        self.starmap.render(screen, self.universe_to_screen)
+        # Stars — pass game so visited / drained systems dim out
+        self.starmap.render(screen, self.universe_to_screen, self.game)
         # Star-name labels — tiered by star size (supergiants from far out,
         # dwarfs only when zoomed in close; lore-tagged + Rainbow stars
         # always visible).
@@ -500,6 +876,12 @@ class HyperspaceScene(Scene):
             self.starmap.render_labels(
                 screen, self.universe_to_screen, self.zoom, self.small_font
             )
+
+        # Echo Sensor ripples — drawn AFTER stars but BEFORE encounter points
+        # so that any actual encounter (Coel Tessar pod, etc.) sits on top of
+        # the lower-intensity sensor reading. Passive — only renders if the
+        # Hyperspace-Echo Sensor module is installed in the player's sensor slot.
+        self._draw_ripples(screen)
 
         # Encounter points — drawn BEFORE the ship so the pod sits on top
         self._draw_encounter_points(screen)
@@ -539,9 +921,10 @@ class HyperspaceScene(Scene):
         # HUD
         self._draw_hud(screen, nearest, in_entry_range)
 
-        # Search overlay — rendered last so it's on top of everything.
-        if self.font is not None:
-            self.search_overlay.render(screen, self.font)
+        # Incoming-hail broadcast overlay — drawn LAST so it sits on top
+        # of everything else (HUD included).
+        if self.broadcast is not None:
+            self._draw_broadcast_overlay(screen)
 
     # --- helpers ---
 
@@ -643,19 +1026,21 @@ class HyperspaceScene(Scene):
         self._draw_module_slots(screen, x, y, heading, ring_outer)
 
     # Module slot order on the ring (canonical) — top, then clockwise.
-    # This is the visual mapping; the actual slot-name → angle order is
-    # arbitrary but stable.
-    _MODULE_SLOT_ORDER: tuple[str, ...] = (
-        "weapon", "field", "sensor", "drive", "hull", "crew_1", "crew_2",
+    # Post 2026-05-18 stacking refactor: 12 generic slots; the ring
+    # visual now shows all 12 markers. Slot order matches `SLOTS` in
+    # modules.py.
+    _MODULE_SLOT_ORDER: tuple[str, ...] = tuple(
+        f"slot_{i + 1}" for i in range(12)
     )
 
     # Module-id → marker color. Falls back to a neutral pale color.
     _MODULE_COLOR_DEFAULTS: dict[str, tuple[int, int, int]] = {
+        # Existing modules
         "scanner_mk3": (140, 230, 200),
         "hyperspace_echo_sensor": (200, 140, 230),
         "bio_architect": (130, 230, 130),
         "rainbow_resonator": (255, 220, 100),
-        "fuel_tank_plus_50": (220, 180, 100),
+        "backup_capacitor": (220, 180, 100),
         "shield_booster_i": (120, 180, 240),
         "beam_mod_i": (255, 200, 130),
         "cargo_pod_plus_50": (180, 200, 220),
@@ -663,6 +1048,24 @@ class HyperspaceScene(Scene):
         "crew_archivist": (200, 220, 240),
         "crew_warden": (220, 160, 140),
         "crew_tunneler": (160, 220, 200),
+        # New tier-0 quest-reward sensors (2026-05-18 expansion)
+        "karavem_aerial_sentry": (240, 200, 240),    # Karavem violet-pink
+        "arilou_portal_pathfinder": (140, 220, 200), # Arilou teal-cyan
+        "council_migration_beacon": (180, 200, 140), # Council olive-warm
+        "stelloth_artifact_locator": (200, 180, 230),# Stelloth lavender
+        "taalo_strata_tomography": (180, 160, 140),  # Taalo silicon-tan
+        # New tier-1+ purchasable sensors
+        "mineral_spectrometer": (200, 160, 230),     # USEFUL-violet kin
+        "schematic_resonance_reader": (220, 200, 130),# Schematic gold
+        "wreck_pattern_reader": (200, 180, 160),     # Salvage neutral
+        "danger_zone_forecaster": (220, 150, 130),   # Warning red-brown
+        "melnorme_stellar_class_reader": (180, 140, 220),# Melnorme purple
+        # Pre-existing sensor stubs now wired
+        "bio_sense_scanner": (150, 220, 150),        # green-bio
+        "enemy_scanner": (220, 160, 140),            # enemy red-brown
+        "anomaly_scanner": (220, 180, 200),          # anomaly pink
+        "hazard_scanner": (240, 180, 100),           # hazard amber
+        "lr_mineral_scanner": (180, 130, 220),       # mineral violet
     }
 
     def _draw_module_slots(
@@ -821,6 +1224,429 @@ class HyperspaceScene(Scene):
             tip_pts = [outline[1], outline[0], outline[-1]]
             pygame.draw.lines(screen, front_hi_color, False, tip_pts, 2)
 
+    def _echo_sensor_active(self) -> bool:
+        """True iff the player's sensor slot holds the Hyperspace-Echo Sensor.
+
+        The Echo Sensor is a *passive, always-on* module — installing it is
+        the only action the player takes. From there it continuously surfaces
+        dimensional ripples in the hyperspace view.
+        """
+        if self.game is None:
+            return False
+        from scz.content.hyperspace_ripples import echo_sensor_installed
+        return echo_sensor_installed(self.game)
+
+    def _visible_ripples(self) -> list:
+        """Return ripples currently in sensor range of the player ship.
+
+        The sensor is gated by `_echo_sensor_active()` and the per-ripple
+        distance is gated by `effective_ripple_range(game)` — upgraded
+        sensors (currently only the Echo Sensor; future modules can stack
+        the `other_detection_range` delta) see further. Returns [] when
+        the sensor isn't installed, no ripples exist, or all ripples are
+        out of range.
+        """
+        if self.game is None or not self._echo_sensor_active():
+            return []
+        from scz.content.hyperspace_ripples import (
+            current_ripples,
+            effective_ripple_range,
+        )
+        ripples = current_ripples(self.game)
+        if not ripples:
+            return []
+        max_range = effective_ripple_range(self.game)
+        if max_range <= 0.0:
+            return []
+        px, py = self.player_x, self.player_y
+        max_range_sq = max_range * max_range
+        return [
+            r for r in ripples
+            if (r.x - px) * (r.x - px) + (r.y - py) * (r.y - py) <= max_range_sq
+        ]
+
+    def _draw_ripples(self, screen: pygame.Surface) -> None:
+        """Render in-range Echo Sensor ripples as pulsing concentric circles.
+
+        Visually distinct from encounter points: smaller base radius, faster
+        pulse, faint outer ring + bright inner dot. Reads as "sensor readout
+        of something distant" rather than "thing is here right now." Drawn
+        before encounter points so actual encounter pods always sit on top.
+
+        Cheap to call every frame; returns immediately if the sensor isn't
+        installed, no ripples exist, or all ripples are out of range.
+        """
+        from scz.content.hyperspace_ripples import RIPPLE_COLORS
+        ripples = self._visible_ripples()
+        if not ripples:
+            return
+        ticks = pygame.time.get_ticks()
+        for rip in ripples:
+            sx, sy = self.universe_to_screen(rip.x, rip.y)
+            color = RIPPLE_COLORS.get(rip.kind, (180, 180, 180))
+            # Higher intensity → faster pulse (180-360ms period)
+            period_ms = 360 - int(rip.intensity * 180)
+            pulse = (math.sin(ticks / period_ms) + 1) / 2
+            # 6px (faint) to 12px (urgent), modulated by pulse
+            base_r = int(6 + rip.intensity * 6)
+            outer_r = int(base_r + pulse * 4)
+            # Faint halo (sensor "echo")
+            halo = (
+                min(255, color[0] // 2 + 40),
+                min(255, color[1] // 2 + 40),
+                min(255, color[2] // 2 + 40),
+            )
+            pygame.draw.circle(screen, halo, (int(sx), int(sy)), outer_r + 5, 1)
+            # Main ring
+            pygame.draw.circle(screen, color, (int(sx), int(sy)), outer_r, 1)
+            # Bright center dot — the sensor pulse itself
+            pygame.draw.circle(screen, color, (int(sx), int(sy)), 2)
+            # Optional label below
+            if rip.label and self.small_font is not None:
+                label = self.small_font.render(rip.label, True, color)
+                lw, _ = label.get_size()
+                screen.blit(label, (sx - lw // 2, sy + outer_r + 6))
+
+    def _draw_lr_scanner_hud(
+        self,
+        screen: pygame.Surface,
+        x: int,
+        y: int,
+        nearest: dict | None,
+    ) -> int:
+        """Render long-range scanner output for the nearest star (if any).
+
+        Reads `system_resource_scan` / `system_anomaly_scan` capability
+        stats and surfaces matching `SystemScan` fields. Each capability
+        is independent — a module can provide one without the other. The
+        cache in `scan_system()` makes this safe to call every frame.
+
+        Returns the updated `y` cursor so the caller can continue stacking
+        HUD lines below the scanner output.
+        """
+        if nearest is None or self.game is None:
+            return y
+        from scz.content.system_scan import (
+            can_scan_anomalies,
+            can_scan_resources,
+            scan_system,
+            visible_anomalies,
+        )
+        show_resources = can_scan_resources(self.game)
+        show_anomalies = can_scan_anomalies(self.game)
+        if not (show_resources or show_anomalies):
+            return y
+        scan = scan_system(nearest)
+
+        # Header for the scanner block
+        self._hud_line(screen, x, y, "LR SCAN", (180, 200, 220))
+        y += 22
+
+        if show_resources:
+            # Mineral totals, color-coded per deposit type. Lines are short
+            # so we render them tight (18px row instead of 22).
+            tm = scan.total_minerals
+            mineral_palette: dict[str, tuple[int, int, int]] = {
+                "COMMON": (200, 200, 210),
+                "USEFUL": (200, 160, 230),
+                "BIO":    (150, 230, 160),
+                "ENERGY": (255, 230, 130),
+            }
+            self._hud_line(
+                screen, x + 8, y,
+                f"{scan.planet_count} planet{'s' if scan.planet_count != 1 else ''}",
+                (180, 190, 200),
+            )
+            y += 20
+            for kind in ("COMMON", "USEFUL", "BIO", "ENERGY"):
+                n = tm.get(kind, 0)
+                self._hud_line(
+                    screen, x + 8, y,
+                    f"  {kind:7s}  {n:4d}",
+                    mineral_palette[kind] if n > 0 else (110, 110, 130),
+                )
+                y += 18
+            y += 4
+
+        if show_anomalies:
+            anomalies = visible_anomalies(scan, self.game)
+            if anomalies:
+                self._hud_line(
+                    screen, x + 8, y,
+                    f"{len(anomalies)} anomaly{'s' if len(anomalies) != 1 else ''}",
+                    (220, 180, 200),
+                )
+                y += 20
+                # Importance-sorted, most-important-first
+                for a in sorted(anomalies, key=lambda x: -x.importance):
+                    self._hud_line(
+                        screen, x + 8, y, f"  · {a.label}", (200, 170, 200),
+                    )
+                    y += 18
+                y += 4
+            else:
+                self._hud_line(
+                    screen, x + 8, y, "no anomalies", (110, 110, 130),
+                )
+                y += 20
+
+        return y
+
+    def _draw_extra_sensor_hud(
+        self,
+        screen: pygame.Surface,
+        x: int,
+        y: int,
+        nearest: dict | None,
+    ) -> int:
+        """Render status lines for each installed specialty sensor.
+
+        Each line surfaces actionable info from the sensor's primary
+        delta. Sensors with no useful info to display (e.g. Migration
+        Beacon Receiver with no active migration) still render an
+        "online" line so the player sees that the slot is being used.
+        """
+        if self.game is None:
+            return y
+        flags = self.game.flags
+        eff = self.game.effective_stat
+
+        # Schematic Resonance Reader — show held-schematic count + the
+        # carrot-home reminder. The deeper "ping the source system"
+        # wiring lands when per-system schematic placement exists.
+        if eff("schematic_resonance", 0.0) > 0.0:
+            held = self.game.schematics
+            n = len(held) if hasattr(held, "__len__") else 0
+            if n > 0:
+                self._hud_line(
+                    screen, x, y,
+                    f"SCHEMATIC RESONANCE  {n} held - deliver to Mh-Lai",
+                    (220, 200, 130),
+                )
+            else:
+                self._hud_line(
+                    screen, x, y,
+                    "SCHEMATIC RESONANCE  no schematics held",
+                    (130, 130, 150),
+                )
+            y += 22
+
+        # Wreck Pattern Reader — extended salvage-derelict range.
+        if eff("wreck_detect_range", 0.0) > 0.0:
+            bonus = eff("wreck_detect_range", 0.0) * 100.0
+            self._hud_line(
+                screen, x, y,
+                f"WRECK READER  +{bonus:.0f}% salvage detect range",
+                (200, 180, 160),
+            )
+            y += 22
+
+        # Stellar Class Reader — show class of nearest star.
+        if eff("stellar_class_visible", 0.0) > 0.0 and nearest is not None:
+            cls = nearest.get("type") or nearest.get("color") or "unknown"
+            self._hud_line(
+                screen, x, y,
+                f"STELLAR CLASS  {cls}",
+                (200, 200, 230),
+            )
+            y += 22
+
+        # Migration Beacon Receiver — Migration phase indicator.
+        if eff("migration_beacon_visible", 0.0) > 0.0:
+            phase = flags.get("migration_phase", "phase-1 (assembly)")
+            self._hud_line(
+                screen, x, y,
+                f"MIGRATION BEACON  {phase}",
+                (180, 200, 140),
+            )
+            y += 22
+
+        # Danger-Zone Forecaster — paints the warning text; the
+        # zone-overlay render lands when those regions are authored.
+        if eff("danger_zone_visible", 0.0) > 0.0:
+            zone_count = flags.get("known_danger_zones", 0)
+            try:
+                n = int(zone_count)
+            except (TypeError, ValueError):
+                n = 0
+            self._hud_line(
+                screen, x, y,
+                f"DANGER-ZONE FORECAST  {n} zone(s) charted",
+                (220, 150, 130),
+            )
+            y += 22
+
+        # Quasispace Pathfinder — count of pre-revealed portals.
+        if eff("qs_portal_pre_reveal", 0.0) > 0.0:
+            self._hud_line(
+                screen, x, y,
+                "QS PATHFINDER  portals pre-mapped",
+                (140, 220, 200),
+            )
+            y += 22
+
+        # Enemy Scanner — extended enemy-ripple detection range.
+        if eff("enemy_detect_range", 0.0) > 0.0:
+            cloak = eff("cloak_pierce", 0.0)
+            label = "ENEMY SCANNER  enemy ripples online"
+            if cloak > 0.0:
+                label += f"  ·  cloak-pierce {cloak:.1f}"
+            self._hud_line(screen, x, y, label, (220, 160, 140))
+            y += 22
+
+        # Bio-Sense Scanner — life-detection range bonus shown for the
+        # lander-surface mini-game. Visible from hyperspace as
+        # confirmation the upgrade is live (the actual extended
+        # visibility renders on the planet surface scene).
+        if eff("life_detect_range", 0.0) > 0.0:
+            self._hud_line(
+                screen, x, y,
+                "BIO-SENSE  surface life-detect extended",
+                (150, 220, 150),
+            )
+            y += 22
+
+        return y
+
+    def start_broadcast(
+        self,
+        sender: str,
+        text: str,
+        color: tuple[int, int, int],
+        on_complete: "Callable[[HyperspaceScene], None]",
+        duration: float = 5.0,
+    ) -> None:
+        """Begin a hyperspace incoming-hail crawl. Called from encounter
+        triggers that want to build anticipation before opening dialog.
+
+        The text-crawl plays for `duration` game-seconds (in addition to
+        whatever the player's stick input does to the ship in that time
+        — manual flight is not paused). After the duration elapses,
+        `on_complete(scene)` fires; typically that callback opens a
+        DialogScene with the actual character.
+        """
+        self.broadcast = HyperspaceBroadcast(
+            sender=sender,
+            text=text,
+            color=color,
+            on_complete=on_complete,
+            duration=duration,
+        )
+
+    def _draw_broadcast_overlay(self, screen: pygame.Surface) -> None:
+        """Render the incoming-hail crawl across the top of the screen.
+
+        Layout: a translucent strip across the upper third, with:
+        - A pulsing banner line (sender / "INCOMING HAIL" tag)
+        - Body text revealed progressively as `elapsed` grows
+        - A subtle progress bar at the bottom of the strip
+        """
+        assert self.broadcast is not None
+        b = self.broadcast
+        if self.font is None or self.small_font is None:
+            return
+        sw, sh = screen.get_size()
+        strip_h = int(sh * 0.32)
+        # Translucent dark overlay so map shows through faintly
+        overlay = pygame.Surface((sw, strip_h), pygame.SRCALPHA)
+        overlay.fill((6, 4, 14, 200))
+        screen.blit(overlay, (0, 0))
+        # Top + bottom border lines in the broadcast color
+        pygame.draw.line(screen, b.color, (0, 0), (sw, 0), 2)
+        pygame.draw.line(screen, b.color, (0, strip_h), (sw, strip_h), 1)
+
+        # Pulsing sender banner
+        ticks = pygame.time.get_ticks()
+        pulse = (math.sin(ticks / 220) + 1) / 2
+        banner_color = (
+            min(255, int(b.color[0] * (0.7 + pulse * 0.3))),
+            min(255, int(b.color[1] * (0.7 + pulse * 0.3))),
+            min(255, int(b.color[2] * (0.7 + pulse * 0.3))),
+        )
+        banner = self.font.render(b.sender, True, banner_color)
+        bw, _ = banner.get_size()
+        screen.blit(banner, ((sw - bw) // 2, 14))
+
+        # Body text — revealed character-by-character over the duration.
+        # Word-wrap to fit the strip width with margins.
+        reveal_frac = min(1.0, b.elapsed / max(0.1, b.duration * 0.85))
+        full_text = b.text
+        n_show = int(len(full_text) * reveal_frac)
+        shown = full_text[:n_show]
+        # Word-wrap shown text
+        max_text_w = sw - 120
+        line_h = self.font.get_linesize()
+        cy = 56
+        for raw_line in shown.split("\n"):
+            words = raw_line.split(" ")
+            line: list[str] = []
+            for word in words:
+                test = " ".join(line + [word])
+                if self.font.size(test)[0] <= max_text_w:
+                    line.append(word)
+                else:
+                    if line:
+                        rendered = self.font.render(
+                            " ".join(line), True, (220, 220, 240),
+                        )
+                        screen.blit(rendered, (60, cy))
+                        cy += line_h
+                    line = [word]
+            if line:
+                rendered = self.font.render(
+                    " ".join(line), True, (220, 220, 240),
+                )
+                screen.blit(rendered, (60, cy))
+                cy += line_h
+
+        # Progress bar at the bottom of the strip
+        bar_y = strip_h - 16
+        bar_w = sw - 120
+        pygame.draw.rect(
+            screen, (40, 40, 60), (60, bar_y, bar_w, 4),
+        )
+        fill_w = int(bar_w * min(1.0, b.elapsed / max(0.1, b.duration)))
+        pygame.draw.rect(
+            screen, b.color, (60, bar_y, fill_w, 4),
+        )
+
+    def _draw_species_domains(self, screen: pygame.Surface) -> None:
+        """Render species-domain territory rings.
+
+        Each domain renders as a faint outer boundary + a translucent
+        center halo so the player can see who owns what region. Drawn
+        before stars so star sprites + autopilot reticles read on top.
+        Hidden at very low zoom (whole-galaxy view) where the rings
+        would clutter; visible from medium zoom outward.
+        """
+        from scz.content.species_domains import DOMAINS
+        # Don't draw at extreme zoom-out — the galaxy view should be
+        # uncluttered. Threshold matches roughly the zoom at which star
+        # labels start to appear.
+        if self.zoom < 1.5:
+            return
+        scale = self._effective_scale()
+        for d in DOMAINS:
+            cx, cy = self.universe_to_screen(d.center_x, d.center_y)
+            screen_r = int(d.radius * scale)
+            if screen_r < 18:
+                continue
+            # Outer ring — faint solid color, 2px stroke
+            pygame.draw.circle(
+                screen, d.color, (int(cx), int(cy)), screen_r, 2,
+            )
+            # Inner faint glow — uses a temp surface for alpha
+            inner_r = max(8, int(screen_r * 0.92))
+            glow = pygame.Surface((inner_r * 2, inner_r * 2), pygame.SRCALPHA)
+            glow_color = (*d.color, 18)   # very faint fill
+            pygame.draw.circle(glow, glow_color, (inner_r, inner_r), inner_r)
+            screen.blit(glow, (int(cx) - inner_r, int(cy) - inner_r))
+            # Domain name label near center — small, low-key
+            if self.small_font is not None and self.zoom >= 2.5:
+                label = self.small_font.render(d.name, True, d.color)
+                lw, lh = label.get_size()
+                screen.blit(label, (int(cx) - lw // 2, int(cy) - screen_r - lh - 4))
+
     def _draw_encounter_points(self, screen: pygame.Surface) -> None:
         """Render any active hyperspace encounter points as pulsing rings
         with their label. Players see these as 'someone is over there'.
@@ -927,6 +1753,16 @@ class HyperspaceScene(Scene):
         )
         y += 22
 
+        # Domain readout — which species' territory the player ship is
+        # currently inside (Wild space if no domain contains the ship).
+        from scz.content.species_domains import domain_at
+        dom = domain_at(self.player_x, self.player_y)
+        if dom is not None:
+            self._hud_line(screen, x, y, dom.name, dom.color)
+        else:
+            self._hud_line(screen, x, y, "Wild space", (130, 130, 150))
+        y += 22
+
         # Time Drive indicator
         if self.game is not None:
             td = self.game.time_drive
@@ -955,6 +1791,42 @@ class HyperspaceScene(Scene):
             sub = f"{nearest.get('type', '?').replace('_STAR', '').lower()}, {nearest.get('color', '?').replace('_BODY', '').lower()}"
             self._hud_line(screen, x, y, sub, (180, 170, 150))
             y += 22
+
+            # Visit / depletion readout — visible when the player has
+            # entered this system at least once. Tracks remaining
+            # resource % and undiscovered-anomaly count so the player
+            # can decide whether to revisit.
+            if self.game is not None:
+                from scz.content.system_scan import (
+                    is_system_visited,
+                    system_anomalies_undiscovered_count,
+                    system_dim_tier,
+                    system_resources_remaining_pct,
+                )
+                if is_system_visited(self.game, nearest):
+                    tier = system_dim_tier(self.game, nearest)
+                    pct = system_resources_remaining_pct(self.game, nearest)
+                    n_undisc = system_anomalies_undiscovered_count(
+                        self.game, nearest,
+                    )
+                    if tier == 2:
+                        badge_color = (110, 110, 130)   # very dim — drained
+                        badge_text = "DRAINED · explored"
+                    else:
+                        badge_color = (170, 200, 170)   # visited, still worth
+                        badge_text = "VISITED"
+                    self._hud_line(screen, x, y, badge_text, badge_color)
+                    y += 22
+                    self._hud_line(
+                        screen, x, y,
+                        f"resources {int(pct * 100):3d}%   anomalies {n_undisc}",
+                        (160, 170, 190),
+                    )
+                    y += 22
+                else:
+                    self._hud_line(screen, x, y, "(unexplored)", (130, 160, 180))
+                    y += 22
+
             if nearest.get("defined_name"):
                 self._hud_line(
                     screen, x, y, nearest["defined_name"], (180, 220, 180)
@@ -973,6 +1845,13 @@ class HyperspaceScene(Scene):
                 )
                 self._hud_line(screen, x, y, "[ENTER:  A / Space]", c)
                 y += 22
+
+            # LR scanner readout — only rendered if any installed module
+            # provides `system_resource_scan` capability. Shows aggregate
+            # mineral totals across all planets in the system; these are
+            # the same numbers `SystemScene` will surface on entry, since
+            # both consume the deterministic `scan_system()` data.
+            y = self._draw_lr_scanner_hud(screen, x, y, nearest)
             y += 10
         else:
             self._hud_line(screen, x, y, "Empty space.", (100, 110, 130))
@@ -997,6 +1876,38 @@ class HyperspaceScene(Scene):
             f"{len(self.starmap.rainbow_stars)} Rainbow seeds",
             (200, 180, 120),
         )
+        y += 22
+
+        # Echo Sensor status — passive, always-on once installed. Surfaces
+        # dimensional ripples in the hyperspace view, filtered to in-range
+        # readings only. Empty-state ("online · no ripples in range") is
+        # still shown so the player knows the module is doing its job.
+        # An upgraded sensor (larger `other_detection_range` delta) sees
+        # further; the displayed range reflects current loadout.
+        if self._echo_sensor_active():
+            from scz.content.hyperspace_ripples import effective_ripple_range
+            assert self.game is not None
+            n = len(self._visible_ripples())
+            r = effective_ripple_range(self.game)
+            if n > 0:
+                self._hud_line(
+                    screen, x, y,
+                    f"ECHO SENSOR  range {r:.0f}  ·  {n} ripple{'s' if n != 1 else ''}",
+                    (180, 100, 220),
+                )
+            else:
+                self._hud_line(
+                    screen, x, y,
+                    f"ECHO SENSOR  range {r:.0f}  ·  no ripples in range",
+                    (130, 100, 160),
+                )
+            y += 22
+
+        # Extended sensor HUD (2026-05-18) — each installed specialty
+        # sensor gets one status line confirming it's online + showing
+        # what it's contributing. Reads effective_stat for each sensor's
+        # primary delta; if > 0, renders a line. Lines stack vertically.
+        y = self._draw_extra_sensor_hud(screen, x, y, nearest)
 
         # Autopilot status (prominent if active)
         if self.autopilot_target is not None:
@@ -1032,12 +1943,18 @@ class HyperspaceScene(Scene):
             screen, x, controls_y, "Rewind:    R / Back", (130, 150, 180)
         )
         controls_y += 22
+        # ("Switch: F1 / R3" debug hint hidden 2026-05-19 — switcher is
+        # a development surface, not exposed in normal play. Hotkey
+        # still functional silently for dev/testing.)
         self._hud_line(
-            screen, x, controls_y, "Switch:    F1 / R3", (130, 150, 180)
+            screen, x, controls_y, "Pause:     Esc / B", (130, 150, 180)
         )
         controls_y += 22
+        # On controller, Start quits directly. On keyboard there's no
+        # direct quit binding — the pause menu has a Quit Game item.
         self._hud_line(
-            screen, x, controls_y, "Quit:      Esc / Start", (130, 150, 180)
+            screen, x, controls_y, "Quit:      Start (or Pause -> Quit)",
+            (130, 150, 180),
         )
 
     def _hud_line(

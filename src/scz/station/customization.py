@@ -37,6 +37,9 @@ class ShipCustomizationScene(Scene):
         self.focus: Focus = "slots"
         self.slot_idx: int = 0
         self.module_idx: int = 0
+        # Scroll offset for the modules column — first visible index.
+        # Adjusted in update() so the cursor stays in view.
+        self.module_scroll: int = 0
         self.last_msg: str = ""
         self.last_msg_age: float = 0.0
 
@@ -171,14 +174,17 @@ class ShipCustomizationScene(Scene):
             self.fonts["menu"].render("SHIP SLOTS", True, header_color),
             (x, y),
         )
-        ry = y + 32
+        # 2026-05-18: 12 generic slots — row height tightened from 50
+        # to 36 to fit all 12 in the column on a 720p window.
+        ry = y + 28
+        row_h = 36
         for idx, slot in enumerate(SLOTS):
             is_selected = idx == self.slot_idx
             highlight = is_selected and focused
             bg = (40, 60, 100) if highlight else (16, 18, 32)
             border = (200, 220, 240) if highlight else (40, 50, 70)
-            pygame.draw.rect(screen, bg, (x, ry, w, 44))
-            pygame.draw.rect(screen, border, (x, ry, w, 44), 1)
+            pygame.draw.rect(screen, bg, (x, ry, w, row_h - 4))
+            pygame.draw.rect(screen, border, (x, ry, w, row_h - 4), 1)
             installed = self.game.ship_modules.get(slot)
             if installed:
                 mod = MODULES.get(installed)
@@ -188,13 +194,15 @@ class ShipCustomizationScene(Scene):
                 label = "[empty]"
                 module_color = (130, 140, 160)
             mark = "►" if highlight else (" " if is_selected else " ")
+            # Compact slot label — show "#N" instead of full "slot_N".
+            slot_label = slot.replace("slot_", "#")
             screen.blit(
                 self.fonts["body"].render(
-                    f"{mark}  {slot:8s}  {label}", True, module_color
+                    f"{mark}  {slot_label:>3s}  {label}", True, module_color
                 ),
-                (x + 10, ry + 12),
+                (x + 10, ry + 8),
             )
-            ry += 50
+            ry += row_h
 
     def _render_modules_column(
         self, screen: pygame.Surface, x: int, y: int, w: int
@@ -215,7 +223,24 @@ class ShipCustomizationScene(Scene):
                 (x, ry),
             )
             return
-        for idx, mod in enumerate(avail):
+
+        # Windowed scroll: render only [scroll, scroll+window_size) so the
+        # 44-module catalog stays on-screen. Cursor-tracking happens in
+        # update(); render just respects whatever scroll position is set.
+        scroll = max(0, min(self.module_scroll, max(0, len(avail) - self._MODULE_WINDOW_SIZE)))
+        window_end = min(len(avail), scroll + self._MODULE_WINDOW_SIZE)
+
+        # "↑ more above" hint
+        if scroll > 0:
+            screen.blit(
+                self.fonts["small"].render(
+                    f"↑ {scroll} more above", True, (130, 150, 180),
+                ),
+                (x + 8, ry - 18),
+            )
+
+        for idx in range(scroll, window_end):
+            mod = avail[idx]
             is_selected = idx == self.module_idx
             highlight = is_selected and focused
             bg = (40, 60, 100) if highlight else (16, 18, 32)
@@ -243,6 +268,16 @@ class ShipCustomizationScene(Scene):
                 (x + 8, ry + 12),
             )
             ry += 50
+
+        # "↓ more below" hint
+        remaining_below = len(avail) - window_end
+        if remaining_below > 0:
+            screen.blit(
+                self.fonts["small"].render(
+                    f"↓ {remaining_below} more below", True, (130, 150, 180),
+                ),
+                (x + 8, ry + 4),
+            )
 
     # ------------------------------------------------------------------
     # Install / uninstall logic

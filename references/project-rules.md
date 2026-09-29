@@ -78,27 +78,50 @@ When the narrative refers to something SC2 referenced (an artifact, an alien spe
 3. Apply a deliberate regression delta (per the species/artifact's lore)
 4. Note the SC2 source + the regression rationale in the commit message and the canon doc that introduces it
 
-## Rule 5 — Every chat updates the species spreadsheet
+## Rule 5 — Multi-chat workstream coordination (Star Control Zero group)
 
-`tools/species_inventory.csv` (built by `tools/build_species_inventory.py`, mirrored to the Google Sheet linked in the latest commit message) is the **single source of truth for who-is-working-on-what** across the project's parallel chats. Anything that changes the visual, lore, dialog, or status of a species *must* go through the spreadsheet in the same commit.
+The project runs as **five parallel Claude Code chats** in the "SCZ" group to keep per-turn latency manageable. Each chat owns a specific lane; cross-lane work is dispatched via named HANDOFF documents; all chats sync against the species spreadsheet.
 
-This is what makes the multi-chat workflow safe. The "image-gen" chat and the "testing" chat and any future chats all read the same row to know:
-- whether an avatar exists yet
-- which articulation rig is canon for the species
-- whether a voice profile has been authored
-- which background plates fit the encounter
-- what's still flagged as a gap
+### The five lanes
 
-**How to apply** — touch any of these and you owe a spreadsheet update:
+| Lane | Owns (primary lane) | Cross-cut exceptions |
+|---|---|---|
+| **SCZ: Game Design** | All code modification — `src/`, `tools/*.py` (non-image), tests, scenes, FSMs, game systems. *Exclusive code-mod authority.* | — |
+| **SCZ: Game Lore** | `references/lore/*.md`, the species spreadsheet (`tools/build_species_inventory.py` + `tools/species_inventory.csv`), `memory/*.md` documenting lore | Narrow code-edit exception: `name` / `description` / `locked` on stub modules carrying `TODO_LORE` markers (NEVER framework fields) |
+| **SCZ: Images** | `tools/firefly_*.py`, `tools/gen_image.py`, `tools/firefly_prompts/`, `tools/gemini_drafts/`, `assets/generated_drafts/firefly/*`, `assets/comm/`, `assets/cutscene/`, `assets/planets/`, `assets/ships/`, image-only avatar/portrait fields in `src/scz/dialog/characters.py`, `src/scz/dialog/articulation.py` | — |
+| **SCZ: Audio** | Music, SFX, VO authoring; audio asset directory; audio-pipeline tools; ElevenLabs voice profiles (per `memory/project_voices_future.md`) | — |
+| **SCZ: Testing** | Walk-test scripts (`src/scz/testing/scripts.py`), test harness, scene-switcher exploration, bug reports | Narrow code-edit exception: small obvious bug fixes in-lane; large/design-decision bugs dispatch to Design |
 
-1. **Generated a new image** (avatar, portrait, ship, scene, artifact, cutscene) → fill or update the matching row's `avatar_path` / `portrait_image_path` / `ship_class_id` cell.
-2. **Promoted/changed a species' status** (proto → full sentient, faction realignment, slice-status change) → rewrite the affected row's `archetype` / `faction_alignment` / `slice_status` cells; if structural (new species, demotion), add or supersede a row, never silently mutate an old one.
-3. **Authored or edited canon** in `references/lore/` that affects a species → bump the row's `background_doc` if a new lore file landed; otherwise reflect the change in `description` and `gaps`.
-4. **Authored a dialog character** → set `dialog_character` to the factory name (`commander_halia`, etc).
-5. **Authored a voice profile** at `references/lore/voice_profiles/<name>.md` → set `voice_profile_doc` to that path.
-6. **Authored a ship class** in `src/scz/combat/ships.py` → set `ship_class_id` + `ship_name`.
-7. **Closed a gap** previously listed in the `gaps` column → strike the corresponding bullet from that cell.
+### Dispatch protocol — the five mandates
 
-After updating, **regenerate the CSV** (`.venv/Scripts/python.exe tools/build_species_inventory.py`) and **re-upload to Google Sheets** so the other chats see it. Include the new Sheet URL in the commit message.
+1. **Whenever a feature needs testing**, dispatch to **SCZ: Testing** via `references/lore/HANDOFF_testing_chat.md`
+2. **Whenever an image needs to be generated**, dispatch to **SCZ: Images** via `references/lore/HANDOFF_image_chat.md`
+3. **Whenever a sound or song needs to be generated**, dispatch to **SCZ: Audio** via `references/lore/HANDOFF_audio_chat.md`
+4. **Whenever lore is impacted**, dispatch to **SCZ: Game Lore** via `references/lore/HANDOFF_lore_chat.md`
+5. **Whenever code work is required**, dispatch to **SCZ: Game Design** via `references/lore/HANDOFF_design_chat.md` (Design owns code-mod exclusively to avoid merge conflicts)
 
-Skipping this is how the chats step on each other. The spreadsheet IS the coordination contract.
+Each chat **reads its own inbox at session start**, processes open entries, marks each `✅ PROCESSED <date>` when caught up. New entries are appended at the top.
+
+### Species + Quest spreadsheets as universal sync point
+
+Two canonical cross-chat spreadsheets, both **Lore-chat-owned**, both consumed by all five lanes:
+
+**`tools/species_inventory.csv`** (built from `tools/build_species_inventory.py`):
+- **Lore chat** maintains canonical species data (faction, doctrine, sentience, slice-status, gaps)
+- **Design chat** reads it to know which species are slice-ready vs. concept-stub
+- **Image chat** consumes the `gaps` column for portrait/ship/cinematic targets
+- **Audio chat** consumes the `gaps` column for voice-profile + SFX targets
+- **Testing chat** consumes the species list to know which scene paths to walk
+
+**`tools/quest_inventory.csv`** (built from `tools/build_quest_inventory.py`, added 2026-05-17):
+- **Lore chat** authors quest dialog trees as ROWS data in the build script — one row per state-or-choice, with NPC lines, Steward options, prereqs, transitions, side effects, and terminal Win-condition status
+- **Design chat** consumes it to wire dialog FSMs in `src/scz/dialog/characters.py` and side-effect plumbing — the spreadsheet IS the FSM specification
+- **Image chat** consumes the `npc_speaker` column for unique-NPC art targets
+- **Audio chat** consumes the `npc_speaker` column for voice-profile targets
+- **Testing chat** consumes the quest list + terminal-status branches to write per-quest walk-tests
+
+**All chats sync against both spreadsheets at session start and refer to them when finding new tasks.** They are the single source of truth for "what's in the slice" (species) and "what conversations the slice contains" (quests). Skipping the sync starves downstream chats of work targets.
+
+### Why this structure exists
+
+Single-chat turns were too long with all five concerns competing for the same context window. The split lets each chat keep a tight context. The dispatch protocol prevents handoff drift; the species spreadsheet prevents canon drift; the code-mod restriction prevents merge-conflict drift.

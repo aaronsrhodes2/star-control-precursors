@@ -7,6 +7,7 @@ import logging
 import pygame
 
 from scz.engine.input import InputManager
+from scz.engine.persistence import CampaignManager
 from scz.engine.scene import Scene
 from scz.engine.time_drive import TimeDrive
 
@@ -84,6 +85,11 @@ class Game:
         self.target_fps = target_fps
         self.frame_count = 0
         self.time_drive = TimeDrive()
+        # Persistent save/load + auto-save manager. No active campaign
+        # until the main menu's 'New' or 'Load' flow sets one — at which
+        # point `campaign_manager.tick(dt, game)` starts auto-saving
+        # every AUTO_SAVE_INTERVAL_S (60 s) on a daemon thread.
+        self.campaign_manager = CampaignManager()
 
         # Test mode — when running under a script, the harness overlays
         # scripted input each frame and the speed multiplier lets the
@@ -109,17 +115,40 @@ class Game:
         # Council credits — earned by selling minerals at Trade, spent
         # on ship modules at Customization.
         self.credits: int = 0
-        # Ship modules — slot → module_id (or None). Effective stats
-        # are computed by summing the base ship + each installed module's
-        # deltas. Updated by ShipCustomizationScene; read by anywhere
-        # that needs the player's combat-effective stats.
+        # Ship modules — slot → module_id (or None). 12 GENERIC slots
+        # per the 2026-05-18 stacking refactor (Aaron: "make sure all of
+        # the mods are stackable, you are just limited to 12 of them").
+        # Same module can occupy multiple slots; deltas stack via the
+        # sum-over-values in `effective_stat`. Pattern/special-override
+        # modules use slot-order precedence (lowest slot index wins).
+        from scz.content.modules import SLOTS
         self.ship_modules: dict[str, str | None] = {
-            "hull": None, "drive": None, "weapon": None,
-            "sensor": None, "field": None, "crew_1": None, "crew_2": None,
+            slot: None for slot in SLOTS
         }
         # Uninstalled modules sitting in inventory waiting to be slotted.
         # Key: module_id, value: count (most modules are unique so usually 1)
         self.uninstalled_modules: dict[str, int] = {}
+
+        # Ship roster — the player's fleet. SC2-style: each entry is a
+        # ShipClass id; combat encounters use `FleetCombatScene` which
+        # orchestrates 1v1 rounds between this fleet and the AI fleet,
+        # with hot-swap on death and damage carry-over between rounds.
+        # The Furling Scout is always in slot 0 — the Steward's own
+        # vessel. Additional ships are added via Mh-Lai purchase (per
+        # `references/lore/economy-and-trade-loops.md` — allied species
+        # ships) or via crew-quest rewards.
+        self.fleet: list[str] = ["FURLING_SCOUT"]
+
+        # Schematics held in the player's hold — picked up as quest
+        # rewards, salvage, witness-payments, etc. (per
+        # `references/lore/economy-and-trade-loops.md` §Schematic Loop).
+        # Each entry is a `Schematic.id` from `content/schematics.py`.
+        # On consume at the Mh-Lai Schematic Vault, the id moves from
+        # `schematics` into `consumed_schematics`; the target Module's
+        # `unlock_schematic` matches against `consumed_schematics` for
+        # shop-catalog visibility.
+        self.schematics: set[str] = set()
+        self.consumed_schematics: set[str] = set()
 
     def effective_stat(self, stat: str, base: float = 0.0) -> float:
         """Return the ship's live effective value for a stat.
@@ -129,6 +158,12 @@ class Game:
         callers pass their own baseline. Use this everywhere a scene
         needs to know the player's *current* stats (cargo_max, top_speed,
         primary_damage, etc.) rather than hard-coding constants.
+
+        2026-05-18 crew-perk overhaul: if an installed Module declares
+        a `post_quest_flag` AND that flag is True in `game.flags`, the
+        module's `post_quest_deltas` are ALSO summed in. This layers
+        the post-quest perk on top of the normal perk transparently
+        for every caller — no per-site flag checks required.
         """
         from scz.content.modules import MODULES
         total = base
@@ -139,6 +174,12 @@ class Game:
             if mod is None:
                 continue
             total += mod.deltas.get(stat, 0.0)
+            # Post-quest perk: layered when flag is set.
+            if (
+                mod.post_quest_flag is not None
+                and self.flags.get(mod.post_quest_flag)
+            ):
+                total += mod.post_quest_deltas.get(stat, 0.0)
         return total
 
     def set_scene(self, scene: Scene) -> None:
@@ -227,6 +268,27 @@ class Game:
         )
         self.screen.blit(t_label, (x, y + 60))
 
+    def _apply_campaign_rewind(self) -> None:
+        """Time Drive trigger — opens the save scrubber on the active
+        campaign with the cursor focused on the save closest to 5
+        minutes ago. Aaron 2026-05-18: "the time drive literally is
+        'load game' and lets you pick from the last 5 minutes or older."
+
+        The scrubber is the same UI reachable via Main Menu → Load
+        Campaign; only the default-cursor-age differs (Load = 0s,
+        Time Drive = 300s).
+        """
+        from scz.engine.persistence import TIME_DRIVE_DEFAULT_CURSOR_S
+        from scz.scenes.save_scrubber import SaveScrubberScene
+        slug = self.campaign_manager.active_slug
+        if slug is None:
+            return
+        self.set_scene(SaveScrubberScene(
+            slug=slug,
+            default_cursor_age_s=TIME_DRIVE_DEFAULT_CURSOR_S,
+            title_prefix="TIME DRIVE — REWIND",
+        ))
+
     def quit(self) -> None:
         """Request the loop to exit at end of current frame."""
         self.running = False
@@ -281,12 +343,28 @@ class Game:
                         from scz.scenes.switcher import SceneSwitcher
                         self.open_overlay(SceneSwitcher())
 
-                    # Time Drive sampling + rewind handling (engine layer).
-                    # Only the main scene contributes to the rewind buffer.
+                    # Auto-save tick — fires every 60s while a
+                    # campaign is active. No-op until New/Load.
+                    self.campaign_manager.tick(dt, self)
+
+                    # Time Drive — Aaron 2026-05-18: "literally is
+                    # 'load game'." When the rewind input fires AND a
+                    # campaign is active, open the save scrubber so the
+                    # player picks which minute to restore (default
+                    # cursor at the save closest to 5 min ago). When no
+                    # campaign is active (e.g. super-melee), fall back
+                    # to the legacy per-scene snapshot rewind.
                     self.time_drive.maybe_snapshot(self.current_scene)
                     self.time_drive.update(dt)
-                    if self.input.rewind and self.time_drive.is_ready():
-                        self.time_drive.rewind(self.current_scene)
+                    if self.input.rewind:
+                        current_name = type(self.current_scene).__name__
+                        if (
+                            self.campaign_manager.has_active()
+                            and current_name != "SaveScrubberScene"
+                        ):
+                            self._apply_campaign_rewind()
+                        elif self.time_drive.is_ready():
+                            self.time_drive.rewind(self.current_scene)
 
                     # Main scene always renders (as backdrop when overlay is up).
                     self.current_scene.render(self.screen)
@@ -314,6 +392,14 @@ class Game:
                 pygame.display.flip()
                 self.frame_count += 1
         finally:
+            # Force one final save before quitting so the player
+            # doesn't lose progress on a Ctrl+C / window close.
+            if self.campaign_manager.has_active():
+                try:
+                    self.campaign_manager.snapshot(self)
+                except Exception as e:
+                    print(f"[save] final-snapshot failed: {e}")
+            self.campaign_manager.shutdown()
             if self.current_scene is not None:
                 self.current_scene.on_exit()
             pygame.quit()

@@ -88,6 +88,18 @@ SPECIES_WARP_POD: dict[str, dict[str, tuple]] = {
         "glow":     (220, 220, 240, 60),
     },
 
+    # ----- Pre-sentient / observation-only -----
+    "DNYARRI": {
+        # Mind-controlling brain-creatures; in our era pre-sentient
+        # microfauna riding host species on a single planet. No warp
+        # tech — but the species' canonical SC2 color is sickly
+        # bilious yellow-green, which doubles as their hyperspace-
+        # presence marker once the Echo Sensor picks them up.
+        "interior": (40, 40, 10),
+        "rim":      (220, 220, 80),
+        "glow":     (220, 220, 80, 60),
+    },
+
     # ----- Uplift-project subspecies -----
     "MYCON_BIOT": {
         # Spore-driven fungal — sickly chartreuse, organic and uneasy

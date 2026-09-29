@@ -21,7 +21,7 @@ The Homesteaders are NOT a monolith. Some will fight Furlings who try to extract
 
 ### The Precursors — *The Goes*
 
-The species and Furling sub-cultures who agree to the Migration and travel through the Rainbow Worlds' dimensional crossing to the nearest neighboring galaxy. They call themselves **the Precursors** — *those who go before*. In their own usage, the name means: *we go ahead of the regrowing galaxy, we precede whatever new sentience will arise after the Culling, we are the keepers of the seed-civilization in the new galaxy until it is safe to return*.
+The species and Furling sub-cultures who agree to the Migration and travel through the Rainbow Worlds' dimensional crossing to the nearest neighboring galaxy — canonically **the Andromeda Galaxy (M31)**, our nearest large spiral neighbor. They call themselves **the Precursors** — *those who go before*. In their own usage, the name means: *we go ahead of the regrowing galaxy, we precede whatever new sentience will arise after the Culling, we are the keepers of the seed-civilization in the new galaxy until it is safe to return*.
 
 The Precursors include:
 

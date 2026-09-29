@@ -60,14 +60,12 @@ def main() -> int:
         fullscreen=fullscreen,
     )
 
-    if args.scene == "hyperspace":
-        from scz.hyperspace.scene import HyperspaceScene
-        game.set_scene(HyperspaceScene())
-    else:
-        from scz.scenes.stubs import MainMenuScene
-        game.set_scene(MainMenuScene())
-
-    # Optionally attach a test script
+    # Attach the test script BEFORE setting the first scene — the
+    # TestHarness __init__ flips campaign-manager isolation on, which
+    # must be in effect when MainMenuScene.on_enter runs (it reads the
+    # campaign-cache to decide menu state). If the harness is wired
+    # AFTER set_scene, the initial on_enter sees stale on-disk
+    # campaigns and the walks pick up garbage state on confirm.
     if args.test is not None:
         from scz.testing.harness import TestHarness
         from scz.testing.scripts import SCRIPTS
@@ -78,6 +76,13 @@ def main() -> int:
         script = SCRIPTS[args.test]()
         game.test_harness = TestHarness(game, script)
         print(f"[test] running {args.test} ({len(script.actions)} actions)")
+
+    if args.scene == "hyperspace":
+        from scz.hyperspace.scene import HyperspaceScene
+        game.set_scene(HyperspaceScene())
+    else:
+        from scz.scenes.stubs import MainMenuScene
+        game.set_scene(MainMenuScene())
 
     game.run()
 

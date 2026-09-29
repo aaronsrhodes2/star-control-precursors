@@ -83,6 +83,13 @@ class PlanetOrbitScene(Scene):
         self.title_font: pygame.font.Font | None = None
         self.small_font: pygame.font.Font | None = None
 
+        # Scanner-lore reveal state — populated in on_enter from the
+        # `scanner_lore` registry. Most planets have no registered
+        # lore (most rocky/ice/gas-giant worlds are unremarkable);
+        # _scanner_text=None means "no panel rendered".
+        self._scanner_text: str | None = None
+        self._scanner_first_reveal: bool = False
+
     # ------------------------------------------------------------------
     # Scene API
     # ------------------------------------------------------------------
@@ -98,6 +105,18 @@ class PlanetOrbitScene(Scene):
         if self.game is not None and hasattr(self.game, "sfx"):
             self.game.sfx.play("scan/enter_orbit")
             self.game.sfx.play("scan/cloak_engage")
+
+        # Scanner-lore reveal — surface the planet-level lore passage
+        # if the registry has an entry for `(star_key, planet_index)`.
+        # Always fires; subsequent visits show the abbreviated form
+        # via the is_first_reveal flag.
+        if self.game is not None:
+            from scz.content.scanner_lore import reveal_planet_lore
+            text, first_reveal = reveal_planet_lore(
+                self.game, self.star, self.planet.index,
+            )
+            self._scanner_text = text
+            self._scanner_first_reveal = first_reveal
 
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
@@ -305,6 +324,38 @@ class PlanetOrbitScene(Scene):
     # Helpers
     # ------------------------------------------------------------------
 
+    def _wrap_text(
+        self,
+        screen: pygame.Surface,
+        text: str,
+        x: int,
+        y: int,
+        max_width: int,
+        color: tuple[int, int, int],
+    ) -> int:
+        """Word-wrap `text` to fit within `max_width` pixels, rendering
+        with `self.font`. Returns the new y cursor.
+        """
+        assert self.font is not None
+        line_h = self.font.get_linesize()
+        for paragraph in text.split("\n\n"):
+            words = paragraph.split()
+            line = ""
+            for word in words:
+                test = f"{line} {word}".strip()
+                if self.font.size(test)[0] <= max_width:
+                    line = test
+                else:
+                    if line:
+                        screen.blit(self.font.render(line, True, color), (x, y))
+                        y += line_h
+                    line = word
+            if line:
+                screen.blit(self.font.render(line, True, color), (x, y))
+                y += line_h
+            y += line_h // 3
+        return y
+
     def _draw_hud(self, screen: pygame.Surface) -> None:
         assert self.font is not None and self.title_font is not None
         HUD_W = 420
@@ -387,6 +438,24 @@ class PlanetOrbitScene(Scene):
                 self.font.render(f"  {line}", True, (150, 170, 190)), (x, y)
             )
             y += 22
+
+        # Scanner-lore reveal panel — orbital scan surfaces the planet's
+        # canonical lore passage if registered. Only shown for planets
+        # that have a registry entry; mundane worlds skip the panel.
+        if self._scanner_text is not None:
+            y += 12
+            scanner_header = "SCANNER  ·  ORBITAL"
+            if self._scanner_first_reveal:
+                scanner_header += "   + ARCHIVE ENTRY"
+            screen.blit(
+                self.font.render(scanner_header, True, (140, 220, 240)),
+                (x, y),
+            )
+            y += 24
+            y = self._wrap_text(
+                screen, self._scanner_text, x, y,
+                HUD_W - 2 * x, (200, 215, 230),
+            )
 
         # Time Drive
         y += 12

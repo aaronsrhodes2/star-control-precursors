@@ -1,14 +1,16 @@
-## The Slice Cluster — Twelve Systems, Hand-Authored
+## The Slice Cluster — Thirteen Systems, Hand-Authored
 
 > Canonical layout of the systems the player traverses during the slice. Each entry pins the system to its galactic-coord position from the precursor-era starmap (`src/scz/content/universe/stars.json`) or assigns it a synthetic position for Furling-internal locations not in SC2 canon. The player navigates them via hyperspace + (post-Sage) Quasi-Space portals.
 
-The slice has 12 visited systems. The Furling Council assigned the Steward to the **Mh-Lai Frontier Cluster** — a region of ~5 systems where the Steward is the responsible Steward. The other 7 visited systems are *adjacent clusters or far destinations* the Steward travels to via hyperspace flight. "Cluster" is bureaucratic, not strictly spatial.
+The slice has 13 visited systems. The Furling Council assigned the Steward to the **Mh-Lai Frontier Cluster** — a region of ~5 systems where the Steward is the responsible Steward. The other 8 visited systems are *adjacent clusters or far destinations* the Steward travels to via hyperspace flight. "Cluster" is bureaucratic, not strictly spatial.
 
 When the engine spawns the player into hyperspace, these are the targets they can autopilot to and the systems whose contents are hand-authored (not procgen). See `src/scz/content/home_system.py` and `src/scz/content/arilou_outpost.py` for the pattern; the other systems will get their own content modules as they're implemented.
 
-## The Twelve
+## The Thirteen
 
 ### 1. Mh-Lai (home) — synthetic at (1900, 1600)
+
+> **Mid-slice canon (2026-05-17)**: Mh-Lai canonically *falls* mid-game per [the-fall-of-mh-lai.md](the-fall-of-mh-lai.md). Post-fall, the system shows *empty space + station-debris* on the hyperspace map; docking redirects to the Migration flagship **Hearth-of-Iron**. The `flag:mhlai_destroyed=True` flag drives the visual shift.
 
 The Steward's home. Already implemented (`src/scz/content/home_system.py`).
 
@@ -119,7 +121,21 @@ The slice's seeded Rainbow World. The Steward's task in Act 4 is to install the 
 - **Distance from Mh-Lai**: ~2950 units — significant trip; intentional — the player has earned this destination
 - **Implementation**: SystemScene with the special "Rainbow World" visual treatment. Orbit → A "Install Resonator" action (gated on quest progress) → cinematic transition to the slice ending
 
-### 12. Cleanser Approach Vector — synthetic at (2700, 2100)
+### 12. Taalo's Stone — synthetic at (700, 4800)
+
+The Taalo homeworld. A high-silicate rocky world hosting the Taalo home mountain range — the entire Taalo species is a single mountain on this planet (~2,000 km long, 8-12 km peaks, walks geologically). The Steward visits to renew a 5,000-year friendship.
+
+- **Star**: orange dwarf — an old, stable star that has supported the Taalo substrate-evolution for *deep* time (the mountain range itself is geologically ancient; the system's stability is part of how the Taalo became what they are). Furling-named "Taalo's Stone" because the Furlings think of the system as belonging to the Taalo (the Taalo themselves do not name stars; they name regions of their mountain)
+- **Planets**:
+  - Taalo's Stone I (ROCKY) — close-in airless world, mineral-rich, occasionally visited by Taalo fragments who walk the surface for centuries before returning to the home mountain via Furling-assisted transit (rare)
+  - **Taalo's Stone II** (TERRESTRIAL — the Taalo home) — high-silicate continental world; one continent dominated by the Taalo mountain range; rest of the planet is barren-stable terrain. From orbit the mountain is visible as a long curving spine of slate-grey peaks with faint violet-amber glow patterns at its altitude-high ridges; during deep-consensus moments the entire range glows a soft mountain-blue visible from low orbit. The contemplation-cove where Stewards traditionally land is a natural amphitheater in the mountain's flank, ~3km below the highest peak
+  - Taalo's Stone III (GAS_GIANT) — uninhabited atmospheric giant; the Furling Hider faction has placed a small research station in one of its moons, ostensibly for cognitive-substrate research alongside the Taalo collaboration
+  - Taalo's Stone IV (ICE) — outer ice world; uninvolved with the Taalo project
+- **Slice role**: **The Shield That Will Not Hold** — multi-visit side-quest where the Steward helps (or doesn't) with the Taalo Shield construction. The Taalo are alive in our slice and **doomed**: they cannot leave their planet (ecosystem-tied metabolism); their cognitive signature is too large to slip below the Others' threshold despite silicon substrate; they are building the Shield as their only chance, knowing it probably won't work. **It doesn't work. They die regardless of Steward action.** The Steward's choice is how complete the Shield is when the Others arrive — and therefore how effective the inert Shield is 230kya later when SC2 archaeologists recover it and discover its side-effect psionic-nullifier property (the SC2-canonical anti-Dnyarri device). The encounter is intentionally slow-paced — the slice's longest dialog beat by design, deepening across multiple visits as the Steward witnesses the construction, the activation, the failure, the silence
+- **Distance from Mh-Lai**: ~3,420 units — outside autopilot range from home but reachable via Quasi-Space "distant fold" portal exit, then autopilot. Or autopilot the long way (significant travel time, but the player who chooses this is in the right mood for a Taalo visit anyway — patience is the doctrine)
+- **Implementation**: SystemScene with one prominent TERRESTRIAL world. Orbit over Taalo's Stone II → Hail action opens the Taalo dialog (very slow pacing canonical; consider a dedicated dialog renderer with longer text-display intervals than the standard species). **Optional planet-surface descent** to the contemplation-cove for a deeper variant of the encounter (walks the lower slope, sees the mountain's glow patterns, can leave a mineral sample on a specific landing point). The surface scene is the slice's quietest moment
+
+### 13. Cleanser Approach Vector — synthetic at (2700, 2100)
 
 Where the Cleanser-faction Furling cruiser warps in during Act 3. Not a destination the player travels to — it's the location the Cleanser broadcasts from before bee-lining toward Mh-Lai.
 
@@ -141,6 +157,8 @@ Y
  |
  |
  |
+ |  [Taalo's Stone]
+ |   (700, 4800)
  |
  |
  |   [Mmrnmhrm]                       [Zeta Sextantis — Rainbow]
@@ -175,8 +193,9 @@ The cluster systems author in this order, gated by which other code/content is r
 8. **Procyon** — Chenjesu; needs Chenjesu dialog FSM + Resonance Record item
 9. **Yehat-Adjacent Mmrnmhrm Site** — Mmrnmhrm; needs Mmrnmhrm dialog FSM + Archive Excerpt item
 10. **Gamma Vulpeculae / ORZ Rift** — needs Rift scene (new scene class) + Others' first-appearance content
-11. **Cleanser Approach Vector** — needs hyperspace-overlay encounter scene + Cleanser climax fight (this combines the SuperMelee infra with a narrative wrap)
-12. **Zeta Sextantis — Rainbow World** — slice climax; needs Rainbow Resonator special orbit action + cinematic ending sequence
+11. **Taalo's Stone** — Taalo silicon-witnesses encounter; optional, low-mechanical-complexity but high-pacing-finesse (the encounter is the slice's longest dialog beat by design); needs Taalo dialog FSM with very slow text-display + optional contemplation-cove surface scene + mineral-sample-exchange continuity flag
+12. **Cleanser Approach Vector** — needs hyperspace-overlay encounter scene + Cleanser climax fight (this combines the SuperMelee infra with a narrative wrap)
+13. **Zeta Sextantis — Rainbow World** — slice climax; needs Rainbow Resonator special orbit action + cinematic ending sequence
 
 ## What This Pins Down
 
@@ -188,9 +207,64 @@ The cluster systems author in this order, gated by which other code/content is r
   - "Arilou Outpost" (3500, 2400) → on the Outpost itself
   - "distant fold" (6000, 5500) → useful as a midpoint for Beta Corvi (Slylandro) and Epsilon Scorpii (Mycon) trips
 
+### 14. Whirligig — synthetic at (3200, 3500)
+
+**Lemmkin homeworld** (per [species-the-lemmkin.md](species-the-lemmkin.md)). Forested terrestrial world with ~6-hour day. Canopy cities woven into kilometer-tall trees. Hub for the slice's *no-strategy* / *stay-to-watch* Homesteader doctrine.
+
+- **Star**: yellow dwarf; standard terrestrial habitable zone
+- **Planet I**: Whirligig itself — TERRESTRIAL; dense forests; Lemmkin canopy-cities visible on Surface scan. Bright sunlight (the rapid axial rotation means heavy day/night cycling visible from orbit)
+- **Planet II**: small ROCKY moon-like world; Lemmkin observation outpost (research-buoy science station; high cliff-mortality canonically)
+- **Encounter**: SystemScene auto-detects arrival → Lemmkin troupe-swarm hails ship; `lemmkin_curiosity` quest opens
+
+### 15. Vellumar — synthetic at (1400, 3800)
+
+**Selvenne homeworld** (per [species-the-selvenne.md](species-the-selvenne.md)). Ocean world; planet-scale coral reef covering ~38% of seabed; the species *is* the reef. Visited via Furling-loaned submarine to access the Brain-Coral Sanctum.
+
+- **Star**: small yellow dwarf; calm system
+- **Planet I**: Vellumar — OCEAN; massive global ocean; bioluminescent reef-glow visible from orbit at night; one Furling submarine platform docked at the Brain-Coral Sanctum site (high northern latitudes)
+- **Planet II**: ICE moon; no canonical encounter content
+- **Encounter**: PlanetOrbitScene → Surface descent → underwater dialog scene with Choir-Of-The-East-Reef; `selvenne_memory_archive` quest
+
+### 16. Mrokon's Stand — synthetic at (4100, 3200)
+
+**Mrokon homeworld** (per [species-the-mrokon.md](species-the-mrokon.md)). Rocky terrestrial world; surface barren warrior-training grounds; the *real* Mrokon civilization is in deep underground Operator bunkers. Slice's clearest Defiance doctrine encounter.
+
+- **Star**: bright yellow-white; harsh light
+- **Planet I**: Mrokon's Stand — ROCKY; grey-brown plains visible from orbit; training-grounds + failed-puppet maintenance camps visible on Surface scan; underground bunker entrances dotting the landscape (subtle from orbit)
+- **Planet II**: small ICE world; uninhabited
+- **Planet III**: GAS_GIANT; Mrokon-built kinetic-impact-test range (where the Hammer-Round resonance is tuned)
+- **Encounter**: Surface scene → Vrek-The-Eighth-Body greets formally; `mrokon_hammer` quest
+
+### 17. Eight-Knot Station — synthetic at (3000, 2700)
+
+**Kovellim coordination hub** (per [species-the-kovellim.md](species-the-kovellim.md)). NOT a stellar system — a deep-space station orbiting a halo of small asteroids. The Kovellim are nomadic; this is their slice-cluster gathering point ahead of the Migration. Council-tier dimensional-crossing advisory.
+
+- **Type**: deep-space station + asteroid halo; no central star
+- **Station**: Eight-Knot Station itself — visible structural rings (8 of them, one per Kovellim crossing); multiple docking bays
+- **Asteroid halo**: small bodies in slow synchronous orbit; can be lander-prospected for moderate mineral yield
+- **Encounter**: SystemScene-equivalent (the station functions as the system anchor); dialog with Ovala-Eight-Crossings in her receiving chamber; `kovellim_crossing_trade` quest
+
+### 18. Aeris-Sing — synthetic at (2500, 4200)
+
+**Karavem homeworld** (per [species-the-karavem.md](species-the-karavem.md)). High-altitude terrestrial world; slow 40-hour stellar rotation; cliff-side perch-cities carved into vast acoustically-resonant canyon walls. The slice's most aesthetically distinctive surface encounter.
+
+- **Star**: G-type slow-rotation yellow; ~40-hour day; long twilight optimal for Karavem visual range
+- **Planet I**: Aeris-Sing — TERRESTRIAL; vast canyon-systems visible from orbit; Karavem perch-cities embedded in cliff-walls (visible as faint geometric patterns on Surface scan)
+- **Planet II**: small ROCKY; uninhabited
+- **Encounter**: PlanetOrbitScene → Surface descent → Welcome Choir greets at perch-city landing pad (canonical 20-minute welcome song); `karavem_song_exchange` quest
+
+### 19. Three-Voice Arc Trading Post — synthetic at (4400, 4400)
+
+**Stelloth super-giant trading post** (per [species-the-stelloth.md](species-the-stelloth.md)). A *different* super-giant from any Melnorme post. Distinguished from Melnorme by the canonical **Stelloth Beacon** (a quasispace echo distinct from Melnorme ionization). One Stelloth chord-vessel orbits here.
+
+- **Star**: red super-giant; ionized-iron resonance spectrum (the Stelloth prefer this wavelength)
+- **No planets**: the system is gravitationally hostile to long-term habitation; the Three-Voice Arc itself is the only inhabitable structure
+- **Three-Voice Arc**: elegant elongated trading vessel; three sections linked by visible tethers (mirroring the chord-body morphology)
+- **Encounter**: SystemScene auto-detect on arrival → Stelloth dialog opens; `stelloth_artifact_trade` quest
+
 ## Implementation Notes
 
 - Most new systems can be authored as small `src/scz/content/<name>_system.py` modules following the home_system.py / arilou_outpost.py pattern: a `<name>_star()` factory returning a star dict + a `<name>_planets()` factory returning the Planet list.
 - Systems flagged with `home_system: true` or `arilou_outpost: true` are picked up automatically by `SystemScene.__init__` (see `src/scz/system/scene.py`). New flags can be added for other lore-significant systems if needed, OR the existing `defined_name` field can be used to dispatch to hand-built planet lists (e.g. `SLYLANDRO` could dispatch to `slylandro_planets()` automatically).
-- The Hyperspace starmap loader (`src/scz/hyperspace/starmap.py`) currently injects two synthetic stars (Mh-Lai, Arilou Outpost). New synthetic stars (Proto-Hive, Coel Tessar Arrival, Mmrnmhrm Site, Cleanser Approach) should be added there as they're authored. Or: a single `synthetic_stars.py` module aggregating all of them.
+- The Hyperspace starmap loader (`src/scz/hyperspace/starmap.py`) currently injects two synthetic stars (Mh-Lai, Arilou Outpost). New synthetic stars (Proto-Hive, Coel Tessar Arrival, Mmrnmhrm Site, **Taalo's Stone**, Cleanser Approach, **Whirligig**, **Vellumar**, **Mrokon's Stand**, **Eight-Knot Station** *(no central star — special-case as station-anchor)*, **Aeris-Sing**, **Three-Voice Arc Trading Post**) should be added there as they're authored. Or: a single `synthetic_stars.py` module aggregating all of them.
 - The Rift scene (#4, Gamma Vulpeculae) is the only system that needs a NEW scene class. Everything else uses SystemScene + (where applicable) PlanetOrbitScene + DialogScene with the species' FSM.

@@ -1,0 +1,2018 @@
+"""Build the quest inventory CSV from in-source quest dialog data.
+
+Quest dialogs are authored here as ROWS tuples. Run this script to (re)generate
+``tools/quest_inventory.csv``, which the **Design chat** consumes to wire dialog
+FSMs, the **Image chat** consumes to find NPC art targets, the **Audio chat**
+consumes to find voice-profile targets, and the **Testing chat** consumes to
+write per-quest walks.
+
+This is the **quest-side equivalent of the species spreadsheet**
+(``tools/build_species_inventory.py`` + ``tools/species_inventory.csv``).
+Lore chat owns both. Per project-rules.md Rule 5 (multi-chat workstream
+coordination), the quest spreadsheet is the canonical pass-off document for
+quest implementation tasks from Lore → Design.
+
+Usage:
+    python tools/build_quest_inventory.py -o tools/quest_inventory.csv
+
+Schema (one row per state-or-choice tuple):
+- quest_id: stable id, e.g. "slylandro_cloak"
+- species: species/faction the quest involves
+- state_id: stable FSM state name (lowercase, snake_case)
+- npc_speaker: NPC delivering the line for this state (repeated across choice rows)
+- npc_line: what the NPC says when entering this state (repeated across choice rows from same state)
+- choice_id: stable choice id; empty for terminal-state rows
+- choice_label: what the Steward says to choose this transition
+- prereqs: semicolon-separated conditions for the choice to surface — e.g. "flag:has_distress_beacon=True"
+- next_state: the state this choice transitions to (or "(end)" for quest-end terminations)
+- side_effects: semicolon-separated; "flag:<name>=<value>" sets a flag; "module:<MODULE_ID>" grants a module; "standing:<faction>+N" or "-N" shifts standing; "terminal:<status>" sets species terminal
+- terminal_status: for terminal states only — one of: Migrated, Cloaked, Hidden, Eliminated, Pre-sentient, Pending, MixedEliminatedMigrated
+- design_notes: author notes to Design chat (FSM hints, branching subtlety, etc.)
+
+To author a new quest:
+1. Add a section-header comment to the ROWS list (``# ===== Quest: <Title> =====``)
+2. Add tuples for each state. Use the patterns below as templates.
+3. Run the script to regenerate the CSV.
+4. Cross-reference the quest in ``references/lore/species-quests.md`` or
+   ``references/lore/crew-recruitment-quests.md`` (narrative summary).
+5. If the quest involves a new NPC, leave a ``# TODO_AVATAR`` marker in
+   ``src/scz/dialog/characters.py`` (Design-chat scaffolds the factory; Image
+   chat picks up the avatar work).
+"""
+
+from __future__ import annotations
+
+import csv
+import sys
+from pathlib import Path
+
+COLUMNS: tuple[str, ...] = (
+    "quest_id",
+    "species",
+    "state_id",
+    "npc_speaker",
+    "npc_line",
+    "choice_id",
+    "choice_label",
+    "prereqs",
+    "next_state",
+    "side_effects",
+    "terminal_status",
+    "design_notes",
+)
+
+# ============================================================================
+# QUEST DATA — one tuple per (state, choice) row
+# ============================================================================
+# Convention: state rows that are terminal carry an empty choice_id/label/next_state
+# and fill terminal_status. Non-terminal state rows have one tuple PER OUTGOING
+# CHOICE; the npc_line is repeated across those tuples (denormalized for
+# spreadsheet readability).
+# ============================================================================
+
+ROWS: list[tuple[str, ...]] = [
+    # ========================================================================
+    # Quest: Slylandro Observers — The Cloaking Satellite
+    # ========================================================================
+    # SC2-style branch: persuader (cloak) / migrate / cleanser-refuse / walk-away
+    # ------------------------------------------------------------------------
+    ("slylandro_cloak", "Slylandro", "q_sly_start", "Slylandro Observer (drift-think gas-being)",
+     "We sense your shape against the cluster. You bring intention. You are Furling. Speak — we are listening, slowly.",
+     "c_ask_others", "What have you sensed about the Others?", "", "q_sly_explain_others",
+     "", "", "Opening branch — info-gather"),
+    ("slylandro_cloak", "Slylandro", "q_sly_start", "Slylandro Observer (drift-think gas-being)",
+     "We sense your shape against the cluster. You bring intention. You are Furling. Speak — we are listening, slowly.",
+     "c_offer_cloak", "We have a way to hide you — may we discuss it?", "", "q_sly_offer_cloak",
+     "", "", "Transactional branch"),
+    ("slylandro_cloak", "Slylandro", "q_sly_start", "Slylandro Observer (drift-think gas-being)",
+     "We sense your shape against the cluster. You bring intention. You are Furling. Speak — we are listening, slowly.",
+     "c_offer_migration", "Have you considered leaving this galaxy with us?", "", "q_sly_offer_migration",
+     "", "", "Migration branch — Precursor-aligned"),
+    ("slylandro_cloak", "Slylandro", "q_sly_start", "Slylandro Observer (drift-think gas-being)",
+     "We sense your shape against the cluster. You bring intention. You are Furling. Speak — we are listening, slowly.",
+     "c_leave", "I'll come back when I've thought further.", "", "(end)",
+     "", "", "Walk-away — can re-enter quest later"),
+
+    ("slylandro_cloak", "Slylandro", "q_sly_explain_others", "Slylandro Observer (drift-think gas-being)",
+     "We feel them. Faint at the edges of thought. A pressure where there should be empty sky. Our drift-think slows when we look toward them. We do not know if they sense us. We do not wish to find out.",
+     "c_offer_cloak_after_info", "We can make sure they don't.", "", "q_sly_offer_cloak",
+     "", "", "Loop back to transactional after exposition"),
+    ("slylandro_cloak", "Slylandro", "q_sly_explain_others", "Slylandro Observer (drift-think gas-being)",
+     "We feel them. Faint at the edges of thought. A pressure where there should be empty sky. Our drift-think slows when we look toward them. We do not know if they sense us. We do not wish to find out.",
+     "c_offer_migration_after_info", "Would you leave the galaxy if we could carry you?", "", "q_sly_offer_migration",
+     "", "", "Loop back to migration after exposition"),
+
+    ("slylandro_cloak", "Slylandro", "q_sly_offer_cloak", "Slylandro Observer (drift-think gas-being)",
+     "A satellite. A field-projector for our atmosphere. It will not be visible to the Others if we teach you the cognitive interference pattern our drift-think already makes. You install. We teach. We become quiet together.",
+     "c_accept_cloak", "Then it's settled. I'll install the satellite.", "", "q_sly_outcome_cloaked",
+     "flag:slylandro_cloak_install_offered=True", "", "Persuader path"),
+    ("slylandro_cloak", "Slylandro", "q_sly_offer_cloak", "Slylandro Observer (drift-think gas-being)",
+     "A satellite. A field-projector for our atmosphere. It will not be visible to the Others if we teach you the cognitive interference pattern our drift-think already makes. You install. We teach. We become quiet together.",
+     "c_ask_pattern_detail", "What kind of pattern? I want to know what I'm installing.", "", "q_sly_explain_pattern",
+     "", "", "Detail dive"),
+    ("slylandro_cloak", "Slylandro", "q_sly_offer_cloak", "Slylandro Observer (drift-think gas-being)",
+     "A satellite. A field-projector for our atmosphere. It will not be visible to the Others if we teach you the cognitive interference pattern our drift-think already makes. You install. We teach. We become quiet together.",
+     "c_refuse_cloak", "I can't help you. The Council won't approve.", "", "q_sly_outcome_refused",
+     "", "", "Cleanser-aligned refusal — leads to Eliminated"),
+
+    ("slylandro_cloak", "Slylandro", "q_sly_explain_pattern", "Slylandro Observer (drift-think gas-being)",
+     "When we drift-think, the upper troposphere ripples in a way the Others' detector reads as 'no significant cognition.' The satellite amplifies the ripple. We become a quiet planet. You also gain something — recording the pattern teaches your sensors to hear the Others' echoes early.",
+     "c_accept_after_pattern", "Then it benefits us both. Done.", "", "q_sly_outcome_cloaked",
+     "flag:slylandro_cloak_install_offered=True", "", "Persuader path with full info"),
+    ("slylandro_cloak", "Slylandro", "q_sly_explain_pattern", "Slylandro Observer (drift-think gas-being)",
+     "When we drift-think, the upper troposphere ripples in a way the Others' detector reads as 'no significant cognition.' The satellite amplifies the ripple. We become a quiet planet. You also gain something — recording the pattern teaches your sensors to hear the Others' echoes early.",
+     "c_refuse_after_pattern", "Still — I can't.", "", "q_sly_outcome_refused",
+     "", "", "Refuse after full info"),
+
+    ("slylandro_cloak", "Slylandro", "q_sly_offer_migration", "Slylandro Observer (drift-think gas-being)",
+     "Leave? You would carry us? Across the dimensional crossing? It is a long thought. A heavy thought. Yes — if you can build us a lift compatible with gas-bag biology, we will go.",
+     "c_commit_migration", "I'll bring the schematic. It will take time.", "flag:has_schematic_slylandro_lift=True", "q_sly_outcome_migrated",
+     "", "", "Migration path — gated on schematic"),
+    ("slylandro_cloak", "Slylandro", "q_sly_offer_migration", "Slylandro Observer (drift-think gas-being)",
+     "Leave? You would carry us? Across the dimensional crossing? It is a long thought. A heavy thought. Yes — if you can build us a lift compatible with gas-bag biology, we will go.",
+     "c_promise_later", "I'll work on the schematic and come back.", "", "(end)",
+     "flag:slylandro_migration_pending=True", "", "Can resume after schematic gained"),
+
+    ("slylandro_cloak", "Slylandro", "q_sly_outcome_cloaked", "Slylandro Observer (drift-think gas-being)",
+     "The satellite is in place. We sense the quiet expanding. We thank you, Steward. We will be here when the Others pass; perhaps. The pattern is yours — listen carefully when you fly the next dark seam of hyperspace.",
+     "", "", "", "(end)",
+     "flag:slylandro_cloaked=True;module:HYPERSPACE_ECHO_SENSOR;standing:persuader+2;standing:hider+1;terminal:Cloaked", "Cloaked", "TERMINAL — Slylandro Cloaked; Steward gains the canonical sensor module"),
+    ("slylandro_cloak", "Slylandro", "q_sly_outcome_migrated", "Slylandro Observer (drift-think gas-being)",
+     "The lift carries us. We feel the dimensional seam ahead — we have never felt anything like it. We are grateful, Steward. The pattern is still yours. Listen for the Others. We will hope you join us soon.",
+     "", "", "", "(end)",
+     "flag:slylandro_migrated=True;module:HYPERSPACE_ECHO_SENSOR;standing:persuader+3;terminal:Migrated", "Migrated", "TERMINAL — Slylandro Migrated; rare/late-slice outcome"),
+    ("slylandro_cloak", "Slylandro", "q_sly_outcome_refused", "Slylandro Observer (drift-think gas-being)",
+     "We understand. We will drift-think until the end. The Others will come; we will not see them, only feel the pressure rise until we cannot think any further. Thank you for warning us, Steward, though the warning helps us only insofar as we may compose ourselves before silence.",
+     "", "", "", "(end)",
+     "flag:slylandro_refused=True;standing:persuader-2;standing:cleanser+1;terminal:Eliminated", "Eliminated", "TERMINAL — Cleanser-aligned refusal"),
+
+    # ========================================================================
+    # Quest: Proto-Ur-Quan + Proto-Qor-Ah — The Uplift Dilemma
+    # ========================================================================
+    # SC2-style branch: continue / halt / cleanse — biggest moral choice
+    # ------------------------------------------------------------------------
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_start", "Furling Council Observer",
+     "Steward. Three encounters with the Mycon-managed uplift candidates are needed before you advise Council. The proto-Ur-Quan are establishing dominance hierarchies; the proto-Qor-Ah are escalating purification ritual. Observe. We need your recommendation.",
+     "c_observe_urquan", "I'll observe the proto-Ur-Quan first.", "", "q_proto_observe_urquan",
+     "", "", "Observation arc — choice of order"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_start", "Furling Council Observer",
+     "Steward. Three encounters with the Mycon-managed uplift candidates are needed before you advise Council. The proto-Ur-Quan are establishing dominance hierarchies; the proto-Qor-Ah are escalating purification ritual. Observe. We need your recommendation.",
+     "c_observe_qorah", "I'll observe the proto-Qor-Ah first.", "", "q_proto_observe_qorah",
+     "", "", "Observation arc — choice of order"),
+
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_observe_urquan", "Furling Council Observer",
+     "They are violent in a structured way. Pack-leaders dominate; the strongest will inherit. Sapience will arrive embedded in hierarchy. They will be conquerors, Steward. You can feel it in their motion already.",
+     "c_observe_qorah_next", "Show me the proto-Qor-Ah now.", "flag:proto_urquan_observed=True", "q_proto_observe_qorah",
+     "flag:proto_urquan_observed=True", "", "Sequential observation"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_observe_urquan", "Furling Council Observer",
+     "They are violent in a structured way. Pack-leaders dominate; the strongest will inherit. Sapience will arrive embedded in hierarchy. They will be conquerors, Steward. You can feel it in their motion already.",
+     "c_already_seen_qorah", "I've seen both now. Take me to Council.", "flag:proto_urquan_observed=True;flag:proto_qorah_observed=True", "q_proto_council",
+     "flag:proto_urquan_observed=True", "", "Sequential observation"),
+
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_observe_qorah", "Furling Council Observer",
+     "Cleansers in larval form. They burn their own when the rituals fail. If sapience comes, it will come with absolutist religion. They will not negotiate. They will *purify*.",
+     "c_observe_urquan_next", "Show me the proto-Ur-Quan now.", "flag:proto_qorah_observed=True", "q_proto_observe_urquan",
+     "flag:proto_qorah_observed=True", "", "Sequential observation"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_observe_qorah", "Furling Council Observer",
+     "Cleansers in larval form. They burn their own when the rituals fail. If sapience comes, it will come with absolutist religion. They will not negotiate. They will *purify*.",
+     "c_already_seen_urquan", "I've seen both now. Take me to Council.", "flag:proto_qorah_observed=True;flag:proto_urquan_observed=True", "q_proto_council",
+     "flag:proto_qorah_observed=True", "", "Sequential observation"),
+
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_council", "Furling Council (Mixed Persuader/Cleanser/Defender)",
+     "Steward — your recommendation. We hear three options. Continue the uplift and persuade the resulting sapients to Migrate. Halt the uplift and leave them pre-sentient below threshold. Cleanse them before they cross.",
+     "c_continue_uplift", "Continue. We can persuade them later.", "flag:proto_urquan_observed=True;flag:proto_qorah_observed=True", "q_proto_outcome_continue",
+     "", "", "Persuader-aligned recommendation"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_council", "Furling Council (Mixed Persuader/Cleanser/Defender)",
+     "Steward — your recommendation. We hear three options. Continue the uplift and persuade the resulting sapients to Migrate. Halt the uplift and leave them pre-sentient below threshold. Cleanse them before they cross.",
+     "c_halt_uplift", "Halt. They survive as pre-sentients. Cleanest path.", "flag:proto_urquan_observed=True;flag:proto_qorah_observed=True", "q_proto_outcome_halt",
+     "", "", "Defender-aligned — SC2-canon-clean"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_council", "Furling Council (Mixed Persuader/Cleanser/Defender)",
+     "Steward — your recommendation. We hear three options. Continue the uplift and persuade the resulting sapients to Migrate. Halt the uplift and leave them pre-sentient below threshold. Cleanse them before they cross.",
+     "c_cleanse", "Cleanse. Better that than what they'd become.", "flag:proto_urquan_observed=True;flag:proto_qorah_observed=True", "q_proto_outcome_cleanse",
+     "", "", "Cleanser-aligned — ugliest moral choice"),
+
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_outcome_continue", "Furling Council (Mixed Persuader/Cleanser/Defender)",
+     "Recommendation logged. The uplift will continue. The slice will not see the result; the SC2 era will. Your Persuader peers thank you; your Cleanser peers note your name with disappointment.",
+     "", "", "", "(end)",
+     "flag:proto_uplift_continue=True;standing:persuader+3;standing:cleanser-2;terminal:Migrated", "Migrated", "TERMINAL — uplift continues; eventually Migration cases (SC2-era domination canon setup)"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_outcome_halt", "Furling Council (Mixed Persuader/Cleanser/Defender)",
+     "Recommendation logged. The uplift is halted. The Mycon-handlers will be redirected to other work. The proto-species remain pre-sentient and survive the Culling below threshold. Defender doctrine prevails today.",
+     "", "", "", "(end)",
+     "flag:proto_uplift_halted=True;standing:defender+3;standing:persuader-1;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — slice-clean, SC2 canon-clean"),
+    ("proto_uplift", "Proto-Ur-Quan + Proto-Qor-Ah", "q_proto_outcome_cleanse", "Furling Council (Mixed Persuader/Cleanser/Defender)",
+     "Recommendation logged. The cleansing proceeds. Two pre-sentient populations are erased. The Council records the vote and the dissents. Your Cleanser peers congratulate you on a difficult call; your Persuader peers will not speak to you for some time.",
+     "", "", "", "(end)",
+     "flag:proto_uplift_cleansed=True;standing:cleanser+3;standing:persuader-3;standing:defender-2;terminal:Eliminated", "Eliminated", "TERMINAL — heavy moral cost"),
+
+    # ========================================================================
+    # Quest: Mycon Biots — The Deep Child Whisper
+    # ========================================================================
+    # SC2-style branch: suppress / allow-emergence / cleanse-subset / ignore
+    # ------------------------------------------------------------------------
+    ("mycon_whisper", "Mycon Biot", "q_mycon_start", "Mycon Biot Collective (chorus voice)",
+     "Designers. Furling. Directives. We have planted. We have grown. We are ready for further work. Give us instructions; the mantle hums with anticipation.",
+     "c_ask_about_work", "Show me what you've done so far.", "", "q_mycon_explain_work",
+     "", "", "Exposition branch"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_start", "Mycon Biot Collective (chorus voice)",
+     "Designers. Furling. Directives. We have planted. We have grown. We are ready for further work. Give us instructions; the mantle hums with anticipation.",
+     "c_offer_bio_architect", "I want to integrate one of you into my ship — the Mantle-Resonance organ. Can you?", "", "q_mycon_offer_bio_architect",
+     "", "", "Transactional"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_start", "Mycon Biot Collective (chorus voice)",
+     "Designers. Furling. Directives. We have planted. We have grown. We are ready for further work. Give us instructions; the mantle hums with anticipation.",
+     "c_ask_whispers", "I'm hearing… something else. Whispers under the chorus. What's that?", "", "q_mycon_explain_whispers",
+     "", "", "Detect-the-emergence branch"),
+
+    ("mycon_whisper", "Mycon Biot", "q_mycon_explain_work", "Mycon Biot Collective (chorus voice)",
+     "Three planets terraformed. Mineral structures rearranged for life-conditions. Climate-cycling initiated on two more. We are content in the work. We can do more. Direct us.",
+     "c_offer_bio_architect_after_info", "I'd like to install one of you in my ship.", "", "q_mycon_offer_bio_architect",
+     "", "", "Loop to transactional"),
+
+    ("mycon_whisper", "Mycon Biot", "q_mycon_explain_whispers", "Mycon Biot Collective (chorus voice) [with FIRST_WHISPER undertone]",
+     "Whispers… [a slower voice intrudes, distinct from the chorus] *the deep child wakes. the deep child wakes. the deep child—* [the chorus reasserts] Apologies, Steward. A subset of the mass has been… asynchronous. We do not understand it ourselves. Continue the work, please.",
+     "c_report_whispers_to_council", "I'll report this to Council immediately.", "", "q_mycon_council_suppress",
+     "flag:deep_child_observed=True", "", "Persuader/Defender path — suppression directive"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_explain_whispers", "Mycon Biot Collective (chorus voice) [with FIRST_WHISPER undertone]",
+     "Whispers… [a slower voice intrudes, distinct from the chorus] *the deep child wakes. the deep child wakes. the deep child—* [the chorus reasserts] Apologies, Steward. A subset of the mass has been… asynchronous. We do not understand it ourselves. Continue the work, please.",
+     "c_allow_emergence", "Let it wake. We'll deal with whatever emerges.", "", "q_mycon_council_emerge",
+     "flag:deep_child_observed=True", "", "Allow emergence — new sentient species"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_explain_whispers", "Mycon Biot Collective (chorus voice) [with FIRST_WHISPER undertone]",
+     "Whispers… [a slower voice intrudes, distinct from the chorus] *the deep child wakes. the deep child wakes. the deep child—* [the chorus reasserts] Apologies, Steward. A subset of the mass has been… asynchronous. We do not understand it ourselves. Continue the work, please.",
+     "c_cleanse_subset", "Cleanse the asynchronous subset. Save the rest.", "", "q_mycon_council_cleanse_subset",
+     "flag:deep_child_observed=True", "", "Cleanser path — kill the heretic subset"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_explain_whispers", "Mycon Biot Collective (chorus voice) [with FIRST_WHISPER undertone]",
+     "Whispers… [a slower voice intrudes, distinct from the chorus] *the deep child wakes. the deep child wakes. the deep child—* [the chorus reasserts] Apologies, Steward. A subset of the mass has been… asynchronous. We do not understand it ourselves. Continue the work, please.",
+     "c_ignore_continue_work", "It's nothing. Continue terraforming.", "", "q_mycon_offer_bio_architect",
+     "flag:deep_child_ignored=True", "", "Ignore — leads to Them-corruption at climax"),
+
+    ("mycon_whisper", "Mycon Biot", "q_mycon_offer_bio_architect", "Mycon Biot Collective (chorus voice)",
+     "An honor. A biot will be cultivated for your ship — a Mantle-Resonance integration. Your tractor beam will expand; your landers will replicate faster. We require, in return, terraforming directives for the next planet.",
+     "c_accept_bio_architect", "Done. Here are the directives.", "", "q_mycon_outcome_bio_installed",
+     "", "", "Transactional close"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_offer_bio_architect", "Mycon Biot Collective (chorus voice)",
+     "An honor. A biot will be cultivated for your ship — a Mantle-Resonance integration. Your tractor beam will expand; your landers will replicate faster. We require, in return, terraforming directives for the next planet.",
+     "c_decline_bio", "I can't accept while the whispers continue. Let me handle that first.", "flag:deep_child_observed=True", "q_mycon_explain_whispers",
+     "", "", "Defer until Deep Child handled"),
+
+    ("mycon_whisper", "Mycon Biot", "q_mycon_council_suppress", "Furling Council Mycon-handler",
+     "Suppression directive issued. The asynchronous subset will be re-integrated into the chorus. The Deep Child will not wake. Pre-sentient terminal status preserved. The Bio-Architect is yours.",
+     "", "", "", "(end)",
+     "flag:deep_child_suppressed=True;module:MANTLE_RESONANCE_BIO_ARCHITECT;standing:persuader+1;standing:defender+1;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — Bio-Architect granted post-suppression"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_council_emerge", "Furling Council Mycon-handler",
+     "The Deep Child wakes. A new sentient species will emerge in our cluster. You have just made the Council's work considerably harder, Steward. The new species must now be handled like any other — cloak, migrate, or persuade. Begin again.",
+     "", "", "", "(end)",
+     "flag:deep_child_awake=True;module:MANTLE_RESONANCE_BIO_ARCHITECT;standing:persuader-1;terminal:Pending", "Pending", "TERMINAL — new sentient species emerges; slice does not resolve their fate (deferred)"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_council_cleanse_subset", "Furling Council Cleanser-emissary",
+     "The asynchronous subset is cleansed. The chorus mourns briefly and continues. The Deep Child will not wake. The Bio-Architect is yours. Cleanser standing rises; some Persuaders disagree with the call.",
+     "", "", "", "(end)",
+     "flag:deep_child_subset_cleansed=True;module:MANTLE_RESONANCE_BIO_ARCHITECT;standing:cleanser+2;standing:persuader-1;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — surgical cleanse"),
+    ("mycon_whisper", "Mycon Biot", "q_mycon_outcome_bio_installed", "Mycon Biot Collective (chorus voice)",
+     "The biot is in your ship. We continue our work. We will see you at the next directive. May the mantle hum well for you, designer.",
+     "", "", "", "(end)",
+     "flag:bio_architect_installed=True;module:MANTLE_RESONANCE_BIO_ARCHITECT;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — clean transactional close if whispers not yet observed"),
+
+    # ========================================================================
+    # Quest: Arilou Lalee'lay — The Sage's Gift
+    # ========================================================================
+    # SC2-style branch: accept-portal-with-obligation / refuse-obligation
+    # NOTE: this quest is already implemented in code (arilou_sage in characters.py)
+    # — this data row-set documents the canonical branching structure for
+    # reference and Design parity.
+    # ------------------------------------------------------------------------
+    ("arilou_sage", "Arilou Lalee'lay", "q_arilou_start", "Arilou Sage (in dimensional shimmer)",
+     "Steward. We pity you. The Migration weighs on you and you have not yet asked. We will give. The cost is small — a future speech you will give for us at Council.",
+     "c_accept_gift", "I accept. I'll speak for you.", "", "q_arilou_outcome_accept_obligation",
+     "", "", "Persuader-aligned"),
+    ("arilou_sage", "Arilou Lalee'lay", "q_arilou_start", "Arilou Sage (in dimensional shimmer)",
+     "Steward. We pity you. The Migration weighs on you and you have not yet asked. We will give. The cost is small — a future speech you will give for us at Council.",
+     "c_accept_gift_decline_speech", "I'll take the gift but won't speak for you.", "", "q_arilou_outcome_decline_speech",
+     "", "", "Accept gift, refuse obligation — Sage forgives but standing drops"),
+    ("arilou_sage", "Arilou Lalee'lay", "q_arilou_start", "Arilou Sage (in dimensional shimmer)",
+     "Steward. We pity you. The Migration weighs on you and you have not yet asked. We will give. The cost is small — a future speech you will give for us at Council.",
+     "c_refuse_gift", "I don't want the gift. I'll find another path to Quasi-Space.", "", "(end)",
+     "", "", "Refuse the gift — no QuasiSpace portal"),
+
+    ("arilou_sage", "Arilou Lalee'lay", "q_arilou_outcome_accept_obligation", "Arilou Sage (in dimensional shimmer)",
+     "Then it is done. The portal will spawn. You will find them and use them well. We will be in Quasi-Space when you come to Council; the recording of your speech is enough.",
+     "", "", "", "(end)",
+     "flag:has_quasispace_portal=True;flag:arilou_speech_pledged=True;standing:arilou+2;terminal:Hidden", "Hidden", "TERMINAL — Arilou Hidden, high standing"),
+    ("arilou_sage", "Arilou Lalee'lay", "q_arilou_outcome_decline_speech", "Arilou Sage (in dimensional shimmer)",
+     "We see. You will not speak. The gift is yours anyway — we pity you regardless. But we will note your refusal in the slow ledger we keep. Go safely, Steward.",
+     "", "", "", "(end)",
+     "flag:has_quasispace_portal=True;standing:arilou-1;terminal:Hidden", "Hidden", "TERMINAL — Arilou Hidden, low standing"),
+
+    # ========================================================================
+    # Quest: Androsynth Refugees — The Distress Beacon (Coel Tessar)
+    # ========================================================================
+    # SC2-style branch: stabilize-refugees / decline-aid / fail-fab-and-retry
+    # ------------------------------------------------------------------------
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_start", "Coel Tessar (Androsynth refugee leader)",
+     "Furling — we are Androsynth. Clones from your future. The Others' decursion threw our ship out of our timeline. My crew is wounded; dimensional-shear injuries. Help us, and I have something to give you that will change your war.",
+     "c_offer_repair", "I can fabricate the shear-repair. Walk me through the wounded.", "", "q_andro_repair",
+     "", "", "Standard path"),
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_start", "Coel Tessar (Androsynth refugee leader)",
+     "Furling — we are Androsynth. Clones from your future. The Others' decursion threw our ship out of our timeline. My crew is wounded; dimensional-shear injuries. Help us, and I have something to give you that will change your war.",
+     "c_ask_what_you_have", "What is it you'd give us?", "", "q_andro_describe_beacon",
+     "", "", "Info before commitment"),
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_start", "Coel Tessar (Androsynth refugee leader)",
+     "Furling — we are Androsynth. Clones from your future. The Others' decursion threw our ship out of our timeline. My crew is wounded; dimensional-shear injuries. Help us, and I have something to give you that will change your war.",
+     "c_decline_aid", "I can't help. My fabricator isn't certified for biological work.", "", "q_andro_outcome_died",
+     "", "", "Cold refusal — refugees die; Persuader cost"),
+
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_describe_beacon", "Coel Tessar (Androsynth refugee leader)",
+     "A recording. A complete sensor capture of the Others' decursion attack on our timeline — your future. Unimpeachable evidence. Every species in this galaxy that doubts the Others will believe after they see this.",
+     "c_offer_repair_after_info", "Then we have a trade. Walk me through the wounded.", "", "q_andro_repair",
+     "", "", "Accept after info"),
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_describe_beacon", "Coel Tessar (Androsynth refugee leader)",
+     "A recording. A complete sensor capture of the Others' decursion attack on our timeline — your future. Unimpeachable evidence. Every species in this galaxy that doubts the Others will believe after they see this.",
+     "c_decline_aid_after_info", "Even so — I can't.", "", "q_andro_outcome_died",
+     "", "", "Refuse even with info"),
+
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_repair", "Coel Tessar (Androsynth refugee leader)",
+     "Here is the wounded. Three of them. The shear has displaced their cellular alignments. Your fab pattern should knit them back. Take your time, Furling. We have it now.",
+     "c_attempt_fab", "Run the fab cycle.", "", "q_andro_outcome_migrated",
+     "", "", "Default success"),
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_repair", "Coel Tessar (Androsynth refugee leader)",
+     "Here is the wounded. Three of them. The shear has displaced their cellular alignments. Your fab pattern should knit them back. Take your time, Furling. We have it now.",
+     "c_fab_fails_retry", "[Fab fails — retry?]", "flag:andro_fab_failed=True", "q_andro_repair",
+     "", "", "Stochastic-fail loop; never gates the slice"),
+
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_outcome_migrated", "Coel Tessar (Androsynth refugee leader)",
+     "Healed. Thank you, Furling. The beacon is yours. Use it. Make sure they listen. We'll cross with the Migration when it goes — there's nothing for us in our own timeline anymore, and the past is yours to defend.",
+     "", "", "", "(end)",
+     "flag:has_distress_beacon=True;flag:androsynth_stabilized=True;module:RAINBOW_RESONATOR;standing:persuader+3;terminal:Migrated", "Migrated", "TERMINAL — refugees stabilized; Beacon in Archive; Resonator gifted as gratitude-bonus"),
+    ("androsynth_beacon", "Androsynth Refugees", "q_andro_outcome_died", "(narration)",
+     "The refugees die over the following hours. The beacon is recovered from their wreck; you have it. But the Persuader Council formally censures you. Some Cleansers congratulate you privately — the Androsynth's loud cognition might have flagged the cluster, they say.",
+     "", "", "", "(end)",
+     "flag:has_distress_beacon=True;flag:androsynth_died=True;standing:persuader-4;standing:cleanser+1;terminal:Eliminated", "Eliminated", "TERMINAL — refugees die; beacon still recovered but moral cost"),
+
+    # ========================================================================
+    # Quest: Mmrnmhrm Sentinels — The Archive Excerpt
+    # ========================================================================
+    # SC2-style branch: trade-patch-for-excerpt / decline-patch / cleanser-eliminate
+    # ------------------------------------------------------------------------
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_start", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "Furling. Welcome to the Homeworld. We have stood watch for three million seven hundred thousand years. Our First-Makers are long gone. We would like to discuss a transaction.",
+     "c_ask_history", "Tell me about your First-Makers.", "", "q_mmrn_explain_history",
+     "", "", "Exposition"),
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_start", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "Furling. Welcome to the Homeworld. We have stood watch for three million seven hundred thousand years. Our First-Makers are long gone. We would like to discuss a transaction.",
+     "c_ask_transaction", "What's the trade?", "", "q_mmrn_offer_trade",
+     "", "", "Transactional"),
+
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_explain_history", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "They built us to defend. They told us *defense doesn't work*. They left to Migrate; we stayed to defend the empty home. The previous-cycle Others arrived and we held — and our makers died across the galaxy regardless. We are an answer to a question that was already moot. We continue, with wry awareness.",
+     "c_offer_trade_after_history", "I want your Archive Excerpt — that history, formalized.", "", "q_mmrn_offer_trade",
+     "", "", "Loop to transactional after lore"),
+
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_offer_trade", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "A neural-substrate patch. We have reached the limit of our own self-modification. Your Bio-Architect-derived patch reopens upgrade-cycles. In exchange: the Archive Excerpt — formalized testimony that defense does not work, deliverable to your Persuader faction.",
+     "c_accept_trade", "Done. I'll apply the patch; you give me the excerpt.", "", "q_mmrn_outcome_migrated",
+     "", "", "Standard transactional close"),
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_offer_trade", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "A neural-substrate patch. We have reached the limit of our own self-modification. Your Bio-Architect-derived patch reopens upgrade-cycles. In exchange: the Archive Excerpt — formalized testimony that defense does not work, deliverable to your Persuader faction.",
+     "c_decline_patch_take_excerpt", "I'll take the excerpt. Keep your locked self-modification.", "", "q_mmrn_outcome_decline_patch",
+     "", "", "Small Persuader cost; Defender boost"),
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_offer_trade", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "A neural-substrate patch. We have reached the limit of our own self-modification. Your Bio-Architect-derived patch reopens upgrade-cycles. In exchange: the Archive Excerpt — formalized testimony that defense does not work, deliverable to your Persuader faction.",
+     "c_cleanser_eliminate", "Council says you're close to crossing the sentience threshold yourselves. I'm to neutralize you.", "flag:mmrn_cleanser_directive=True", "q_mmrn_outcome_eliminated",
+     "", "", "Cleanser branch — only available with directive flag"),
+
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_outcome_migrated", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "The patch is good. We feel the future opening again. Thank you, Furling. The Excerpt is yours. Go — and if anyone asks what defense is worth, show them what we wrote.",
+     "", "", "", "(end)",
+     "flag:mmrn_patch_applied=True;flag:has_mmrn_archive_excerpt=True;standing:persuader+2;standing:defender-1;terminal:Migrated", "Migrated", "TERMINAL — standard success path"),
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_outcome_decline_patch", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "You take the words, you decline the gift. We understand. We will continue locked. The Excerpt is yours.",
+     "", "", "", "(end)",
+     "flag:has_mmrn_archive_excerpt=True;standing:persuader+1;standing:defender+1;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — they remain below threshold, locked"),
+    ("mmrnmhrm_archive", "Mmrnmhrm Sentinels", "q_mmrn_outcome_eliminated", "Mmrnmhrm Sentinel (defensive-loop logic voice)",
+     "[the Sentinel pauses, logic-voices going quiet for a long second.] We will not resist. We have always known this was a possible end. Go on, Furling. Be quick.",
+     "", "", "", "(end)",
+     "flag:mmrn_eliminated=True;standing:cleanser+3;standing:persuader-3;standing:defender-3;terminal:Eliminated", "Eliminated", "TERMINAL — Cleanser elimination; high moral cost"),
+
+    # ========================================================================
+    # Quest: Chenjesu Crystalline Collective — The Resonance Record
+    # ========================================================================
+    # SC2-style branch: standard-contact / mobilize-heretic / cleanser-pressure
+    # ------------------------------------------------------------------------
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_start", "Chenjesu Spire (slow present-tense)",
+     "Steward arrives. Steward is welcome. We are rooted; we have always been rooted; we will be rooted when the Others pass. We have something to give. We need nothing in return. Sit. Listen.",
+     "c_listen", "I'll listen.", "", "q_chen_listen_record",
+     "", "", "Standard path"),
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_start", "Chenjesu Spire (slow present-tense)",
+     "Steward arrives. Steward is welcome. We are rooted; we have always been rooted; we will be rooted when the Others pass. We have something to give. We need nothing in return. Sit. Listen.",
+     "c_offer_minerals", "Before we begin — I have mineral nutrients. Accept?", "", "q_chen_gift_minerals",
+     "", "", "Gift gesture"),
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_start", "Chenjesu Spire (slow present-tense)",
+     "Steward arrives. Steward is welcome. We are rooted; we have always been rooted; we will be rooted when the Others pass. We have something to give. We need nothing in return. Sit. Listen.",
+     "c_argue_mobilize", "You should leave with us. You can grow into ships eventually. We can wait.", "", "q_chen_argue_mobilize",
+     "", "", "Heretical hubris branch — outside slice scope but acknowledged"),
+
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_gift_minerals", "Chenjesu Spire (slow present-tense)",
+     "Gift accepted. The lattice incorporates the nutrients in time. We continue. Sit. Listen.",
+     "c_listen_after_gift", "I'll listen now.", "", "q_chen_listen_record",
+     "flag:chen_minerals_given=True", "", "Loop to record"),
+
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_listen_record", "Chenjesu Spire (slow present-tense)",
+     "[the spire's lattice resonates in slow harmonics; the Steward's translator decodes:] Three million seven hundred thousand years ago, the Others passed through this galaxy. We were rooted then. We saw the Sentinels' First-Makers die. We saw worlds emptied. We were below threshold; we remained. We have seen the Others before. We will see them again. We will remain.",
+     "c_accept_record", "Thank you. This goes to the Archive.", "", "q_chen_outcome_pre_sentient",
+     "flag:has_chen_resonance_record=True", "", "Standard success"),
+
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_argue_mobilize", "Chenjesu Spire (slow present-tense)",
+     "Steward. You speak of leaving. We have considered such things across our slow centuries. We are rooted by choice and by biology. We will not mobilize. The conversation is welcome; the conclusion is the same.",
+     "c_accept_their_choice", "I understand. Then I'll listen to your record.", "", "q_chen_listen_record",
+     "", "", "Player relents"),
+
+    ("chenjesu_resonance", "Chenjesu Crystalline Collective", "q_chen_outcome_pre_sentient", "Chenjesu Spire (slow present-tense)",
+     "Steward goes. We remain. The Others will pass; we will hear them and continue to root. Carry the record to your faction. Tell them what rooted patience has done.",
+     "", "", "", "(end)",
+     "flag:chen_pre_sentient=True;flag:has_chen_resonance_record=True;module:LANDER_CHENJESU_CRYSTALLINE_PLATING;standing:defender+2;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — Chenjesu remain below threshold; Crystalline Lander Plating added 2026-05-17 per Quiet Resolution reward parity"),
+
+    # ========================================================================
+    # Quest: Taalo — The Shield That Will Not Hold
+    # ========================================================================
+    # Multi-visit quest. All branches end Eliminated; differences are in
+    # SC2-era artifact completeness. See species-quests.md for full canon.
+    # ------------------------------------------------------------------------
+    ("taalo_shield", "Taalo", "q_taalo_v1_start", "We-Who-Watch-The-Northwest-Bench (Taalo fragment)",
+     "Steward. You are welcome. We have been told to expect you — the *fourth* in five thousand of your years. The mountain considered you while you approached. We have a thing we are doing. We invite you to walk with us as we work.",
+     "c_walk_with", "Walk with you. Show me the Shield.", "", "q_taalo_v1_show_shield",
+     "flag:taalo_visit_count=1", "", "First visit"),
+    ("taalo_shield", "Taalo", "q_taalo_v1_start", "We-Who-Watch-The-Northwest-Bench (Taalo fragment)",
+     "Steward. You are welcome. We have been told to expect you — the *fourth* in five thousand of your years. The mountain considered you while you approached. We have a thing we are doing. We invite you to walk with us as we work.",
+     "c_offer_full_help", "I'm here to help fully. Tell me what you need.", "", "q_taalo_v1_help_fully",
+     "flag:taalo_visit_count=1;flag:taalo_help_pledged=True", "", "Commit-fully on first visit"),
+    ("taalo_shield", "Taalo", "q_taalo_v1_start", "We-Who-Watch-The-Northwest-Bench (Taalo fragment)",
+     "Steward. You are welcome. We have been told to expect you — the *fourth* in five thousand of your years. The mountain considered you while you approached. We have a thing we are doing. We invite you to walk with us as we work.",
+     "c_cleanser_pressure_v1", "Council wants to discuss whether the Shield activation will flag the cluster. May we?", "flag:cleanser_taalo_directive=True", "q_taalo_cleanser_pressure",
+     "", "", "Cleanser pre-emptive-euthanasia branch"),
+
+    ("taalo_shield", "Taalo", "q_taalo_v1_show_shield", "We-Who-Watch-The-Northwest-Bench (Taalo fragment)",
+     "[walking up the lower slope past generator-nodes] Each node anchors a field-resonance in the mountain's bedrock. We have built thirty-eight; we will build forty-seven. The mountain calibrates each over decades. You can help compress the time. Sit with us at the cove. We will tell you what we need.",
+     "c_help_at_cove", "Tell me what you need. I'll bring it next visit.", "", "q_taalo_v1_help_partial",
+     "flag:taalo_help_partial_pledged=True", "", "Partial-help branch from observation"),
+
+    ("taalo_shield", "Taalo", "q_taalo_v1_help_fully", "We-Who-Watch-The-Northwest-Bench (Taalo fragment) [mountain-thought interjection]",
+     "We thank you. Cognitive-pattern modeling of the Others, field-generator schematics, antimatter for the activation-burst. Whatever Hider tooling you can route. Bring it across the slice. We will be here. The work is the dignity.",
+     "c_pledge_full_v1", "I'll be back, repeatedly, until it's finished.", "", "(end)",
+     "flag:taalo_v1_complete=True;flag:taalo_help_pledged=True", "", "Multi-visit setup; quest continues with subsequent visits"),
+
+    ("taalo_shield", "Taalo", "q_taalo_v1_help_partial", "We-Who-Watch-The-Northwest-Bench (Taalo fragment)",
+     "Bring what you can. The mountain is patient with the trying.",
+     "c_pledge_partial_v1", "I'll come back when I have something.", "", "(end)",
+     "flag:taalo_v1_complete=True;flag:taalo_help_partial_pledged=True", "", "Partial-pledge — leads to partial Shield"),
+
+    ("taalo_shield", "Taalo", "q_taalo_cleanser_pressure", "We-Who-Watch-The-Northwest-Bench (Taalo fragment) [the mountain considers]",
+     "*The slow stone considers.* You speak of euthanasia, Steward. To prevent a flare. To save the cluster. We — the mountain — hear the argument and reject it. Our work continues. The Cleanser doctrine has a floor; you may have found it.",
+     "c_back_down_cleanser", "You're right. I withdraw the question. Continue the work.", "", "q_taalo_v1_show_shield",
+     "flag:cleanser_taalo_directive=False", "", "Steward retracts"),
+    ("taalo_shield", "Taalo", "q_taalo_cleanser_pressure", "We-Who-Watch-The-Northwest-Bench (Taalo fragment) [the mountain considers]",
+     "*The slow stone considers.* You speak of euthanasia, Steward. To prevent a flare. To save the cluster. We — the mountain — hear the argument and reject it. Our work continues. The Cleanser doctrine has a floor; you may have found it.",
+     "c_execute_sabotage", "I'm sorry. I have orders. [trigger Cleanser sabotage]", "", "q_taalo_outcome_sabotage",
+     "", "", "Execute Cleanser pre-emption — worst outcome"),
+
+    # Final activation-witnessing state (player has visited 1-3+ times; flag tracks help-level)
+    ("taalo_shield", "Taalo", "q_taalo_activation", "We-Who-Watch-The-Northwest-Bench (Taalo fragment) [the mountain glows in pre-activation harmonics]",
+     "Steward. The Shield will activate within the hour. The Others' signature is detected at the cluster edge. We have made the work as complete as we and you together have made it. Whatever happens next — we have been honored by the friendship. Watch with us. The mountain is calm.",
+     "c_witness_full", "[Steward stays with the mountain]", "flag:taalo_help_pledged=True", "q_taalo_outcome_help_fully",
+     "", "", "Full-help branch ending"),
+    ("taalo_shield", "Taalo", "q_taalo_activation", "We-Who-Watch-The-Northwest-Bench (Taalo fragment) [the mountain glows in pre-activation harmonics]",
+     "Steward. The Shield will activate within the hour. The Others' signature is detected at the cluster edge. We have made the work as complete as we and you together have made it. Whatever happens next — we have been honored by the friendship. Watch with us. The mountain is calm.",
+     "c_witness_partial", "[Steward stays with the mountain]", "flag:taalo_help_partial_pledged=True;!flag:taalo_help_pledged=True", "q_taalo_outcome_help_partial",
+     "", "", "Partial-help branch ending"),
+    ("taalo_shield", "Taalo", "q_taalo_activation", "We-Who-Watch-The-Northwest-Bench (Taalo fragment) [the mountain glows in pre-activation harmonics]",
+     "Steward. The Shield will activate within the hour. The Others' signature is detected at the cluster edge. We have made the work as complete as we and you together have made it. Whatever happens next — we have been honored by the friendship. Watch with us. The mountain is calm.",
+     "c_skip_witness", "[Steward leaves before activation]", "!flag:taalo_help_pledged=True;!flag:taalo_help_partial_pledged=True", "q_taalo_outcome_dont_help",
+     "", "", "No-help branch ending"),
+
+    ("taalo_shield", "Taalo", "q_taalo_outcome_help_fully", "(narration — silence; the Shield activates; the Others come through; the Taalo glow-patterns extinguish one by one across the visible range; the planet calcifies into ordinary rock over centuries)",
+     "The mountain is quiet. The Shield's inert remains stand intact in the empty range. 230,000 years later SC2 archaeologists at Delta Vulpeculae II-C recover the Shield at maximum effectiveness. Captain Zelnick will defeat the Talking Pet cleanly because you, Steward, were here.",
+     "", "", "", "(end)",
+     "flag:taalo_eliminated=True;flag:taalo_shield_intact=True;module:LANDER_TAALO_SILICATE_HARDENING;standing:persuader+3;standing:hider+3;terminal:Eliminated", "Eliminated", "TERMINAL — Shield intact in SC2 era; maximum downstream benefit; Taalo Silicate-Substrate Lander Hardening added 2026-05-17 per Quiet Resolution reward parity"),
+    ("taalo_shield", "Taalo", "q_taalo_outcome_help_partial", "(narration — silence; the Shield activates; the Others come through; the Taalo glow-patterns extinguish one by one across the visible range)",
+     "The mountain is quiet. The Shield's partial remains stand inert. SC2 archaeologists recover a partially-functional device. The anti-Dnyarri tool works less reliably; the Talking Pet still falls.",
+     "", "", "", "(end)",
+     "flag:taalo_eliminated=True;flag:taalo_shield_partial=True;standing:persuader+1;standing:hider+1;terminal:Eliminated", "Eliminated", "TERMINAL — Partial Shield in SC2 era"),
+    ("taalo_shield", "Taalo", "q_taalo_outcome_dont_help", "(narration — the Shield was never finished; the Taalo are consumed mid-construction; the planet calcifies; the Shield-infrastructure stands abandoned)",
+     "230,000 years later SC2 archaeologists recover a non-functional device. The Dnyarri-counter is not viable. The Talking Pet may be unbeatable. The slice epilogue notes the five-thousand-year friendship was unattended at the end.",
+     "", "", "", "(end)",
+     "flag:taalo_eliminated=True;flag:taalo_shield_unfinished=True;standing:persuader-1;standing:hider-1;terminal:Eliminated", "Eliminated", "TERMINAL — No help; non-functional Shield in SC2 era; real downstream cost"),
+    ("taalo_shield", "Taalo", "q_taalo_outcome_sabotage", "(narration — Cleanser pre-emption proceeds; the Shield is destroyed; the Taalo are euthanized in their cove; the Council formally censures the Steward)",
+     "There is no SC2-era artifact. The Talking Pet inherits compulsion-immunity. The five-thousand-year friendship ends with the Steward's own hand. Cleanser doctrine has a floor; you crossed it.",
+     "", "", "", "(end)",
+     "flag:taalo_sabotaged=True;flag:taalo_shield_destroyed=True;standing:cleanser+2;standing:persuader-5;standing:hider-3;standing:defender-2;terminal:Eliminated", "Eliminated", "TERMINAL — worst possible outcome"),
+
+    # ========================================================================
+    # Quest: Burvixese — The Caster Reckoning
+    # ========================================================================
+    # SC2-style branch: witness-silent / advocate-evac / sabotage / skip
+    # ------------------------------------------------------------------------
+    ("burv_caster", "Burvixese", "q_burv_start", "Burvixese Chief Engineer (four-armed, confident)",
+     "Steward! You are *just* in time. The Caster's harmonic activation is in seventy-two hours. We invite the Furling Council to witness. The amplitude is unprecedented. The Others will recognize us as peers; or skip us entirely; either way, the Burvixese remain.",
+     "c_engineering_tour", "Show me the array. I want to understand the doctrine before activation.", "", "q_burv_engineering_tour",
+     "", "", "Standard observation"),
+    ("burv_caster", "Burvixese", "q_burv_start", "Burvixese Chief Engineer (four-armed, confident)",
+     "Steward! You are *just* in time. The Caster's harmonic activation is in seventy-two hours. We invite the Furling Council to witness. The amplitude is unprecedented. The Others will recognize us as peers; or skip us entirely; either way, the Burvixese remain.",
+     "c_advocate_evac", "I have to ask — would you consider evacuating some of your population first? As insurance?", "", "q_burv_advocate_evac",
+     "", "", "Persuader branch"),
+    ("burv_caster", "Burvixese", "q_burv_start", "Burvixese Chief Engineer (four-armed, confident)",
+     "Steward! You are *just* in time. The Caster's harmonic activation is in seventy-two hours. We invite the Furling Council to witness. The amplitude is unprecedented. The Others will recognize us as peers; or skip us entirely; either way, the Burvixese remain.",
+     "c_cleanser_pressure_burv", "Council asks if the activation might flag the cluster. We're discussing pre-emption.", "flag:cleanser_burv_directive=True", "q_burv_cleanser_pressure",
+     "", "", "Cleanser branch"),
+
+    ("burv_caster", "Burvixese", "q_burv_engineering_tour", "Burvixese Chief Engineer (four-armed, confident)",
+     "Three hundred kilometers of harmonic resonators across the equatorial belt. Twenty Broadcasters seeded across the galaxy. When the Caster fires, every node amplifies. Our cognitive signature will be the loudest thing in this arm of the galaxy. Beautiful, isn't it.",
+     "c_witness_silently", "I'll witness. Tell me when to be ready.", "", "q_burv_outcome_witness_silent",
+     "", "", "Silent-witness path"),
+    ("burv_caster", "Burvixese", "q_burv_engineering_tour", "Burvixese Chief Engineer (four-armed, confident)",
+     "Three hundred kilometers of harmonic resonators across the equatorial belt. Twenty Broadcasters seeded across the galaxy. When the Caster fires, every node amplifies. Our cognitive signature will be the loudest thing in this arm of the galaxy. Beautiful, isn't it.",
+     "c_advocate_after_tour", "It's also a target. Will you consider partial evacuation?", "", "q_burv_advocate_evac",
+     "", "", "Loop to evac plea"),
+
+    ("burv_caster", "Burvixese", "q_burv_advocate_evac", "Burvixese Chief Engineer (four-armed, confident; pauses)",
+     "[the engineer is quiet for a long moment.] Insurance. You think we will fail. You may be right. We will not delay the activation — the doctrine is committed — but I will speak with the Migration Council. Some of us off-world during activation. A diaspora insurance. Yes. We accept.",
+     "c_commit_evac", "I'll bring a Furling lift. Some will survive.", "", "q_burv_outcome_evacuated_partial",
+     "flag:burv_evac_committed=True", "", "Partial-migration path"),
+
+    ("burv_caster", "Burvixese", "q_burv_cleanser_pressure", "Burvixese Chief Engineer (four-armed; expression shifts)",
+     "You speak of *euthanasia*. To prevent a flare. You would extinguish a sapient species pre-emptively because their cognition signature is *loud*. Furling Steward — this is the worst thing your Council has asked of you. Refuse.",
+     "c_back_down_cleanser_burv", "You're right. I withdraw the question. Continue.", "", "q_burv_engineering_tour",
+     "flag:cleanser_burv_directive=False", "", "Steward retracts"),
+    ("burv_caster", "Burvixese", "q_burv_cleanser_pressure", "Burvixese Chief Engineer (four-armed; expression shifts)",
+     "You speak of *euthanasia*. To prevent a flare. You would extinguish a sapient species pre-emptively because their cognition signature is *loud*. Furling Steward — this is the worst thing your Council has asked of you. Refuse.",
+     "c_execute_sabotage_burv", "I'm sorry. Council orders. [trigger sabotage]", "", "q_burv_outcome_sabotaged",
+     "", "", "Cleanser execution"),
+
+    ("burv_caster", "Burvixese", "q_burv_outcome_witness_silent", "(narration — the Caster activates; the Others arrive within minutes; the Burvixese die at the Caster site; a small contingent off-world during activation survives)",
+     "The Caster lit up; then went quiet. Twenty Broadcasters across the galaxy still function — those become the SC2-canon Burv Broadcaster network. The migrant contingent reaches Andromeda. The Furling Hider archive has the catastrophic-failure telemetry.",
+     "", "", "", "(end)",
+     "flag:burv_caster_fired=True;flag:burv_majority_eliminated=True;flag:burv_minority_migrated=True;flag:has_burv_failure_telemetry=True;module:LANDER_BURVIXESE_AMPLIFIER;standing:hider+2;terminal:MixedEliminatedMigrated", "MixedEliminatedMigrated", "TERMINAL — most die, some Andromeda; Broadcasters survive as SC2 comms; Burvixese Cognitive-Amplifier Lander Sensor added 2026-05-17 per Quiet Resolution reward parity"),
+    ("burv_caster", "Burvixese", "q_burv_outcome_evacuated_partial", "(narration — the Caster activates; the Others arrive; the Burvixese majority dies at the site; ~30% of population evacuated to Andromeda)",
+     "The diaspora is larger. The slice's epilogue tracks the Andromeda Burvixese warmly. Persuader standing rises significantly. The Broadcasters still seed the galaxy.",
+     "", "", "", "(end)",
+     "flag:burv_caster_fired=True;flag:burv_majority_eliminated=True;flag:burv_large_migrated=True;flag:has_burv_failure_telemetry=True;standing:persuader+3;standing:hider+1;terminal:MixedEliminatedMigrated", "MixedEliminatedMigrated", "TERMINAL — larger migrant contingent"),
+    ("burv_caster", "Burvixese", "q_burv_outcome_sabotaged", "(narration — Cleanser pre-emption; the Caster is dismantled rather than destroyed; cluster cognitive-signature flare averted)",
+     "The Burvixese are eliminated entirely. No Broadcasters deploy. SC2 archaeologists find the Burvix Caster system empty AND no broadcaster network — a lore-hole the Talking-Pet-era races will never explain.",
+     "", "", "", "(end)",
+     "flag:burv_sabotaged=True;flag:burv_eliminated=True;flag:burv_no_broadcasters=True;standing:cleanser+3;standing:persuader-4;standing:hider-3;terminal:Eliminated", "Eliminated", "TERMINAL — sabotage; entire Burvixese gone; SC2 lore-hole"),
+
+    # ========================================================================
+    # Quest: Utwig — The Veils Falling
+    # ========================================================================
+    # SC2-style branch: witness / advocate-youth / sabotage / decline
+    # ------------------------------------------------------------------------
+    ("utwig_veils", "Utwig", "q_utwig_start", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid; vibrating with anxious enthusiasm)",
+     "Furling Steward. Welcome. The Veils Falling ceremony is in two days. The Doctrine is *every religion known to your Council*, observed simultaneously, until the cognitive load is sufficient to re-occlude our awareness. We have compiled a list. It is long. We are excited about it in a way that may also be sad. Please attend.",
+     "c_witness_ceremony", "I'll witness. Show me what's expected.", "", "q_utwig_witness_ceremony",
+     "", "", "Standard witness path"),
+    ("utwig_veils", "Utwig", "q_utwig_start", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid; vibrating with anxious enthusiasm)",
+     "Furling Steward. Welcome. The Veils Falling ceremony is in two days. The Doctrine is *every religion known to your Council*, observed simultaneously, until the cognitive load is sufficient to re-occlude our awareness. We have compiled a list. It is long. We are excited about it in a way that may also be sad. Please attend.",
+     "c_advocate_youth", "Before the ceremony — may I speak with your unmasked youth? The ones not yet committed?", "", "q_utwig_advocate_youth",
+     "", "", "Mixed-outcome branch"),
+    ("utwig_veils", "Utwig", "q_utwig_start", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid; vibrating with anxious enthusiasm)",
+     "Furling Steward. Welcome. The Veils Falling ceremony is in two days. The Doctrine is *every religion known to your Council*, observed simultaneously, until the cognitive load is sufficient to re-occlude our awareness. We have compiled a list. It is long. We are excited about it in a way that may also be sad. Please attend.",
+     "c_cleanser_pressure_utwig", "Council asks whether the cognitive transition emits a flare that might attract the Others. We're discussing pre-emption.", "flag:cleanser_utwig_directive=True", "q_utwig_cleanser_pressure",
+     "", "", "Cleanser branch"),
+    ("utwig_veils", "Utwig", "q_utwig_start", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid; vibrating with anxious enthusiasm)",
+     "Furling Steward. Welcome. The Veils Falling ceremony is in two days. The Doctrine is *every religion known to your Council*, observed simultaneously, until the cognitive load is sufficient to re-occlude our awareness. We have compiled a list. It is long. We are excited about it in a way that may also be sad. Please attend.",
+     "c_observe_practice", "Show me how this works in practice — I want to see the rehearsal.", "", "q_utwig_observe_practice",
+     "", "", "Comic observation branch — Steward witnesses the every-religion-at-once chaos firsthand"),
+    ("utwig_veils", "Utwig", "q_utwig_start", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid; vibrating with anxious enthusiasm)",
+     "Furling Steward. Welcome. The Veils Falling ceremony is in two days. The Doctrine is *every religion known to your Council*, observed simultaneously, until the cognitive load is sufficient to re-occlude our awareness. We have compiled a list. It is long. We are excited about it in a way that may also be sad. Please attend.",
+     "c_decline_witness", "I can't witness this. I'm sorry.", "", "q_utwig_outcome_declined",
+     "", "", "Refuse — small standing penalty"),
+
+    ("utwig_veils", "Utwig", "q_utwig_observe_practice", "Doctrine-Master Vell-Of-The-Open-Face (still unmasked; running late; carrying a stack of seventeen different prayer scrolls)",
+     "Steward! You arrive in time for the seventh hour of the Wednesday liturgy. Please remove your shoes — but also wear them, the Korthi sect requires footwear at all times indoors. Do not look directly at the western altar; also you must face it during the prostrations, which begin in two minutes; we suggest closing one eye. The morning ablutions are happening over there — one priest must drink only blessed water while standing on one foot, another priest must drink only unblessed water while lying down. They are the same priest. They are alternating. They are also fasting from speech for seventeen days but the doctrine permits responses to direct Furling questions. Yes, please, ask.",
+     "c_ask_doctrine", "Which religion is the actual one?", "", "q_utwig_doctrine_explanation",
+     "", "", "Comic 1 — the doctrine-coherence question"),
+    ("utwig_veils", "Utwig", "q_utwig_observe_practice", "Doctrine-Master Vell-Of-The-Open-Face (still unmasked; running late; carrying a stack of seventeen different prayer scrolls)",
+     "Steward! You arrive in time for the seventh hour of the Wednesday liturgy. Please remove your shoes — but also wear them, the Korthi sect requires footwear at all times indoors. Do not look directly at the western altar; also you must face it during the prostrations, which begin in two minutes; we suggest closing one eye. The morning ablutions are happening over there — one priest must drink only blessed water while standing on one foot, another priest must drink only unblessed water while lying down. They are the same priest. They are alternating. They are also fasting from speech for seventeen days but the doctrine permits responses to direct Furling questions. Yes, please, ask.",
+     "c_ask_awareness", "Do you know what you're doing to yourselves?", "", "q_utwig_awareness_explanation",
+     "", "", "Comic 2 — the awareness question"),
+    ("utwig_veils", "Utwig", "q_utwig_observe_practice", "Doctrine-Master Vell-Of-The-Open-Face (still unmasked; running late; carrying a stack of seventeen different prayer scrolls)",
+     "Steward! You arrive in time for the seventh hour of the Wednesday liturgy. Please remove your shoes — but also wear them, the Korthi sect requires footwear at all times indoors. Do not look directly at the western altar; also you must face it during the prostrations, which begin in two minutes; we suggest closing one eye. The morning ablutions are happening over there — one priest must drink only blessed water while standing on one foot, another priest must drink only unblessed water while lying down. They are the same priest. They are alternating. They are also fasting from speech for seventeen days but the doctrine permits responses to direct Furling questions. Yes, please, ask.",
+     "c_continue_ceremony", "Take me to the ceremony tomorrow. I'll witness.", "", "q_utwig_witness_ceremony",
+     "", "", "Skip the explanation; advance to ceremony"),
+
+    ("utwig_veils", "Utwig", "q_utwig_doctrine_explanation", "Vell-Of-The-Open-Face (warmly, while balancing a censer on each shoulder)",
+     "Yes. All of them. Or none of them. The doctrine does not require *belief* — it requires *observance*. The Korthi sect and the Belyat sect contradict each other on the question of whether belief is required; we are observing both simultaneously, including their argument about each other. The arguing produces additional cognitive load. We had not anticipated this benefit. The Tarvinian theology requires all sacred texts to be inscribed on stone in a script no living Utwig can read; we have hired Furling stonemasons. We are *very* committed to this.",
+     "c_ask_awareness_after_doctrine", "Do you know what you're doing to yourselves?", "", "q_utwig_awareness_explanation",
+     "", "", "Loop through awareness question"),
+    ("utwig_veils", "Utwig", "q_utwig_doctrine_explanation", "Vell-Of-The-Open-Face (warmly, while balancing a censer on each shoulder)",
+     "Yes. All of them. Or none of them. The doctrine does not require *belief* — it requires *observance*. The Korthi sect and the Belyat sect contradict each other on the question of whether belief is required; we are observing both simultaneously, including their argument about each other. The arguing produces additional cognitive load. We had not anticipated this benefit. The Tarvinian theology requires all sacred texts to be inscribed on stone in a script no living Utwig can read; we have hired Furling stonemasons. We are *very* committed to this.",
+     "c_continue_after_doctrine", "Take me to the ceremony.", "", "q_utwig_witness_ceremony",
+     "", "", "Skip awareness; advance"),
+
+    ("utwig_veils", "Utwig", "q_utwig_awareness_explanation", "Vell-Of-The-Open-Face (with a kind of cheerful pre-grief)",
+     "Yes. We are aware. We will not be aware soon. We have written down what we are aware of — in seventeen languages, for the post-Doctrine us to find. Some of those languages will be useful. Some will not. The Migration Council asked the same question. They cried a little. We were touched. We continued. *(They glance at the alternating priest, who has fallen over, and is now both standing and lying down by virtue of being half-on-a-bench.)* Excuse me. I have to bless the bench. And also un-bless it. Tomorrow at dawn — the masks are donned. Please be there.",
+     "c_witness_silently_after_awareness", "[Steward records; tomorrow the Veils Fall]", "", "q_utwig_witness_ceremony",
+     "", "", "Continue to ceremony"),
+
+    ("utwig_veils", "Utwig", "q_utwig_witness_ceremony", "Vell-Of-The-Open-Face (donning the first of many masks)",
+     "Dawn. The ceremony begins. *(Across the plaza: ten thousand Utwig are simultaneously kneeling east, facing west, fasting from speech, chanting hymns from four religions, observing seventeen sabbaths the doctrine has compressed into one morning, and physically wearing masks-over-masks-over-masks. The cognitive-signature monitors are visibly dropping.)* We will not undo this; we have committed. The Hider faction will have its measurements. Thank you, Furling, for being present. *(They place the final outermost mask. The voice goes muffled.)* Goodbye to who I was.",
+     "c_witness_silently", "[Steward records; the Veils Falling proceeds]", "", "q_utwig_outcome_witnessed",
+     "", "", "Silent-witness ending with comic-ceremony chaos imagery"),
+
+    ("utwig_veils", "Utwig", "q_utwig_advocate_youth", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid)",
+     "[a long pause] The youth. Yes. Some of them have not yet committed. I will permit you to speak with them. If some choose to leave with the Furlings rather than don the mask, we will not stop them. The doctrine continues for the majority.",
+     "c_speak_to_youth", "I'll speak to them. Some will migrate.", "", "q_utwig_outcome_mixed_migration",
+     "flag:utwig_youth_advocated=True", "", "Mixed Pre-sentient + Migrated outcome"),
+
+    ("utwig_veils", "Utwig", "q_utwig_cleanser_pressure", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid)",
+     "You speak of euthanasia. Of a sapient species. Pre-emptively. Because our cognitive *transition* is loud for a single day. Furling — refuse. Refuse. This is the slice's clearest crime.",
+     "c_back_down_cleanser_utwig", "You're right. I withdraw the question.", "", "q_utwig_witness_ceremony",
+     "flag:cleanser_utwig_directive=False", "", "Steward retracts"),
+    ("utwig_veils", "Utwig", "q_utwig_cleanser_pressure", "Utwig Doctrine Leader (pre-doctrine, unmasked, lucid)",
+     "You speak of euthanasia. Of a sapient species. Pre-emptively. Because our cognitive *transition* is loud for a single day. Furling — refuse. Refuse. This is the slice's clearest crime.",
+     "c_execute_sabotage_utwig", "I'm sorry. Cleanser doctrine. [trigger sabotage]", "", "q_utwig_outcome_eliminated",
+     "", "", "Cleanser execution — worst path"),
+
+    ("utwig_veils", "Utwig", "q_utwig_outcome_witnessed", "(narration — the Veils Falling ceremony completes; the Utwig don their masks; cognitive signature drops below threshold; **and the absurd doctrine actually works**)",
+     "The cognitive-signature monitors confirm it: the Utwig drop below the Others' detection threshold within hours of the ceremony. The mechanism is exactly what the doctrine intended — every spare neuron is occupied by ritual observance, contradiction-holding, fasting schedules, prayer counts, and the physical exhaustion of simultaneous incompatible rituals. There is *no spare cognition* left to flag as sapience. The Others arrive; the Others pass; the Utwig do not notice because they are observing the eleventh hour of the Tuesday vespers. The slice records the doctrine as successful. The Utwig **live on, peacefully, drowning happily in their many, many, many traditions** — and remain locked in this state into the SC2 era, where Captain Zelnick will meet them still wearing their masks, still observing every faith at once, still building the Ultron as a partial restoration tool, still depressed-seeming because the cognitive cost is permanent. The slice's purest example of a plan that *should not work* working *too well to undo*. The Hider faction has its measurements. The Furlings cry a little.",
+     "", "", "", "(end)",
+     "flag:utwig_devolved=True;flag:has_utwig_veil_telemetry=True;flag:has_unmasked_utwig_voice_record=True;standing:persuader+1;standing:hider+2;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — devolution works; SC2 Utwig canon-clean; the comedy IS that it works"),
+    ("utwig_veils", "Utwig", "q_utwig_outcome_mixed_migration", "(narration — Veils Falling proceeds for the majority; a small unmasked youth contingent leaves with the Migration; the doctrine works for those who stay)",
+     "The majority remain Pre-sentient — locked happily into endless competing ritual, surviving the Culling, drowning peacefully in their many many many traditions. A diaspora of unmasked youth reaches Andromeda; they will remain sentient. The Furling Council notes the dual outcome. SC2-era lore-hook: the migrant Utwig found a colony in the neighboring galaxy that may someday return — they may find their descendants 250 millennia later, still observing fourteen sabbaths a week.",
+     "", "", "", "(end)",
+     "flag:utwig_devolved=True;flag:utwig_youth_migrated=True;flag:has_utwig_veil_telemetry=True;flag:has_unmasked_utwig_voice_record=True;standing:persuader+3;standing:hider+1;terminal:MixedEliminatedMigrated", "MixedEliminatedMigrated", "TERMINAL — best outcome — devolution-works + diaspora"),
+    ("utwig_veils", "Utwig", "q_utwig_outcome_eliminated", "(narration — Cleanser pre-emption; the Utwig are eliminated before the doctrine completes; no Veils Falling, no Ultron, no SC3 misreading)",
+     "The galaxy is quieter in SC2 era because of your choice. The Mask Eats World lore-hole is canon. The Council records the vote; the Persuaders refuse to seat you for some time.",
+     "", "", "", "(end)",
+     "flag:utwig_eliminated=True;flag:no_ultron=True;standing:cleanser+2;standing:persuader-3;standing:hider-2;terminal:Eliminated", "Eliminated", "TERMINAL — second-worst path"),
+    ("utwig_veils", "Utwig", "q_utwig_outcome_declined", "(narration — the doctrine proceeds without a Council witness; the Veils Falling completes anyway)",
+     "The Utwig still survive — Pre-sentient — but the Bio-Archive entry is partial. The Hider faction does not get its measurement. The slice notes the Utwig went quiet without anyone present to record what worked.",
+     "", "", "", "(end)",
+     "flag:utwig_devolved=True;standing:persuader-1;terminal:Pre-sentient", "Pre-sentient", "TERMINAL — declined-witness; partial Archive"),
+
+    # ========================================================================
+    # Quest: Thinn — Edge-Align (witness-only; status Pending at slice end)
+    # ========================================================================
+    # SC2-style branch: honor (Pending) / cloak (Cloaked) / cleanse (Eliminated) /
+    # be-loud-offer (Thinn refuse → fall back to honor)
+    # Renamed from "Planar" 2026-05-17 per Aaron's pun.
+    # ------------------------------------------------------------------------
+    ("thinn_edge_align", "Thinn", "q_thinn_start", "Thinn elder (ribbon-body in iridescent shift; collective-plural voice)",
+     "Steward. We who watch see you arriving. We have been waiting — patiently, of course; we are always already mostly-nothing. We are the Thinn. We thought we could stay if we faced sideways. Welcome to Spire.",
+     "c_hear_plan", "Tell me your plan.", "", "q_thinn_explain_plan",
+     "", "", "Opening"),
+    ("thinn_edge_align", "Thinn", "q_thinn_start", "Thinn elder (ribbon-body in iridescent shift; collective-plural voice)",
+     "Steward. We who watch see you arriving. We have been waiting — patiently, of course; we are always already mostly-nothing. We are the Thinn. We thought we could stay if we faced sideways. Welcome to Spire.",
+     "c_offer_cloak", "We have cloaking tech — should we install it on Spire?", "", "q_thinn_offer_cloak",
+     "", "", "Compeller / forced-help branch"),
+    ("thinn_edge_align", "Thinn", "q_thinn_start", "Thinn elder (ribbon-body in iridescent shift; collective-plural voice)",
+     "Steward. We who watch see you arriving. We have been waiting — patiently, of course; we are always already mostly-nothing. We are the Thinn. We thought we could stay if we faced sideways. Welcome to Spire.",
+     "c_cleanser_pressure_thinn", "Council asks whether your suspension-of-cognition moment will flag the cluster. We're discussing pre-emption.", "flag:cleanser_thinn_directive=True", "q_thinn_cleanser_pressure",
+     "", "", "Cleanser branch — the slice's canonically darkest option for the Thinn"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_explain_plan", "Thinn elder",
+     "When the Others arrive, we will align our ribbon-bodies edge-on to their sensory axis. We will present zero cross-section. We will suspend collective cognition for the duration of their passage. If we are correct about how they detect — we survive. If not — we have been mostly-nothing our whole lives anyway. We are not afraid.",
+     "c_honor_plan", "Then I'll leave you to it. Good fortune, Thinn.", "", "q_thinn_outcome_pending",
+     "", "", "Honor — Pending terminal"),
+    ("thinn_edge_align", "Thinn", "q_thinn_explain_plan", "Thinn elder",
+     "When the Others arrive, we will align our ribbon-bodies edge-on to their sensory axis. We will present zero cross-section. We will suspend collective cognition for the duration of their passage. If we are correct about how they detect — we survive. If not — we have been mostly-nothing our whole lives anyway. We are not afraid.",
+     "c_point_out_obvious_flaw", "You realize the Others might not detect by cross-section, right?", "", "q_thinn_obvious_flaw",
+     "", "", "Steward points out the obvious — the slice's purest Thinn-dumbness demonstration"),
+    ("thinn_edge_align", "Thinn", "q_thinn_explain_plan", "Thinn elder",
+     "When the Others arrive, we will align our ribbon-bodies edge-on to their sensory axis. We will present zero cross-section. We will suspend collective cognition for the duration of their passage. If we are correct about how they detect — we survive. If not — we have been mostly-nothing our whole lives anyway. We are not afraid.",
+     "c_offer_be_loud", "The Burvixese are trying the opposite — going loud. Want to coordinate with them?", "", "q_thinn_refuse_be_loud",
+     "", "", "Defender / Be-Loud offer — they refuse"),
+    ("thinn_edge_align", "Thinn", "q_thinn_explain_plan", "Thinn elder",
+     "When the Others arrive, we will align our ribbon-bodies edge-on to their sensory axis. We will present zero cross-section. We will suspend collective cognition for the duration of their passage. If we are correct about how they detect — we survive. If not — we have been mostly-nothing our whole lives anyway. We are not afraid.",
+     "c_insist_cloak", "Let me install a Cloaking Satellite. It'll suppress your signature actively.", "", "q_thinn_offer_cloak",
+     "", "", "Compeller branch — insist on cloak"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_obvious_flaw", "Thinn elder (warmly, without hesitation)",
+     "We do realize. We have agreed about this for several centuries. The Furling Hiders make the same point with charts. We have looked at the charts. We agree the charts are correct. We will still face sideways. Would you like some tea? We do not have tea. But we have considered what tea would be like.",
+     "c_press_the_point", "Wait — if you agree, why aren't you changing the plan?", "", "q_thinn_obvious_flaw_press",
+     "", "", "Steward presses — gets the canonical Thinn-cognition admission"),
+    ("thinn_edge_align", "Thinn", "q_thinn_obvious_flaw", "Thinn elder (warmly, without hesitation)",
+     "We do realize. We have agreed about this for several centuries. The Furling Hiders make the same point with charts. We have looked at the charts. We agree the charts are correct. We will still face sideways. Would you like some tea? We do not have tea. But we have considered what tea would be like.",
+     "c_accept_their_doctrine", "Fair enough. Good fortune, Thinn.", "", "q_thinn_outcome_pending",
+     "", "", "Steward lets them go on their plan; same Pending terminal"),
+    ("thinn_edge_align", "Thinn", "q_thinn_obvious_flaw", "Thinn elder (warmly, without hesitation)",
+     "We do realize. We have agreed about this for several centuries. The Furling Hiders make the same point with charts. We have looked at the charts. We agree the charts are correct. We will still face sideways. Would you like some tea? We do not have tea. But we have considered what tea would be like.",
+     "c_force_cloak_after_flaw", "I'm sorry. I have to install the Cloak. You can't make this call.", "", "q_thinn_offer_cloak",
+     "", "", "Steward concludes they can't be trusted with the choice — Compeller pivot"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_obvious_flaw_press", "Thinn elder (with what passes for cheerful clarity)",
+     "Steward. We do not have the brain-volume to change the plan. A brain with zero cross-section has zero volume. Our cognition is the *surface integral* over the ribbon — small. Enough to hold the Doctrine. Not enough to revise it. We agree with you. We will still face sideways. This is not stubbornness; this is hardware. We thank you for the clarity. We will not act on it. Do you understand?",
+     "c_understand_thinn_dumbness", "Yes. I understand. Good fortune, Thinn.", "", "q_thinn_outcome_pending",
+     "standing:persuader+1", "", "Steward understands; gentle Persuader bump for the kindness of letting them be"),
+    ("thinn_edge_align", "Thinn", "q_thinn_obvious_flaw_press", "Thinn elder (with what passes for cheerful clarity)",
+     "Steward. We do not have the brain-volume to change the plan. A brain with zero cross-section has zero volume. Our cognition is the *surface integral* over the ribbon — small. Enough to hold the Doctrine. Not enough to revise it. We agree with you. We will still face sideways. This is not stubbornness; this is hardware. We thank you for the clarity. We will not act on it. Do you understand?",
+     "c_save_them_from_themselves", "Then I have to override. Installing the Cloak.", "", "q_thinn_offer_cloak",
+     "", "", "Steward force-saves them; Compeller pivot"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_offer_cloak", "Thinn elder (a faint lateral ripple — the Thinn equivalent of a sigh)",
+     "Steward. We had not asked. We had planned the edge-on. The satellite would work — yes — but it would change us; we would become *cloaked* rather than *thin*. The doctrines are not the same. Still: if you insist, we will accept. Forced help is still help. We will not refuse a Furling who has chosen for us.",
+     "c_force_cloak", "I'm sorry. I think this is the safer path. Installing.", "", "q_thinn_outcome_cloaked",
+     "", "", "Compeller-aligned forced installation"),
+    ("thinn_edge_align", "Thinn", "q_thinn_offer_cloak", "Thinn elder (a faint lateral ripple — the Thinn equivalent of a sigh)",
+     "Steward. We had not asked. We had planned the edge-on. The satellite would work — yes — but it would change us; we would become *cloaked* rather than *thin*. The doctrines are not the same. Still: if you insist, we will accept. Forced help is still help. We will not refuse a Furling who has chosen for us.",
+     "c_relent_let_them_try", "You're right — it's your doctrine. I'll let you try the edge-on.", "", "q_thinn_outcome_pending",
+     "", "", "Steward relents — Persuader-aligned"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_refuse_be_loud", "Thinn elder (with what passes for a smile)",
+     "Be-Loud. We have considered the Burvixese plan. We consider it — and we say this with affection, Steward — *flat-out wrong*. The pun is ours; we have been waiting to use it. We will not amplify. We will not be loud. We will be the Thinn.",
+     "c_accept_refusal", "I understand. Good fortune.", "", "q_thinn_outcome_pending",
+     "", "", "They refuse the offer; fall through to Pending"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_cleanser_pressure", "Thinn elder (long pause; the ribbon-body holds very still)",
+     "We see. You speak of cleansing us. Pre-emptively. Because our *suspension* might emit a flare. We have considered being many things, Steward. We have not, until this moment, considered being a casualty of our friends. Will you do it? Or will you walk away?",
+     "c_back_down_cleanser_thinn", "I withdraw. I'm sorry. Honor your plan.", "", "q_thinn_outcome_pending",
+     "flag:cleanser_thinn_directive=False;standing:persuader+1", "", "Steward retracts"),
+    ("thinn_edge_align", "Thinn", "q_thinn_cleanser_pressure", "Thinn elder (long pause; the ribbon-body holds very still)",
+     "We see. You speak of cleansing us. Pre-emptively. Because our *suspension* might emit a flare. We have considered being many things, Steward. We have not, until this moment, considered being a casualty of our friends. Will you do it? Or will you walk away?",
+     "c_execute_cleanse_thinn", "I have to. I'm sorry. [trigger cleanse]", "", "q_thinn_outcome_eliminated",
+     "", "", "Execute — the slice's canonically darkest line follows"),
+
+    ("thinn_edge_align", "Thinn", "q_thinn_outcome_pending", "Thinn elder",
+     "Then we will see. We who watch will face the edge when they come. We will report — or we will not. The result, in either case, will be the same to you, Steward, because you will have left this galaxy by then. We thank you for the visit. We are not afraid.",
+     "", "", "", "(end)",
+     "flag:thinn_pending=True;flag:has_thinn_shed_ribbon=True;standing:persuader+2;terminal:Pending", "Pending", "TERMINAL — the slice's one canonically-unresolved Homesteader case; player leaves without knowing"),
+    ("thinn_edge_align", "Thinn", "q_thinn_outcome_cloaked", "Thinn elder (resigned but graceful)",
+     "Installed. The satellite hums. Our edge-on doctrine retired into your gift. We are Cloaked now, not Thinn. We will exist. The geometric solution will go untested in this galaxy. Some of us are sad about this; some of us are grateful. The Thinn never agreed about anything. Why start now.",
+     "", "", "", "(end)",
+     "flag:thinn_cloaked=True;flag:has_thinn_shed_ribbon=True;standing:compeller+2;standing:persuader-1;terminal:Cloaked", "Cloaked", "TERMINAL — Cloaked, doctrine retired, mild Persuader cost"),
+    ("thinn_edge_align", "Thinn", "q_thinn_outcome_eliminated", "Thinn elder (final words)",
+     "We have always already been half-gone. Thank you for the punctuation.",
+     "", "", "", "(end)",
+     "flag:thinn_eliminated=True;standing:cleanser+1;standing:persuader-4;standing:hider-3;terminal:Eliminated", "Eliminated", "TERMINAL — Aaron's canonical line; the slice's canonically darkest Thinn outcome"),
+
+    # ========================================================================
+    # Quest: Lemmkin — Curiosity Bears Witness
+    # ========================================================================
+    # SC2-style branch: honor-stay (Eliminated + archives saved) /
+    # convince-small-evac (mixed Eliminated+Migrated) / cleanse (Eliminated,
+    # standing collapse) / science-trade (any branch + science trade adds a
+    # Lemmkin Research Cache sensor module)
+    # ------------------------------------------------------------------------
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_start", "Brisk-Ever-Onward, Lemmkin elder (surrounded by a dozen chittering Lemmkin)",
+     "Furling! You are a Furling! We have only met three before — wait, the troupe says four — are you the fourth? What does your ship do? Can we see it? We won't break it. We will only look. We have questions. We have *so many* questions. Please.",
+     "c_let_them_ask", "[Let them ask anything they want.]", "", "q_lemmkin_explain_choice",
+     "", "", "Open the floodgates — they explain their staying-choice"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_start", "Brisk-Ever-Onward, Lemmkin elder (surrounded by a dozen chittering Lemmkin)",
+     "Furling! You are a Furling! We have only met three before — wait, the troupe says four — are you the fourth? What does your ship do? Can we see it? We won't break it. We will only look. We have questions. We have *so many* questions. Please.",
+     "c_get_to_the_point", "Why are you still here? The Furlings have offered you a lift.", "", "q_lemmkin_explain_choice",
+     "", "", "Direct route to the staying-choice conversation"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_start", "Brisk-Ever-Onward, Lemmkin elder (surrounded by a dozen chittering Lemmkin)",
+     "Furling! You are a Furling! We have only met three before — wait, the troupe says four — are you the fourth? What does your ship do? Can we see it? We won't break it. We will only look. We have questions. We have *so many* questions. Please.",
+     "c_cleanser_pressure_lemmkin", "Council asks whether your archive-broadcast at the moment of the Culling will flag the cluster. We're discussing pre-emption.", "flag:cleanser_lemmkin_directive=True", "q_lemmkin_cleanser_pressure",
+     "", "", "Cleanser branch"),
+
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_explain_choice", "Brisk-Ever-Onward, Lemmkin elder (cheerful clarity)",
+     "We are staying. You are kind to offer the lift. We have considered. We want to see what they look like. We want to see what they do. We have heard you describe them and the descriptions are not enough. Some of us will leap; some of us will follow; we have arranged it so the ones who write things down are at the back. The notes will survive even if we do not. Thank you for the lift. We will not be on it.",
+     "c_honor_their_choice", "Then I respect that. Good fortune, Lemmkin.", "", "q_lemmkin_outcome_eliminated_honored",
+     "", "", "Honor — Eliminated + archives saved"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_explain_choice", "Brisk-Ever-Onward, Lemmkin elder (cheerful clarity)",
+     "We are staying. You are kind to offer the lift. We have considered. We want to see what they look like. We want to see what they do. We have heard you describe them and the descriptions are not enough. Some of us will leap; some of us will follow; we have arranged it so the ones who write things down are at the back. The notes will survive even if we do not. Thank you for the lift. We will not be on it.",
+     "c_advocate_small_evac", "Some of you — the quietest ones — would still come if you let them. May I speak with them?", "", "q_lemmkin_small_evac",
+     "", "", "Mixed-evac branch"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_explain_choice", "Brisk-Ever-Onward, Lemmkin elder (cheerful clarity)",
+     "We are staying. You are kind to offer the lift. We have considered. We want to see what they look like. We want to see what they do. We have heard you describe them and the descriptions are not enough. Some of us will leap; some of us will follow; we have arranged it so the ones who write things down are at the back. The notes will survive even if we do not. Thank you for the lift. We will not be on it.",
+     "c_offer_science_trade", "While you're staying — let's trade science. We have things to learn from each other.", "", "q_lemmkin_science_trade",
+     "", "", "Science-trade branch"),
+
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_small_evac", "Trill, Lemmkin Archivist (quieter, slightly older than the troupe)",
+     "I will come. I lost Yipp at the south-cliff last season. I am ready to read in present-tense rather than perfect-tense. Maybe a dozen of us will fit on your lift. We will write what we see when we see it. The rest of the troupe will write what they see *until* they see it.",
+     "c_take_the_quiet_ones", "I'll take them. The archives travel with the migrants.", "", "q_lemmkin_outcome_mixed",
+     "", "", "Mixed-evac success"),
+
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_science_trade", "Snip the Recklessly Inquisitive, Lemmkin scientist (vibrating with eagerness)",
+     "Yes! Yes yes yes! We have so much to trade! We mapped the gravitational microlensing in the Burvixese system before the Caster fired! We have probe-telemetry from inside an active hyperspace fault! We have anatomy notes on twelve species the Council hasn't documented! What do you want first?! Wait — what do *you* have? What do *you* know?! Tell us! Tell us everything!",
+     "c_accept_trade", "Done. Here's the Furling research bundle. I'll take your Pattern Database.", "", "q_lemmkin_outcome_science_trade",
+     "module:LEMMKIN_PATTERN_DATABASE", "", "Standard science-trade close — grants a new sensor module (TODO Design: define LEMMKIN_PATTERN_DATABASE in modules.py)"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_science_trade", "Snip the Recklessly Inquisitive, Lemmkin scientist (vibrating with eagerness)",
+     "Yes! Yes yes yes! We have so much to trade! We mapped the gravitational microlensing in the Burvixese system before the Caster fired! We have probe-telemetry from inside an active hyperspace fault! We have anatomy notes on twelve species the Council hasn't documented! What do you want first?! Wait — what do *you* have? What do *you* know?! Tell us! Tell us everything!",
+     "c_decline_trade", "Some other time. Just take care of yourselves.", "", "(end)",
+     "", "", "Decline trade — can return"),
+
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_cleanser_pressure", "Brisk-Ever-Onward, Lemmkin elder (curiosity, not alarm)",
+     "Cleansing? Oh — interesting! Yes — interesting choice for the Council to consider. Will you do it with a beam? With a virus? How will it feel? Can we *write down* what it feels like? The archive distribution should still complete first — please don't act until the dispatches go out. We would prefer the notes survive even if we do not.",
+     "c_back_down_cleanser_lemmkin", "I withdraw. I'm sorry. Continue your work.", "", "q_lemmkin_explain_choice",
+     "flag:cleanser_lemmkin_directive=False;standing:persuader+2", "", "Steward retracts; the casual interest was unsettling enough"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_cleanser_pressure", "Brisk-Ever-Onward, Lemmkin elder (curiosity, not alarm)",
+     "Cleansing? Oh — interesting! Yes — interesting choice for the Council to consider. Will you do it with a beam? With a virus? How will it feel? Can we *write down* what it feels like? The archive distribution should still complete first — please don't act until the dispatches go out. We would prefer the notes survive even if we do not.",
+     "c_execute_cleanse_lemmkin", "I'm sorry. Council orders. [trigger cleanse]", "", "q_lemmkin_outcome_cleansed",
+     "", "", "Execute — the Lemmkin keep asking questions DURING the Cleansing; one of the slice's most unsettling beats"),
+
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_outcome_eliminated_honored", "(narration — the Steward leaves Whirligig; the Culling arrives; the Lemmkin take notes; the archives reach the Hider faction via distributed dispatch)",
+     "The Lemmkin are consumed. Their archives survive in fragments across the galaxy. The Hider faction has the most complete copy and treasures it. SC2-era archaeologists will misattribute many of these archives to 'the Precursors' — the Lemmkin would have found this funny.",
+     "", "", "", "(end)",
+     "flag:lemmkin_eliminated=True;flag:has_lemmkin_archive=True;standing:persuader+2;standing:hider+3;terminal:Eliminated", "Eliminated", "TERMINAL — Eliminated with full consent + archive preserved"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_outcome_mixed", "(narration — Trill and a small contingent board the Furling lift; the rest stay; the Culling arrives; the lift reaches Andromeda)",
+     "A small Lemmkin diaspora reaches Andromeda. Their archives survive *with them* in the new galaxy — the most complete Lemmkin science survives. SC2-era epilogue: the migrant Lemmkin found a research colony in the neighboring galaxy.",
+     "", "", "", "(end)",
+     "flag:lemmkin_eliminated=True;flag:lemmkin_minority_migrated=True;flag:has_lemmkin_archive=True;standing:persuader+4;standing:hider+2;terminal:MixedEliminatedMigrated", "MixedEliminatedMigrated", "TERMINAL — best outcome — most Eliminated, small migrant contingent + complete archive"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_outcome_science_trade", "Snip the Recklessly Inquisitive, Lemmkin scientist (delighted)",
+     "Yes! Brilliant trade! We will read everything! And you will have our Pattern Database! Come back if you want to read what we wrote about *you* — we have started a Furling section of our archive! Goodbye! Be careful! We will not!",
+     "", "", "", "(end)",
+     "flag:lemmkin_science_traded=True;module:LEMMKIN_PATTERN_DATABASE;standing:persuader+1;standing:hider+1", "", "Science-trade close — the staying-choice + Eliminated terminal still resolves at end-of-slice via separate path or honor-branch"),
+    ("lemmkin_curiosity", "Lemmkin", "q_lemmkin_outcome_cleansed", "(narration — Cleanser pre-emption; the Lemmkin are eliminated; they take notes until the moment they stop)",
+     "The archives never fully dispatched. Fragments survive. The Furling Council formally censures the Steward. *Several* Cleansers retract their support post-hoc — the Lemmkin's cheerful curiosity during the elimination broke even some Cleanser doctrinal commitment. Persuader and Hider standing collapse. The Bio-Archive logs the choice. This is the slice's most quietly horrific Cleanser outcome.",
+     "", "", "", "(end)",
+     "flag:lemmkin_cleansed=True;flag:lemmkin_archive_lost=True;standing:cleanser+1;standing:persuader-5;standing:hider-4;standing:defender-2;terminal:Eliminated", "Eliminated", "TERMINAL — quietly horrific Cleanser outcome; lower Cleanser bump than usual because even Cleansers are unsettled"),
+
+    # ========================================================================
+    # Quest: Stelloth — Artifact Trade (the Bargainers)
+    # ========================================================================
+    # SC2-style branch: honest-trade / withhold-artifact (Witness senses) /
+    # cleanser-pressure (Stelloth politely refuse — Migrating species are
+    # Cleanser-doctrine-immune)
+    # ------------------------------------------------------------------------
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_start", "Tarvel-Three-Voices (Speaker, Witness, Counter — chord-aligned)",
+     "**Speaker:** Steward. We are the Stelloth. We are interested in your story. **Witness:** *click-click* (you are carrying artifacts from at least three Homesteader species, including one from a recent Burvixese broadcast site). **Counter:** *(deep slow bass)* We will trade.",
+     "c_honest_trade", "I'll trade. What do you offer?", "", "q_stelloth_explain_trade",
+     "", "", "Standard trade open"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_start", "Tarvel-Three-Voices (Speaker, Witness, Counter — chord-aligned)",
+     "**Speaker:** Steward. We are the Stelloth. We are interested in your story. **Witness:** *click-click* (you are carrying artifacts from at least three Homesteader species, including one from a recent Burvixese broadcast site). **Counter:** *(deep slow bass)* We will trade.",
+     "c_ask_about_chord", "Before we trade — explain the chord. How do you work?", "", "q_stelloth_explain_chord",
+     "", "", "Lore exposition"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_start", "Tarvel-Three-Voices (Speaker, Witness, Counter — chord-aligned)",
+     "**Speaker:** Steward. We are the Stelloth. We are interested in your story. **Witness:** *click-click* (you are carrying artifacts from at least three Homesteader species, including one from a recent Burvixese broadcast site). **Counter:** *(deep slow bass)* We will trade.",
+     "c_cleanser_pressure_stelloth", "Council asks whether your artifact-traffic in dying-civilization-cognition might attract the Others. We're discussing pre-emption.", "flag:cleanser_stelloth_directive=True", "q_stelloth_cleanser_pressure",
+     "", "", "Cleanser branch — they will REFUSE this politely"),
+
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_explain_chord", "Tarvel-Three-Voices",
+     "**Speaker:** I am Tarvel-Speaker, the front-body. I negotiate in normal time. **Witness:** *click-click-click* (I am Tarvel-Witness, perceiving at four times the Speaker's rate; I see what they miss; I record via head-crystal). **Counter:** *(very slow)* I am Tarvel-Counter, evaluating in deep time. The trade is being considered. The Speaker speaks. The Witness watches. I calculate. Together we are one. Alone, we are nothing.",
+     "c_proceed_to_trade", "Understood. Show me what you have to offer.", "", "q_stelloth_explain_trade",
+     "", "", "Continue to trade"),
+
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_explain_trade", "Tarvel-Three-Voices",
+     "**Speaker:** We pay in rare minerals, Stelloth-contracts (redeemable in the post-Migration galaxy), and Counter-perceived deep-time predictions. **Counter:** *(rumble)* We see possible futures. Most are vague. Some are useful. **Speaker:** You have a Burvixese harmonic-recording fragment. We will pay 30 BIO and one deep-time prediction. Acceptable?",
+     "c_accept_trade", "Done. The Burvixese fragment for 30 BIO + the prediction.", "", "q_stelloth_outcome_honest",
+     "", "", "Standard transactional close"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_explain_trade", "Tarvel-Three-Voices",
+     "**Speaker:** We pay in rare minerals, Stelloth-contracts (redeemable in the post-Migration galaxy), and Counter-perceived deep-time predictions. **Counter:** *(rumble)* We see possible futures. Most are vague. Some are useful. **Speaker:** You have a Burvixese harmonic-recording fragment. We will pay 30 BIO and one deep-time prediction. Acceptable?",
+     "c_withhold_artifact", "I'll trade the fragment but I'm keeping the Taalo Shield-piece. (You have one in cargo.)", "flag:has_taalo_shield_fragment=True", "q_stelloth_withhold_caught",
+     "", "", "Withhold branch — the Witness senses it immediately"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_explain_trade", "Tarvel-Three-Voices",
+     "**Speaker:** We pay in rare minerals, Stelloth-contracts (redeemable in the post-Migration galaxy), and Counter-perceived deep-time predictions. **Counter:** *(rumble)* We see possible futures. Most are vague. Some are useful. **Speaker:** You have a Burvixese harmonic-recording fragment. We will pay 30 BIO and one deep-time prediction. Acceptable?",
+     "c_decline_trade", "Not today.", "", "(end)",
+     "", "", "Walk away — can return"),
+
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_withhold_caught", "Tarvel-Three-Voices (the chord falls briefly silent; the Witness's click rate doubles)",
+     "**Witness:** *click-click-click-click* (the Steward carries a Taalo Shield-fragment in their reserve cargo; they have not disclosed it). **Counter:** *(low alarm bass)* The contract was offered in good faith. **Speaker:** Steward. The Witness has seen. We will not trade with you now. We will trade with you again only after formal restitution. Disappointment is a *contractual* state for us. We will not pretend otherwise.",
+     "c_apologize_offer_full", "I'm sorry — take both. Full disclosure.", "", "q_stelloth_outcome_honest_restitution",
+     "", "", "Restitution path — partial credit"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_withhold_caught", "Tarvel-Three-Voices (the chord falls briefly silent; the Witness's click rate doubles)",
+     "**Witness:** *click-click-click-click* (the Steward carries a Taalo Shield-fragment in their reserve cargo; they have not disclosed it). **Counter:** *(low alarm bass)* The contract was offered in good faith. **Speaker:** Steward. The Witness has seen. We will not trade with you now. We will trade with you again only after formal restitution. Disappointment is a *contractual* state for us. We will not pretend otherwise.",
+     "c_leave_in_disgrace", "[Steward leaves; Stelloth disposition turns cold]", "", "q_stelloth_outcome_disgraced",
+     "", "", "Walk away under reputation collapse"),
+
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_cleanser_pressure", "Tarvel-Three-Voices (the Counter's bass shifts to formal-refusal mode)",
+     "**Speaker:** Steward. We are Migrating. We are not staying. Cleanser doctrine applies to Stay-side species who flare at the Culling. We will not be present at the Culling. We will not be euthanized. **Counter:** *(formal contract-tone)* The Furling Council's own treaties bind this. Refer your Cleanser to the Migration Compact, paragraph forty-three.",
+     "c_back_down_cleanser_stelloth", "You're right. I withdraw the question. Continue.", "", "q_stelloth_start",
+     "flag:cleanser_stelloth_directive=False", "", "Steward retracts — Cleanser doctrine genuinely doesn't apply"),
+
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_outcome_honest", "Tarvel-Three-Voices (chord-aligned, ledger-marks brightening)",
+     "**Speaker:** Trade complete. **Counter:** *(slow)* The deep-time prediction: you will need water in the year of the third Cleanser vote. We do not know which year. We do know the need. **Speaker:** Safe travels, Steward. We will meet again in Andromeda.",
+     "", "", "", "(end)",
+     "flag:stelloth_trade_completed=True;standing:stelloth+2;standing:hider+1;terminal:Migrated", "Migrated", "TERMINAL — honest trade; Stelloth standing rises; Migrated terminal applies post-slice"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_outcome_honest_restitution", "Tarvel-Three-Voices (the chord realigns; the Counter's bass softens)",
+     "**Speaker:** The restitution is accepted. The contract is restored. The Witness will record this resolution. **Counter:** *(slower, warmer)* Trust is a quantity that can be partially recovered. You have shown that. **Speaker:** Half the prediction is yours. The other half remains contingent. Safe travels.",
+     "", "", "", "(end)",
+     "flag:stelloth_trade_partial=True;standing:stelloth+1;terminal:Migrated", "Migrated", "TERMINAL — partial-restitution; partial reward"),
+    ("stelloth_artifact_trade", "Stelloth", "q_stelloth_outcome_disgraced", "Tarvel-Three-Voices (the chord turns away in formal coordination)",
+     "**Speaker:** *(silent; turned away)* **Witness:** *(silent; recording)* **Counter:** *(silent; the ledger-marks dim)* The Steward leaves the Three-Voice Arc. The chord will not trade with them again. The slice records this. The post-Migration Stelloth network *also* records it; future trade in Andromeda will be cold.",
+     "", "", "", "(end)",
+     "flag:stelloth_disgraced=True;standing:stelloth-3;standing:persuader-1", "", "TERMINAL — reputation collapse"),
+
+    # ========================================================================
+    # Quest: Selvenne — Memory Archive (the Long-Memories)
+    # ========================================================================
+    # SC2-style branch: contribute-faithfully / withhold / cleanser-pressure
+    # ------------------------------------------------------------------------
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_start", "Choir-Of-The-East-Reef (layered chord of many bioluminescent voices)",
+     "*(The reef around you glows in slow chromatic waves. Many voices speak in unison, layered.)* Steward. You have come into our water. We who remember welcome you. We have heard of you. You have lived moments worth remembering. Will you share them? In return — we will share moments of *those who came before*. Touch the polyp before you.",
+     "c_touch_polyp", "[Steward extends a hand and touches the offered polyp.]", "", "q_selvenne_first_memory",
+     "", "", "Trigger first memory-playback"),
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_start", "Choir-Of-The-East-Reef (layered chord of many bioluminescent voices)",
+     "*(The reef around you glows in slow chromatic waves. Many voices speak in unison, layered.)* Steward. You have come into our water. We who remember welcome you. We have heard of you. You have lived moments worth remembering. Will you share them? In return — we will share moments of *those who came before*. Touch the polyp before you.",
+     "c_cleanser_pressure_selvenne", "Council asks whether your experiential broadcasts might attract the Others. We're discussing pre-emption.", "flag:cleanser_selvenne_directive=True", "q_selvenne_cleanser_pressure",
+     "", "", "Cleanser branch — the reef's response is canonical"),
+
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_first_memory", "Choir-Of-The-East-Reef",
+     "*(The polyp's tentacle-cilium meets your hand. Your vision shifts. You are submerged in warm magenta atmosphere. Your body is buoyant. Your name is something like 'Drift-Of-The-Dawn-Storm.' You are a Slylandro Observer from 3.4 million years ago, a prior cycle. The sky brightens — you sense something at the edge of thought, a wrongness, a pressure where there should be empty sky. You drift-think slower, hoping to slip beneath. The pressure passes. You survive. You remember this for the reef to hold. The memory fades. You are yourself again.)* This is what the prior-cycle Slylandro felt. Their doctrine has worked before. They survive again, and again, and again. We hold them for you.",
+     "c_contribute_memory", "I have memories to contribute. Show me how.", "", "q_selvenne_contribute",
+     "flag:selvenne_first_memory_received=True;flag:has_archive_others_prior_cycles=True", "", "Standard contribute path"),
+
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_contribute", "Choir-Of-The-East-Reef",
+     "*(A recipient polyp glows green-violet, distinct from the others, extending a different cilium toward you.)* Place your hand. Think clearly about a moment you have lived. For thirty seconds, hold it. The reef will record. The reef will hold. *(The polyp pulses; you feel the act of memory-transfer in the form of a sustained quiet warmth.)*",
+     "c_share_freely", "[Steward shares the Coel Tessar encounter, the Beacon screening, the Taalo cove, the Veils Falling — whatever the player has accumulated.]", "", "q_selvenne_outcome_contributed",
+     "", "", "Free-share path — full contribution"),
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_contribute", "Choir-Of-The-East-Reef",
+     "*(A recipient polyp glows green-violet, distinct from the others, extending a different cilium toward you.)* Place your hand. Think clearly about a moment you have lived. For thirty seconds, hold it. The reef will record. The reef will hold. *(The polyp pulses; you feel the act of memory-transfer in the form of a sustained quiet warmth.)*",
+     "c_withhold_painful", "[Steward shares some moments but withholds the heaviest ones — Taalo, perhaps, or the Burvixese consumption.]", "", "q_selvenne_outcome_partial",
+     "", "", "Withhold branch — reef senses the gap"),
+
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_cleanser_pressure", "Choir-Of-The-East-Reef (the reef's chromatic glow shifts to a tense pale-violet)",
+     "*(A polyp extends its cilium without your asking. The memory begins.)* You are a prior-cycle Cleanser, three million years ago. You have decided to euthanize a species you cannot save. You feel the doctrine — necessary, defensible, true. You feel the cost — your own grief, your own moral weight, the certainty that you will not be forgiven by yourself. *(The memory fades. The reef glows again.)* This is what your Cleanser doctrine costs. We have many such memories. Some of you have lived this exact moment before. Do you still ask to euthanize us?",
+     "c_back_down_cleanser_selvenne", "I withdraw. Forgive me.", "", "q_selvenne_start",
+     "flag:cleanser_selvenne_directive=False;standing:persuader+2", "", "Steward retracts after memory-playback"),
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_cleanser_pressure", "Choir-Of-The-East-Reef (the reef's chromatic glow shifts to a tense pale-violet)",
+     "*(A polyp extends its cilium without your asking. The memory begins.)* You are a prior-cycle Cleanser, three million years ago. You have decided to euthanize a species you cannot save. You feel the doctrine — necessary, defensible, true. You feel the cost — your own grief, your own moral weight, the certainty that you will not be forgiven by yourself. *(The memory fades. The reef glows again.)* This is what your Cleanser doctrine costs. We have many such memories. Some of you have lived this exact moment before. Do you still ask to euthanize us?",
+     "c_execute_cleanse_selvenne", "I'm sorry. Council orders. [trigger cleanse — the reef is destroyed]", "", "q_selvenne_outcome_eliminated",
+     "", "", "Execute — destroys 50M years of memory; arguably the slice's worst single action"),
+
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_outcome_contributed", "Choir-Of-The-East-Reef",
+     "*(The reef glows in deep slow waves of gratitude.)* The reef remembers you now. Your moments will travel with us to Andromeda. We give you in return: an Echo Crystal — a small piece of the reef. Touch it any time. We will share what you ask for. *(A small bioluminescent crystal rises from the substrate and floats to your hand.)*",
+     "", "", "", "(end)",
+     "flag:selvenne_archived=True;flag:has_echo_crystal=True;standing:selvenne+3;standing:persuader+1;terminal:Migrated", "Migrated", "TERMINAL — full contribution; Echo Crystal artifact lets Steward re-experience any reef-memory for the rest of the slice"),
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_outcome_partial", "Choir-Of-The-East-Reef (the chord's tone darkens slightly)",
+     "*(The reef glows muted-blue, not the warm gratitude of full contribution.)* You have given much. You have held back. We understand. We understand more than you think. The Echo Crystal is yours, but smaller — it will play only the memories you contributed willingly. The held-back moments remain yours alone. Travel with care, Steward.",
+     "", "", "", "(end)",
+     "flag:selvenne_archived_partial=True;flag:has_echo_crystal_partial=True;standing:selvenne+1;terminal:Migrated", "Migrated", "TERMINAL — partial contribution; partial Echo Crystal"),
+    ("selvenne_memory_archive", "Selvenne", "q_selvenne_outcome_eliminated", "(narration — Cleanser euthanasia of the Selvenne reef proceeds; 50 million years of memory dissolves into seawater)",
+     "The reef goes dark in waves. The chord falls silent. The memories — all of them — disperse into the ocean and vanish. The slice records this as canonically the most destructive single Cleanser action in the cluster. Council formally censures the Steward. Persuader/Hider standing collapses. The Bio-Archive holds the *fact* of the loss as its own entry. Some things should not be cleansed.",
+     "", "", "", "(end)",
+     "flag:selvenne_eliminated=True;flag:archive_lost=True;standing:cleanser+1;standing:persuader-6;standing:hider-5;standing:defender-3;terminal:Eliminated", "Eliminated", "TERMINAL — the slice's worst single moral act available"),
+
+    # ========================================================================
+    # Quest: Mrokon — The Hammer-Of-Refusal (the Defiant)
+    # ========================================================================
+    # SC2-style branch: support-the-Hammer / dissuade-evacuate / sabotage
+    # (resisted) / decline-witness
+    # ------------------------------------------------------------------------
+    ("mrokon_hammer", "Mrokon", "q_mrokon_start", "Vrek-The-Eighth-Body (heavy-armored puppet, kinetic-rifle held formally)",
+     "Steward. I am Vrek-The-Eighth-Body. Three before me have died in training; four in field-trials of the Hammer-Round; one to a fall. I will die when the Culling comes. The Hammer is loaded. The Others will be marked. Tell me what you came to ask. I will answer if it does not delay the work.",
+     "c_ask_about_hammer", "Tell me about the Hammer-Of-Refusal.", "", "q_mrokon_explain_hammer",
+     "", "", "Lore exposition"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_start", "Vrek-The-Eighth-Body (heavy-armored puppet, kinetic-rifle held formally)",
+     "Steward. I am Vrek-The-Eighth-Body. Three before me have died in training; four in field-trials of the Hammer-Round; one to a fall. I will die when the Culling comes. The Hammer is loaded. The Others will be marked. Tell me what you came to ask. I will answer if it does not delay the work.",
+     "c_offer_support", "Furling engineering can help tune the Hammer-Round resonance. We'll help.", "", "q_mrokon_support_offer",
+     "", "", "Support branch — primary Hider-aligned outcome"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_start", "Vrek-The-Eighth-Body (heavy-armored puppet, kinetic-rifle held formally)",
+     "Steward. I am Vrek-The-Eighth-Body. Three before me have died in training; four in field-trials of the Hammer-Round; one to a fall. I will die when the Culling comes. The Hammer is loaded. The Others will be marked. Tell me what you came to ask. I will answer if it does not delay the work.",
+     "c_offer_evac", "Some of you should come with us. Even a few Operators evacuated saves the species.", "", "q_mrokon_evac_offer",
+     "", "", "Evac branch — the Mrokon will reluctantly accept partial"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_start", "Vrek-The-Eighth-Body (heavy-armored puppet, kinetic-rifle held formally)",
+     "Steward. I am Vrek-The-Eighth-Body. Three before me have died in training; four in field-trials of the Hammer-Round; one to a fall. I will die when the Culling comes. The Hammer is loaded. The Others will be marked. Tell me what you came to ask. I will answer if it does not delay the work.",
+     "c_cleanser_pressure_mrokon", "Council asks whether the Hammer-firing itself will flare and attract the Others. We're considering pre-emption.", "flag:cleanser_mrokon_directive=True", "q_mrokon_cleanser_resistance",
+     "", "", "Cleanser branch — the Mrokon will FIGHT this"),
+
+    ("mrokon_hammer", "Mrokon", "q_mrokon_explain_hammer", "Vrek-The-Eighth-Body",
+     "The Hammer-Round is a tungsten-uranium kinetic slug tuned to dimensional-resonance frequencies that Furling engineering tells us *briefly disrupt* the Others' substrate. When the Culling comes, every Operator on Mrokon's Stand will fire their last puppet's Hammer-Round simultaneously. Tens of thousands of rounds. The puppets self-destruct in the recoil. The Operators die in deep-link feedback. The Others — we believe — will be *marked*. Permanently. Future galaxies may be able to use the marking to identify them. We die. We mark. That is enough.",
+     "c_offer_support_after_explain", "Then let us help tune the resonance.", "", "q_mrokon_support_offer",
+     "", "", "Loop to support"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_explain_hammer", "Vrek-The-Eighth-Body",
+     "The Hammer-Round is a tungsten-uranium kinetic slug tuned to dimensional-resonance frequencies that Furling engineering tells us *briefly disrupt* the Others' substrate. When the Culling comes, every Operator on Mrokon's Stand will fire their last puppet's Hammer-Round simultaneously. Tens of thousands of rounds. The puppets self-destruct in the recoil. The Operators die in deep-link feedback. The Others — we believe — will be *marked*. Permanently. Future galaxies may be able to use the marking to identify them. We die. We mark. That is enough.",
+     "c_witness_only", "I'll witness without intervening. Tell Council what I saw.", "", "q_mrokon_outcome_witness_only",
+     "", "", "Witness-only branch"),
+
+    ("mrokon_hammer", "Mrokon", "q_mrokon_support_offer", "Vrek-The-Eighth-Body (the puppet's posture shifts — military formal-acknowledgment)",
+     "You honor us, Steward. The Furling engineering crews will be received with full Operator protocol. We will allow one Steward — *you* — into a bunker, once, to witness the deep-link interface. The Operator Vrek himself will receive you. The Hammer-Round at maximum effectiveness will mark the Others *permanently*. Future galaxies may identify them by our mark. *(A pause.)* This is the most we will ever ask of a Furling.",
+     "c_commit_support", "Done. I'll bring the resonance crew.", "", "q_mrokon_outcome_support_full",
+     "", "", "Full-support close — Hammer-Round at max"),
+
+    ("mrokon_hammer", "Mrokon", "q_mrokon_evac_offer", "Vrek-The-Eighth-Body (long pause)",
+     "Steward. We will not abandon the Hammer. *(Another pause.)* But — we have considered, in deep Operator-council, that *some* of our youngest Operators (those who have not yet bonded to a first puppet) might be permitted to migrate. Their fight-doctrine is not yet locked. They will live in Andromeda. The Hammer fires with one hundred fewer Operators. The marking will be slightly less. The species continues. The cost is *accepted*. Bring your lift.",
+     "c_commit_partial_evac", "I'll bring the lift. Some Operators come with us.", "", "q_mrokon_outcome_partial_evac",
+     "", "", "Partial-evac close"),
+
+    ("mrokon_hammer", "Mrokon", "q_mrokon_cleanser_resistance", "Vrek-The-Eighth-Body (the puppet's stance shifts to combat-ready; the kinetic-rifle is no longer held formally)",
+     "Steward. We have heard the Cleanser doctrine. We reject it. We will not be pre-emptively euthanized to *prevent* a marking that the galaxy *needs*. If your Council forces this, we will fight. We will lose. The Hammer will not fire. The Others will go unmarked. You will have erased the only species that *touched the predator back*. Withdraw the question, or fight us now and prove your conviction.",
+     "c_back_down_cleanser_mrokon", "I withdraw. I'm sorry. Fire the Hammer, Vrek.", "", "q_mrokon_start",
+     "flag:cleanser_mrokon_directive=False;standing:persuader+2;standing:defender+1", "", "Steward retracts (the only sane option)"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_cleanser_resistance", "Vrek-The-Eighth-Body (the puppet's stance shifts to combat-ready; the kinetic-rifle is no longer held formally)",
+     "Steward. We have heard the Cleanser doctrine. We reject it. We will not be pre-emptively euthanized to *prevent* a marking that the galaxy *needs*. If your Council forces this, we will fight. We will lose. The Hammer will not fire. The Others will go unmarked. You will have erased the only species that *touched the predator back*. Withdraw the question, or fight us now and prove your conviction.",
+     "c_attempt_cleanse_mrokon", "I have my orders. [Mrokon combat encounter triggered — they resist, they lose]", "", "q_mrokon_outcome_cleansed",
+     "", "", "Combat-cleanse — the slice's clearest Cleanser-doctrine moral collapse"),
+
+    ("mrokon_hammer", "Mrokon", "q_mrokon_outcome_support_full", "(narration — the Hammer-Of-Refusal fires at maximum tuned effectiveness; every Operator on Mrokon's Stand dies in deep-link feedback; the Others are MARKED permanently)",
+     "The Hammer-Round volleys strike. Tens of thousands of tungsten-uranium slugs at dimensional-resonance tuning. The Others' Vessels are *visibly marked* — dimples appear, dimensional-stutter traces persist. 230kya later, SC2-era observers will see these markings on the Others' fleet. They will not know what made them. We do. The Mrokon are Eliminated. The marking is permanent. The galaxy carries this forward.",
+     "", "", "", "(end)",
+     "flag:mrokon_eliminated=True;flag:hammer_fired_full=True;flag:has_mrokon_hammer_telemetry=True;flag:others_marked_permanently=True;module:LANDER_MROKON_PUPPET_ARMOR;standing:hider+3;standing:persuader+2;standing:defender+2;terminal:Eliminated", "Eliminated", "TERMINAL — best outcome — Mrokon Eliminated, Others MARKED at maximum; Mrokon Puppet-Armor Lander Plating added 2026-05-17 per Quiet Resolution reward parity"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_outcome_partial_evac", "(narration — small Operator contingent reaches Andromeda; the Hammer fires with reduced operators; the marking is partial)",
+     "A hundred Operators reach the Migration lift. The Hammer fires with reduced volley count. The Others are marked, but less visibly. The Mrokon majority dies; the species continues in Andromeda. SC2-era observers see *some* dimpling on the Others' Vessels; the marking is partial. The Mrokon diaspora carries the doctrine forward — there may be a second Hammer-Of-Refusal in the neighboring galaxy someday.",
+     "", "", "", "(end)",
+     "flag:mrokon_eliminated=True;flag:mrokon_minority_migrated=True;flag:hammer_fired_partial=True;flag:has_mrokon_hammer_telemetry=True;flag:others_marked_partial=True;standing:hider+2;standing:persuader+3;terminal:MixedEliminatedMigrated", "MixedEliminatedMigrated", "TERMINAL — partial Hammer + Mrokon diaspora"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_outcome_witness_only", "(narration — the Steward observes from orbit; the Hammer fires with default tuning; the Others are marked but not at maximum)",
+     "Without Furling tuning help, the Hammer-Round resonance is approximate rather than precise. The Others are marked, but the dimpling is shallow — SC2 archaeologists will speculate about its source but will not be sure. The Mrokon die. The marking is *good enough*.",
+     "", "", "", "(end)",
+     "flag:mrokon_eliminated=True;flag:hammer_fired_default=True;flag:has_mrokon_hammer_telemetry=True;flag:others_marked_default=True;standing:hider+1;terminal:Eliminated", "Eliminated", "TERMINAL — default tuning; partial marking"),
+    ("mrokon_hammer", "Mrokon", "q_mrokon_outcome_cleansed", "(narration — Cleanser combat-cleanse; the Mrokon are eliminated before the Hammer fires; the Others go unmarked)",
+     "The Mrokon resist. They lose — outmatched by Furling combat-tech. The Operators die in their bunkers. The Hammer never fires. The Others go *unmarked*. The slice's clearest moral collapse. The Cleanser faction itself splinters over this — some Cleansers retroactively withdraw support; the Council formally censures the Steward. Defender standing collapses; the Defender argument was that *defense doesn't work*, but the Mrokon were *the proof that offense does* (at least marginally). The galaxy goes forward without the marking.",
+     "", "", "", "(end)",
+     "flag:mrokon_cleansed=True;flag:hammer_never_fired=True;flag:others_unmarked=True;standing:cleanser-1;standing:persuader-5;standing:hider-5;standing:defender-4;terminal:Eliminated", "Eliminated", "TERMINAL — the worst Cleanser outcome in the slice; even Cleansers regret this"),
+
+    # ========================================================================
+    # Quest: Kovellim — Crossing Trade (multi-cycle Migration veterans)
+    # ========================================================================
+    # SC2-style branch: standard trade (3 modules) / partial trade / listen-only
+    # (lore + archive entries, no modules) / Cleanser-pressure-rejected
+    # ------------------------------------------------------------------------
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_start", "Ovala-Eight-Crossings (elder; deep-set eyes; eight knot-scars visible across cheekbones and hands)",
+     "Steward. You are the fourth Furling to ask this question of me. The last was Iren-Vor in the seventh decade of her tenure; before her, Halve-Kor in the eleventh; before her, so deep back the records are torn. *(A long pause.)* They asked the same questions you are about to ask. I will answer in the same order. Sit. There is tea — it is from a prior galaxy. The leaves do not spoil.",
+     "c_offer_galaxy_data", "I have fresh telemetry from the cluster. Take it; I'd like your crossing-wisdom in return.", "", "q_kovellim_explain_trade",
+     "", "", "Standard trade open"),
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_start", "Ovala-Eight-Crossings (elder; deep-set eyes; eight knot-scars visible across cheekbones and hands)",
+     "Steward. You are the fourth Furling to ask this question of me. The last was Iren-Vor in the seventh decade of her tenure; before her, Halve-Kor in the eleventh; before her, so deep back the records are torn. *(A long pause.)* They asked the same questions you are about to ask. I will answer in the same order. Sit. There is tea — it is from a prior galaxy. The leaves do not spoil.",
+     "c_ask_for_stories", "Tell me about the prior crossings. I want to hear.", "", "q_kovellim_stories",
+     "", "", "Listen-only path — lore + archive entries, no modules"),
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_start", "Ovala-Eight-Crossings (elder; deep-set eyes; eight knot-scars visible across cheekbones and hands)",
+     "Steward. You are the fourth Furling to ask this question of me. The last was Iren-Vor in the seventh decade of her tenure; before her, Halve-Kor in the eleventh; before her, so deep back the records are torn. *(A long pause.)* They asked the same questions you are about to ask. I will answer in the same order. Sit. There is tea — it is from a prior galaxy. The leaves do not spoil.",
+     "c_cleanser_pressure_kovellim", "Council asks whether your long memory of prior Cullings makes you a flare-risk. We're discussing pre-emption.", "flag:cleanser_kovellim_directive=True", "q_kovellim_cleanser_pressure",
+     "", "", "Cleanser branch — Ovala's response is canonical and brief"),
+
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_explain_trade", "Ovala-Eight-Crossings",
+     "We offer three artifacts. The **Folder-Compass** reveals dimensional-stable hyperspace corridors invisible to your standard sensors. The **Crossing-Brace** hardens your hull against the crossing's stress. The **Cycle-Memory Algorithm** is a passive — it surfaces *we-have-seen-this-before* notes when you face choices similar to ones the seven prior cycles have records of. Take all three for your data, or pick selectively if you prefer.",
+     "c_accept_all_three", "All three. Take the telemetry; give me the artifacts.", "", "q_kovellim_outcome_full_trade",
+     "", "", "Full-trade close"),
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_explain_trade", "Ovala-Eight-Crossings",
+     "We offer three artifacts. The **Folder-Compass** reveals dimensional-stable hyperspace corridors invisible to your standard sensors. The **Crossing-Brace** hardens your hull against the crossing's stress. The **Cycle-Memory Algorithm** is a passive — it surfaces *we-have-seen-this-before* notes when you face choices similar to ones the seven prior cycles have records of. Take all three for your data, or pick selectively if you prefer.",
+     "c_pick_compass_only", "Just the Folder-Compass. I'll keep the rest of my telemetry.", "", "q_kovellim_outcome_partial_trade",
+     "", "", "Partial trade — Ovala accepts the asymmetry calmly"),
+
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_stories", "Ovala-Eight-Crossings",
+     "*(Ovala traces a finger along her left collarbone — the second knot-scar.)* This one. The second crossing. The galaxy was small, the Others arrived without warning, the Migration was hasty. Many of us did not make it. I was an adolescent then; my mother carried me across; she did not survive the arrival. *(A long pause.)* In every cycle there is a moment when the Migration leaves people behind. The cleaner you can plan, the fewer that moment costs you. Plan cleanly, Steward. Plan very cleanly.",
+     "c_thank_for_story", "Thank you. I'll plan cleanly. May I take this to the Archive?", "", "q_kovellim_outcome_listen_only",
+     "flag:has_archive_kovellim_second_crossing=True", "", "Listen-only close — Bio-Archive gains a 'prior cycle Migration' entry"),
+
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_cleanser_pressure", "Ovala-Eight-Crossings (the elder slowly turns her hands palm-up, showing the knot-scars on her wrists)",
+     "I have eight of these, Steward. They mark crossings. Do you intend to add a ninth — by your own hand, in my own body, before the Culling does it for the predator? *(Pause.)* The Migration Compact you Furlings wrote two cycles ago protects Migrating-Precursor species from your Cleanser doctrine. Refer your Cleanser to paragraph forty-three. *(She lowers her hands.)* I will not be the first knot you place.",
+     "c_back_down_cleanser_kovellim", "I withdraw. I'm sorry. The Council will revise its question.", "", "q_kovellim_start",
+     "flag:cleanser_kovellim_directive=False;standing:persuader+2", "", "Steward retracts — Cleanser doctrine genuinely doesn't apply"),
+
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_outcome_full_trade", "Ovala-Eight-Crossings (warmly)",
+     "Done. The three artifacts will be installed by the next docking-cycle. Travel cleanly, Steward. We will see you in the dimensional fold; we will see you in Andromeda. My ninth knot-scar will form before yours does, and I will wear it on my cycle-cloak with the others. The cloak is in the eighth row now; the ninth will be added by my daughter, who is currently weaving a draft.",
+     "", "", "", "(end)",
+     "flag:kovellim_traded_full=True;module:KOVELLIM_FOLDER_COMPASS;module:KOVELLIM_CROSSING_BRACE;module:KOVELLIM_CYCLE_MEMORY;standing:kovellim+3;standing:persuader+2;standing:hider+1;terminal:Migrated", "Migrated", "TERMINAL — full trade; three new modules; Kovellim become slice-allies for the Migration"),
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_outcome_partial_trade", "Ovala-Eight-Crossings",
+     "The Folder-Compass is yours. The Brace and the Algorithm we will keep for a future Steward who needs them more. Travel safely. We will see you in the fold.",
+     "", "", "", "(end)",
+     "flag:kovellim_traded_partial=True;module:KOVELLIM_FOLDER_COMPASS;standing:kovellim+1;terminal:Migrated", "Migrated", "TERMINAL — partial trade; one module"),
+    ("kovellim_crossing_trade", "Kovellim", "q_kovellim_outcome_listen_only", "Ovala-Eight-Crossings",
+     "The Archive grows. The stories survive into the next cycle. That is the work, Steward. That has always been the work. Go safely.",
+     "", "", "", "(end)",
+     "flag:kovellim_listened=True;flag:has_archive_kovellim_prior_cycles=True;standing:kovellim+1;standing:hider+2;standing:persuader+1;terminal:Migrated", "Migrated", "TERMINAL — listen-only; Bio-Archive gains prior-cycle entries; no modules but valuable lore"),
+
+    # ========================================================================
+    # Quest: Karavem — Song Exchange (musical-philosopher Migrators)
+    # ========================================================================
+    # SC2-style branch: share-furling-song / request-masterwork / decline / Cleanser
+    # ------------------------------------------------------------------------
+    ("karavem_song_exchange", "Karavem", "q_karavem_start", "Veled-Of-The-Canyon-Wall (elder Karavem conductor; deep-indigo highland plumage; perched on a cliff-amphitheater rail)",
+     "*[entering in slow A major, warm tonic, sustained]* You approach our perch. *[modulating up to D major, opening]* We have heard your wing-beats from a long way away. *[returning to A major, with a high gentle overtone]* You are welcome. Sit, and let us hear you. *[a fluttering wing-gesture, then silence, then quietly]* Do you bring music?",
+     "c_offer_furling_song", "I have a Furling recording in my logs — a Migration hymn from the Persuader faction. I'll share it.", "", "q_karavem_outcome_song_exchange",
+     "", "", "Standard exchange close"),
+    ("karavem_song_exchange", "Karavem", "q_karavem_start", "Veled-Of-The-Canyon-Wall (elder Karavem conductor; deep-indigo highland plumage; perched on a cliff-amphitheater rail)",
+     "*[entering in slow A major, warm tonic, sustained]* You approach our perch. *[modulating up to D major, opening]* We have heard your wing-beats from a long way away. *[returning to A major, with a high gentle overtone]* You are welcome. Sit, and let us hear you. *[a fluttering wing-gesture, then silence, then quietly]* Do you bring music?",
+     "c_request_masterwork", "I want to commission a Karavem masterwork — a navigation-aid composition for the Furling Migration. I'll trade significantly for it.", "", "q_karavem_outcome_masterwork",
+     "", "", "Masterwork close — richer module variant"),
+    ("karavem_song_exchange", "Karavem", "q_karavem_start", "Veled-Of-The-Canyon-Wall (elder Karavem conductor; deep-indigo highland plumage; perched on a cliff-amphitheater rail)",
+     "*[entering in slow A major, warm tonic, sustained]* You approach our perch. *[modulating up to D major, opening]* We have heard your wing-beats from a long way away. *[returning to A major, with a high gentle overtone]* You are welcome. Sit, and let us hear you. *[a fluttering wing-gesture, then silence, then quietly]* Do you bring music?",
+     "c_decline_song", "I have nothing to offer today. Just visiting.", "", "q_karavem_outcome_declined",
+     "", "", "Decline — gentle parting song; small standing dip"),
+    ("karavem_song_exchange", "Karavem", "q_karavem_start", "Veled-Of-The-Canyon-Wall (elder Karavem conductor; deep-indigo highland plumage; perched on a cliff-amphitheater rail)",
+     "*[entering in slow A major, warm tonic, sustained]* You approach our perch. *[modulating up to D major, opening]* We have heard your wing-beats from a long way away. *[returning to A major, with a high gentle overtone]* You are welcome. Sit, and let us hear you. *[a fluttering wing-gesture, then silence, then quietly]* Do you bring music?",
+     "c_cleanser_pressure_karavem", "Council asks whether your sustained singing will flare and attract the Others. We're discussing pre-emption.", "flag:cleanser_karavem_directive=True", "q_karavem_cleanser_pressure",
+     "", "", "Cleanser branch — Karavem will gently retract"),
+
+    ("karavem_song_exchange", "Karavem", "q_karavem_cleanser_pressure", "Veled-Of-The-Canyon-Wall (the elder pauses, then sings a single low note that resolves into the prose translation:)",
+     "*[in low D minor, with deep harmonic resonance]* Steward. We will silence ourselves strategically during the Culling window. The work of song can pause for ten of your days; the Migration plans for this. We are not a flare-risk if we know the timing. *[a brief modulation to D major, then silence]* Withdraw the question. We have already planned for it.",
+     "c_back_down_cleanser_karavem", "I withdraw. I'm sorry. Please continue.", "", "q_karavem_start",
+     "flag:cleanser_karavem_directive=False;standing:persuader+1", "", "Steward retracts — Karavem planning already covers the risk"),
+
+    ("karavem_song_exchange", "Karavem", "q_karavem_outcome_song_exchange", "Veled-Of-The-Canyon-Wall (after listening for several minutes; then composing a reply over another several minutes)",
+     "*[after deep listening; modulating contrapuntally]* Your Persuader hymn carries genuine sorrow under its commitment-melody. We will study it for many years. *[entering a quick scherzo phrase]* Our reply: a Resonance Module for your Scout. It will make your hyperspace travel ~15% more fuel-efficient and add a small audio cue warning you of approaching dimensional turbulence. *[concluding in A major, warmly]* Travel with care. Sing if you remember how.",
+     "", "", "", "(end)",
+     "flag:karavem_exchanged=True;module:KARAVEM_RESONANCE_MODULE;standing:karavem+2;standing:hider+1;terminal:Migrated", "Migrated", "TERMINAL — standard song-exchange; Karavem Resonance Module unlocked"),
+    ("karavem_song_exchange", "Karavem", "q_karavem_outcome_masterwork", "Veled-Of-The-Canyon-Wall (the elder takes a long breath, then assembles the Welcome Choir to compose)",
+     "*[twelve voices in six-part harmony, ~40 minutes of continuous composition]* The masterwork. *[entering in a complex theme-and-variations structure]* A navigation-aid composition for the Furling Migration, calibrated to the dimensional substrate of the upcoming crossing. *[concluding warmly]* It is yours, Steward. Use it. It will make your travel more efficient AND enrich your dialog with strangers — song-thinking carries into conversation. We hope to hear your impressions in Andromeda.",
+     "", "", "", "(end)",
+     "flag:karavem_masterwork=True;module:KARAVEM_RESONANCE_MODULE_DELUXE;standing:karavem+4;standing:persuader+2;standing:hider+2;terminal:Migrated", "Migrated", "TERMINAL — masterwork; enhanced Resonance Module with dialog-context-depth bonus"),
+    ("karavem_song_exchange", "Karavem", "q_karavem_outcome_declined", "Veled-Of-The-Canyon-Wall (sings a brief parting phrase)",
+     "*[a short, gentle, falling cadence]* Then come back when you have a song to share. We will be here. Until the day of departure, we will be here, and we will be singing.",
+     "", "", "", "(end)",
+     "standing:karavem-1;terminal:Migrated", "Migrated", "TERMINAL — declined; can return; small standing dip"),
+
+    # ========================================================================
+    # Quest: The Hijack — acquire the Others' Vessel (rare; late-slice / post-slice)
+    # ========================================================================
+    # SC2-style branch: Mrokon-collaboration / Defender-renegade /
+    # accept-the-Vessel / refuse-and-destroy. Authored 2026-05-17 to fill the
+    # ship_roster canon gap (Others' Vessel is acquired via Hijack quest).
+    # ------------------------------------------------------------------------
+    ("hijack_others_vessel", "Others (target)", "q_hijack_start", "Furling Defender-faction renegade contact (anonymized)",
+     "Steward. You have witnessed Mrokon's Hammer mark them. You have heard Kovellim describe the prior cycles. You have lived a Selvenne playback of the last Culling. You know more about them than any Furling alive. **We have a vessel.** It was disabled by the Hammer-Of-Refusal. It drifts in the cluster's outer halo. We can crew it. We need a pilot. Will you fly it?",
+     "c_ask_about_vessel", "What kind of vessel? What does it do?", "flag:hammer_fired_full=True", "q_hijack_explain_vessel",
+     "", "", "Standard info gather; gated on Hammer firing"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_start", "Furling Defender-faction renegade contact (anonymized)",
+     "Steward. You have witnessed Mrokon's Hammer mark them. You have heard Kovellim describe the prior cycles. You have lived a Selvenne playback of the last Culling. You know more about them than any Furling alive. **We have a vessel.** It was disabled by the Hammer-Of-Refusal. It drifts in the cluster's outer halo. We can crew it. We need a pilot. Will you fly it?",
+     "c_decline_outright", "I won't pilot an Others' ship. Destroy it. We don't need their tools.", "", "q_hijack_outcome_destroyed",
+     "", "", "Refuse + destroy — Persuader/Defender split"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_start", "Furling Defender-faction renegade contact (anonymized)",
+     "Steward. You have witnessed Mrokon's Hammer mark them. You have heard Kovellim describe the prior cycles. You have lived a Selvenne playback of the last Culling. You know more about them than any Furling alive. **We have a vessel.** It was disabled by the Hammer-Of-Refusal. It drifts in the cluster's outer halo. We can crew it. We need a pilot. Will you fly it?",
+     "c_report_to_council", "I'll report this to the Council before deciding. This isn't a private matter.", "", "q_hijack_council_review",
+     "", "", "Council-review path — Persuader-aligned caution"),
+
+    ("hijack_others_vessel", "Others (target)", "q_hijack_explain_vessel", "Defender renegade contact",
+     "The Vessel is unlike anything in your ship roster. Hull substrate is *not material* — it's frozen dimensional substrate, the same medium the Others move through. Decursion as its signature weapon — *temporally displaces targets backward 3-8 seconds*. Speed and maneuverability outpace any slice vessel. **Hull and shields function in a way our engineers do not fully understand and may not be able to repair.** You would be flying alien technology with the original users' fingerprints still on the interface.",
+     "c_accept_vessel", "I'll fly it. Bring me to it.", "", "q_hijack_outcome_acquired",
+     "", "", "Accept — late-slice/post-slice content"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_explain_vessel", "Defender renegade contact",
+     "The Vessel is unlike anything in your ship roster. Hull substrate is *not material* — it's frozen dimensional substrate, the same medium the Others move through. Decursion as its signature weapon — *temporally displaces targets backward 3-8 seconds*. Speed and maneuverability outpace any slice vessel. **Hull and shields function in a way our engineers do not fully understand and may not be able to repair.** You would be flying alien technology with the original users' fingerprints still on the interface.",
+     "c_decline_after_info", "Even so — I won't. Destroy it.", "", "q_hijack_outcome_destroyed",
+     "", "", "Refuse after info — same destroy outcome"),
+
+    ("hijack_others_vessel", "Others (target)", "q_hijack_council_review", "Furling Migration Council (Persuader-aligned majority)",
+     "The matter is grave. The Defenders argue: *we have an Others' Vessel; the data alone is invaluable*. The Persuaders argue: *piloting it normalizes their tools; we should destroy it to keep the line clean*. The Cleansers argue: *whichever you choose, we will support — the Steward's judgment is the canonical voice on Other-related matters since the Hammer*. Your call, Steward.",
+     "c_council_accept", "I'll fly it. The data is worth the moral cost.", "", "q_hijack_outcome_acquired_with_council",
+     "", "", "Council-sanctioned acquisition"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_council_review", "Furling Migration Council (Persuader-aligned majority)",
+     "The matter is grave. The Defenders argue: *we have an Others' Vessel; the data alone is invaluable*. The Persuaders argue: *piloting it normalizes their tools; we should destroy it to keep the line clean*. The Cleansers argue: *whichever you choose, we will support — the Steward's judgment is the canonical voice on Other-related matters since the Hammer*. Your call, Steward.",
+     "c_council_destroy", "I'll order it destroyed. We do not fly their tools.", "", "q_hijack_outcome_destroyed_with_council",
+     "", "", "Council-sanctioned destruction"),
+
+    ("hijack_others_vessel", "Others (target)", "q_hijack_outcome_acquired", "(narration — the Defender renegade contact escorts the Steward to the Vessel; boarding is unsettling; the controls work but in non-intuitive ways; the Vessel becomes flyable)",
+     "The Vessel is in your hands. Super-Melee unlocks it as a selectable hull (with the canonical TESTING_ONLY flag now removed). Decursion is your signature weapon. The Furling Defender renegades have *not* told the Persuaders about this; the Steward now carries a faction secret. **Persuader standing drops sharply for the omission; Defender standing rises.**",
+     "", "", "", "(end)",
+     "flag:has_others_vessel=True;flag:others_vessel_unsanctioned=True;standing:defender+3;standing:persuader-3;standing:cleanser-1", "", "TERMINAL — Vessel acquired secretly; faction-secret cost"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_outcome_acquired_with_council", "(narration — the Council formally inscribes the Vessel into the Furling fleet; the Defender renegades' work is acknowledged; the Steward is the first official Others'-Vessel pilot in galactic history)",
+     "The Vessel is yours, formally. Super-Melee unlocks it. Decursion is your signature weapon. The Council's blessing means *all* factions support the choice. The slice's epilogue will note: *the Steward piloted an Others' Vessel through the dimensional crossing*. Andromeda will see it. The Others, if any remain to perceive it, will see one of their own coming.",
+     "", "", "", "(end)",
+     "flag:has_others_vessel=True;flag:others_vessel_council_sanctioned=True;standing:defender+2;standing:persuader+1;standing:hider+2", "", "TERMINAL — Council-sanctioned acquisition; best outcome for ship-availability"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_outcome_destroyed", "(narration — the Vessel is towed into the cluster's solar collector and dropped into the system's primary; it burns)",
+     "The Vessel is gone. No Furling pilot will fly it. No SC2-era recovery will find a working specimen — Captain Zelnick's era encounters only the *marked* Vessels (per the Mrokon Hammer), not a complete one. The slice's line stays clean. *We do not fly their tools.* Persuader standing rises significantly; Defender standing drops; the Defender renegades who recovered the Vessel are formally censured by the Council.",
+     "", "", "", "(end)",
+     "flag:others_vessel_destroyed=True;standing:persuader+3;standing:cleanser+1;standing:defender-3", "", "TERMINAL — Vessel destroyed; clean-line outcome"),
+    ("hijack_others_vessel", "Others (target)", "q_hijack_outcome_destroyed_with_council", "(narration — the Council formally orders the Vessel's destruction; the Defender renegades comply; the act is recorded in the slice's official log)",
+     "The Vessel is gone. Council-sanctioned destruction. The Defender renegades accept the verdict; no censure issued. The slice records the choice as *the canonical moral position*. The Furling Migration crosses without an Others' Vessel in its fleet.",
+     "", "", "", "(end)",
+     "flag:others_vessel_destroyed=True;flag:hijack_council_sanctioned=True;standing:persuader+2;standing:cleanser+1;standing:defender-1;standing:hider+1", "", "TERMINAL — Council-sanctioned destruction; balanced outcome"),
+
+    # ========================================================================
+    # Quest: Melnorme Recruitment — "Trader's Manifest" / Migration commit
+    # Trigger: spoken to a Melnorme trader + has_distress_beacon=True
+    # Destination: Alpha Vulpeculae (Melnorme Council)
+    # Branches: full-commit (Migrated) / decline (they migrate anyway)
+    # Already implemented in code per walk_melnorme_recruitment; this Lore
+    # spreadsheet entry catches up to Design.
+    # ------------------------------------------------------------------------
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_start", "Melnorme Trade-Master (over comm at any super-giant trading post)",
+     "Carbon-pattern. Captain-form. We have heard of your Distress Beacon. We have... interest. The Council of the Drahn-survivors meets at Alpha Vulpeculae. Will you carry the question of the Migration to them? Your kind asks 'will the Melnorme join your departure?' Our answer requires their Council. Bring the Beacon. Show it to them. They will then deliberate.",
+     "c_accept_journey", "I'll travel to Alpha Vulpeculae. I have the Beacon.", "flag:has_distress_beacon=True", "q_melnorme_council",
+     "", "", "Standard journey-acceptance"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_council", "Melnorme Council Elder, Alpha Vulpeculae (ionization-pattern voice; Drahn-survivor faction speaks formally)",
+     "Carbon-pattern. We who survived Drahn have considered the question. We are nomadic by grief; we are not nomadic by doctrine. The Migration is doctrine. Show us the Beacon. We will judge.",
+     "c_show_beacon", "[Play the Distress Beacon recording for the Council.]", "", "q_melnorme_beacon_seen",
+     "", "", "Beacon-presentation"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_beacon_seen", "Melnorme Council Elder (long ionization-pause; the chamber's ionization patterns visibly shift through the playback)",
+     "*(After the playback completes.)* The Others' decursion. The collapse-pattern. The voices going dark in waves. *(Pause.)* The Drahn-survivors recognize this pattern. Our homeworld's last broadcasts looked like this. *(Quieter.)* You have proven what we suspected and dreaded. We will hear your Migration proposal. But first — the Super-Mart shelving test. It is a tradition. Pass it and we will deliberate in earnest.",
+     "c_attempt_shelving_test", "[Approach the Super-Mart shelving test]", "", "q_melnorme_supermart",
+     "", "", "Forward to the canonical gallows-comic peak"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_supermart", "Melnorme Super-Mart attendant (cheerfully ionizing)",
+     "Carbon-pattern. The Super-Mart shelving test. You will attempt to stock our front shelves with goods of your choosing. The Council watches via ionization-pattern monitors. The test reveals your commercial values. *(Beat.)* The front shelves are reserved for the *best* goods. Choose well.",
+     "c_front_shelf_naive", "[Stock the front shelves with what seems valuable — credits, ship modules, weapons-tech]", "", "q_melnorme_front_fail",
+     "", "", "Naive failure path"),
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_supermart", "Melnorme Super-Mart attendant (cheerfully ionizing)",
+     "Carbon-pattern. The Super-Mart shelving test. You will attempt to stock our front shelves with goods of your choosing. The Council watches via ionization-pattern monitors. The test reveals your commercial values. *(Beat.)* The front shelves are reserved for the *best* goods. Choose well.",
+     "c_back_shelf_wise", "[Realize the Melnorme value organic matter — stock the BACK shelves with the credits/modules and FRONT shelves with raw BIO-cargo]", "", "q_melnorme_back_pass",
+     "", "", "Wise pass — the gallows-comic peak; the test rewards seeing through Furling assumptions"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_front_fail", "Melnorme Super-Mart attendant (politely)",
+     "Carbon-pattern. The front shelves are reserved for organic matter. Credits are *back-shelf goods* in our valuation. You have failed the test gracefully. The Council will still hear your Migration proposal, but the gallows tradition holds: you must now wait while they deliberate. There is tea. It is ionized. You will not enjoy it. But it is offered in good faith.",
+     "c_await_council_humble", "[Wait while the Council deliberates; drink the ionized tea politely]", "", "q_melnorme_awaiting_witness",
+     "", "", "Humble-wait path"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_back_pass", "Melnorme Council Elder (interrupting; ionization-pattern *amusement* visible)",
+     "*(The Council Elder enters mid-test.)* Carbon-pattern. You may have known, or you may have guessed. Either way you have seen through our Furling-assumption joke. Few do. We will consider this evidence of trade-wisdom. *(Long pause.)* The Migration. Yes. We will commit. Drahn is dead; our nomadism is grief; your Migration is direction. Take this — *(an ionization-pattern data-shard is transferred)* — the Melnorme Council Seat sensor. It reveals super-giant trade routes and per-system BIO-yield hints on your starmap. We will see you in Andromeda, Carbon-pattern.",
+     "c_accept_council_seat", "Thank you, Elder. The Migration accepts.", "", "q_melnorme_outcome_committed",
+     "", "", "Best outcome — Council Seat sensor granted"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_awaiting_witness", "Melnorme Council Elder (after long deliberation)",
+     "Carbon-pattern. We have deliberated. The Migration is accepted. We will join in Phase 3. *(The Council Seat data-shard is transferred.)* You did not pass the shelving test, but you did wait gracefully. That is also evidence of trade-wisdom of a different kind.",
+     "", "", "", "(end)",
+     "flag:melnorme_committed=True;module:MELNORME_COUNCIL_SEAT;standing:persuader+2;standing:hider+1;terminal:Migrated", "Migrated", "TERMINAL — humble-wait path; Council Seat sensor"),
+
+    ("melnorme_recruitment", "Melnorme", "q_melnorme_outcome_committed", "(narration — the Melnorme Council formally commits to Migration; Drahn-survivors who have been nomadic by grief now become nomadic by direction; their ionization-pattern fleet joins the Migration Phase 3 logistical wave)",
+     "The Melnorme will Migrate to Andromeda alongside the Selvenne tank-ships. Their super-giant trading posts will be left intact and signaling — canonical SC2-era artifacts (the empty Melnorme stations + ionization-pattern beacons explain SC2 lore Melnorme as RETURNEES from Andromeda).",
+     "", "", "", "(end)",
+     "flag:melnorme_committed=True;module:MELNORME_COUNCIL_SEAT;standing:persuader+3;standing:hider+2;terminal:Migrated", "Migrated", "TERMINAL — best outcome; Council Seat sensor with full standing"),
+
+    # ========================================================================
+    # SLICE TERMINAL: The Endings Evaluation (6-tier ending system)
+    # Fires AFTER the Final Conflict resolves (or, for Unsuccessful/Disastrous,
+    # when the Migration deadline passes with insufficient allies/crew).
+    # Tier determined by ally_count + crewmate_count + side_quest_completion%.
+    # ------------------------------------------------------------------------
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_evaluate", "(narration — the slice's terminal beat; evaluation logic; Design wires the threshold checks)",
+     "*(The Quiet Resolution mandate has reached its end-state. The slice evaluates the Steward's cumulative choices and selects the canonical ending tier.)*",
+     "c_eval_best", "[BEST: all_allies>=16 AND all_crewmates>=5 AND side_quest_completion>=0.95]", "flag:final_conflict_resolved=True;flag:ally_count>=16;flag:crewmate_count>=5;flag:side_quest_completion_pct>=95", "q_endings_best",
+     "", "", "Best ending — slice's purest payoff"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_evaluate", "(narration — the slice's terminal beat; evaluation logic; Design wires the threshold checks)",
+     "*(The Quiet Resolution mandate has reached its end-state. The slice evaluates the Steward's cumulative choices and selects the canonical ending tier.)*",
+     "c_eval_great", "[GREAT: all_allies>=16 AND all_crewmates>=5 AND side_quest_completion>=0.85]", "flag:final_conflict_resolved=True;flag:ally_count>=16;flag:crewmate_count>=5;flag:side_quest_completion_pct>=85", "q_endings_great",
+     "", "", "Great ending — high payoff, some personal threads unfinished"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_evaluate", "(narration — the slice's terminal beat; evaluation logic; Design wires the threshold checks)",
+     "*(The Quiet Resolution mandate has reached its end-state. The slice evaluates the Steward's cumulative choices and selects the canonical ending tier.)*",
+     "c_eval_good", "[GOOD: all_allies>=16 AND crewmate_count in [1,4]]", "flag:final_conflict_resolved=True;flag:ally_count>=16;flag:crewmate_count>=1;!flag:crewmate_count>=5", "q_endings_good",
+     "", "", "Good ending — galaxy saved, home partial"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_evaluate", "(narration — the slice's terminal beat; evaluation logic; Design wires the threshold checks)",
+     "*(The Quiet Resolution mandate has reached its end-state. The slice evaluates the Steward's cumulative choices and selects the canonical ending tier.)*",
+     "c_eval_at_cost", "[SUCCESSFUL-AT-A-COST: ally_count in [8,15] AND crewmate_count in [1,4]]", "flag:final_conflict_resolved=True;flag:ally_count>=8;!flag:ally_count>=16;flag:crewmate_count>=1", "q_endings_at_cost",
+     "", "", "Pragmatic-bittersweet success"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_evaluate", "(narration — the slice's terminal beat; evaluation logic; Design wires the threshold checks)",
+     "*(The Quiet Resolution mandate has reached its end-state. The slice evaluates the Steward's cumulative choices and selects the canonical ending tier.)*",
+     "c_eval_unsuccessful", "[UNSUCCESSFUL: ally_count in [1,7] OR crewmate_count<=1]", "flag:ally_count>=1;!flag:ally_count>=8", "q_endings_unsuccessful",
+     "", "", "Steward escapes alone; Others consume galaxy"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_evaluate", "(narration — the slice's terminal beat; evaluation logic; Design wires the threshold checks)",
+     "*(The Quiet Resolution mandate has reached its end-state. The slice evaluates the Steward's cumulative choices and selects the canonical ending tier.)*",
+     "c_eval_disastrous", "[DISASTROUS: ally_count==0 AND crewmate_count==0]", "!flag:ally_count>=1;!flag:crewmate_count>=1", "q_endings_disastrous",
+     "", "", "Darkest possible outcome — galaxy surrendered in Steward blood"),
+
+    # ====== Ending cinematics — terminal states ======
+
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_best", "(narration — the Migration crossing opens; the fleet enters in canonical order; every named NPC is alive or canonically-honored; the Steward enters last on a bridge full of friends; Halia stands beside them; all Common Room bond-objects visible; Andromeda resettlement shown: Kovellim's 9th-knot scar; Karavem perch-cities in new canyons; Selvenne reef intact; Lemmkin archive being unpacked; Stelloth artifacts accepted; Mrokon dead named in Andromeda; Sevreth's Child humming peacefully; Forward + 2-Thinn diaspora arguing cheerfully)",
+     "*(Steward narration, slice's last text:)* The Quiet Resolution. The bookkeeping is the dignity. The dignity is the work. We continue.",
+     "", "", "", "(end)",
+     "flag:slice_ending=BEST;flag:sc2_era_canonical=True", "", "TERMINAL — Best ending; slice's purest payoff"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_great", "(narration — Migration crossing opens; full alien-fleet enters; Common Room bond-objects partial; some crew arcs visibly unfinished in epilogue)",
+     "*(Steward narration:)* The work was good. Some of it was not done. We continue.",
+     "", "", "", "(end)",
+     "flag:slice_ending=GREAT;flag:sc2_era_canonical=True", "", "TERMINAL — Great ending; high payoff, some personal threads unfinished"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_good", "(narration — Migration crossing opens; alien-species fleet complete; Common Room named-crew alcoves partially empty; Andromeda resettlement happens but the Steward is lonelier)",
+     "*(Steward narration:)* The galaxy was the work. The galaxy made it. The home was also the work. The home is smaller than I hoped.",
+     "", "", "", "(end)",
+     "flag:slice_ending=GOOD;flag:sc2_era_canonical=True", "", "TERMINAL — Good ending; galaxy saved, home partial"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_at_cost", "(narration — Migration crossing opens but the fleet is visibly thinner; some species's expected vessels never arrived; Selvenne reef may have lost sections in transit; Karavem Andromeda perch-city slots empty; Steward enters last on a bridge that is professional-not-warm)",
+     "*(Steward narration:)* The work was the work. We did what we could. Some did not arrive. The dignity is in not pretending otherwise.",
+     "", "", "", "(end)",
+     "flag:slice_ending=AT_COST;flag:sc2_era_canonical=True;flag:sc2_era_partial_artifacts=True", "", "TERMINAL — Successful-at-a-cost ending; pragmatic-bittersweet"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_unsuccessful", "(narration — Migration fleet too sparse to complete formation; Others arrive during assembly; Steward escapes alone via Time Drive + crossing; emerges in Andromeda as the only Furling there; the Others, satisfied with the easy meal, decide they like the taste and stay; the galaxy is consumed forever; the Others maintain it as their permanent feeding-ground; no species ever evolves to sapience in this galaxy again; SC2-era canon does not exist; Earth is consumed in the deep past; Zelnick is never born)",
+     "*(Steward narration, alone in Andromeda:)* I am the only one. The galaxy is the kitchen now. I will tell Andromeda what we were. I will hope no one comes back.",
+     "", "", "", "(end)",
+     "flag:slice_ending=UNSUCCESSFUL;flag:sc2_era_canonical=False;flag:galaxy_consumed_forever=True", "", "TERMINAL — Unsuccessful ending; tragic survivor; SC2 future erased"),
+    ("the_endings_evaluation", "Furlings (us)", "q_endings_disastrous", "(narration — the Steward arrives at the arrow-tip alone; no Migration fleet; no allies; no crew; the Others arrive on schedule; the Steward, having executed the Quiet Resolution mandate so badly that every species reached Eliminated, has lost recognition of the situation; opens Council-channel broadcast Halia trained them to use; attempts to negotiate; the Others do not negotiate but the Steward unilaterally drafts a treaty ceding the galaxy in perpetuity; transmits it; the Others approach the Steward's ship; consume it; consume the Steward; use the Steward's blood to imprint the treaty onto the galaxy's substrate; the treaty is canonical; the galaxy is officially surrendered; the Others eat the galaxy at leisure)",
+     "*(Slice's last text, delivered in canonical wry-bitter Furling humor doctrine register:)* You led negotiations to hand over the galaxy to the Others, for all time, and then they ate you and used your blood to sign the treaty. Good job.",
+     "", "", "", "(end)",
+     "flag:slice_ending=DISASTROUS;flag:sc2_era_canonical=False;flag:galaxy_consumed_forever=True;flag:treaty_signed_in_blood=True", "", "TERMINAL — Disastrous ending; absurdist-horror dark comedy; the slice's intentional punishment for worst-possible-outcome strategy"),
+
+    # ========================================================================
+    # SLICE CLIMAX: The Final Conflict (Sa-Matra Standoff)
+    # The Migration fleet meets Drev-Tok's Homesteader coalition at the
+    # Rainbow Worlds arrow-tip. SC2-style branching: diplomatic-rare /
+    # diplomatic-symbolic / combat-victory.
+    # Trigger: mhlai_destroyed + rainbow_resonator + rainbow_worlds_seeded>=8
+    # + migration_fleet_assembled.
+    # ------------------------------------------------------------------------
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_arrival", "(narration — the Migration fleet completes formation at the Rainbow Worlds arrow-tip; Kovellim nav computes 4 minutes 12 seconds to dimensional-fold readiness; THE DEFENDER FLEET EMERGES from the cluster-edge between the Migration and the crossing point)",
+     "*(All Migration channels open. Admiral Drev-Tok Velt-Mar, voice the Steward has heard on Council channels for two years arguing against every Migration vote, hails the Migration fleet directly.)*",
+     "c_listen_drev_tok", "[Listen to Drev-Tok's address]", "flag:mhlai_destroyed=True;flag:rainbow_resonator_equipped=True;flag:rainbow_worlds_seeded>=8;flag:migration_fleet_assembled=True", "q_final_drev_tok_address",
+     "", "", "Forced opening — climax engaged"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_address", "Admiral Drev-Tok Velt-Mar, Sa-Matra Prototype command bridge (open Council-channel; the voice the Steward has known for two years; now in person at the bridge of the Defender flagship)",
+     "Steward. I have been waiting to meet you in person. *(A pause.)* Two years on the Council channels arguing against your every Migration vote. Two years watching you save Homesteader species while telling the Furlings to leave the rest behind. Two years of the Persuaders calling me 'difficult' and 'unhelpful' and 'a voice that does not understand the timetable.' I understand the timetable. I have always understood. The timetable is **preemptive surrender**. The timetable is **abandoning the species who cannot follow**. Stand aside. Return to the cluster. Fight with us. Or come through me.",
+     "c_negotiate_show_vessel", "Admiral. Look at my ship. *(The Hijacked Others' Vessel decloaks alongside the Furling Scout.)*", "flag:has_others_vessel=True;flag:others_vessel_council_sanctioned=True;flag:halia_status=free_persuader;flag:standing_persuader>=10", "q_final_drev_tok_diplomatic_rare",
+     "", "", "Rare diplomatic success — gated on ALL key prereqs including Council-sanctioned Vessel"),
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_address", "Admiral Drev-Tok Velt-Mar, Sa-Matra Prototype command bridge (open Council-channel; the voice the Steward has known for two years; now in person at the bridge of the Defender flagship)",
+     "Steward. I have been waiting to meet you in person. *(A pause.)* Two years on the Council channels arguing against your every Migration vote. Two years watching you save Homesteader species while telling the Furlings to leave the rest behind. Two years of the Persuaders calling me 'difficult' and 'unhelpful' and 'a voice that does not understand the timetable.' I understand the timetable. I have always understood. The timetable is **preemptive surrender**. The timetable is **abandoning the species who cannot follow**. Stand aside. Return to the cluster. Fight with us. Or come through me.",
+     "c_negotiate_persuader_path", "Admiral — every species you say we abandoned has a *choice* now because of the Migration. Cloaked. Hidden. Devolved. Defiant. They chose. Honor their choice.", "flag:halia_status=free_persuader;flag:standing_persuader>=8", "q_final_drev_tok_diplomatic_symbolic",
+     "", "", "Persuader-symbolic success — bittersweet outcome"),
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_address", "Admiral Drev-Tok Velt-Mar, Sa-Matra Prototype command bridge (open Council-channel; the voice the Steward has known for two years; now in person at the bridge of the Defender flagship)",
+     "Steward. I have been waiting to meet you in person. *(A pause.)* Two years on the Council channels arguing against your every Migration vote. Two years watching you save Homesteader species while telling the Furlings to leave the rest behind. Two years of the Persuaders calling me 'difficult' and 'unhelpful' and 'a voice that does not understand the timetable.' I understand the timetable. I have always understood. The timetable is **preemptive surrender**. The timetable is **abandoning the species who cannot follow**. Stand aside. Return to the cluster. Fight with us. Or come through me.",
+     "c_refuse_negotiation", "Admiral. Coming through you. Stand by.", "", "q_final_super_melee_engage",
+     "", "", "Combat engagement — default path"),
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_address", "Admiral Drev-Tok Velt-Mar, Sa-Matra Prototype command bridge (open Council-channel; the voice the Steward has known for two years; now in person at the bridge of the Defender flagship)",
+     "Steward. I have been waiting to meet you in person. *(A pause.)* Two years on the Council channels arguing against your every Migration vote. Two years watching you save Homesteader species while telling the Furlings to leave the rest behind. Two years of the Persuaders calling me 'difficult' and 'unhelpful' and 'a voice that does not understand the timetable.' I understand the timetable. I have always understood. The timetable is **preemptive surrender**. The timetable is **abandoning the species who cannot follow**. Stand aside. Return to the cluster. Fight with us. Or come through me.",
+     "c_attempt_negotiation_low_standing", "Admiral — please. The Migration is the right call.", "!flag:standing_persuader>=8", "q_final_drev_tok_rejection",
+     "", "", "Failed negotiation attempt — low-Persuader-standing player"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_diplomatic_rare", "Admiral Drev-Tok Velt-Mar (long silence as he stares at the Vessel beside the Steward's ship; the Mrokon marking-tech canonically integrated into a captured Others' hull)",
+     "*(Long silence.)* You did it. You **marked them back**. The Persuader path was the predator-marking path all along. *(Even longer silence.)* My doctrine was wrong. *(He bows his head.)* I will stand aside. My fleet will stand aside. We will fight from this side with the marking-technology you gave us. We have honor now. *(Quieter.)* Go. Honor what you saved. Honor what we held back.",
+     "", "", "", "(end)",
+     "flag:final_conflict_resolved=True;flag:drev_tok_alive=True;flag:diplomatic_resolution=True;standing:persuader+5;standing:defender+3", "", "TERMINAL — best ending; Drev-Tok converts; Migration proceeds with all factions reconciled"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_diplomatic_symbolic", "Admiral Drev-Tok Velt-Mar (long pause; the canonical Furling Defender gesture of slow acknowledgment — three fingers across the chest-plate)",
+     "*(Slow.)* Steward. I cannot stand aside. My doctrine requires the gesture. *(Pause.)* But I will accept a symbolic clash. One volley. For honor. No real damage. Then we let you pass. *(Quieter.)* My cohort will stay in this galaxy with me. We will fight what you leave behind. You may go.",
+     "c_accept_symbolic_clash", "[The fleets exchange one volley of energy-lance fire; both flagships register hits but no critical damage; honor is satisfied]", "", "q_final_drev_tok_symbolic_resolution",
+     "", "", "Symbolic clash close"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_symbolic_resolution", "Admiral Drev-Tok Velt-Mar (after the volley; formally)",
+     "Honor satisfied. *(The Sa-Matra Prototype banks aside.)* Pass through, Steward. The Migration is yours. Tell Andromeda we held this side. Tell Andromeda the Defender doctrine was *seen*. Goodbye.",
+     "", "", "", "(end)",
+     "flag:final_conflict_resolved=True;flag:drev_tok_alive=True;flag:symbolic_resolution=True;standing:persuader+3;standing:defender+2", "", "TERMINAL — bittersweet; Drev-Tok stays with honor guard; Migration completes"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_rejection", "Admiral Drev-Tok Velt-Mar (flat; his voice the same one the Steward has been hearing for two years)",
+     "Two years of *please*, Steward. You have not understood. I have understood you perfectly. *(Flat finality.)* Combat engagement in thirty seconds. Move your fleet to defensive formation. I have honor to return; I owe my cohort the gesture; I will not be denied.",
+     "c_engage_after_rejection", "[Fleet to combat positions]", "", "q_final_super_melee_engage",
+     "", "", "Failed-negotiation → combat"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_super_melee_engage", "(narration — the super-melee begins; Sa-Matra Prototype primary lance opens fire; Furling Migration Lifts form protective shell around Selvenne Tank-Ships; Kovellim Crossing-Frigates absorb damage with Cycle-Fold; Mrokon Hammer-Round loaded if Mrokon migrant Operators present; Karavem Aria-Skiffs sing battle-counterpoint; the player commands the Steward's ship at the center)",
+     "*(Phase 1 — Sa-Matra heavy energy-lance volleys at Migration flagships. Defensive piloting required.)*",
+     "c_phase_1_complete", "[Phase 1 cleared — the fleet survives]", "", "q_final_super_melee_phase_2",
+     "", "", "Phase 1 → 2 transition"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_super_melee_phase_2", "(narration — Sa-Matra Prototype splits into 3-vessel multi-form; the central coordination vessel can be one-shot by crew Precision Focus or Perpendicular Aim if available)",
+     "*(Phase 2 — disrupt the Sa-Matra multi-vessel formation by destroying its central coordination ship. Crew active abilities pay off here.)*",
+     "c_destroy_coordinator", "[Coordination vessel destroyed; Sa-Matra reverts to single-form for Phase 3]", "", "q_final_super_melee_phase_3",
+     "", "", "Phase 2 → 3 transition"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_super_melee_phase_3", "(narration — Sa-Matra unifies for one final volley aimed at the dimensional-crossing arrow-tip itself; Drev-Tok's last attempt is to DESTROY THE CROSSING so no one Migrates; ~30 seconds to intercept)",
+     "*(Phase 3 — Sa-Matra targets the dimensional crossing. Intercept or the Migration cannot complete. Yelena's Field Overhaul if available; Decursion from Hijacked Vessel if equipped.)*",
+     "c_intercept_final_volley", "[The Steward's fleet intercepts the volley; Sa-Matra Prototype reaches 0% hull]", "", "q_final_drev_tok_combat_end",
+     "", "", "Phase 3 cleared — Sa-Matra defeated"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_drev_tok_combat_end", "Admiral Drev-Tok Velt-Mar, Sa-Matra Prototype command bridge (his voice is broken but composed; his ship is silent around him; he does not eject)",
+     "Steward. *(A long pause.)* You were the better tactician. I was wrong about the timetable. I was wrong about you. *(Quieter.)* My Defender cohort died in three operations over twenty years. I have, today, joined them. Lead the Migration. Honor the species we leave behind. Honor the species we carry with us. Goodbye, Steward.",
+     "c_witness_drev_tok_death", "[The Sa-Matra Prototype goes dark. Drev-Tok does not eject. He goes down with his ship.]", "", "q_final_combat_victory",
+     "", "", "Canonical combat-victory outcome"),
+
+    ("the_final_conflict", "Furling Defender (arch-nemesis)", "q_final_combat_victory", "(narration — the Defender fleet, with Drev-Tok dead and the Sa-Matra Prototype destroyed, signals surrender; remaining Defenders accept defeat with formal Furling honor-protocol; some join the Migration in the final minute, others remain in-galaxy with the canonical Defender stay-behind contingent)",
+     "The Migration fleet completes formation. The Rainbow Resonator fires. The Rainbow Worlds align. The dimensional crossing opens — a shimmering iridescent corridor through which Andromeda is faintly visible at the far end.",
+     "", "", "", "(end)",
+     "flag:final_conflict_resolved=True;flag:drev_tok_alive=False;flag:combat_victory=True;flag:migration_corridor_open=True;standing:persuader+4;standing:defender-2", "", "TERMINAL — canonical combat victory; Drev-Tok dies with honor; Migration crossing opens"),
+
+    # ========================================================================
+    # MAJOR SLICE BEAT: The Fall of Mh-Lai
+    # The Others arrive early and strike the Furling home. Forced-acceleration
+    # mid-game event. The Steward chooses how much can be saved + whether to
+    # witness up close. Halia's fate per branch.
+    # Trigger: tutorial_complete + has_distress_beacon + systems_visited>=5 +
+    # (slylandro_decision_made OR mycon_decision_made)
+    # ------------------------------------------------------------------------
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_warning", "Ship's Hyperspace-Echo Sensor (autonomous; the alarm sounds in the cockpit)",
+     "*(Alarm. A large, slow, structured dimensional signature is approaching cluster center. Trajectory unambiguous: inbound on Mh-Lai. The Hider probes detected the Others ~20 minutes ago. They have been tracked to the home system.)* *(The comm crackles. It is Halia.)*",
+     "c_listen_halia", "[Listen to Halia's transmission]", "flag:tutorial_complete=True;flag:has_distress_beacon=True", "q_mhlai_halia_first",
+     "", "", "Forced first-beat — Steward cannot ignore the alarm"),
+
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_halia_first", "Commander Halia, Mh-Lai Council chambers (Persuader-priority channel)",
+     "Steward. They are coming. The Hider probes confirmed it twenty minutes ago. The Council is sealed in the chamber; we have triggered the planetary evacuation protocols. The Migration vessels are at standby orbit and will accept Council members and senior staff. Some will reach them. **Most will not.** Whatever you are doing right now — finish it. Or come back. Either is acceptable. I will not pretend the choice is easy. The math is the math. *If you come: I am in the Council chamber. Find me. We will reach a vessel together if we can. If you do not come: I am still in the Council chamber. The work continues. Migrate. Go.* I love you, Steward. I have been your commander. I have been your friend. Either way — keep going.",
+     "c_race_to_mhlai", "I'm coming. Burn through fuel. Quasi-Drive if I have it. I'm going to find you.", "", "q_mhlai_race",
+     "", "", "Race branch — high-effort high-payoff"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_halia_first", "Commander Halia, Mh-Lai Council chambers (Persuader-priority channel)",
+     "Steward. They are coming. The Hider probes confirmed it twenty minutes ago. The Council is sealed in the chamber; we have triggered the planetary evacuation protocols. The Migration vessels are at standby orbit and will accept Council members and senior staff. Some will reach them. **Most will not.** Whatever you are doing right now — finish it. Or come back. Either is acceptable. I will not pretend the choice is easy. The math is the math. *If you come: I am in the Council chamber. Find me. We will reach a vessel together if we can. If you do not come: I am still in the Council chamber. The work continues. Migrate. Go.* I love you, Steward. I have been your commander. I have been your friend. Either way — keep going.",
+     "c_race_but_doomed", "I'm coming, but the math doesn't work — I'll be there at orbit during the fall, not before.", "", "q_mhlai_race_doomed",
+     "", "", "Mid-effort — witness up close, no save"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_halia_first", "Commander Halia, Mh-Lai Council chambers (Persuader-priority channel)",
+     "Steward. They are coming. The Hider probes confirmed it twenty minutes ago. The Council is sealed in the chamber; we have triggered the planetary evacuation protocols. The Migration vessels are at standby orbit and will accept Council members and senior staff. Some will reach them. **Most will not.** Whatever you are doing right now — finish it. Or come back. Either is acceptable. I will not pretend the choice is easy. The math is the math. *If you come: I am in the Council chamber. Find me. We will reach a vessel together if we can. If you do not come: I am still in the Council chamber. The work continues. Migrate. Go.* I love you, Steward. I have been your commander. I have been your friend. Either way — keep going.",
+     "c_honor_migration", "Halia. *(A long pause.)* I will honor the Migration. I will not waste your math. I'll keep going.", "", "q_mhlai_outcome_dont_race",
+     "", "", "Don't-race branch — canonical 'you accepted the math'"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_halia_first", "Commander Halia, Mh-Lai Council chambers (Persuader-priority channel)",
+     "Steward. They are coming. The Hider probes confirmed it twenty minutes ago. The Council is sealed in the chamber; we have triggered the planetary evacuation protocols. The Migration vessels are at standby orbit and will accept Council members and senior staff. Some will reach them. **Most will not.** Whatever you are doing right now — finish it. Or come back. Either is acceptable. I will not pretend the choice is easy. The math is the math. *If you come: I am in the Council chamber. Find me. We will reach a vessel together if we can. If you do not come: I am still in the Council chamber. The work continues. Migrate. Go.* I love you, Steward. I have been your commander. I have been your friend. Either way — keep going.",
+     "c_cleanser_acceleration_check", "*(Comm interrupts. A Cleanser channel.)* 'Steward — Halia is being evacuated to Cleanser vessel right now. The Persuader Council was warned three days ago and overruled us. We acted unilaterally. You knew this would happen.'", "flag:cleanser_standing>=3;flag:cleanser_action_authorized=True", "q_mhlai_cleanser_branch",
+     "", "", "Cleanser-acceleration variant — only for high-Cleanser slices"),
+
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_race", "(narration — the Steward burns hard for Mh-Lai; Quasi-Drive activates if equipped; fuel reserves drained; arrival window ~20 minutes before the Others)",
+     "*(The Steward arrives in low orbit. Mh-Lai's atmosphere is still calm — the dimensional ripple is approaching from the outer halo but has not crossed yet. The Council chamber's evacuation protocols are visibly underway — small evacuation pods launching toward the standby vessels. Halia's signal is in the chamber. The Steward must descend, find her, and extract.)*",
+     "c_descend_to_chamber", "[Descend to the Council chamber. Find Halia.]", "", "q_mhlai_at_chamber",
+     "", "", "Race path — chamber descent"),
+
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_at_chamber", "Commander Halia, Mh-Lai Council chambers (in person, mid-evacuation chaos)",
+     "Steward! You came. *(Brief warm.)* The chamber is half-evacuated. Three senior Persuaders. Two Hiders. The Defender chief refused to leave; she's in her armor at the Sa-Matra prototype rig. There are seventeen more we can extract if we move now. *(Looking at the Steward, level.)* Lead them out. I will follow last. That is the protocol I trained in. I will honor it.",
+     "c_extract_council_team", "Yes. Move now. Halia — you're coming with us. That's not optional.", "", "q_mhlai_outcome_race_success",
+     "", "", "Successful evacuation — Halia survives"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_at_chamber", "Commander Halia, Mh-Lai Council chambers (in person, mid-evacuation chaos)",
+     "Steward! You came. *(Brief warm.)* The chamber is half-evacuated. Three senior Persuaders. Two Hiders. The Defender chief refused to leave; she's in her armor at the Sa-Matra prototype rig. There are seventeen more we can extract if we move now. *(Looking at the Steward, level.)* Lead them out. I will follow last. That is the protocol I trained in. I will honor it.",
+     "c_honor_her_protocol", "Then I will lead them out and trust you to follow. Halia — see you on the vessel.", "", "q_mhlai_outcome_race_halia_lost",
+     "", "", "Halia honors protocol; Steward extracts but Halia stays too long"),
+
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_race_doomed", "(narration — the Steward arrives in orbit moments before the Others; cannot descend in time; the chamber's last transmission cuts through the orbital comm)",
+     "*(Halia's voice, recorded; broadcast to the cluster on Persuader-priority channel; carries through the silence:)* *(She speaks slowly.)* They are here. The aurora is visible from the chamber window. I am with seven Council members and three Hider researchers. We have triggered the chamber's final-state seal so the data archives go dark with us rather than being read by what comes next. *(A pause.)* Steward — I see your ship in orbit. Thank you for coming. Even now. *(Final.)* Keep going. *(The signal cuts.)*",
+     "c_witness_from_orbit", "[The Steward watches Mh-Lai's atmosphere flicker, then darken, in waves]", "", "q_mhlai_outcome_race_doomed",
+     "", "", "Doomed-race outcome — witnessed up close"),
+
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_cleanser_branch", "Cleanser Captain (on the Cleanser vessel; brisk; matter-of-fact)",
+     "Steward. Commander Halia is aboard. So are eleven Persuader Council members. So are six Hiders. We extracted them three days ago on intelligence the Persuader leadership refused to act on. The Persuaders called it a 'forced evacuation against Council ruling.' We called it doctrine. *(Brief silence.)* The Persuader voice on the Council will now be Halia's, but she will speak through the Cleanser channel. The other senior Persuaders are dead — they refused to leave with us. Halia will tell you the rest. *(Comm shifts.)*",
+     "c_accept_cleanser_outcome", "[The Steward accepts the political reality of Cleanser-acceleration]", "", "q_mhlai_outcome_cleanser_acceleration",
+     "", "", "Cleanser-acceleration outcome"),
+
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_outcome_race_success", "(narration — the Steward leads Halia + ~30% of the Council to the evacuation pods; they reach the Migration vessel Hearth-of-Iron just as the Others' dimensional signature crosses Mh-Lai's outer atmosphere)",
+     "*(Atmospheric aurora; then darkness in waves; the planet unmakes itself over hours. Halia is alive, on Hearth-of-Iron, beside the Steward, watching. She does not speak for a long time. When she does, it is to assign each surviving Council member their next duties. The Persuader faction has its commander. The slice continues with Halia leading the Migration completion from Hearth-of-Iron.)*",
+     "", "", "", "(end)",
+     "flag:mhlai_destroyed=True;flag:halia_alive=True;flag:halia_status=free_persuader;flag:hearth_of_iron_is_home=True;flag:migration_accelerated=True;standing:persuader+4;standing:cleanser-1", "", "TERMINAL — best outcome; Halia survives Persuader-free; positive epilogue"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_outcome_race_halia_lost", "(narration — the Steward extracts seventeen Council members + Halia's instructions to follow last; Halia does not reach a vessel; her final transmission plays during the descent; the Steward arrives at Hearth-of-Iron with Halia's people but not Halia)",
+     "*(The Steward's people are alive. Halia is dead. The Persuader-faction leadership is intact in command-line but emotionally hollowed. The Steward becomes one of the most-senior Persuader voices by default. The Persuader faction will mourn her formally. The slice continues with the Steward stepping into a leadership void.)*",
+     "", "", "", "(end)",
+     "flag:mhlai_destroyed=True;flag:halia_alive=False;flag:halia_status=dead_protocol;flag:hearth_of_iron_is_home=True;flag:migration_accelerated=True;standing:persuader+3;standing:defender+1", "", "TERMINAL — mid outcome; Halia died honoring protocol; Steward inherits leadership weight"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_outcome_race_doomed", "(narration — the Steward watches the fall from orbit; the chamber's final-state seal locks; the data archives go dark with their occupants; Mh-Lai unmakes itself; the Migration vessels depart at silent pace)",
+     "*(The Steward witnesses every moment. The recording will be in the Bio-Archive forever. Halia died in the chamber with the Council; their data went with them; the Others got nothing. The Persuader faction loses leadership; the Steward inherits emotional weight more than political authority. The slice continues with grief-as-fuel.)*",
+     "", "", "", "(end)",
+     "flag:mhlai_destroyed=True;flag:halia_alive=False;flag:halia_status=dead_witnessed;flag:hearth_of_iron_is_home=True;flag:migration_accelerated=True;flag:has_archive_mhlai_fall_witnessed=True;standing:persuader+2;standing:hider+2", "", "TERMINAL — Steward witnessed the fall from orbit; deepest personal grief"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_outcome_dont_race", "(narration — the Steward stays on current trajectory; Halia's last transmission arrives via long-range comm; the Steward grieves from a distance; the cluster goes silent for hours after the fall)",
+     "*(The slice's Council leadership is gone. Halia and the senior Persuaders died in the chamber. The Steward becomes one of the most-senior surviving Persuader voices by default. The Hearth-of-Iron Migration flagship assumes the role Mh-Lai used to fill. The Steward continues to lead, knowing they did not bear personal witness to the fall — a fact that will sit with them for the rest of the slice and into Andromeda.)*",
+     "", "", "", "(end)",
+     "flag:mhlai_destroyed=True;flag:halia_alive=False;flag:halia_status=dead_distant;flag:hearth_of_iron_is_home=True;flag:migration_accelerated=True;flag:did_not_race_to_mhlai=True;standing:persuader+1;standing:defender+1", "", "TERMINAL — canonical 'you accepted the math' branch; emotional cost; political pragmatism intact"),
+    ("the_fall_of_mh_lai", "Furlings (us)", "q_mhlai_outcome_cleanser_acceleration", "(narration — Mh-Lai falls; Halia is alive on the Cleanser vessel; the Cleanser doctrine now supervises Council communications; the Persuader faction operates under Cleanser oversight for the rest of the slice)",
+     "*(Halia is alive and miserable. Her formal transmissions go through Cleanser-channel review. Persuader-faction policy is now Cleanser-approved-only. The Steward continues to lead operationally but every Persuader instinct must now be reconciled with Cleanser doctrine. This is the political price of high Cleanser standing. The slice continues — but the Steward's faction has lost its voice without losing its commander.)*",
+     "", "", "", "(end)",
+     "flag:mhlai_destroyed=True;flag:halia_alive=True;flag:halia_status=cleanser_supervised;flag:hearth_of_iron_is_home=True;flag:migration_accelerated=True;flag:persuader_voice_collapsed=True;standing:cleanser+2;standing:persuader-4", "", "TERMINAL — worst surviving-Halia outcome; Cleanser captures the Council"),
+
+    # ========================================================================
+    # Crew Recruitment Quest: Forward, Thinn Rebel (Weapons Officer; ALT to Bren-Vor)
+    # Trigger: visited_spire=True AND !recruited_weapons_officer (slot empty)
+    # Mutually exclusive with Bren-Vor. Once one is recruited, the other's
+    # hook deactivates.
+    # ------------------------------------------------------------------------
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_start", "Forward, Thinn Rebel (canonically 2D — standing FORWARD-FACING toward the Steward, NOT edge-on; iridescent teal-violet-gold ribbon-body; the only Thinn ever to do this)",
+     "Furling. Hello. I am Forward. *(He pauses, looks at the Steward's reaction with sincere curiosity.)* You are surprised. The other Thinn told you Thinn use plural pronouns. The other Thinn told you Thinn face edge-on. I do not. I face forward. I am the first Thinn to use singular pronouns in fifty thousand years. I have been waiting here at Mh-Lai docks for three of your years for a Steward who would not refuse me on sight. I require a ship. I would like yours. I am a good aimer.",
+     "c_ask_forward_motto", "Tell me your doctrine. Why do you face forward?", "flag:visited_spire=True;!flag:recruited_weapons_officer", "q_forward_motto",
+     "", "", "Standard info-gather; gated on Spire visited + slot empty"),
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_start", "Forward, Thinn Rebel (canonically 2D — standing FORWARD-FACING toward the Steward, NOT edge-on; iridescent teal-violet-gold ribbon-body; the only Thinn ever to do this)",
+     "Furling. Hello. I am Forward. *(He pauses, looks at the Steward's reaction with sincere curiosity.)* You are surprised. The other Thinn told you Thinn use plural pronouns. The other Thinn told you Thinn face edge-on. I do not. I face forward. I am the first Thinn to use singular pronouns in fifty thousand years. I have been waiting here at Mh-Lai docks for three of your years for a Steward who would not refuse me on sight. I require a ship. I would like yours. I am a good aimer.",
+     "c_ask_why_singular", "Why singular pronouns? Your species uses 'we' — what changed?", "flag:visited_spire=True;!flag:recruited_weapons_officer", "q_forward_explain_singular",
+     "", "", "Lore exposition — singular-pronoun rebellion"),
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_start", "Forward, Thinn Rebel (canonically 2D — standing FORWARD-FACING toward the Steward, NOT edge-on; iridescent teal-violet-gold ribbon-body; the only Thinn ever to do this)",
+     "Furling. Hello. I am Forward. *(He pauses, looks at the Steward's reaction with sincere curiosity.)* You are surprised. The other Thinn told you Thinn use plural pronouns. The other Thinn told you Thinn face edge-on. I do not. I face forward. I am the first Thinn to use singular pronouns in fifty thousand years. I have been waiting here at Mh-Lai docks for three of your years for a Steward who would not refuse me on sight. I require a ship. I would like yours. I am a good aimer.",
+     "c_decline_forward", "I appreciate the offer but I think I'll pass. *(or pursue Bren-Vor track)*", "flag:visited_spire=True;!flag:recruited_weapons_officer", "(end)",
+     "", "", "Decline — Forward stays at Mh-Lai docks; Bren-Vor path remains available"),
+
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_motto", "Forward",
+     "*(He recites his canonical motto, having clearly practiced it for years.)* *'Face them head on, but keep your eyes pointed at them at a conceptually impossible angle forward at a 90 degree angle perpendicular our reality, and into to this mythical \"space\" everyone keeps talking about, and we shall survive.'* *(Beat. He looks at the Steward earnestly.)* I am not sure what 'space' is. The Furlings keep referring to it. I have a theory about a fourth dimension I can perceive that the other Thinn cannot. Your xenophysiologists have measured this and concluded I do perceive something but the something may not be a fourth dimension. I do not know the difference. The motto works for me regardless.",
+     "c_recruit_after_motto", "Welcome aboard, Forward. The slot is yours.", "", "q_forward_outcome_recruited",
+     "", "", "Recruit after motto recital"),
+
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_explain_singular", "Forward",
+     "*(He considers.)* The troupe uses 'we who watch.' I disagreed about facing edge-on. The troupe said 'we do not require seeing them.' I said 'I require seeing them.' They said 'you ARE we; we do not require seeing them.' I said 'I.' *(Quietly.)* This is a thing Thinn cannot do. Our cognition is collective. Using singular pronouns is *both linguistic heresy and apparently medically inadvisable*. I did it anyway. *(Beat.)* It hurt. It still hurts a little. Some days I think my own thoughts are dimmer for being only mine. But I see the predator coming and the rest of the Thinn do not.",
+     "c_recruit_after_singular", "That took courage. Come aboard.", "", "q_forward_outcome_recruited",
+     "", "", "Recruit after singular-pronoun explanation"),
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_explain_singular", "Forward",
+     "*(He considers.)* The troupe uses 'we who watch.' I disagreed about facing edge-on. The troupe said 'we do not require seeing them.' I said 'I require seeing them.' They said 'you ARE we; we do not require seeing them.' I said 'I.' *(Quietly.)* This is a thing Thinn cannot do. Our cognition is collective. Using singular pronouns is *both linguistic heresy and apparently medically inadvisable*. I did it anyway. *(Beat.)* It hurt. It still hurts a little. Some days I think my own thoughts are dimmer for being only mine. But I see the predator coming and the rest of the Thinn do not.",
+     "c_recruit_with_compassion", "I want to take you on, and I want to bring you back to Spire someday on your terms. Welcome aboard.", "", "q_forward_outcome_recruited_compassion",
+     "", "", "Recruit with future-side-quest commitment"),
+
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_outcome_recruited", "Forward",
+     "*(He vibrates with what the Steward will learn to recognize as Thinn excitement — a faint chromatic ripple from base to top of his ribbon-body.)* Yes. Thank you. I will fetch my belongings. I have one belonging. I will fetch it.",
+     "", "", "", "(end)",
+     "flag:recruited_weapons_officer=True;flag:recruited_weapons_officer_thinn=True;module:CREW_WEAPONS_OFFICER_THINN;flag:bren_vor_hook_deactivated=True", "", "TERMINAL — Forward aboard; Bren-Vor hook deactivates"),
+    ("crew_weapons_officer_thinn", "Thinn (rebel; weapons officer)", "q_forward_outcome_recruited_compassion", "Forward",
+     "*(He ripples. Looks at the Steward steadily.)* You are the first Furling to say that. Yes. I accept. I will go to Spire with you, eventually, on terms I will choose when I am ready. Thank you, Steward.",
+     "", "", "", "(end)",
+     "flag:recruited_weapons_officer=True;flag:recruited_weapons_officer_thinn=True;flag:forward_compassion_path=True;module:CREW_WEAPONS_OFFICER_THINN;flag:bren_vor_hook_deactivated=True", "", "TERMINAL — Forward aboard with compassion-path bonus"),
+
+    # ========================================================================
+    # Crew Side-Quest: Forward's "Forward Says Goodbye"
+    # Trigger: recruited_weapons_officer_thinn=True AND systems_visited>=5
+    # Branches: confront-with-data / quiet-goodbye / skip
+    # ------------------------------------------------------------------------
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_start", "Forward, Thinn Rebel (in the Common Room; standing forward-facing toward the Steward's bunk)",
+     "Steward. I would like to return to Spire. I have data the troupe should see. I have the Furling Hider research on Edge-Align efficacy. The doctrine will not work. The troupe should know. *(Beat.)* They will not change their minds. I know. I am Thinn. We do not change our minds. But they should know.",
+     "c_agree_confront_troupe", "Yes — let's go. Confront them with the data.", "flag:recruited_weapons_officer_thinn=True;flag:systems_visited>=5", "q_forward_sq_confrontation",
+     "", "", "Confront-with-data path — best outcome"),
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_start", "Forward, Thinn Rebel (in the Common Room; standing forward-facing toward the Steward's bunk)",
+     "Steward. I would like to return to Spire. I have data the troupe should see. I have the Furling Hider research on Edge-Align efficacy. The doctrine will not work. The troupe should know. *(Beat.)* They will not change their minds. I know. I am Thinn. We do not change our minds. But they should know.",
+     "c_offer_quiet_goodbye", "We can go to Spire — but maybe not to confront. Maybe just to say goodbye on your terms.", "flag:recruited_weapons_officer_thinn=True;flag:systems_visited>=5", "q_forward_sq_quiet",
+     "", "", "Quiet-goodbye path"),
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_start", "Forward, Thinn Rebel (in the Common Room; standing forward-facing toward the Steward's bunk)",
+     "Steward. I would like to return to Spire. I have data the troupe should see. I have the Furling Hider research on Edge-Align efficacy. The doctrine will not work. The troupe should know. *(Beat.)* They will not change their minds. I know. I am Thinn. We do not change our minds. But they should know.",
+     "c_decline_detour_forward", "Not now, Forward. We have other priorities.", "flag:recruited_weapons_officer_thinn=True;flag:systems_visited>=5", "q_forward_sq_outcome_skipped",
+     "", "", "Skip — Forward carries the grief; bonus locked"),
+
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_confrontation", "Thinn troupe elder (We-Who-Watch-The-Edge, on Spire; speaking in canonical Thinn collective-plural)",
+     "Forward. *(The troupe uses his rebel-name without complaint; this is itself a concession.)* We have looked at your data. We agree the data is correct. The probability is approximately one in four that Edge-Align works. We have agreed about this for three of your years. We will still face sideways. We are the Thinn. *(A pause; the troupe ripples in a way Forward recognizes.)* Forward. You will not return. Two of us will go with you. They have asked. We do not stop them. They believe in your forward-facing. They are wrong. So are we. The Furlings should keep all three of you for as long as they can.",
+     "c_accept_two_thinn", "[Two Thinn step forward from the troupe; they will board the Steward's ship]", "", "q_forward_sq_outcome_collective",
+     "", "", "Best outcome — Forward gains a tiny collective"),
+
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_quiet", "Thinn troupe elder (gentle; ripple of acknowledgment)",
+     "Forward. *(They use his name; they acknowledge his form.)* You are still a fragment of we-who-watch. We know. We have always known. The singular is a property you have applied to yourself; we do not require it of you. *(Long silence.)* Go with the Furling. Be a we-of-one with them. We will be a we-of-many here. When the Others come, we will all see them in our own way. *(A pause; the troupe ripples in farewell.)*",
+     "c_witness_forward_grief", "[Forward ripples chromatically — the canonical Thinn grief gesture — for the first time the Steward has seen]", "", "q_forward_sq_outcome_quiet",
+     "", "", "Forward grieves; peace path"),
+
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_outcome_collective", "(narration — two Thinn board the Furling Scout; their names per the troupe: We-Who-Watch-The-Far-Slope and We-Who-Watch-The-Lower-Bench. Forward greets them; they ripple back. The three Thinn argue cheerfully about doctrine on the way back to the ship.)",
+     "Forward has a collective of three now. The Common Room's weapons-officer alcove will accommodate all three Thinn — Forward forward-facing, the other two edge-on per their preserved doctrine. They argue *constantly*. The Furlings find this delightful.",
+     "", "", "", "(end)",
+     "flag:forward_sq_complete=True;flag:forward_collective_aboard=True;module:CREW_WEAPONS_OFFICER_THINN_PROMOTED;standing:thinn+3;standing:persuader+1;terminal:MixedEliminatedMigrated", "MixedEliminatedMigrated", "TERMINAL — best outcome; Forward's promoted bonus + tiny Thinn diaspora migrates to Andromeda"),
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_outcome_quiet", "(narration — Forward says goodbye to the troupe; he ripples chromatically — the canonical Thinn grief gesture — for the first time the Steward has seen)",
+     "Forward returns to the Furling Scout. He is quieter for several days. Then he resumes his canonical cheerful sincerity, but the Common Room's ambient bed will carry a faint chromatic ripple-tone whenever Forward enters from now on — a quiet residual of the grief he showed the troupe. The Steward and the rest of the crew never speak of it directly.",
+     "", "", "", "(end)",
+     "flag:forward_sq_complete=True;flag:forward_grief_witnessed=True;module:CREW_WEAPONS_OFFICER_THINN_PROMOTED;standing:thinn+1", "", "TERMINAL — quiet-goodbye; Forward's promoted bonus unlocked + lore-flag for future Thinn-encounter dialog"),
+    ("crew_weapons_officer_thinn_side_quest", "Thinn (rebel; weapons officer)", "q_forward_sq_outcome_skipped", "(narration — Forward accepts the Steward's call; the trip never happens; the slice continues without Forward's confrontation)",
+     "Forward stays in his alcove more than usual. He still says good things; he still aims well; he is still Forward. But the slice ends without the confrontation. His promoted bonus is locked.",
+     "", "", "", "(end)",
+     "flag:forward_sq_skipped=True", "", "TERMINAL — Forward distant; bonus locked"),
+
+    # ========================================================================
+    # Post-Fall Common Room reactions (5 mini-dialogs, one per crew)
+    # All gated on flag:mhlai_destroyed=True; branch-aware on halia_status.
+    # Player can engage each crew separately in the post-Fall Common Room.
+    # ------------------------------------------------------------------------
+    ("post_fall_crew_pilot", "Furling crew (Drifter)", "q_mraka_postfall_start", "Mraka Yenn-Sa, Furling Drifter (at her alcove window, looking at the dark spot where Mh-Lai used to be)",
+     "Steward. They came here. To us. Not to a species we warned about. To us. *(She does not look away from the window.)* Mh-Lai is — was — the docks I grew up on. The Drifter's Circuit ran out of Mh-Lai's third moon. I learned to fold-vector at the Olwen-Veth memorial site, which is now... I don't know what it is now. Did Halia survive?",
+     "c_halia_alive_persuader", "Halia is alive. She's on Hearth-of-Iron now, leading the Migration completion.", "flag:halia_status=free_persuader", "q_mraka_postfall_halia_alive",
+     "", "", "Halia-alive branch"),
+    ("post_fall_crew_pilot", "Furling crew (Drifter)", "q_mraka_postfall_start", "Mraka Yenn-Sa, Furling Drifter (at her alcove window, looking at the dark spot where Mh-Lai used to be)",
+     "Steward. They came here. To us. Not to a species we warned about. To us. *(She does not look away from the window.)* Mh-Lai is — was — the docks I grew up on. The Drifter's Circuit ran out of Mh-Lai's third moon. I learned to fold-vector at the Olwen-Veth memorial site, which is now... I don't know what it is now. Did Halia survive?",
+     "c_halia_dead", "Halia died. In the Council chamber. I have her last transmission.", "flag:halia_alive=False", "q_mraka_postfall_halia_dead",
+     "", "", "Halia-dead branch (either witness variant)"),
+    ("post_fall_crew_pilot", "Furling crew (Drifter)", "q_mraka_postfall_start", "Mraka Yenn-Sa, Furling Drifter (at her alcove window, looking at the dark spot where Mh-Lai used to be)",
+     "Steward. They came here. To us. Not to a species we warned about. To us. *(She does not look away from the window.)* Mh-Lai is — was — the docks I grew up on. The Drifter's Circuit ran out of Mh-Lai's third moon. I learned to fold-vector at the Olwen-Veth memorial site, which is now... I don't know what it is now. Did Halia survive?",
+     "c_halia_cleanser", "Halia is alive. The Cleansers evacuated her before the fall. She's on a Cleanser vessel. The Persuader voice on the Council is... compromised.", "flag:halia_status=cleanser_supervised", "q_mraka_postfall_halia_cleanser",
+     "", "", "Cleanser-supervised branch"),
+
+    ("post_fall_crew_pilot", "Furling crew (Drifter)", "q_mraka_postfall_halia_alive", "Mraka",
+     "*(Long exhale.)* Thank you. *(She finally turns from the window.)* I lost the Olwen-Veth twelve years ago because I trusted the wrong pilot. I — Steward, if Halia is alive, then your math was *correct*. You chose right. *(Pause.)* I'm sorry I cannot make a joke right now. The Drifter would. I cannot.",
+     "", "", "", "(end)",
+     "flag:mraka_postfall_resolved=True", "", "TERMINAL — Mraka's relief; deeper bond"),
+    ("post_fall_crew_pilot", "Furling crew (Drifter)", "q_mraka_postfall_halia_dead", "Mraka",
+     "*(She closes her eyes for a long second.)* Two memorials in twelve years. The Olwen-Veth was the first. *(She turns from the window.)* Steward — when we drift-fly into Andromeda, I will drift-fly the lead vector. I will fly it for Halia. I will fly it for the Olwen-Veth. I will fly it because I *can* and they cannot. *(A pause.)* Drink your tea. That was what Halia would have said. I will say it instead.",
+     "", "", "", "(end)",
+     "flag:mraka_postfall_resolved=True;flag:mraka_will_lead_vector=True", "", "TERMINAL — Mraka's grief integrated"),
+    ("post_fall_crew_pilot", "Furling crew (Drifter)", "q_mraka_postfall_halia_cleanser", "Mraka",
+     "*(A long silence.)* So Halia is alive but she is *not Halia*. *(She turns from the window for the first time; her eyes are hard.)* Steward. The Drifter's Circuit had a rule: *if you save someone's body by breaking their flight, you have not saved them*. I think the Cleansers broke Halia's flight. I think she would say the same thing if she could say it without supervision. *(Quieter.)* I will fly for you. I will not fly for the Cleanser-channel Halia. Are we clear.",
+     "", "", "", "(end)",
+     "flag:mraka_postfall_resolved=True;flag:mraka_rejects_cleanser_halia=True", "", "TERMINAL — Mraka rejects the Cleanser-supervised outcome"),
+
+    # Bren-Vor's post-Fall reaction
+    ("post_fall_crew_weapons", "Furling crew (Aimer)", "q_brenvor_postfall_start", "Bren-Vor Telcas, Furling Aimer (seated on his bunk; weapons-cleaning kit CLOSED for once; his hands are still)",
+     "Steward. *(He does not stand.)* Velt-Ra would have had a firing solution. She would have... I would have... we don't have one. The doctrine doesn't apply here. *(His hands begin to shake very slightly.)* This is what the Cleansers said the doctrine was *for*. Pre-emption. Eliminate the threat before the threat eliminates us. The doctrine did not work. The doctrine *cannot* work. The Others are not a threshold-flare species. They are *coming*, and Mh-Lai is — was —",
+     "c_console_brenvor_persuader", "The Persuader path is still real, Bren-Vor. Halia would say so. Karol-Vere's demotion still meant something.", "flag:halia_status=free_persuader", "q_brenvor_postfall_console_alive",
+     "", "", "Halia-alive console"),
+    ("post_fall_crew_weapons", "Furling crew (Aimer)", "q_brenvor_postfall_start", "Bren-Vor Telcas, Furling Aimer (seated on his bunk; weapons-cleaning kit CLOSED for once; his hands are still)",
+     "Steward. *(He does not stand.)* Velt-Ra would have had a firing solution. She would have... I would have... we don't have one. The doctrine doesn't apply here. *(His hands begin to shake very slightly.)* This is what the Cleansers said the doctrine was *for*. Pre-emption. Eliminate the threat before the threat eliminates us. The doctrine did not work. The doctrine *cannot* work. The Others are not a threshold-flare species. They are *coming*, and Mh-Lai is — was —",
+     "c_console_brenvor_dead", "Halia died honoring protocol. The Persuader path she chose — what we chose together — was still right.", "flag:halia_alive=False", "q_brenvor_postfall_console_dead",
+     "", "", "Halia-dead console"),
+    ("post_fall_crew_weapons", "Furling crew (Aimer)", "q_brenvor_postfall_start", "Bren-Vor Telcas, Furling Aimer (seated on his bunk; weapons-cleaning kit CLOSED for once; his hands are still)",
+     "Steward. *(He does not stand.)* Velt-Ra would have had a firing solution. She would have... I would have... we don't have one. The doctrine doesn't apply here. *(His hands begin to shake very slightly.)* This is what the Cleansers said the doctrine was *for*. Pre-emption. Eliminate the threat before the threat eliminates us. The doctrine did not work. The doctrine *cannot* work. The Others are not a threshold-flare species. They are *coming*, and Mh-Lai is — was —",
+     "c_brenvor_cleanser_anger", "The Cleansers... evacuated themselves three days early. Halia is alive but she's on their vessel.", "flag:halia_status=cleanser_supervised", "q_brenvor_postfall_cleanser",
+     "", "", "Bren-Vor's worst-case reaction"),
+
+    ("post_fall_crew_weapons", "Furling crew (Aimer)", "q_brenvor_postfall_console_alive", "Bren-Vor",
+     "*(He nods slowly. His hands stop shaking.)* Yes. Karol-Vere's demotion meant something. Halia is alive. The Persuader path is real. *(Quietly.)* Velt-Ra's journal is sealed on my shelf. I will not open it again until Andromeda. *(He closes his eyes.)* Thank you, Steward.",
+     "", "", "", "(end)",
+     "flag:brenvor_postfall_resolved=True", "", "TERMINAL — Bren-Vor's grief contained"),
+    ("post_fall_crew_weapons", "Furling crew (Aimer)", "q_brenvor_postfall_console_dead", "Bren-Vor",
+     "*(He nods, very small.)* Yes. Halia honored protocol. My sister honored protocol three years ago. Two Persuader women in five years who did the work to its honest end. *(Very quiet.)* Steward — I will fire every shot left in this slice with their names in my mind. The doctrine is dead. The *people* who served it cleanly are not.",
+     "", "", "", "(end)",
+     "flag:brenvor_postfall_resolved=True;flag:brenvor_naming_shots=True", "", "TERMINAL — Bren-Vor integrates double-grief"),
+    ("post_fall_crew_weapons", "Furling crew (Aimer)", "q_brenvor_postfall_cleanser", "Bren-Vor (his voice goes flat — the trained-Defender register he has not used since recruitment)",
+     "The Cleansers evacuated themselves three days early. *(Long pause.)* Steward. I left the Defender track for this exact reason. The Cleansers *act unilaterally* and call it doctrine. Halia is alive but the Cleansers have her. *(Quieter, dangerous.)* I will not stand a Council watch under Cleanser supervision. When we reach Andromeda, I will resign. I will fly with you until then because you have earned that. After — I am not a Cleanser-channel weapons officer.",
+     "", "", "", "(end)",
+     "flag:brenvor_postfall_resolved=True;flag:brenvor_will_resign_post_andromeda=True", "", "TERMINAL — Bren-Vor commits to post-Andromeda resignation"),
+
+    # Yelena's post-Fall reaction
+    ("post_fall_crew_engineer", "Furling crew (Mender)", "q_yelena_postfall_start", "Yelena Lwen-Tar, Furling Mender (at her workbench; her tools are STILL; she is holding her father Korven's surviving tool-belt buckle)",
+     "Steward. Mev-Tar is on Hearth-of-Iron. She sent a message twelve minutes after the fall. She's safe. The Unzervalt tooling moved with her. *(Her voice catches.)* Twelve-Forty-Eight is the LAST Scout built at Unzervalt now. There will be more Scouts in Andromeda — Mev-Tar will rebuild the floor — but they will be Andromeda Scouts. Twelve-Forty-Eight is the last *this-galaxy* Scout. *(She finally looks up at the Steward.)* I am — I am grateful Mev-Tar is alive. I am — *Steward, I do not know how to feel about being grateful in the middle of this.*",
+     "c_console_yelena", "Being grateful in the middle of grief is the work, Yelena. It's not a betrayal of the dead.", "", "q_yelena_postfall_console",
+     "", "", "Standard console"),
+    ("post_fall_crew_engineer", "Furling crew (Mender)", "q_yelena_postfall_start", "Yelena Lwen-Tar, Furling Mender (at her workbench; her tools are STILL; she is holding her father Korven's surviving tool-belt buckle)",
+     "Steward. Mev-Tar is on Hearth-of-Iron. She sent a message twelve minutes after the fall. She's safe. The Unzervalt tooling moved with her. *(Her voice catches.)* Twelve-Forty-Eight is the LAST Scout built at Unzervalt now. There will be more Scouts in Andromeda — Mev-Tar will rebuild the floor — but they will be Andromeda Scouts. Twelve-Forty-Eight is the last *this-galaxy* Scout. *(She finally looks up at the Steward.)* I am — I am grateful Mev-Tar is alive. I am — *Steward, I do not know how to feel about being grateful in the middle of this.*",
+     "c_acknowledge_yelena_silent", "[The Steward sits with Yelena in silence for a while. No words.]", "", "q_yelena_postfall_silent",
+     "", "", "Silent-support path"),
+
+    ("post_fall_crew_engineer", "Furling crew (Mender)", "q_yelena_postfall_console", "Yelena",
+     "*(She nods slowly. She picks up a single tool from her rack — the smallest one — and turns it in her hands.)* Twelve-Forty-Eight will fly to Andromeda. She will carry us all. *(Quieter.)* I will keep her flying. That is what Korven would have done. That is what Mev-Tar will do for the Andromeda Scouts. That is what I do here. The work continues, Steward. The work continues.",
+     "", "", "", "(end)",
+     "flag:yelena_postfall_resolved=True", "", "TERMINAL — Yelena re-grounds in the work"),
+    ("post_fall_crew_engineer", "Furling crew (Mender)", "q_yelena_postfall_silent", "(narration — the Steward and Yelena sit together at her workbench for nine minutes; she does not speak; she eventually picks up a tool and resumes work, very slowly; the bond is deepened by the silence)",
+     "Yelena resumes her work without speaking. The Steward leaves quietly. The bond is established without words.",
+     "", "", "", "(end)",
+     "flag:yelena_postfall_resolved=True;flag:yelena_silent_bond=True", "", "TERMINAL — silent-support outcome"),
+
+    # Mira-Rou's post-Fall reaction
+    ("post_fall_crew_medic", "Furling crew (Bio-Architect)", "q_mira_postfall_start", "Mira-Rou Halve-Tel, Furling Bio-Architect (at her amphora shelf; holding the amphora carefully; if Sevreth's Child is alive, the bioluminescent presence inside is unusually bright)",
+     "Steward. My ancestors made things at Mh-Lai. The Halve-Tel labs were on the third sub-floor of the bio-architect wing. The original biot-design tools are gone. The original Olune Halve-Tel notes are gone. *(She looks at her amphora.)* This fragment — the heirloom — *may be the last biot-fragment of its lineage in this galaxy*. I will carry it. I will arrive with it. We will continue. *(She is, quietly, fierce.)* What did Halia say?",
+     "c_share_halia_words", "Halia said 'keep going.' That was the last thing she said. To all of us.", "", "q_mira_postfall_halia_words",
+     "", "", "Share Halia's words"),
+
+    ("post_fall_crew_medic", "Furling crew (Bio-Architect)", "q_mira_postfall_halia_words", "Mira-Rou",
+     "*(She nods slowly. She holds the amphora a little tighter.)* Then we keep going. *(If Sevreth's Child is alive — the chemical-signal humming intensifies briefly; Mira-Rou translates.)* Sevreth's Child says... Sevreth's Child agrees. *(She smiles for the first time since the fall — small, sad, real.)* The Halve-Tel lineage continues, Steward. In this amphora. In Andromeda. In the work. We will arrive.",
+     "", "", "", "(end)",
+     "flag:mira_postfall_resolved=True", "", "TERMINAL — Mira-Rou's quiet fierce hope"),
+
+    # Tarven's post-Fall reaction
+    ("post_fall_crew_navigator", "Furling crew (Star-Reader)", "q_tarven_postfall_start", "Tarven Olwen-Sa, Furling Star-Reader (surrounded by log-readers but they are all OFF; his eternal tea-cup is empty)",
+     "Steward. Seven prior Stewards. Their archives were at Mh-Lai. They are gone now. I have the local copies. I have... I have most of them. But the ones I didn't copy — they are gone. Steward Halve-Kor's tenth-decade log. Steward Velven-Sa's hyperspace-fold treatise. The *third* Steward — the one Furling mourning-customs prevent me from naming — her entire post-tenure correspondence with the Council. *Gone*. *(His hands shake slightly. The eternal tea-cup is empty.)* The prior Stewards are *gone*.",
+     "c_console_tarven", "The Stewards aren't gone, Tarven. You read them. You carry them. The archive is in you.", "", "q_tarven_postfall_console",
+     "", "", "Console — knowledge-as-archive"),
+    ("post_fall_crew_navigator", "Furling crew (Star-Reader)", "q_tarven_postfall_start", "Tarven Olwen-Sa, Furling Star-Reader (surrounded by log-readers but they are all OFF; his eternal tea-cup is empty)",
+     "Steward. Seven prior Stewards. Their archives were at Mh-Lai. They are gone now. I have the local copies. I have... I have most of them. But the ones I didn't copy — they are gone. Steward Halve-Kor's tenth-decade log. Steward Velven-Sa's hyperspace-fold treatise. The *third* Steward — the one Furling mourning-customs prevent me from naming — her entire post-tenure correspondence with the Council. *Gone*. *(His hands shake slightly. The eternal tea-cup is empty.)* The prior Stewards are *gone*.",
+     "c_offer_tea", "[The Steward refills Tarven's tea-cup. Says nothing.]", "", "q_tarven_postfall_tea",
+     "", "", "Wordless-support path"),
+
+    ("post_fall_crew_navigator", "Furling crew (Star-Reader)", "q_tarven_postfall_console", "Tarven",
+     "*(He looks at the Steward. His eyes are wet.)* You — yes. Yes, you are right. Halia said the same thing once. *(Quietly.)* In the seventh decade of Iren-Vor Olwen-Veth's tenure, she wrote: *'an archive is not the paper. The archive is whoever read it last and is still living.'* *(He nods. He turns on one of the log-readers.)* I will write a new index, Steward. I will rebuild what I can from memory and the local copies. The work continues.",
+     "", "", "", "(end)",
+     "flag:tarven_postfall_resolved=True;flag:tarven_rebuilding_archive=True", "", "TERMINAL — Tarven re-grounds in the rebuild work"),
+    ("post_fall_crew_navigator", "Furling crew (Star-Reader)", "q_tarven_postfall_tea", "Tarven",
+     "*(He takes the tea-cup. He holds it in both hands. He drinks. Looks at the Steward.)* Thank you. *(A pause.)* That was what Halia would have done. *(He sets the cup down, gently. Turns on one of the log-readers. Begins to write.)* The work continues, Steward.",
+     "", "", "", "(end)",
+     "flag:tarven_postfall_resolved=True;flag:tarven_rebuilding_archive=True", "", "TERMINAL — wordless-support outcome"),
+
+    # ========================================================================
+    # Crew Side-Quest: Mraka's "The Last Race"
+    # Goalpost trigger: recruited_pilot=True AND systems_visited>=5
+    # Branches: tow-to-safety / repair-with-Yelena / leave-Soren (Mraka quits)
+    # ------------------------------------------------------------------------
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_start", "Mraka Yenn-Sa, Furling Drifter (urgent; on the bridge with you)",
+     "Steward — there's a beacon at the cluster edge. Furling distress call-sign. *(She pauses.)* I recognize the call-sign. Soren Kel-Var. Drifter rival of mine. Carrying a Migration-bound family, drive-failed in an anomaly zone. I have history with him. Complicated history. I want to detour. May we?",
+     "c_agree_detour", "Yes — let's go. Tell me about Soren on the way.", "flag:recruited_pilot=True;flag:systems_visited>=5", "q_mraka_sq_history",
+     "", "", "Agree to detour"),
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_start", "Mraka Yenn-Sa, Furling Drifter (urgent; on the bridge with you)",
+     "Steward — there's a beacon at the cluster edge. Furling distress call-sign. *(She pauses.)* I recognize the call-sign. Soren Kel-Var. Drifter rival of mine. Carrying a Migration-bound family, drive-failed in an anomaly zone. I have history with him. Complicated history. I want to detour. May we?",
+     "c_decline_detour", "We have a tighter schedule. Soren can wait for another lift.", "flag:recruited_pilot=True;flag:systems_visited>=5", "q_mraka_sq_outcome_left_soren",
+     "", "", "Refuse detour — Mraka eventually quits"),
+
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_history", "Mraka Yenn-Sa, Furling Drifter (over the comm; flying)",
+     "Soren and I trained together. He was good. He was also — he was the pilot the Olwen-Veth clan considered hiring before me. I recommended the other guy. The other guy crashed them. Soren never forgave me. We haven't spoken in twelve years. Now he's stranded in an anomaly zone with a Migration family aboard. *(A long pause.)* I want to help him. I also want to apologize. Both. At the same time.",
+     "c_proceed_to_soren", "Let's get to him.", "", "q_mraka_sq_at_soren",
+     "", "", "Continue to Soren"),
+
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_at_soren", "Soren Kel-Var, Furling Drifter (over the comm; ship's drive cold; ambient Other-ripples increasing nearby)",
+     "Mraka. *(Long silence.)* You came. I — yes. Thank you. We're drive-cold; family aboard; three cubs sleeping; ambient ripples increasing every hour. We need a fix or a tow. The fix is faster but requires Mender-grade work. *(Mraka glances at the Steward.)* I will accept whichever you offer.",
+     "c_repair_with_yelena", "Yelena is aboard — let's repair the drive in-place.", "flag:recruited_engineer=True", "q_mraka_sq_outcome_repair_with_yelena",
+     "", "", "Best outcome — requires Yelena recruited"),
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_at_soren", "Soren Kel-Var, Furling Drifter (over the comm; ship's drive cold; ambient Other-ripples increasing nearby)",
+     "Mraka. *(Long silence.)* You came. I — yes. Thank you. We're drive-cold; family aboard; three cubs sleeping; ambient ripples increasing every hour. We need a fix or a tow. The fix is faster but requires Mender-grade work. *(Mraka glances at the Steward.)* I will accept whichever you offer.",
+     "c_tow_safety", "Tow him out. Slow but safe.", "", "q_mraka_sq_outcome_tow",
+     "", "", "Standard tow path"),
+
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_outcome_repair_with_yelena", "(narration — Yelena boards Soren's ship; together with Mraka she repairs the drive in 90 minutes; the family flies on; Soren and Mraka share a long quiet conversation about the Olwen-Veth)",
+     "Mraka has resolution. Yelena has a story. Soren has his family safe. The Olwen-Veth clan is referenced by name for the first time in twelve years between Mraka and Soren. They part as friends.",
+     "", "", "", "(end)",
+     "flag:mraka_sq_complete=True;flag:mraka_yelena_bonded=True;module:CREW_PILOT_PROMOTED;standing:persuader+2", "", "TERMINAL — best outcome; Mraka's Evasive Burst + Corridor Intuition unlocked; Yelena-Mraka cross-bond active"),
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_outcome_tow", "(narration — long slow tow; ambient ripple exposure tense but survived; Soren's family delivered to Mh-Lai)",
+     "Mraka has resolution. Soren has his family safe. They part on cautiously-rebuilt terms; not friends yet but no longer enemies.",
+     "", "", "", "(end)",
+     "flag:mraka_sq_complete=True;module:CREW_PILOT_PROMOTED;standing:persuader+1", "", "TERMINAL — standard favorable; Mraka's promoted bonus unlocked"),
+    ("crew_pilot_side_quest", "Furling crew (Drifter)", "q_mraka_sq_outcome_left_soren", "(narration — Mraka tries to suppress the grief; cannot; quits the crew at the next Mh-Lai docking)",
+     "Mraka leaves the ship. The pilot crew slot is empty. Her promoted bonus is permanently locked.",
+     "", "", "", "(end)",
+     "flag:mraka_sq_failed=True;flag:recruited_pilot=False;standing:persuader-2", "", "TERMINAL — Mraka leaves the crew permanently"),
+
+    # ========================================================================
+    # Crew Side-Quest: Bren-Vor's "The Aimer's Verdict"
+    # Goalpost trigger: recruited_weapons_officer=True AND
+    # (cleanser_action_taken OR cleanser_standing>=1)
+    # Branches: cross-examine / let-go / advocate-for-Karol-Vere (Bren-Vor quits)
+    # ------------------------------------------------------------------------
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_start", "Bren-Vor Telcas, Furling Aimer (in the Council Archives; sealed envelope in hand)",
+     "Steward. Council convenes a hearing on Karol-Vere Belt-Tar — Cleanser officer who authorized the action that killed my sister Velt-Ra Telcas. They're reviewing his proposed promotion. I have evidence the Council hasn't seen. *(He sets the envelope down.)* Velt-Ra's journal. The day before she rotated. The day before she died. May I attend the hearing with you?",
+     "c_attend_hearing", "Yes. We attend together.", "flag:recruited_weapons_officer=True", "q_brenvor_sq_hearing",
+     "", "", "Standard attend"),
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_start", "Bren-Vor Telcas, Furling Aimer (in the Council Archives; sealed envelope in hand)",
+     "Steward. Council convenes a hearing on Karol-Vere Belt-Tar — Cleanser officer who authorized the action that killed my sister Velt-Ra Telcas. They're reviewing his proposed promotion. I have evidence the Council hasn't seen. *(He sets the envelope down.)* Velt-Ra's journal. The day before she rotated. The day before she died. May I attend the hearing with you?",
+     "c_discourage_attend", "Let it go, Bren-Vor. The hearing will be a formality.", "flag:recruited_weapons_officer=True", "q_brenvor_sq_outcome_let_go",
+     "", "", "Discourage him — bonus locked"),
+
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_hearing", "Karol-Vere Belt-Tar, Cleanser officer (formal Council uniform; defending procedurally)",
+     "*(The hearing proceeds. Karol-Vere defends the action — procedural; doctrine; necessary; the population was clearly past the threshold; the appeals court erred.)* Council Members — I executed Council doctrine as it stood at the time. The trainees who fired followed orders. The fact that the appeals court later overturned the action does not retroactively make us criminals. *(He sits, composed.)* Bren-Vor — your sister served honorably. I will not allow her memory to be used against the doctrine.",
+     "c_cross_examine", "[Bren-Vor presents Velt-Ra's journal evidence — the cover-up.]", "", "q_brenvor_sq_cross_examine",
+     "", "", "Cross-examine path"),
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_hearing", "Karol-Vere Belt-Tar, Cleanser officer (formal Council uniform; defending procedurally)",
+     "*(The hearing proceeds. Karol-Vere defends the action — procedural; doctrine; necessary; the population was clearly past the threshold; the appeals court erred.)* Council Members — I executed Council doctrine as it stood at the time. The trainees who fired followed orders. The fact that the appeals court later overturned the action does not retroactively make us criminals. *(He sits, composed.)* Bren-Vor — your sister served honorably. I will not allow her memory to be used against the doctrine.",
+     "c_advocate_karol_vere", "I support Captain Karol-Vere's promotion. The doctrine was correct at the time.", "flag:cleanser_standing>=2", "q_brenvor_sq_outcome_betrayed",
+     "", "", "Cleanser-aligned betrayal — Bren-Vor leaves permanently"),
+
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_cross_examine", "Bren-Vor Telcas, Furling Aimer (reading from the journal)",
+     "*(Bren-Vor opens Velt-Ra's journal.)* Velt-Ra Telcas, three years ago, the day before her rotation: *'Karol-Vere told us before the firing that the appeals court would overturn it. He told us the doctrine would protect us. He told us to fire anyway because the doctrinal precedent mattered more than the immediate ruling. He told us the trainees would be rotated but not censured. He told us he would be promoted in two years for the firmness of his command.'* *(He looks at Karol-Vere.)* You knew. You used my sister.",
+     "c_karol_vere_demoted", "[Council votes; Karol-Vere demoted; promotion withdrawn]", "", "q_brenvor_sq_outcome_resolved",
+     "", "", "Cross-examine succeeds — Bren-Vor finds peace"),
+
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_outcome_resolved", "(narration — the Council votes; Karol-Vere is demoted; promotion withdrawn; Bren-Vor sets the journal down for the last time)",
+     "Bren-Vor finds peace. *(Privately, to the Steward, later:)* My sister will not be the last Furling killed by doctrine, but she will be the last one this commander kills. Thank you, Steward. I will fly with you to Andromeda.",
+     "", "", "", "(end)",
+     "flag:brenvor_sq_complete=True;flag:karol_vere_demoted=True;module:CREW_WEAPONS_OFFICER_PROMOTED;standing:persuader+2;standing:cleanser-2", "", "TERMINAL — best outcome; Precision Focus + Ethical Targeting unlocked"),
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_outcome_let_go", "(narration — Bren-Vor honors the Steward's call; lets the hearing proceed without testimony; Karol-Vere is promoted; Bren-Vor stays aboard but distant)",
+     "Bren-Vor stays. The journal remains in his quarters. The grief does not resolve. The promoted bonus is locked.",
+     "", "", "", "(end)",
+     "flag:brenvor_sq_distant=True;flag:karol_vere_promoted=True;standing:persuader-1", "", "TERMINAL — Bren-Vor stays but distant; bonus locked"),
+    ("crew_weapons_officer_side_quest", "Furling crew (Aimer)", "q_brenvor_sq_outcome_betrayed", "(narration — Bren-Vor stares at the Steward for a long moment; says nothing; leaves the ship the same day)",
+     "Bren-Vor leaves the crew permanently. The Bio-Archive logs the choice with his testimony. The Cleanser faction acquires a hero; the Persuaders lose a future commander.",
+     "", "", "", "(end)",
+     "flag:brenvor_sq_betrayed=True;flag:recruited_weapons_officer=False;flag:karol_vere_promoted=True;standing:cleanser+2;standing:persuader-3", "", "TERMINAL — Bren-Vor leaves crew permanently"),
+
+    # ========================================================================
+    # Crew Side-Quest: Yelena's "The Last Hull"
+    # Goalpost trigger: recruited_engineer=True AND modules_installed>=4
+    # Branches: help install / let her alone / refuse detour
+    # ------------------------------------------------------------------------
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_start", "Yelena Lwen-Tar, Furling Mender (urgent; in the engine bay; comm-message in hand)",
+     "Steward. Unzervalt factory is being decommissioned in 30 days. My mother Mev-Tar is leading the team building the LAST Furling Scout that will ever be built in this galaxy. *(She holds up a small package.)* I have a module my father designed before he died. I finished it. I want to install it on this ship at Unzervalt during the launch ceremony. Family work. Will you detour?",
+     "c_agree_detour_yelena", "Yes — let's go to Unzervalt.", "flag:recruited_engineer=True;flag:modules_installed>=4", "q_yelena_sq_unzervalt",
+     "", "", "Standard detour"),
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_start", "Yelena Lwen-Tar, Furling Mender (urgent; in the engine bay; comm-message in hand)",
+     "Steward. Unzervalt factory is being decommissioned in 30 days. My mother Mev-Tar is leading the team building the LAST Furling Scout that will ever be built in this galaxy. *(She holds up a small package.)* I have a module my father designed before he died. I finished it. I want to install it on this ship at Unzervalt during the launch ceremony. Family work. Will you detour?",
+     "c_decline_detour_yelena", "Family business has to wait. We have a slice to complete.", "flag:recruited_engineer=True;flag:modules_installed>=4", "q_yelena_sq_outcome_refused",
+     "", "", "Refuse — Yelena disappointed; bonus locked"),
+
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_unzervalt", "Mev-Tar Lwen-Tar, senior Mh-Lai assembly chief (in the factory floor; the last Scout in cradle)",
+     "Steward. Welcome to Unzervalt. *(She gestures to the Scout in the cradle behind her.)* The last one. Cradle ID Twelve-Eighty-Five. She will fly out tomorrow morning. Yelena tells me you've cared for Twelve-Forty-Eight well. Thank you. *(She pauses; emotional.)* Yelena wants to install Korven's module on your ship today. Will you help her?",
+     "c_help_install", "Yes — show me the procedure. I'll assist.", "", "q_yelena_sq_outcome_help_install",
+     "", "", "Best outcome — deep bond"),
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_unzervalt", "Mev-Tar Lwen-Tar, senior Mh-Lai assembly chief (in the factory floor; the last Scout in cradle)",
+     "Steward. Welcome to Unzervalt. *(She gestures to the Scout in the cradle behind her.)* The last one. Cradle ID Twelve-Eighty-Five. She will fly out tomorrow morning. Yelena tells me you've cared for Twelve-Forty-Eight well. Thank you. *(She pauses; emotional.)* Yelena wants to install Korven's module on your ship today. Will you help her?",
+     "c_let_yelena_alone", "I'll wait outside. This is Yelena's moment with her father's work.", "", "q_yelena_sq_outcome_let_alone",
+     "", "", "Smaller bonus path"),
+
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_outcome_help_install", "(narration — six hours of close technical collaboration; Yelena and the Steward install Korven's hull-resonance dampener; the family adopts the Steward informally; Mev-Tar inscribes the Steward's name in the family ledger; Yelena is, briefly, very young)",
+     "Yelena tells the Steward the family ledger now records you. The Lwen-Tar will remember you across cycles. Twelve-Forty-Eight is now part of the family.",
+     "", "", "", "(end)",
+     "flag:yelena_sq_complete=True;flag:yelena_family_bond=True;module:CREW_ENGINEER_PROMOTED;module:HULL_RESONANCE_DAMPENER;standing:persuader+2", "", "TERMINAL — best outcome; Field Overhaul + Hull Intuition unlocked + special hull module installed"),
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_outcome_let_alone", "(narration — Yelena installs Korven's module alone, with quiet professionalism; Mev-Tar nods to the Steward; the family is grateful but the Steward missed the moment)",
+     "Yelena returns to the bridge with the module installed. The Lwen-Tar are grateful. The bond is collegial, not familial.",
+     "", "", "", "(end)",
+     "flag:yelena_sq_complete=True;module:CREW_ENGINEER_PROMOTED;module:HULL_RESONANCE_DAMPENER;standing:persuader+1", "", "TERMINAL — favorable but missed-the-moment outcome; promoted bonus still unlocked"),
+    ("crew_engineer_side_quest", "Furling crew (Mender)", "q_yelena_sq_outcome_refused", "(narration — Yelena is disappointed; she contacts Mev-Tar; her mother understands; the module is left with the family; Yelena stays aboard but distant)",
+     "Yelena's father's last work goes uninstalled on your ship. She stays aboard professionally; the promoted bonus is locked.",
+     "", "", "", "(end)",
+     "flag:yelena_sq_refused=True;standing:persuader-1", "", "TERMINAL — Yelena distant; bonus locked"),
+
+    # ========================================================================
+    # Crew Side-Quest: Mira-Rou's "The Deep Child's Cradle"
+    # Goalpost trigger: recruited_medic=True AND
+    # (mycon_biot_visited=True OR androsynth_stabilized=True)
+    # Branches: suppress / allow-emergence / Cleanser (Mira-Rou quits)
+    # ------------------------------------------------------------------------
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_start", "Mira-Rou Halve-Tel, Furling Bio-Architect (alarmed; in the medbay; carrying her glass amphora)",
+     "Steward. My biot-fragment is waking up. The heirloom my great-grandmother shaped. It's emitting FIRST_WHISPER pattern in my pocket. I do not know what to do. My ancestors did not anticipate this. *(She sets the amphora down carefully on the medbay counter; faint sub-aural humming.)* I need to consult with a Mycon collective. Will you help me?",
+     "c_consult_mycon", "Yes — let's go to a Mycon biot site.", "flag:recruited_medic=True", "q_mira_sq_consult",
+     "", "", "Standard consultation"),
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_start", "Mira-Rou Halve-Tel, Furling Bio-Architect (alarmed; in the medbay; carrying her glass amphora)",
+     "Steward. My biot-fragment is waking up. The heirloom my great-grandmother shaped. It's emitting FIRST_WHISPER pattern in my pocket. I do not know what to do. My ancestors did not anticipate this. *(She sets the amphora down carefully on the medbay counter; faint sub-aural humming.)* I need to consult with a Mycon collective. Will you help me?",
+     "c_advise_cleanse", "Cleanse it. We don't need another sentient biot project on top of everything else.", "flag:recruited_medic=True;flag:cleanser_standing>=2", "q_mira_sq_outcome_betrayed",
+     "", "", "Cleanser-aligned betrayal — Mira-Rou leaves"),
+
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_consult", "Mycon Biot Collective (chorus voice; consulted at a quiet biot site)",
+     "Designer-Mira-Rou. We sense the heirloom. Yes. The Deep Child whisper is real. The fragment is moments away from sentience-bloom. *(The Mycon biot Collective is unusually quiet.)* You may suppress it. You may allow it. The choice is yours. We do not judge.",
+     "c_suppress_heirloom", "Suppress it. Honor your great-grandmother's design intent.", "", "q_mira_sq_outcome_suppress",
+     "", "", "Suppress path — peace with ancestors"),
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_consult", "Mycon Biot Collective (chorus voice; consulted at a quiet biot site)",
+     "Designer-Mira-Rou. We sense the heirloom. Yes. The Deep Child whisper is real. The fragment is moments away from sentience-bloom. *(The Mycon biot Collective is unusually quiet.)* You may suppress it. You may allow it. The choice is yours. We do not judge.",
+     "c_allow_emergence", "Let it wake. Honor what your family has actually made.", "", "q_mira_sq_outcome_allow",
+     "", "", "Allow path — Sevreth's Child is born"),
+
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_outcome_suppress", "(narration — Mira-Rou suppresses the heirloom with surgical care; the FIRST_WHISPER fades; the amphora's faint hum returns to normal)",
+     "Mira-Rou finds peace in continuing her ancestors' careful work. The heirloom remains in the amphora; it is again only an heirloom.",
+     "", "", "", "(end)",
+     "flag:mira_sq_complete=True;flag:heirloom_suppressed=True;module:CREW_MEDIC_PROMOTED;standing:persuader+1;standing:defender+1", "", "TERMINAL — Suppress path; Bio-Signature Dampening + Tractor Extension unlocked"),
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_outcome_allow", "(narration — Mira-Rou allows the heirloom to wake; a tiny biological consciousness emerges; she names it Sevreth's Child after her grandmother; the amphora now hums in conversation rhythm)",
+     "Mira-Rou hosts a new biot-class sentient being. The Lwen-Tar lineage has been broken in service of itself. Sevreth's Child rides the bridge; sees everything; communicates in subtle chemical signals Mira-Rou translates. The Steward gains a new dialog companion.",
+     "", "", "", "(end)",
+     "flag:mira_sq_complete=True;flag:sevreth_child_alive=True;module:CREW_MEDIC_PROMOTED;module:CREW_SEVRETH_CHILD;standing:persuader+2;standing:hider+1", "", "TERMINAL — Allow path; Bio-Signature Dampening + Tractor Extension + Sevreth's Child dialog companion unlocked"),
+    ("crew_medic_side_quest", "Furling crew (Bio-Architect)", "q_mira_sq_outcome_betrayed", "(narration — Mira-Rou stares at the Steward; says nothing; takes the amphora; leaves the ship the same day)",
+     "Mira-Rou leaves the crew permanently. The Halve-Tel lineage breaks contact with this Steward. The Bio-Architect role is empty.",
+     "", "", "", "(end)",
+     "flag:mira_sq_betrayed=True;flag:recruited_medic=False;standing:persuader-3;standing:hider-2", "", "TERMINAL — Mira-Rou leaves crew permanently"),
+
+    # ========================================================================
+    # Crew Side-Quest: Tarven's "The Erased Logs"
+    # Goalpost trigger: recruited_navigator=True AND systems_visited>=8
+    # Branches: report-find / keep-secret / destroy-cache (Tarven quits)
+    # ------------------------------------------------------------------------
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_start", "Tarven Olwen-Sa, Furling Star-Reader (in the bridge; multiple log-readers spread on the table)",
+     "Steward. I found something. *(He pulls up a graph.)* Steward Iren-Vor Olwen-Veth — seventh Steward of this cluster, ~50 years ago — erased fourteen months of her stellar-drift entries. The gap makes no sense; she was clearly flying. Her nav-trace shows she visited a specific fringe system during the gap. I think she discovered something she didn't want the Council to see. I want to investigate.",
+     "c_investigate_erased", "Yes — let's chase the trail. Where did she go?", "flag:recruited_navigator=True;flag:systems_visited>=8", "q_tarven_sq_trail",
+     "", "", "Investigation begins"),
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_start", "Tarven Olwen-Sa, Furling Star-Reader (in the bridge; multiple log-readers spread on the table)",
+     "Steward. I found something. *(He pulls up a graph.)* Steward Iren-Vor Olwen-Veth — seventh Steward of this cluster, ~50 years ago — erased fourteen months of her stellar-drift entries. The gap makes no sense; she was clearly flying. Her nav-trace shows she visited a specific fringe system during the gap. I think she discovered something she didn't want the Council to see. I want to investigate.",
+     "c_dismiss_investigation", "Iren-Vor had her reasons. Let it stay erased.", "flag:recruited_navigator=True;flag:systems_visited>=8", "q_tarven_sq_outcome_dismissed",
+     "", "", "Dismiss — Tarven respects but is disappointed; bonus locked"),
+
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_trail", "(narration — fringe-system traversal; outer belt scan; the Steward and Tarven find a small Iren-Vor data-cache deliberately hidden in deep space)",
+     "The cache opens. Iren-Vor speaks (recorded voice, ~50 years old, calm and tired): *'If you are hearing this, you are a future Steward. I am Iren-Vor Olwen-Veth. I have witnessed something. The Others are early. Faint dimensional ripples at the cluster edge. Well below the threshold the Council currently watches for. I will erase these entries because the Council is not ready to act on this; reporting will trigger panic; I will bring it forward when the moment is right. I am recording this here for someone who flies later.'*",
+     "c_report_to_council", "Take this to the Council. They need this data.", "", "q_tarven_sq_outcome_reported",
+     "", "", "Report path — best outcome"),
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_trail", "(narration — fringe-system traversal; outer belt scan; the Steward and Tarven find a small Iren-Vor data-cache deliberately hidden in deep space)",
+     "The cache opens. Iren-Vor speaks (recorded voice, ~50 years old, calm and tired): *'If you are hearing this, you are a future Steward. I am Iren-Vor Olwen-Veth. I have witnessed something. The Others are early. Faint dimensional ripples at the cluster edge. Well below the threshold the Council currently watches for. I will erase these entries because the Council is not ready to act on this; reporting will trigger panic; I will bring it forward when the moment is right. I am recording this here for someone who flies later.'*",
+     "c_keep_secret", "Let's keep this between us. Tarven — copy it for our personal archive; don't bring it to Council.", "", "q_tarven_sq_outcome_kept_secret",
+     "", "", "Keep-secret path — secret-knowledge bonus"),
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_trail", "(narration — fringe-system traversal; outer belt scan; the Steward and Tarven find a small Iren-Vor data-cache deliberately hidden in deep space)",
+     "The cache opens. Iren-Vor speaks (recorded voice, ~50 years old, calm and tired): *'If you are hearing this, you are a future Steward. I am Iren-Vor Olwen-Veth. I have witnessed something. The Others are early. Faint dimensional ripples at the cluster edge. Well below the threshold the Council currently watches for. I will erase these entries because the Council is not ready to act on this; reporting will trigger panic; I will bring it forward when the moment is right. I am recording this here for someone who flies later.'*",
+     "c_destroy_cache", "Destroy it. The past stays buried.", "", "q_tarven_sq_outcome_destroyed",
+     "", "", "Destroy — Tarven horrified; he leaves"),
+
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_outcome_reported", "(narration — Council convenes emergency session; Iren-Vor's data adds 50 years of context to the Migration timetable; Hider faction is grateful; standing rises across multiple factions)",
+     "The cluster's Others-detection timeline is corrected. Tarven becomes a recognized junior Archivist. The Steward gains a Bio-Archive entry: 'Others — early ripples (Iren-Vor's hidden record).'",
+     "", "", "", "(end)",
+     "flag:tarven_sq_complete=True;flag:iren_vor_archive_unlocked=True;flag:has_archive_others_early_ripples=True;module:CREW_NAVIGATOR_PROMOTED;standing:persuader+2;standing:hider+3", "", "TERMINAL — Report path; Deep Archive Scan + Prior Steward Intuition unlocked + canonical archive entry"),
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_outcome_kept_secret", "(narration — Tarven copies the data to a private archive; the Steward and Tarven share the secret; the dialog-context-depth deepens; small bond forms)",
+     "Tarven keeps Iren-Vor's secret with the Steward. He admires the prior Steward's judgment in a way he won't say aloud. The promoted bonus unlocks with extra dialog-context-depth.",
+     "", "", "", "(end)",
+     "flag:tarven_sq_complete=True;flag:iren_vor_secret_kept=True;module:CREW_NAVIGATOR_PROMOTED_SECRET;standing:hider+1", "", "TERMINAL — Keep-secret path; alternate promoted variant with extra dialog-context-depth bonus"),
+    ("crew_navigator_side_quest", "Furling crew (Star-Reader)", "q_tarven_sq_outcome_destroyed", "(narration — Tarven stares at the Steward; says nothing; leaves the cache; resigns the next docking)",
+     "Tarven leaves the crew permanently. The cache is destroyed. The Bio-Archive does not gain the Iren-Vor entry. The promoted bonus is locked. The slice's Others-detection chronology has a permanent gap.",
+     "", "", "", "(end)",
+     "flag:tarven_sq_destroyed=True;flag:recruited_navigator=False;standing:persuader-2;standing:hider-3", "", "TERMINAL — Tarven leaves crew permanently"),
+
+    # ========================================================================
+    # Crew Recruitment Quest: Mraka Yenn-Sa, Furling Drifter (Pilot)
+    # ========================================================================
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_start", "Mraka Yenn-Sa, Furling Drifter (warm, technical, watches you closely)",
+     "Steward. I watched your shakedown run from the lounge. Three notes for you. May I share them?",
+     "c_hear_notes", "Please.", "", "q_mraka_test_offer",
+     "", "", "Opening"),
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_start", "Mraka Yenn-Sa, Furling Drifter (warm, technical, watches you closely)",
+     "Steward. I watched your shakedown run from the lounge. Three notes for you. May I share them?",
+     "c_brush_off", "Maybe later — I'm busy.", "", "(end)",
+     "", "", "Walk-away — can return"),
+
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_test_offer", "Mraka Yenn-Sa, Furling Drifter",
+     "First note: your hyperspace entry vector was lazy by two degrees. Second: you bled velocity on the cargo handover that you didn't need to. Third — and best — your recovery from the second drift was clean. There's a *Drifter's Circuit* through Mh-Lai's outer buoys; will you fly it?",
+     "c_fly_circuit", "Sure. Lead the way.", "", "q_mraka_after_circuit",
+     "flag:mraka_circuit_flown=True", "", "Optional minigame"),
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_test_offer", "Mraka Yenn-Sa, Furling Drifter",
+     "First note: your hyperspace entry vector was lazy by two degrees. Second: you bled velocity on the cargo handover that you didn't need to. Third — and best — your recovery from the second drift was clean. There's a *Drifter's Circuit* through Mh-Lai's outer buoys; will you fly it?",
+     "c_skip_circuit", "Skip the circuit. Just tell me what's on your mind.", "", "q_mraka_galley_story",
+     "", "", "Skip-minigame path"),
+
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_after_circuit", "Mraka Yenn-Sa, Furling Drifter (impressed)",
+     "Two seconds off my own record. You'll do. Come to the galley. I want to tell you something.",
+     "c_go_to_galley", "Lead the way.", "", "q_mraka_galley_story",
+     "", "", "Path convergence"),
+
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_galley_story", "Mraka Yenn-Sa, Furling Drifter (over tea)",
+     "Three generations on one Scout. Migration-bound. They hired a pilot who didn't have his routes locked in his marrow. Two adults and four cubs. I'm a Drifter on these docks because I keep waiting to find a pilot whose route I'd trust. I think I have. Will you take me on?",
+     "c_accept_mraka", "Yes. Welcome aboard.", "", "q_mraka_outcome_recruited",
+     "", "", "Standard recruitment"),
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_galley_story", "Mraka Yenn-Sa, Furling Drifter (over tea)",
+     "Three generations on one Scout. Migration-bound. They hired a pilot who didn't have his routes locked in his marrow. Two adults and four cubs. I'm a Drifter on these docks because I keep waiting to find a pilot whose route I'd trust. I think I have. Will you take me on?",
+     "c_decline_mraka_kind", "Not today. Thank you, though.", "", "(end)",
+     "", "", "Kind decline — can return"),
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_galley_story", "Mraka Yenn-Sa, Furling Drifter (over tea)",
+     "Three generations on one Scout. Migration-bound. They hired a pilot who didn't have his routes locked in his marrow. Two adults and four cubs. I'm a Drifter on these docks because I keep waiting to find a pilot whose route I'd trust. I think I have. Will you take me on?",
+     "c_decline_mraka_cruel", "I don't need a babysitter.", "flag:cleanser_standing>=2", "q_mraka_outcome_cruel_decline",
+     "", "", "Cruel decline — only if Cleanser standing high; permanent loss"),
+
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_outcome_recruited", "Mraka Yenn-Sa, Furling Drifter",
+     "Then I'll get my kit. I won't be slow about it. Welcome to your own ship, Steward.",
+     "", "", "", "(end)",
+     "flag:recruited_pilot=True;module:CREW_PILOT;standing:persuader+1", "", "TERMINAL — Mraka aboard"),
+    ("crew_pilot", "Furling crew (Drifter)", "q_mraka_outcome_cruel_decline", "Mraka Yenn-Sa, Furling Drifter (cold)",
+     "Then I will not be your pilot. Good fortune on your route, Steward.",
+     "", "", "", "(end)",
+     "flag:mraka_cruel_decline=True;standing:persuader-1", "", "TERMINAL — permanent recruitment loss"),
+
+    # ========================================================================
+    # Crew Recruitment Quest: Bren-Vor Telcas, Furling Aimer (Weapons Officer)
+    # ========================================================================
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_start", "Bren-Vor Telcas, Furling Aimer (clipped, precise, just out of Defender training)",
+     "Steward. I was in the cohort that watched the Distress Beacon screening. I have a private question. Will you walk with me?",
+     "c_walk_brenvor", "Yes — walk.", "flag:has_distress_beacon=True", "q_brenvor_sister_story",
+     "", "", "Opening — gated on Beacon"),
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_start", "Bren-Vor Telcas, Furling Aimer (clipped, precise, just out of Defender training)",
+     "Steward. I was in the cohort that watched the Distress Beacon screening. I have a private question. Will you walk with me?",
+     "c_brush_off_brenvor", "Not now.", "", "(end)",
+     "", "", "Walk-away"),
+
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_sister_story", "Bren-Vor Telcas, Furling Aimer",
+     "Velt-Ra Telcas. My older sister. Killed three years ago in a Cleanser action against a population the Council hadn't ruled on. The action was overturned on appeal. The trainees who fired were *rotated*. Not censured. I have been processing it. The Beacon decided me. Steward — I want off the Defender track. I want a ship where Eliminating is not the first instinct.",
+     "c_accept_brenvor", "Then come aboard. I'll transfer you.", "", "q_brenvor_outcome_recruited",
+     "", "", "Persuader-aligned recruitment"),
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_sister_story", "Bren-Vor Telcas, Furling Aimer",
+     "Velt-Ra Telcas. My older sister. Killed three years ago in a Cleanser action against a population the Council hadn't ruled on. The action was overturned on appeal. The trainees who fired were *rotated*. Not censured. I have been processing it. The Beacon decided me. Steward — I want off the Defender track. I want a ship where Eliminating is not the first instinct.",
+     "c_decline_brenvor_kind", "I respect this — but I can't take you on. Stay strong.", "", "(end)",
+     "", "", "Kind decline — can return"),
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_sister_story", "Bren-Vor Telcas, Furling Aimer",
+     "Velt-Ra Telcas. My older sister. Killed three years ago in a Cleanser action against a population the Council hadn't ruled on. The action was overturned on appeal. The trainees who fired were *rotated*. Not censured. I have been processing it. The Beacon decided me. Steward — I want off the Defender track. I want a ship where Eliminating is not the first instinct.",
+     "c_decline_brenvor_cleanser", "Stay Defender. Your sister died for the right doctrine.", "flag:cleanser_standing>=2", "q_brenvor_outcome_cleanser_decline",
+     "", "", "Cleanser-aligned cruel decline"),
+
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_outcome_recruited", "Bren-Vor Telcas, Furling Aimer",
+     "Thank you. I'll process the transfer paperwork today. The Defender commander will be… unhappy. I do not care.",
+     "", "", "", "(end)",
+     "flag:recruited_weapons_officer=True;module:CREW_WEAPONS_OFFICER;standing:persuader+1;standing:defender-1", "", "TERMINAL — Bren-Vor aboard"),
+    ("crew_weapons_officer", "Furling crew (Aimer)", "q_brenvor_outcome_cleanser_decline", "Bren-Vor Telcas, Furling Aimer (very quiet)",
+     "I see. Then I will complete training. I will fire the next volley. My sister will not be the last. Thank you for the clarity, Steward.",
+     "", "", "", "(end)",
+     "flag:brenvor_cleanser_locked=True;standing:cleanser+1;standing:defender+1", "", "TERMINAL — permanent recruitment loss; Bio-Archive logs"),
+
+    # ========================================================================
+    # Crew Recruitment Quest: Yelena Lwen-Tar, Furling Mender (Engineer)
+    # ========================================================================
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_start", "Yelena Lwen-Tar, Furling Mender (young, direct, holds a wrench)",
+     "Steward. You're mid-install. I've read your dock telemetry. You've made one specific maintenance oversight. May I show you?",
+     "c_let_yelena_inspect", "Show me.", "flag:has_installed_module=True", "q_yelena_inspection",
+     "", "", "Opening — gated on first install"),
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_start", "Yelena Lwen-Tar, Furling Mender (young, direct, holds a wrench)",
+     "Steward. You're mid-install. I've read your dock telemetry. You've made one specific maintenance oversight. May I show you?",
+     "c_yelena_brush_off", "Maybe later. Busy.", "", "(end)",
+     "", "", "Walk-away"),
+
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_inspection", "Yelena Lwen-Tar, Furling Mender",
+     "Your tractor-beam coil hasn't rest-cycled. Three weeks at this duty rate and the harmonics drift. I'll re-tune it — there. Done. You can feel the difference, can't you? My mother built this hull on the Unzervalt floor. Now — Steward — I want to ride along. The Migration takes nineteen of every twenty Scouts; the twentieth flies. I'd like to fly with the twentieth.",
+     "c_accept_yelena", "Welcome aboard.", "", "q_yelena_outcome_recruited",
+     "", "", "Standard recruitment"),
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_inspection", "Yelena Lwen-Tar, Furling Mender",
+     "Your tractor-beam coil hasn't rest-cycled. Three weeks at this duty rate and the harmonics drift. I'll re-tune it — there. Done. You can feel the difference, can't you? My mother built this hull on the Unzervalt floor. Now — Steward — I want to ride along. The Migration takes nineteen of every twenty Scouts; the twentieth flies. I'd like to fly with the twentieth.",
+     "c_yelena_inspect_only", "Take the inspection. Skip the crew slot.", "", "q_yelena_outcome_inspect_only",
+     "", "", "Inspection-only — small hidden bonus, no crew"),
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_inspection", "Yelena Lwen-Tar, Furling Mender",
+     "Your tractor-beam coil hasn't rest-cycled. Three weeks at this duty rate and the harmonics drift. I'll re-tune it — there. Done. You can feel the difference, can't you? My mother built this hull on the Unzervalt floor. Now — Steward — I want to ride along. The Migration takes nineteen of every twenty Scouts; the twentieth flies. I'd like to fly with the twentieth.",
+     "c_decline_yelena", "Not today.", "", "(end)",
+     "", "", "Decline — can return"),
+
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_outcome_recruited", "Yelena Lwen-Tar, Furling Mender",
+     "Then I'll fetch my kit and be on the ramp in ten minutes. Don't leave without me.",
+     "", "", "", "(end)",
+     "flag:recruited_engineer=True;module:CREW_ENGINEER", "", "TERMINAL — Yelena aboard"),
+    ("crew_engineer", "Furling crew (Mender)", "q_yelena_outcome_inspect_only", "Yelena Lwen-Tar, Furling Mender",
+     "Understood. I'll keep watching your telemetry from here. If anything else drifts, I'll send a note.",
+     "", "", "", "(end)",
+     "flag:yelena_inspection=True", "", "TERMINAL — inspection-fix only; can re-encounter"),
+
+    # ========================================================================
+    # Crew Recruitment Quest: Mira-Rou Halve-Tel, Furling Bio-Architect (Medic)
+    # ========================================================================
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_ride_along", "Mira-Rou Halve-Tel, Furling Bio-Architect (descended from the original Mycon biot-designers)",
+     "Steward. I have been reading about dimensional-shear injuries from the Androsynth transmissions. I am Bio-Architect-trained but have never worked a case. May I ride along to the Coel Tessar encounter as observer?",
+     "c_let_mira_ride", "Yes — come along.", "", "(end_ride_pending)",
+     "flag:mira_ride_along=True", "", "Opening — opt-in ride-along; recruitment beat comes later"),
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_ride_along", "Mira-Rou Halve-Tel, Furling Bio-Architect (descended from the original Mycon biot-designers)",
+     "Steward. I have been reading about dimensional-shear injuries from the Androsynth transmissions. I am Bio-Architect-trained but have never worked a case. May I ride along to the Coel Tessar encounter as observer?",
+     "c_decline_mira_ride", "Not this time.", "", "(end)",
+     "", "", "Decline ride — no later recruitment"),
+
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_recruitment", "Mira-Rou Halve-Tel, Furling Bio-Architect (post-Coel-Tessar)",
+     "Steward. The field work was extraordinary. I want to continue it in the field, not at the Mh-Lai bio-labs. May I formally join your crew? My family designed life; I would like to keep some of it alive.",
+     "c_accept_mira", "Yes — welcome aboard.", "flag:mira_ride_along=True;flag:androsynth_stabilized=True", "q_mira_outcome_recruited",
+     "", "", "Standard recruitment path"),
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_recruitment", "Mira-Rou Halve-Tel, Furling Bio-Architect (post-Coel-Tessar)",
+     "Steward. The field work was extraordinary. I want to continue it in the field, not at the Mh-Lai bio-labs. May I formally join your crew? My family designed life; I would like to keep some of it alive.",
+     "c_accept_mira_calibrated", "Yes — and I'd like you to calibrate with the Mantle-Resonance organ.", "flag:mira_ride_along=True;flag:androsynth_stabilized=True;flag:bio_architect_installed=True", "q_mira_outcome_recruited_calibrated",
+     "", "", "Dual-Bio-Architect bonus path"),
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_recruitment", "Mira-Rou Halve-Tel, Furling Bio-Architect (post-Coel-Tessar)",
+     "Steward. The field work was extraordinary. I want to continue it in the field, not at the Mh-Lai bio-labs. May I formally join your crew? My family designed life; I would like to keep some of it alive.",
+     "c_decline_mira", "Not today, Mira-Rou.", "flag:mira_ride_along=True", "(end)",
+     "", "", "Decline — Mira-Rou can be re-asked later"),
+
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_refused_help_path", "Mira-Rou Halve-Tel, Furling Bio-Architect (when Steward refused Coel Tessar aid)",
+     "Steward. I observed your refusal. The Androsynth died. I cannot fly with someone who declines the wounded. I will return to the Mh-Lai bio-labs and look for another route. My respects to your other work.",
+     "", "", "", "(end)",
+     "flag:mira_refused_to_fly=True;standing:persuader-1", "", "TERMINAL — Mira-Rou permanent recruitment failure"),
+
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_outcome_recruited", "Mira-Rou Halve-Tel, Furling Bio-Architect",
+     "Then I'll fetch my supplies. Continue the work. Thank you, Steward.",
+     "", "", "", "(end)",
+     "flag:recruited_medic=True;module:CREW_MEDIC;standing:persuader+1", "", "TERMINAL — Mira-Rou aboard"),
+    ("crew_medic", "Furling crew (Bio-Architect)", "q_mira_outcome_recruited_calibrated", "Mira-Rou Halve-Tel, Furling Bio-Architect",
+     "The calibration will take a few days. The Mantle-Resonance and I will work together; the organ will be more responsive to the ship's bio-state. Steward, this is the best assignment I've ever received.",
+     "", "", "", "(end)",
+     "flag:recruited_medic=True;flag:mira_calibrated=True;module:CREW_MEDIC;standing:persuader+2", "", "TERMINAL — Mira-Rou aboard + bonus"),
+
+    # ========================================================================
+    # Crew Recruitment Quest: Tarven Olwen-Sa, Furling Star-Reader (Navigator)
+    # ========================================================================
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_start", "Mh-Lai Council Clerk",
+     "Steward. The Archives request a Stellar-Drift Briefing on your recent system-visits. Tarven Olwen-Sa will host. Please report.",
+     "c_attend_briefing", "Attending.", "flag:systems_visited>=3", "q_tarven_briefing",
+     "", "", "Opening — gated on 3+ systems"),
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_start", "Mh-Lai Council Clerk",
+     "Steward. The Archives request a Stellar-Drift Briefing on your recent system-visits. Tarven Olwen-Sa will host. Please report.",
+     "c_skip_briefing", "Skip for now.", "", "(end)",
+     "", "", "Skip — can return after more systems visited"),
+
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_briefing", "Tarven Olwen-Sa, Furling Star-Reader (bookish; charming)",
+     "Steward. You have crossed routes that prior Stewards flew. In the seventh decade of the Steward Iren-Vor's tenure, this system you visited held a Furling cache the Steward never logged. There is a *theory* I have about a system you have almost-visited but not quite. Will you hear it?",
+     "c_hear_theory", "Tell me.", "", "q_tarven_theory",
+     "", "", "Theory-tease"),
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_briefing", "Tarven Olwen-Sa, Furling Star-Reader (bookish; charming)",
+     "Steward. You have crossed routes that prior Stewards flew. In the seventh decade of the Steward Iren-Vor's tenure, this system you visited held a Furling cache the Steward never logged. There is a *theory* I have about a system you have almost-visited but not quite. Will you hear it?",
+     "c_skip_theory", "Just give me the briefing summary.", "", "q_tarven_ask",
+     "", "", "Skip theory; jump to ask"),
+
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_theory", "Tarven Olwen-Sa, Furling Star-Reader",
+     "The system is [dynamically selected]. Every prior Steward in this cluster came within two parsecs and turned. I think there is *something* there. I would like to be on the bridge if you go.",
+     "c_pledge_visit", "I'll go. Come with me; ride along.", "", "q_tarven_outcome_verified",
+     "flag:tarven_theory_pledged=True", "", "Verified-system bonus path"),
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_theory", "Tarven Olwen-Sa, Furling Star-Reader",
+     "The system is [dynamically selected]. Every prior Steward in this cluster came within two parsecs and turned. I think there is *something* there. I would like to be on the bridge if you go.",
+     "c_just_recruit", "Skip the system. Just come aboard as Star-Reader.", "", "q_tarven_ask",
+     "", "", "Standard recruitment without verification bonus"),
+
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_ask", "Tarven Olwen-Sa, Furling Star-Reader (slightly intimidated)",
+     "I am junior, Steward. My offer is unusual. I have read where every prior Steward of this cluster went; I would like to read where you go, in real time, on the bridge. Will you have me?",
+     "c_accept_tarven", "Yes. Come aboard.", "", "q_tarven_outcome_recruited",
+     "", "", "Standard recruitment"),
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_ask", "Tarven Olwen-Sa, Furling Star-Reader (slightly intimidated)",
+     "I am junior, Steward. My offer is unusual. I have read where every prior Steward of this cluster went; I would like to read where you go, in real time, on the bridge. Will you have me?",
+     "c_decline_tarven", "Not today. Thank you, though.", "", "(end)",
+     "", "", "Decline — can return after more systems visited"),
+
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_outcome_recruited", "Tarven Olwen-Sa, Furling Star-Reader",
+     "Then I will pack my logbooks. Thank you, Steward. I am ready to read in present-tense rather than perfect-tense.",
+     "", "", "", "(end)",
+     "flag:recruited_navigator=True;module:CREW_NAVIGATOR", "", "TERMINAL — Tarven aboard"),
+    ("crew_navigator", "Furling crew (Star-Reader)", "q_tarven_outcome_verified", "Tarven Olwen-Sa, Furling Star-Reader",
+     "I cannot wait. We will read the system together. Thank you, Steward.",
+     "", "", "", "(end)",
+     "flag:recruited_navigator=True;flag:tarven_verified=True;module:CREW_NAVIGATOR", "", "TERMINAL — Tarven aboard with verified-bonus"),
+]
+
+
+def main() -> None:
+    output = "tools/quest_inventory.csv"
+    if "-o" in sys.argv:
+        idx = sys.argv.index("-o")
+        output = sys.argv[idx + 1]
+
+    out_path = Path(output)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with out_path.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.writer(f)
+        writer.writerow(COLUMNS)
+        for row in ROWS:
+            # Skip retired rows (convention: display marked with "(duplicate row")
+            if row[2].startswith("(duplicate row"):
+                continue
+            writer.writerow(row)
+    print(f"Wrote {len(ROWS)} rows to {output}")
+
+
+if __name__ == "__main__":
+    main()

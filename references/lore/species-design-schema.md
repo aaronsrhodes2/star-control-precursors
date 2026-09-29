@@ -86,7 +86,7 @@ How this species ends up at the moment the door closes — referenced for comple
 
 | Terminal status | Meaning |
 |---|---|
-| Migrated | They cross into the neighboring galaxy |
+| Migrated | They cross into the neighboring galaxy (canonically the Andromeda Galaxy M31) |
 | Cloaked | They stay but go silent (Slylandro Cloaking Satellite) |
 | Hidden | They retreat to Quasi-Space (Arilou path) |
 | Eliminated | Cleansed before the door closes |
