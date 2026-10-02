@@ -6,7 +6,7 @@ import logging
 
 import pygame
 
-from scz.engine.input import InputManager
+from scz.engine.input import IS_WEB, InputManager
 from scz.engine.persistence import CampaignManager
 from scz.engine.scene import Scene
 from scz.engine.time_drive import TimeDrive
@@ -290,7 +290,18 @@ class Game:
         ))
 
     def quit(self) -> None:
-        """Request the loop to exit at end of current frame."""
+        """Request the loop to exit at end of current frame.
+
+        A browser tab has nothing to exit to, so the web build saves
+        and returns to the title screen instead.
+        """
+        if IS_WEB:
+            if self.campaign_manager.has_active():
+                self.campaign_manager.snapshot(self)
+            from scz.scenes.stubs import MainMenuScene
+            if not isinstance(self.current_scene, MainMenuScene):
+                self.set_scene(MainMenuScene())
+            return
         self.running = False
 
     def run(self) -> None:

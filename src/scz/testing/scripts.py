@@ -69,9 +69,9 @@ def walk_tutorial_path() -> TestScript:
     s.expect_scene("HyperspaceScene")
 
     # Exercise zoom
-    s.press("menu_prev")    # zoom out
+    s.press("zoom_out")    # zoom out
     s.wait(0.3)
-    s.press("menu_next")    # zoom in
+    s.press("zoom_in")    # zoom in
     s.wait(0.3)
 
     # Move the ship briefly (axis hold)
@@ -3415,7 +3415,7 @@ def walk_quasispace_interactive() -> TestScript:
 
     Exercises the QS interactivity Aaron asked for:
         1. Enter QuasiSpaceScene via switcher (no entry portal context)
-        2. Bump the zoom up two ticks via menu_next — verify zoom > 1.0
+        2. Bump the zoom up two ticks via zoom_in — verify zoom > 1.0
         3. Engage autopilot via confirm — player spawn heading is south
            (math.pi); nearest in-cone portal is `deep_se` at (1100, 1450)
         4. Autopilot flies the ship through `deep_se` — auto-capture
@@ -3441,9 +3441,9 @@ def walk_quasispace_interactive() -> TestScript:
     s.expect_scene("QuasiSpaceScene")
 
     # Zoom in twice: target_zoom = 1.0 * 1.4 * 1.4 = 1.96
-    s.press("menu_next")
+    s.press("zoom_in")
     s.wait(0.1)
-    s.press("menu_next")
+    s.press("zoom_in")
     s.wait(0.4)        # let zoom lerp settle past 1.0
 
     # Engage autopilot. Player spawn is QS center (1000, 1000) with

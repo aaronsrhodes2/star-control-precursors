@@ -10,8 +10,9 @@ Aaron's universal control scheme:
 - **B**            cancel / menu back
 - **X + RT**       fire (primary weapon in combat)
 - **Y + RB**       fire (special weapon in combat)
-- **D-pad up/dn**  menu navigation (also arrow keys; menus wrap)
-- **D-pad lt/rt**  menu nav left/right (also zoom in hyperspace; - / =)
+- **D-pad up/dn**  menu navigation (also W/S and arrow keys; menus wrap)
+- **D-pad lt/rt**  menu nav left/right (also A/D and arrow keys)
+- **LB / RB**      zoom out / in on the star maps (also - / = and [ / ])
 - **Left stick**   move (with WASD as keyboard alternate)
 - **Right stick**  aim (combat / future cursor)
 - **Back (View)**  Time Drive rewind
@@ -20,11 +21,26 @@ Aaron's universal control scheme:
 
 All menus throughout the game stack vertically and wrap from bottom to top.
 The SceneSwitcher is the reference implementation.
+
+Keyboard is the classic scheme: WASD (or arrows) to fly and to move through
+menus, Space / Enter to confirm, Esc to go back. Keyboard and controller are
+always both live, so either can be picked up at any moment.
+
+Controllers come in two layouts (`PadLayout`): SDL's Xbox mapping on desktop
+(D-pad is a hat, triggers are axes) and the browser's W3C "standard gamepad"
+mapping on the web build (D-pad and triggers are plain buttons). Any pad the
+browser reports as standard (Xbox, PlayStation, Switch Pro, MFi) works.
 """
 
 from __future__ import annotations
 
+import sys
+from dataclasses import dataclass
+
 import pygame
+
+# Browser build (pygbag / WebAssembly).
+IS_WEB = sys.platform == "emscripten"
 
 
 # Xbox controller button conventions (pygame on Windows, default SDL mapping):
@@ -63,7 +79,8 @@ class InputManager:
     *level* — updated every frame to current value.
     """
 
-    def __init__(self) -> None:
+    def __init__(self, pad: PadLayout | None = None) -> None:
+        self.pad: PadLayout = pad or (WEB_PAD if IS_WEB else DESKTOP_PAD)
         self.joysticks: list[pygame.joystick.JoystickType] = []
         self._refresh_joysticks()
 
@@ -80,10 +97,12 @@ class InputManager:
         self.cancel: bool = False         # B / Esc / Backspace — back
         self.fire_primary: bool = False   # X / RT / F — fire weapon
         self.fire_secondary: bool = False # Y / RB / Shift — special weapon
-        self.menu_up: bool = False        # D-pad up / arrow up — navigate menu
-        self.menu_down: bool = False      # D-pad down / arrow down
-        self.menu_prev: bool = False      # D-pad left / arrow left / - / LB — menu left / zoom out
-        self.menu_next: bool = False      # D-pad right / arrow right / = / RB — menu right / zoom in
+        self.menu_up: bool = False        # D-pad up / W / arrow up — navigate menu
+        self.menu_down: bool = False      # D-pad down / S / arrow down
+        self.menu_prev: bool = False      # D-pad left / A / arrow left / LB — menu left
+        self.menu_next: bool = False      # D-pad right / D / arrow right / RB — menu right
+        self.zoom_out: bool = False       # LB / - / [ — star-map zoom out
+        self.zoom_in: bool = False        # RB / = / ] — star-map zoom in
         self.rewind: bool = False         # Back / R — Time Drive
         self.open_switcher: bool = False  # R3 / F1 — scene switcher
         self.quit: bool = False           # Start — quit game
@@ -124,6 +143,8 @@ class InputManager:
         self.menu_down = False
         self.menu_prev = False
         self.menu_next = False
+        self.zoom_out = False
+        self.zoom_in = False
         self.rewind = False
         self.open_switcher = False
         self.quit = False
@@ -162,8 +183,9 @@ class InputManager:
                     self.aim_y = _apply_deadzone(j.get_axis(3))
 
                 # Analog triggers as edge-triggered buttons
-                if j.get_numaxes() >= XBOX_RT_AXIS + 1:
-                    rt_val = j.get_axis(XBOX_RT_AXIS)
+                rt_axis, lt_axis = self.pad.rt_axis, self.pad.lt_axis
+                if rt_axis is not None and j.get_numaxes() >= rt_axis + 1:
+                    rt_val = j.get_axis(rt_axis)
                     rt_pressed_now = rt_val > TRIGGER_PRESS_THRESHOLD
                     if rt_pressed_now and not self._rt_was_pressed:
                         self.fire_primary = True
@@ -171,8 +193,8 @@ class InputManager:
                         self._rt_was_pressed = False
                     elif rt_pressed_now:
                         self._rt_was_pressed = True
-                if j.get_numaxes() >= XBOX_LT_AXIS + 1:
-                    lt_val = j.get_axis(XBOX_LT_AXIS)
+                if lt_axis is not None and j.get_numaxes() >= lt_axis + 1:
+                    lt_val = j.get_axis(lt_axis)
                     lt_pressed_now = lt_val > TRIGGER_PRESS_THRESHOLD
                     # LT not yet bound to anything; reserved for future
                     # boost/brake. We track the edge so re-binding is trivial.
@@ -197,18 +219,20 @@ class InputManager:
                     self.fire_primary = True
                 elif ev.key in (pygame.K_LSHIFT, pygame.K_RSHIFT):
                     self.fire_secondary = True
-                elif ev.key == pygame.K_UP:
+                elif ev.key in (pygame.K_UP, pygame.K_w):
                     self.menu_up = True
-                elif ev.key == pygame.K_DOWN:
+                elif ev.key in (pygame.K_DOWN, pygame.K_s):
                     self.menu_down = True
-                elif ev.key in (pygame.K_LEFT, pygame.K_LEFTBRACKET):
+                elif ev.key in (pygame.K_LEFT, pygame.K_a):
                     self.menu_prev = True
-                elif ev.key in (pygame.K_RIGHT, pygame.K_RIGHTBRACKET):
+                elif ev.key in (pygame.K_RIGHT, pygame.K_d):
                     self.menu_next = True
-                elif ev.key in (pygame.K_MINUS, pygame.K_KP_MINUS):
-                    self.menu_prev = True
-                elif ev.key in (pygame.K_EQUALS, pygame.K_KP_PLUS):
-                    self.menu_next = True
+                elif ev.key in (pygame.K_MINUS, pygame.K_KP_MINUS,
+                                pygame.K_LEFTBRACKET):
+                    self.zoom_out = True
+                elif ev.key in (pygame.K_EQUALS, pygame.K_KP_PLUS,
+                                pygame.K_RIGHTBRACKET):
+                    self.zoom_in = True
                 elif ev.key == pygame.K_r:
                     self.rewind = True
                 elif ev.key == pygame.K_F1:
@@ -219,29 +243,46 @@ class InputManager:
                     self.open_search = True
 
             elif ev.type == pygame.JOYBUTTONDOWN:
-                if ev.button == XBOX_A:
+                pad = self.pad
+                if ev.button == pad.a:
                     self.confirm = True
-                elif ev.button == XBOX_B:
+                elif ev.button == pad.b:
                     self.cancel = True
-                elif ev.button == XBOX_X:
+                elif ev.button == pad.x:
                     self.fire_primary = True
-                elif ev.button == XBOX_Y:
+                elif ev.button == pad.y:
                     self.fire_secondary = True
-                elif ev.button == XBOX_LB:
+                elif ev.button == pad.lb:
                     self.menu_prev = True
-                elif ev.button == XBOX_RB:
-                    # RB fires both special-weapon AND menu-next (zoom-in
-                    # in hyperspace). Per Aaron's bindings: RB is special
-                    # weapon in combat; in non-combat scenes the menu_next
-                    # semantic carries it. Scenes choose which to read.
+                    self.zoom_out = True
+                elif ev.button == pad.rb:
+                    # RB fires both special-weapon AND menu-next / zoom-in.
+                    # Per Aaron's bindings: RB is special weapon in combat;
+                    # in non-combat scenes the menu_next / zoom_in semantic
+                    # carries it. Scenes choose which to read.
                     self.fire_secondary = True
                     self.menu_next = True
-                elif ev.button == XBOX_START:
-                    self.quit = True
-                elif ev.button == XBOX_BACK:
+                    self.zoom_in = True
+                elif ev.button == pad.start:
+                    # A browser tab can't quit; Start backs out instead.
+                    if IS_WEB:
+                        self.cancel = True
+                    else:
+                        self.quit = True
+                elif ev.button == pad.back:
                     self.rewind = True
-                elif ev.button == XBOX_RSTICK:
+                elif ev.button == pad.rstick:
                     self.open_switcher = True
+                elif ev.button == pad.rt_button:
+                    self.fire_primary = True
+                elif ev.button == pad.dpad_up:
+                    self.menu_up = True
+                elif ev.button == pad.dpad_down:
+                    self.menu_down = True
+                elif ev.button == pad.dpad_left:
+                    self.menu_prev = True
+                elif ev.button == pad.dpad_right:
+                    self.menu_next = True
 
             elif ev.type == pygame.JOYHATMOTION:
                 # D-pad: hat value is (x, y) where +y is up on Xbox SDL2
@@ -262,6 +303,39 @@ class InputManager:
                 self._refresh_joysticks()
             elif ev.type == pygame.JOYDEVICEREMOVED:
                 self._refresh_joysticks()
+
+
+@dataclass(frozen=True)
+class PadLayout:
+    """Which raw button / axis index means what on this platform."""
+
+    a: int = XBOX_A
+    b: int = XBOX_B
+    x: int = XBOX_X
+    y: int = XBOX_Y
+    lb: int = XBOX_LB
+    rb: int = XBOX_RB
+    back: int = XBOX_BACK
+    start: int = XBOX_START
+    rstick: int = XBOX_RSTICK
+    # Triggers: an analog axis on desktop SDL, a button in the browser.
+    lt_axis: int | None = XBOX_LT_AXIS
+    rt_axis: int | None = XBOX_RT_AXIS
+    rt_button: int | None = None
+    # D-pad as buttons (browser). Desktop reports it as a hat instead.
+    dpad_up: int | None = None
+    dpad_down: int | None = None
+    dpad_left: int | None = None
+    dpad_right: int | None = None
+
+
+DESKTOP_PAD = PadLayout()
+# https://w3c.github.io/gamepad/#remapping (the "standard" layout).
+WEB_PAD = PadLayout(
+    back=8, start=9, rstick=11,
+    lt_axis=None, rt_axis=None, rt_button=7,
+    dpad_up=12, dpad_down=13, dpad_left=14, dpad_right=15,
+)
 
 
 def _apply_deadzone(v: float) -> float:

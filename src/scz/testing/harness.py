@@ -44,6 +44,8 @@ PULSE_FIELDS: set[str] = {
     "fire_secondary",
     "menu_up",
     "menu_down",
+    "zoom_out",
+    "zoom_in",
     "menu_prev",
     "menu_next",
     "rewind",

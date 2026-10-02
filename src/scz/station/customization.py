@@ -32,6 +32,10 @@ class ShipCustomizationScene(Scene):
     # Furling Mh-Lai theme carries through the shipyard.
     music_context: str | None = "furling_home"
 
+    # Rows of the modules column shown at once. 9 rows of 50px fit under
+    # the header and above the credits line at 720p (the smallest window).
+    _MODULE_WINDOW_SIZE = 9
+
     def __init__(self) -> None:
         super().__init__()
         self.focus: Focus = "slots"
@@ -103,6 +107,11 @@ class ShipCustomizationScene(Scene):
                 elif inp.menu_down:
                     self.module_idx = (self.module_idx + 1) % n
                     _click()
+                # Keep the cursor inside the visible window.
+                if self.module_idx < self.module_scroll:
+                    self.module_scroll = self.module_idx
+                elif self.module_idx >= self.module_scroll + self._MODULE_WINDOW_SIZE:
+                    self.module_scroll = self.module_idx - self._MODULE_WINDOW_SIZE + 1
                 if inp.confirm:
                     _click("confirm")
                     self._try_install(avail[self.module_idx])

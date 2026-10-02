@@ -338,9 +338,9 @@ class QuasiSpaceScene(Scene):
         self.time_in_scene += dt
 
         # --- Zoom (LB/RB on controller, -/= on keyboard) ---
-        if inp.menu_prev:
+        if inp.zoom_out:
             self.target_zoom = max(self.target_zoom / QS_ZOOM_STEP, MIN_QS_ZOOM)
-        if inp.menu_next:
+        if inp.zoom_in:
             self.target_zoom = min(self.target_zoom * QS_ZOOM_STEP, MAX_QS_ZOOM)
         if abs(self.target_zoom - self.zoom) > 1e-4:
             t = min(1.0, dt * QS_ZOOM_LERP)
