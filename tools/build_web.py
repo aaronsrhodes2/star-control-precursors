@@ -34,6 +34,10 @@ DRAFT_TIERS = [
     "tier1_avatars", "tier1_backdrops", "tier1_cutscenes",
     "tier1_dialog_backgrounds", "tier1_planets", "tier1_portraits",
 ]
+# Tiers the code scans as whole folders (combat picks a random planet
+# from tier1_planets); every other draft ships only if its filename
+# appears literally in the source.
+DRAFT_TIERS_WHOLE = {"tier1_planets"}
 
 WEB_MAIN = '''\
 """Browser entrypoint (pygbag). Desktop uses `python -m scz`."""
@@ -104,6 +108,51 @@ def _wav_to_ogg(assets: Path) -> None:
     print(f"[web] converted {len(wavs)} WAV -> OGG")
 
 
+# The web build runs at 1280x720, so no art needs to be taller than the
+# window. Downscaling the 1024px Firefly drafts roughly halves them.
+WEB_MAX_DIM = 720
+
+
+def _shrink_art(folder: Path) -> None:
+    from PIL import Image
+    before = after = 0
+    for f in folder.rglob("*.png"):
+        before += f.stat().st_size
+        with Image.open(f) as im:
+            im.load()
+            if max(im.size) > WEB_MAX_DIM:
+                im.thumbnail((WEB_MAX_DIM, WEB_MAX_DIM), Image.LANCZOS)
+            im.save(f, optimize=True)
+        after += f.stat().st_size
+    print(f"[web] draft art {before / 1e6:.0f} MB -> {after / 1e6:.0f} MB")
+
+
+def _copy_drafts() -> int:
+    """Copy only the draft art the game references. Returns LFS-skip count."""
+    source = "".join(
+        f.read_text(encoding="utf-8")
+        for f in (ROOT / "src" / "scz").rglob("*.py")
+    )
+    skipped = 0
+    for tier in DRAFT_TIERS:
+        src = ROOT / "assets" / "generated_drafts" / "firefly" / tier
+        dst = STAGE / "assets" / "generated_drafts" / "firefly" / tier
+        if not src.exists():
+            continue
+        for f in src.glob("*.png"):
+            if tier in DRAFT_TIERS_WHOLE:
+                if "_v1" in f.name or "_misread" in f.name:
+                    continue
+            elif f.name not in source:
+                continue
+            if _is_lfs_pointer(f):
+                skipped += 1
+                continue
+            dst.mkdir(parents=True, exist_ok=True)
+            shutil.copy2(f, dst / f.name)
+    return skipped
+
+
 def stage() -> None:
     if STAGE.exists():
         shutil.rmtree(STAGE)
@@ -116,15 +165,9 @@ def stage() -> None:
         src = ROOT / "assets" / name
         if src.exists():
             total_skipped += _copy_tree(src, STAGE / "assets" / name)[1]
-    for tier in DRAFT_TIERS:
-        src = ROOT / "assets" / "generated_drafts" / "firefly" / tier
-        if src.exists():
-            total_skipped += _copy_tree(
-                src, STAGE / "assets" / "generated_drafts" / "firefly" / tier,
-            )[1]
-    for f in (ROOT / "assets").glob("*.json"):
-        shutil.copy2(f, STAGE / "assets" / f.name)
+    total_skipped += _copy_drafts()
     _wav_to_ogg(STAGE / "assets")
+    _shrink_art(STAGE / "assets" / "generated_drafts")
 
     size_mb = sum(f.stat().st_size for f in STAGE.rglob("*") if f.is_file()) / 1e6
     print(f"[web] staged {STAGE} ({size_mb:.0f} MB)")
