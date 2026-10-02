@@ -79,6 +79,20 @@
     // Keys go to whichever document has focus; keep it on the game.
     window.addEventListener('focus', function () { frame.focus(); });
     document.addEventListener('pointerdown', function () { frame.focus(); });
+    setInterval(keepShape, 1500);
+  }
+
+  // The game's page sizes its canvas once and can get it wrong (a square
+  // instead of 16:9) if it measures before the frame has its final size.
+  // Ask it to measure again whenever the canvas is not the game's shape.
+  function keepShape() {
+    try {
+      var w = frame.contentWindow, c = w && w.canvas;
+      if (!c || !w.window_resize || !c.clientHeight) return;
+      var want = 1280 / 720, have = c.clientWidth / c.clientHeight;
+      var fits = c.clientWidth <= w.innerWidth + 1 && c.clientHeight <= w.innerHeight + 1;
+      if (Math.abs(have - want) > 0.03 || !fits) w.window_resize();
+    } catch (e) { /* the game page is still loading */ }
   }
 
   var poll = 0;

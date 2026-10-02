@@ -196,12 +196,23 @@ _LOADER_OLD = '''        async with platform.fopen("web.tar.gz", "rb") as archiv
             tar.close()
 '''
 _LOADER_NEW = '''        import os
+        # The host may keep these files behind a sign-in (the Skippy Portal
+        # does). pygbag fetches without cookies by default; same-origin
+        # requests must carry the session.
+        platform.fopen.flags = platform.ffi({{"redirect": "follow", "credentials": "same-origin"}})
         joined = "/tmp/scz-web.tar.gz"
         with open(joined, "wb") as out:
             for part in range({parts}):
                 platform.window.infobox.innerText = f"Downloading Star Control Zero ({{part + 1}} of {parts})"
                 async with platform.fopen(f"web.tar.gz.part{{part:02d}}?v={build}", "rb") as chunk:
                     out.write(chunk.read())
+        with open(joined, "rb") as archive:
+            if archive.read(2) != bytes([31, 139]):     # gzip magic
+                # A sign-in page or an error page came back instead of the game.
+                platform.window.infobox.innerText = (
+                    "Could not download the game. Reload the page; if you were signed out, sign in again."
+                )
+                raise RuntimeError("the game bundle did not download (not a gzip archive)")
         platform.window.infobox.innerText = "Unpacking"
         await asyncio.sleep(0)
         with open(joined, "rb") as archive:
