@@ -118,6 +118,18 @@ class PlanetOrbitScene(Scene):
             self._scanner_text = text
             self._scanner_first_reveal = first_reveal
 
+        # Scanner-lore reveal — surface the planet-level lore passage
+        # if the registry has an entry for `(star_key, planet_index)`.
+        # Always fires; subsequent visits show the abbreviated form
+        # via the is_first_reveal flag.
+        if self.game is not None:
+            from scz.content.scanner_lore import reveal_planet_lore
+            text, first_reveal = reveal_planet_lore(
+                self.game, self.star, self.planet.index,
+            )
+            self._scanner_text = text
+            self._scanner_first_reveal = first_reveal
+
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
 

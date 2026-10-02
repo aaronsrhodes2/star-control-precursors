@@ -47,6 +47,8 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
+from scz.engine import webstore
+
 # Browser build (pygbag / WebAssembly) — no threads available.
 IS_WEB = sys.platform == "emscripten"
 
@@ -265,6 +267,9 @@ class CampaignManager:
     """
 
     def __init__(self) -> None:
+        # Browser build: bring back the saves a previous visit mirrored
+        # into localStorage (no-op on desktop).
+        webstore.restore(_campaign_root())
         self.active_slug: str | None = None
         # Seconds of game time since the last auto-save fired. Reset
         # whenever a save is queued. Not the wall-clock — uses game
@@ -353,6 +358,7 @@ class CampaignManager:
         (cdir / "meta.json").write_text(
             json.dumps(meta, indent=2), encoding="utf-8",
         )
+        webstore.sync(_campaign_root())
         return slug
 
     def delete_campaign(self, slug: str) -> None:
@@ -370,6 +376,7 @@ class CampaignManager:
             cdir.rmdir()
         except OSError:
             pass
+        webstore.sync(_campaign_root())
         if self.active_slug == slug:
             self.active_slug = None
             self._save_stack = []
@@ -502,6 +509,8 @@ class CampaignManager:
                 self._prune_old_saves(save_path.parent)
             except OSError as e:
                 print(f"[save] write failed: {e}")
+        if pending:
+            webstore.sync(_campaign_root())
 
     def _prune_old_saves(self, campaign_dir: Path) -> None:
         """Keep only the newest `SAVES_PER_CAMPAIGN` save_*.json files

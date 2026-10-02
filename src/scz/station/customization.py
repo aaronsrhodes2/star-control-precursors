@@ -34,7 +34,7 @@ class ShipCustomizationScene(Scene):
 
     # Rows of the modules column shown at once. 9 rows of 50px fit under
     # the header and above the credits line at 720p (the smallest window).
-    _MODULE_WINDOW_SIZE = 9
+    _MODULE_WINDOW_SIZE: int = 9
 
     def __init__(self) -> None:
         super().__init__()
@@ -107,11 +107,18 @@ class ShipCustomizationScene(Scene):
                 elif inp.menu_down:
                     self.module_idx = (self.module_idx + 1) % n
                     _click()
-                # Keep the cursor inside the visible window.
+                # Keep the cursor in the visible window — auto-scroll
+                # when the cursor moves off either edge.
                 if self.module_idx < self.module_scroll:
                     self.module_scroll = self.module_idx
                 elif self.module_idx >= self.module_scroll + self._MODULE_WINDOW_SIZE:
-                    self.module_scroll = self.module_idx - self._MODULE_WINDOW_SIZE + 1
+                    self.module_scroll = (
+                        self.module_idx - self._MODULE_WINDOW_SIZE + 1
+                    )
+                # Clamp the scroll into bounds (handles list-size changes
+                # after an install removes an item from inventory).
+                max_scroll = max(0, n - self._MODULE_WINDOW_SIZE)
+                self.module_scroll = max(0, min(self.module_scroll, max_scroll))
                 if inp.confirm:
                     _click("confirm")
                     self._try_install(avail[self.module_idx])
@@ -314,25 +321,20 @@ class ShipCustomizationScene(Scene):
     def _try_install(self, mod: Module) -> None:
         assert self.game is not None
         sfx = getattr(self.game, "sfx", None)
-        # Determine target slot. Default to mod.slot; for crew, prefer
-        # crew_1 then crew_2 (whichever's empty).
-        if mod.slot in ("crew_1", "crew_2"):
-            target = None
-            for s in ("crew_1", "crew_2"):
+        # 2026-05-18 stacking refactor: 12 GENERIC slots, no slot-type
+        # constraint. Install target = the slot currently under the
+        # cursor if it's empty, else the lowest-numbered empty slot.
+        cursor_slot = SLOTS[self.slot_idx] if 0 <= self.slot_idx < len(SLOTS) else None
+        target = None
+        if cursor_slot is not None and self.game.ship_modules.get(cursor_slot) is None:
+            target = cursor_slot
+        else:
+            for s in SLOTS:
                 if self.game.ship_modules.get(s) is None:
                     target = s
                     break
-            if target is None:
-                self.last_msg = "no crew slots available — uninstall one first"
-                self.last_msg_age = 0.0
-                if sfx: sfx.play("ui/menu_invalid")
-                return
-        else:
-            target = mod.slot
-
-        # If slot is occupied, refuse — player must explicitly uninstall first
-        if self.game.ship_modules.get(target) is not None:
-            self.last_msg = f"{target} slot is occupied — uninstall first"
+        if target is None:
+            self.last_msg = "all 12 slots occupied — uninstall one first"
             self.last_msg_age = 0.0
             if sfx: sfx.play("ui/menu_invalid")
             return

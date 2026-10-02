@@ -51,6 +51,9 @@ class Game:
         pygame.display.set_caption(title)
         pygame.mouse.set_visible(not fullscreen)
         self.clock = pygame.time.Clock()
+        # Turbo: fixed 1/fps time step with no frame-rate cap. Only the
+        # in-browser test runner sets it (tools/build_web.py).
+        self.turbo = False
         self.running = True
         self.input = InputManager()
         self.current_scene: Scene | None = None
@@ -65,7 +68,13 @@ class Game:
         from scz.audio.sfx_bus import SfxBus
         # 12 channels: 6 for music stems (Slylandro is heaviest at 7) +
         # a few for overlapping SFX. Plenty for the slice's needs.
-        self._stem_mixer = StemMixer(channel_count=16)
+        # The browser build streams stems through the page instead of
+        # decoding whole tracks into memory (see audio/web_mixer.py).
+        if IS_WEB:
+            from scz.audio.web_mixer import WebStemMixer
+            self._stem_mixer = WebStemMixer(channel_count=16)
+        else:
+            self._stem_mixer = StemMixer(channel_count=16)
         try:
             self._stem_mixer.bootstrap(frequency=44100, channels_stereo=2)
             self._audio_ready = True
@@ -318,16 +327,29 @@ class Game:
         WebAssembly can't block, so a plain while-loop would freeze
         the tab."""
         import asyncio
+        import time
         try:
             while self.running:
                 self._frame()
+                if self.turbo:
+                    # Test runs: as many frames as fit in half a second
+                    # between yields, so a walk finishes at CPU speed even
+                    # when the browser is only ticking the page slowly.
+                    until = time.perf_counter() + 0.5
+                    while self.running and time.perf_counter() < until:
+                        self._frame()
                 await asyncio.sleep(0)
         finally:
             self._shutdown()
 
     def _frame(self) -> None:
         """One tick: input, update, render, flip."""
-        real_dt = self.clock.tick(self.target_fps) / 1000.0
+        if self.turbo:
+            # Fixed step, no waiting for the clock (see run_async).
+            self.clock.tick()
+            real_dt = 1.0 / self.target_fps
+        else:
+            real_dt = self.clock.tick(self.target_fps) / 1000.0
         # Cap dt: the very first frame after clock.tick() returns
         # the wall time elapsed since the clock was constructed
         # (often 100-500ms of pygame init). Without a cap, that

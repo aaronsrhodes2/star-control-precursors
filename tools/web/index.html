@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Star Control Zero: The Precursors</title>
+<link rel="icon" href="favicon.png">
+<style>
+  /* Black base, no gradients: on the Viture glasses black is see-through. */
+  html, body { margin: 0; height: 100%; background: #000; color: #fff; overflow: hidden;
+               font-family: ui-monospace, Consolas, Menlo, monospace; }
+  #game { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; background: #000; display: none; }
+  #gate { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center;
+          justify-content: center; text-align: center; padding: 24px; }
+  #gate h1 { margin: 0 0 6px; font-size: 1.6rem; letter-spacing: .12em; color: #00ff88; font-weight: 600; }
+  #gate .sub { margin: 0 0 28px; color: #00ccff; font-size: .9rem; }
+  #gate p { margin: 6px 0; max-width: 34rem; line-height: 1.5; }
+  #gate .need { color: #ffaa00; }
+  #gate .keys { margin-top: 26px; color: #006644; font-size: .8rem; }
+  #gate .keys b { color: #00ff88; font-weight: 600; }
+</style>
+</head>
+<body>
+<!--
+  The door in front of the game (tools/web/index.html; the game itself is game.html).
+
+  The game is played with a keyboard or a controller; there are no touch
+  controls. On a computer it loads straight away. On a device that does not
+  normally have a keyboard (phone, tablet) it does NOT load until a controller
+  is seen (press a button on it: browsers hide controllers until then) or a
+  real key is pressed (a keyboard is attached after all). That keeps an 80 MB
+  download off a phone that could not play it.
+-->
+<div id="gate" role="status">
+  <h1>STAR CONTROL ZERO</h1>
+  <p class="sub">The Precursors</p>
+  <p id="gate-msg">Loading&hellip;</p>
+  <p id="gate-how" class="need" hidden>Connect a controller and press any button on it, or attach a keyboard and press a key.</p>
+  <p class="keys"><b>WASD</b> move &middot; <b>Space</b> / <b>Enter</b> select &middot; <b>Esc</b> back
+     &nbsp;|&nbsp; controller: <b>stick</b> / <b>D-pad</b> &middot; <b>A</b> &middot; <b>B</b></p>
+</div>
+<iframe id="game" title="Star Control Zero" allow="gamepad; autoplay; fullscreen"></iframe>
+<script>
+(function () {
+  var frame = document.getElementById('game'), gate = document.getElementById('gate');
+  var msg = document.getElementById('gate-msg'), how = document.getElementById('gate-how');
+  var started = false;
+
+  // Does this device normally come with a keyboard? Phones and tablets say
+  // so in the user agent; iPadOS pretends to be a Mac but has a touch screen;
+  // anything whose only pointer is a finger counts too.
+  function hasKeyboardNormally() {
+    var ua = navigator.userAgent || '';
+    if (/Android|iPhone|iPad|iPod|Mobile|Silk|Kindle|Quest/i.test(ua)) return false;
+    if (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) return false;
+    if (window.matchMedia) {
+      var coarse = matchMedia('(pointer: coarse)').matches;
+      var anyFine = matchMedia('(any-pointer: fine)').matches;
+      if (coarse && !anyFine) return false;
+    }
+    return true;
+  }
+
+  function controllerPresent() {
+    if (!navigator.getGamepads) return false;
+    var pads = navigator.getGamepads();
+    for (var i = 0; i < pads.length; i++) if (pads[i] && pads[i].connected) return true;
+    return false;
+  }
+
+  function start() {
+    if (started) return;
+    started = true;
+    clearInterval(poll);
+    frame.src = 'game.html' + location.search;
+    frame.style.display = 'block';
+    gate.style.display = 'none';
+    frame.addEventListener('load', function () { frame.focus(); });
+    // Keys go to whichever document has focus; keep it on the game.
+    window.addEventListener('focus', function () { frame.focus(); });
+    document.addEventListener('pointerdown', function () { frame.focus(); });
+  }
+
+  var poll = 0;
+  if (hasKeyboardNormally()) {
+    start();
+  } else {
+    msg.textContent = 'This game is played with a keyboard or a controller.';
+    how.hidden = false;
+    window.addEventListener('gamepadconnected', start);
+    // A real key press proves a keyboard is attached (an on-screen keyboard
+    // has nowhere to type here, so it cannot fire this).
+    window.addEventListener('keydown', start);
+    poll = setInterval(function () { if (controllerPresent()) start(); }, 400);
+  }
+})();
+</script>
+</body>
+</html>

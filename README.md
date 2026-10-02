@@ -19,7 +19,7 @@ Phase 2 (Engine MVP) in progress. The hyperspace scene works: the precursor-era 
 
 ## Running
 
-Requires Python 3.13+. From the project root (PowerShell):
+Requires Python 3.12+. From the project root (PowerShell):
 
 ```powershell
 python -m venv .venv
@@ -29,11 +29,49 @@ python -m venv .venv
 
 ### Controls
 
-- **Move**: WASD / Arrow keys / Left analog stick
-- **Quit**: Esc / Start button
-- **Confirm** (later scenes): Space, Enter / A button
-- **Cancel** (later scenes): Backspace / B button
-- **Map** (not wired yet): M / Y button
+Keyboard and controller are both live at all times.
+
+| | Keyboard | Controller |
+|---|---|---|
+| Fly / move through menus | WASD or arrow keys | Left stick / D-pad |
+| Select, autopilot | Space or Enter | A |
+| Back, pause | Esc or Backspace | B |
+| Zoom the star map | - and = (or [ and ]) | LB / RB |
+| Time Drive (rewind) | R | Back / View |
+| Fire, special | F, Shift | X or RT, Y or RB |
+
+### Playing in a browser
+
+The game also runs in a browser, compiled to WebAssembly with [pygbag](https://pygame-web.github.io/):
+
+```bash
+pip install pygbag pillow            # plus ffmpeg on PATH, and `git lfs pull` for the assets
+python tools/build_web.py --serve    # builds build/web-dist/ and serves it
+```
+
+Then open <http://127.0.0.1:8000/> (not `localhost`: on `localhost:8000` the runtime looks for a
+local copy of its support files and fails to start). `build/web-dist/` is plain static files and
+can be hosted anywhere; `python tools/build_web.py --tarball` also writes `build/scz-web.tar.gz`,
+the archive published as a GitHub Release and bundled into the Skippy Portal at `/starcontrol/`.
+
+What differs from the desktop game:
+
+- **Keyboard or controller only.** On a phone or tablet the page waits for a controller before it
+  downloads anything.
+- **Music is streamed**, one track at a time, instead of loaded from disk.
+- **Saves stay in that browser** (its local storage). They survive reloads and new builds but do
+  not follow you to another device.
+- It runs on Python 3.12 (what the browser runtime ships), so the code must stay 3.12-compatible.
+
+`?test=walk_trade` (or a comma-separated list, or `all`) on the page runs the scripted test walks
+inside the browser build; results land in `window.sczTestResults` of the game frame.
+
+### Tests
+
+```bash
+python -m scz --windowed --test walk_tutorial_path   # one scripted walk (65 of them; see src/scz/testing/scripts.py)
+python tests/test_web_build.py                       # the browser build's own pieces (no browser needed)
+```
 
 ## Status by Phase
 

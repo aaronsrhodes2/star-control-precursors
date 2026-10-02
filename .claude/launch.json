@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "web-build",
-      "runtimeExecutable": ".venv/Scripts/python.exe",
-      "runtimeArgs": ["-m", "pygbag", "--title", "Star Control Zero", "build/web"],
+      "runtimeExecutable": "python",
+      "runtimeArgs": ["-m", "http.server", "8000", "--directory", "build/web-dist"],
       "port": 8000
     }
   ]

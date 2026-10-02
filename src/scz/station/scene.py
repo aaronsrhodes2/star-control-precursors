@@ -205,11 +205,15 @@ class StationScene(Scene):
     def update(self, dt: float, inp) -> None:  # type: ignore[no-untyped-def]
         self.time_in_scene += dt
 
-        # B → quit (Station is the top-level scene; backing out exits)
-        if inp.cancel and self.game is not None:
+        # B / cancel → open pause menu overlay (replaces the legacy
+        # "cancel quits" behavior per the 2026-05-18 UX bug dispatch).
+        # The Station stays loaded; Resume returns here, Return to Title
+        # navigates to MainMenu with an auto-save.
+        if inp.cancel and self.game is not None and self.game.overlay_scene is None:
             if hasattr(self.game, "sfx"):
                 self.game.sfx.play("ui/menu_cancel")
-            self.game.quit()
+            from scz.scenes.pause_menu import PauseMenuScene
+            self.game.open_overlay(PauseMenuScene())
             return
 
         actions = self._visible_actions()
@@ -223,7 +227,7 @@ class StationScene(Scene):
             if self.game is not None and hasattr(self.game, "sfx"):
                 self.game.sfx.play(f"ui/menu_{kind}")
 
-        n = len(ACTIONS)
+        n = len(actions)
         if inp.menu_up:
             self.selected_action = (self.selected_action - 1) % n
             _click()
@@ -234,7 +238,7 @@ class StationScene(Scene):
         # Confirm → trigger action
         if inp.confirm and self.game is not None:
             _click("confirm")
-            label, action = ACTIONS[self.selected_action]
+            label, action = actions[self.selected_action]
             if action == "talk":
                 from scz.dialog.characters import commander_halia
                 from scz.dialog.scene import DialogScene

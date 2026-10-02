@@ -3,7 +3,7 @@ name = "scz"
 version = "0.0.1"
 description = "Star Control Zero: The Precursors — a fan-game prequel"
 readme = "README.md"
-requires-python = ">=3.13"
+requires-python = ">=3.12"
 authors = [{name = "Aaron Rhodes", email = "aaron.s.rhodes2@gmail.com"}]
 license = {text = "Non-commercial fan project"}
 dependencies = [
