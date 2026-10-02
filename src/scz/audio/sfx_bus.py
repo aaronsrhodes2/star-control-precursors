@@ -61,10 +61,12 @@ class SfxBus:
         self._muted = bool(muted)
 
     def _load(self, name: str) -> Optional[pygame.mixer.Sound]:
-        """Find the .wav at assets/sfx/<name>.wav and load it once."""
+        """Find assets/sfx/<name>.ogg (browser build) or .wav and load it once."""
         if name in self._cache:
             return self._cache[name]
-        path = _sfx_root() / f"{name}.wav"
+        path = _sfx_root() / f"{name}.ogg"
+        if not path.exists():
+            path = _sfx_root() / f"{name}.wav"
         if not path.exists():
             if name not in self._missing_warned:
                 log.warning("SFX not found: %s (looked at %s)", name, path)

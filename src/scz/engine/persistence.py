@@ -40,11 +40,15 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 import threading
 import time
 from dataclasses import dataclass
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
+
+# Browser build (pygbag / WebAssembly) — no threads available.
+IS_WEB = sys.platform == "emscripten"
 
 if TYPE_CHECKING:
     from scz.engine.game import Game
@@ -423,7 +427,12 @@ class CampaignManager:
         thumb_path = cdir / f"save_{unix_ms}.png"
         with self._lock:
             self._pending_writes.append((save_path, state, thumb_path, thumb_surface))
-        self._ensure_worker_running()
+        if IS_WEB:
+            # No threads in WebAssembly — write inline. Saves are a
+            # few KB to the in-memory FS, so the frame hitch is tiny.
+            self._drain_pending_writes()
+        else:
+            self._ensure_worker_running()
 
     # ---- Disk-write worker thread ----
 
@@ -449,45 +458,50 @@ class CampaignManager:
         while not self._worker_stop:
             self._worker_wake.wait(timeout=2.0)
             self._worker_wake.clear()
-            with self._lock:
-                pending = self._pending_writes
-                self._pending_writes = []
-            for save_path, state, thumb_path, thumb_surface in pending:
-                try:
-                    save_path.parent.mkdir(parents=True, exist_ok=True)
-                    save_path.write_text(
-                        json.dumps(state), encoding="utf-8",
-                    )
-                    # Thumbnail PNG (best-effort — skip on error).
-                    if thumb_surface is not None:
-                        try:
-                            import pygame as _pg
-                            _pg.image.save(thumb_surface, str(thumb_path))
-                        except Exception as e:
-                            print(f"[save] thumbnail write failed: {e}")
-                    # Update meta.json's updated_unix so the campaign
-                    # list reflects the freshness.
-                    meta_path = save_path.parent / "meta.json"
-                    if meta_path.exists():
-                        try:
-                            meta = json.loads(
-                                meta_path.read_text(encoding="utf-8"),
-                            )
-                        except (OSError, json.JSONDecodeError):
-                            meta = {}
-                        meta["updated_unix"] = state.get(
-                            "saved_at_unix", time.time(),
+            self._drain_pending_writes()
+
+    def _drain_pending_writes(self) -> None:
+        """Write every queued save to disk. Runs on the worker thread
+        on desktop, inline on the browser build."""
+        with self._lock:
+            pending = self._pending_writes
+            self._pending_writes = []
+        for save_path, state, thumb_path, thumb_surface in pending:
+            try:
+                save_path.parent.mkdir(parents=True, exist_ok=True)
+                save_path.write_text(
+                    json.dumps(state), encoding="utf-8",
+                )
+                # Thumbnail PNG (best-effort — skip on error).
+                if thumb_surface is not None:
+                    try:
+                        import pygame as _pg
+                        _pg.image.save(thumb_surface, str(thumb_path))
+                    except Exception as e:
+                        print(f"[save] thumbnail write failed: {e}")
+                # Update meta.json's updated_unix so the campaign
+                # list reflects the freshness.
+                meta_path = save_path.parent / "meta.json"
+                if meta_path.exists():
+                    try:
+                        meta = json.loads(
+                            meta_path.read_text(encoding="utf-8"),
                         )
-                        try:
-                            meta_path.write_text(
-                                json.dumps(meta, indent=2),
-                                encoding="utf-8",
-                            )
-                        except OSError:
-                            pass
-                    self._prune_old_saves(save_path.parent)
-                except OSError as e:
-                    print(f"[save] write failed: {e}")
+                    except (OSError, json.JSONDecodeError):
+                        meta = {}
+                    meta["updated_unix"] = state.get(
+                        "saved_at_unix", time.time(),
+                    )
+                    try:
+                        meta_path.write_text(
+                            json.dumps(meta, indent=2),
+                            encoding="utf-8",
+                        )
+                    except OSError:
+                        pass
+                self._prune_old_saves(save_path.parent)
+            except OSError as e:
+                print(f"[save] write failed: {e}")
 
     def _prune_old_saves(self, campaign_dir: Path) -> None:
         """Keep only the newest `SAVES_PER_CAMPAIGN` save_*.json files

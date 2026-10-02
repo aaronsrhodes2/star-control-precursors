@@ -294,112 +294,132 @@ class Game:
         self.running = False
 
     def run(self) -> None:
-        """Main loop. Returns when the loop exits."""
+        """Main loop (desktop). Returns when the loop exits."""
         try:
             while self.running:
-                real_dt = self.clock.tick(self.target_fps) / 1000.0
-                # Cap dt: the very first frame after clock.tick() returns
-                # the wall time elapsed since the clock was constructed
-                # (often 100-500ms of pygame init). Without a cap, that
-                # spike multiplied by test_speed batches several scripted
-                # actions into a single frame, which coalesces edge-
-                # triggered input pulses (multiple presses → one read).
-                # Cap at 2 frames' worth (~33ms at 60fps) so a slow frame
-                # still progresses normally but never floods the schedule.
-                real_dt = min(real_dt, 2.0 / self.target_fps)
-                # Apply the test-mode speed multiplier. real_dt is wall time;
-                # dt is game time. The harness uses dt for its scheduling so
-                # scripts are speed-independent.
-                dt = real_dt * self.test_speed
-                events = pygame.event.get()
-                for ev in events:
-                    if ev.type == pygame.QUIT:
-                        self.running = False
-
-                self.input.update(events)
-
-                # Apply any scripted input from the test harness — overlay
-                # on top of real input so a human can still take over.
-                if self.test_harness is not None:
-                    self.test_harness.step(dt)
-                    self.test_harness.apply_to_input(self.input)
-                    if self.test_harness.done:
-                        self.running = False
-
-                if self.input.quit:
-                    self.running = False
-
-                # Music ramps + state-driven layer refresh every frame.
-                # Director updates are cheap — pure volume ramping — so
-                # safe to call regardless of which scene is active.
-                self.music.update(dt, self)
-
-                if self.current_scene is not None:
-                    # F1 anywhere → open the scene switcher overlay.
-                    # Must be checked BEFORE updating scenes, and only when
-                    # no overlay is already up (so switcher's own F1 doesn't
-                    # toggle).
-                    if self.input.open_switcher and self.overlay_scene is None:
-                        from scz.scenes.switcher import SceneSwitcher
-                        self.open_overlay(SceneSwitcher())
-
-                    # Auto-save tick — fires every 60s while a
-                    # campaign is active. No-op until New/Load.
-                    self.campaign_manager.tick(dt, self)
-
-                    # Time Drive — Aaron 2026-05-18: "literally is
-                    # 'load game'." When the rewind input fires AND a
-                    # campaign is active, open the save scrubber so the
-                    # player picks which minute to restore (default
-                    # cursor at the save closest to 5 min ago). When no
-                    # campaign is active (e.g. super-melee), fall back
-                    # to the legacy per-scene snapshot rewind.
-                    self.time_drive.maybe_snapshot(self.current_scene)
-                    self.time_drive.update(dt)
-                    if self.input.rewind:
-                        current_name = type(self.current_scene).__name__
-                        if (
-                            self.campaign_manager.has_active()
-                            and current_name != "SaveScrubberScene"
-                        ):
-                            self._apply_campaign_rewind()
-                        elif self.time_drive.is_ready():
-                            self.time_drive.rewind(self.current_scene)
-
-                    # Main scene always renders (as backdrop when overlay is up).
-                    self.current_scene.render(self.screen)
-
-                    # Update the active scene. Overlay intercepts input if up.
-                    # Cache the overlay reference before calling update — the
-                    # update may close the overlay (e.g. SceneSwitcher picking
-                    # a target calls set_scene, which closes the overlay). If
-                    # that happens we skip the post-update render of the now-
-                    # dismissed overlay.
-                    overlay_at_update = self.overlay_scene
-                    if overlay_at_update is not None:
-                        overlay_at_update.update(dt, self.input)
-                        if self.overlay_scene is overlay_at_update:
-                            overlay_at_update.render(self.screen)
-                    else:
-                        self.current_scene.update(dt, self.input)
-
-                    self.time_drive.render_overlay(self.screen)
-
-                # Test-mode HUD overlay on top of everything
-                if self.test_harness is not None:
-                    self._render_test_hud()
-
-                pygame.display.flip()
-                self.frame_count += 1
+                self._frame()
         finally:
-            # Force one final save before quitting so the player
-            # doesn't lose progress on a Ctrl+C / window close.
-            if self.campaign_manager.has_active():
-                try:
-                    self.campaign_manager.snapshot(self)
-                except Exception as e:
-                    print(f"[save] final-snapshot failed: {e}")
-            self.campaign_manager.shutdown()
-            if self.current_scene is not None:
-                self.current_scene.on_exit()
-            pygame.quit()
+            self._shutdown()
+
+    async def run_async(self) -> None:
+        """Main loop for the browser build (pygbag). Identical to run()
+        except it yields to the browser event loop once per frame —
+        WebAssembly can't block, so a plain while-loop would freeze
+        the tab."""
+        import asyncio
+        try:
+            while self.running:
+                self._frame()
+                await asyncio.sleep(0)
+        finally:
+            self._shutdown()
+
+    def _frame(self) -> None:
+        """One tick: input, update, render, flip."""
+        real_dt = self.clock.tick(self.target_fps) / 1000.0
+        # Cap dt: the very first frame after clock.tick() returns
+        # the wall time elapsed since the clock was constructed
+        # (often 100-500ms of pygame init). Without a cap, that
+        # spike multiplied by test_speed batches several scripted
+        # actions into a single frame, which coalesces edge-
+        # triggered input pulses (multiple presses → one read).
+        # Cap at 2 frames' worth (~33ms at 60fps) so a slow frame
+        # still progresses normally but never floods the schedule.
+        real_dt = min(real_dt, 2.0 / self.target_fps)
+        # Apply the test-mode speed multiplier. real_dt is wall time;
+        # dt is game time. The harness uses dt for its scheduling so
+        # scripts are speed-independent.
+        dt = real_dt * self.test_speed
+        events = pygame.event.get()
+        for ev in events:
+            if ev.type == pygame.QUIT:
+                self.running = False
+
+        self.input.update(events)
+
+        # Apply any scripted input from the test harness — overlay
+        # on top of real input so a human can still take over.
+        if self.test_harness is not None:
+            self.test_harness.step(dt)
+            self.test_harness.apply_to_input(self.input)
+            if self.test_harness.done:
+                self.running = False
+
+        if self.input.quit:
+            self.running = False
+
+        # Music ramps + state-driven layer refresh every frame.
+        # Director updates are cheap — pure volume ramping — so
+        # safe to call regardless of which scene is active.
+        self.music.update(dt, self)
+
+        if self.current_scene is not None:
+            # F1 anywhere → open the scene switcher overlay.
+            # Must be checked BEFORE updating scenes, and only when
+            # no overlay is already up (so switcher's own F1 doesn't
+            # toggle).
+            if self.input.open_switcher and self.overlay_scene is None:
+                from scz.scenes.switcher import SceneSwitcher
+                self.open_overlay(SceneSwitcher())
+
+            # Auto-save tick — fires every 60s while a
+            # campaign is active. No-op until New/Load.
+            self.campaign_manager.tick(dt, self)
+
+            # Time Drive — Aaron 2026-05-18: "literally is
+            # 'load game'." When the rewind input fires AND a
+            # campaign is active, open the save scrubber so the
+            # player picks which minute to restore (default
+            # cursor at the save closest to 5 min ago). When no
+            # campaign is active (e.g. super-melee), fall back
+            # to the legacy per-scene snapshot rewind.
+            self.time_drive.maybe_snapshot(self.current_scene)
+            self.time_drive.update(dt)
+            if self.input.rewind:
+                current_name = type(self.current_scene).__name__
+                if (
+                    self.campaign_manager.has_active()
+                    and current_name != "SaveScrubberScene"
+                ):
+                    self._apply_campaign_rewind()
+                elif self.time_drive.is_ready():
+                    self.time_drive.rewind(self.current_scene)
+
+            # Main scene always renders (as backdrop when overlay is up).
+            self.current_scene.render(self.screen)
+
+            # Update the active scene. Overlay intercepts input if up.
+            # Cache the overlay reference before calling update — the
+            # update may close the overlay (e.g. SceneSwitcher picking
+            # a target calls set_scene, which closes the overlay). If
+            # that happens we skip the post-update render of the now-
+            # dismissed overlay.
+            overlay_at_update = self.overlay_scene
+            if overlay_at_update is not None:
+                overlay_at_update.update(dt, self.input)
+                if self.overlay_scene is overlay_at_update:
+                    overlay_at_update.render(self.screen)
+            else:
+                self.current_scene.update(dt, self.input)
+
+            self.time_drive.render_overlay(self.screen)
+
+        # Test-mode HUD overlay on top of everything
+        if self.test_harness is not None:
+            self._render_test_hud()
+
+        pygame.display.flip()
+        self.frame_count += 1
+
+    def _shutdown(self) -> None:
+        # Force one final save before quitting so the player
+        # doesn't lose progress on a Ctrl+C / window close.
+        if self.campaign_manager.has_active():
+            try:
+                self.campaign_manager.snapshot(self)
+            except Exception as e:
+                print(f"[save] final-snapshot failed: {e}")
+        self.campaign_manager.shutdown()
+        if self.current_scene is not None:
+            self.current_scene.on_exit()
+        pygame.quit()
